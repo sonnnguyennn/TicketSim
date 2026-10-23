@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Ứng dụng chậm ở khoảng 02:00 UTC.",
+    "Đọc P1 (journalctl -u backup-agent --since \"02:00\" --until \"02:30\") và P2 (iostat -xz 1 2); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Trong cửa sổ backup mới app đạt latency mục tiêu và bản backup vẫn hoàn tất, kiểm tra restore riêng."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Ngừng tác vụ ghi, ghi nhận device/timestamp, kiểm tra backup; chuyển incident storage để recovery có phê duyệt. Xác minh: Sau recovery được duyệt, kiểm tra filesystem, kernel log và phép ghi ứng dụng an toàn.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: SSH rớt từng đợt khi nightly job chạy.",
+    "Đọc P1 (journalctl -k -b | tail -n 30) và P2 (free -h); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Không còn OOM trong cửa sổ job, RAM đủ và phiên SSH ổn định qua nhiều lượt chạy."
+  ]
+}

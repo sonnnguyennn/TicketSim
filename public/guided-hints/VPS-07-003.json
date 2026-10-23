@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Sau deploy, mọi URL của site trả 404.",
+    "Đọc P1 (curl -I http://localhost/start) và P2 (nginx -T); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Host đúng trả nội dung /start mong đợi từ client, Nginx config test và log sạch."
+  ]
+}

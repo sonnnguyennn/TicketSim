@@ -2,7 +2,7 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc P1 trước khi khẳng định nguyên nhân. myapp báo Dependency failed; chưa biết dependency nào đến khi đối chiếu unit và service liên quan.",
+  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
   "commandId": "systemctl-service",
   "optionFeedback": {
     "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",

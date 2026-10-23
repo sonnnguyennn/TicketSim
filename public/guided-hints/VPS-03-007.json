@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: API lỗi rải rác với Too many open files.",
+    "Đọc P1 (journalctl -u myapp -n 20) và P2 (cat /proc/1234/limits); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Trong tải đại diện FD ổn định dưới limit, log không còn EMFILE và API thành công."
+  ]
+}

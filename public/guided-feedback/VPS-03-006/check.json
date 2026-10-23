@@ -2,7 +2,7 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc P1 trước khi khẳng định nguyên nhân. Unit liên tục auto-restart sau exit-code; restart lặp lại không sửa runtime.",
+  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
   "commandId": "systemctl-service",
   "optionFeedback": {
     "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",

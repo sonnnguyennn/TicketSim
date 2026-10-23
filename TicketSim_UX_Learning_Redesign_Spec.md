@@ -2,6 +2,10 @@
 
 ## Current state and pickup guide — 2026-10-23
 
+### Phase 5C pickup update
+
+Batch 3 is implemented: **56/112 Guided**. The 14 new cases complete the priority SSH, Network, Services, Performance, Disk, Web and DNS topics. Guided-only output overrides replace editorial annotations in `VPS-07-003` and `VPS-08-006`; the 112 source tickets and their original probes remain unchanged. Stateful, Objective Exam and independent Mastered variants remain at **6/112**. See `Phase_5C_Batch_3_QA.md`. Batch 4–7, Objective Exam expansion and review variant expansion remain open. Counts in the Phase 1–2 section below describe the previous pickup point.
+
 ### Phase 1–2 pickup update
 
 Milestone 5B and the first Guided expansion batch are now implemented. The app has 42/112 Guided cases, 96 command/task cards, six Stateful + Objective Exam cases, and six independent review variants with delayed first-try Mastered. The 30 new Guided cases span SSH, Network, Linux Services, Performance, Disk, Web and DNS; L2/L3 require extra authored probes before interpretation. Beginner/Normal/Independent support and knowledge-level Review Mistakes are now in the app. Desktop/mobile Chromium, keyboard, import/export, refresh and migration smoke tests are in `tests/browser.spec.ts`. See `Milestone_5B_QA.md`, `Phase_2_Guided_QA.md`, `Guided_112_Batch_Plan.md` and `Phase_4_QA.md`. The older 12-case figures below are the Milestone 5A pickup snapshot, retained as history; `README.md` and `ROADMAP.md` carry current counts. A Git repository was initialized with baseline and per-phase commits.

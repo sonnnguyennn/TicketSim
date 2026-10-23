@@ -10,19 +10,27 @@ import type { GuidedCase } from './types'
 const cases = guidedPublic as GuidedCase[]
 
 describe('Guided content', () => {
-  it('provides forty-two Guided cases without answer keys in the initial payload', () => {
-    expect(cases).toHaveLength(42)
-    expect(new Set(cases.map(item => item.id)).size).toBe(42)
+  it('provides fifty-six Guided cases without answer keys in the initial payload', () => {
+    expect(cases).toHaveLength(56)
+    expect(new Set(cases.map(item => item.id)).size).toBe(56)
     expect(cases.filter(item => ['VPS-01-003', 'VPS-03-003', 'VPS-05-004', 'VPS-08-003'].includes(item.id))).toHaveLength(4)
     for (const item of cases) {
       expect(item.probes.length).toBeGreaterThanOrEqual(2)
       const original = (JSON.parse(fs.readFileSync('starter-data/tickets.json', 'utf8')).tickets as { id: string; probe_outputs: { stdout: string }[] }[]).find(ticket => ticket.id === item.id)!
-      expect(item.probes[0].output).toBe(original.probe_outputs[0].stdout)
+      if (item.id === 'VPS-05-008') expect(item.probes[0].output).toContain('vgdata-lvdata 30G')
+      else expect(item.probes[0].output).toBe(original.probe_outputs[0].stdout)
       if (item.id === 'VPS-07-007') {
         expect(original.probe_outputs[1].stdout).toBe('server_name shop.example.com missing')
         expect(item.probes[1].output).toContain('# configuration file /etc/nginx/conf.d/api.conf:')
         expect(item.probes[1].output).not.toContain('missing')
-      } else expect(item.probes[1].output).toBe(original.probe_outputs[1].stdout)
+      } else if (item.id === 'VPS-07-003') {
+        expect(item.probes[1].output).toContain('root /var/www/html;')
+        expect(item.probes[1].output).not.toContain('intended deploy')
+      } else if (item.id === 'VPS-08-006') {
+        expect(item.probes[1].output).toBe('2001:db8:bad::20')
+        expect(item.probes[1].output).not.toContain('PANEL:')
+      } else if (item.id === 'VPS-05-008') expect(item.probes[1].output).toContain('49.99g')
+      else expect(item.probes[1].output).toBe(original.probe_outputs[1].stdout)
       expect(item.questions.filter(question => question.kind !== 'short_answer').length).toBeGreaterThanOrEqual(5)
       expect(item.questions.some(question => question.kind === 'short_answer')).toBe(true)
       expect(item.questions.every(question => !('correctIds' in question) && !('optionFeedback' in question))).toBe(true)
@@ -46,7 +54,7 @@ describe('Guided content', () => {
     expect(commandLibrary.every(item => item.exampleOutput && item.whenToUse && item.followUp && item.flags && item.centos && item.ubuntu)).toBe(true)
     expect(cases.some(item => item.questions.some(question => question.kind === 'step_order'))).toBe(true)
     const added = cases.slice(12)
-    expect(added).toHaveLength(30)
+    expect(added).toHaveLength(44)
     const tickets = JSON.parse(fs.readFileSync('starter-data/tickets.json', 'utf8')).tickets as { id: string; topic: string; difficulty: number }[]
     expect(new Set(added.map(item => tickets.find(ticket => ticket.id === item.id)?.topic)).size).toBe(7)
     for (const item of added) {

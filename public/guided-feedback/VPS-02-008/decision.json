@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Thu tracepath, MTU/MSS VPN và thử upload có giám sát; chuyển đội VPN/network với source, thời điểm, kích thước. Xác minh: Upload lớn qua đúng VPN hoàn tất, không retransmit bất thường và request nhỏ vẫn hoạt động.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

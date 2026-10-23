@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Thu latency và resource/dependency trong peak, trace request ID; chuyển đội ứng dụng, chỉ đổi timeout theo SLA được duyệt. Xác minh: Tải peak đại diện không còn 504, p95/p99 latency trong SLA và backend health ổn.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

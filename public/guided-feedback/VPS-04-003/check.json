@@ -2,7 +2,7 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc P1 trước khi khẳng định nguyên nhân. Kernel ghi OOM và kill PID 2525 (java); cần đối chiếu thời điểm lỗi.",
+  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
   "commandId": "journal-boot",
   "optionFeedback": {
     "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",

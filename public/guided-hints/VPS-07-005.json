@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Browser báo certificate hết hạn.",
+    "Đọc P1 (echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null | openssl x509 -noout -dates) và P2 (date -u); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Client lấy đúng cert còn hạn theo SNI, chain hợp lệ và HTTPS trả nội dung mong đợi."
+  ]
+}

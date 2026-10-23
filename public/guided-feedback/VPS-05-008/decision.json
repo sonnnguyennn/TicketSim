@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Xác nhận filesystem type, mapping, backup và quyền; lập change mở LV rồi grow filesystem bằng công cụ đúng loại. Xác minh: lvs và df -h /data phản ánh dung lượng dự kiến, mount và ứng dụng vẫn đọc/ghi được.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

@@ -2,7 +2,7 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc P1 trước khi khẳng định nguyên nhân. Client từ chối host key hiện nhận được; chưa chứng minh đây là key hợp lệ.",
+  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
   "commandId": "ssh-vvv",
   "optionFeedback": {
     "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",

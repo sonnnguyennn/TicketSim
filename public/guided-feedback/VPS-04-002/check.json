@@ -2,7 +2,7 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc P1 trước khi khẳng định nguyên nhân. Chỉ còn 40Mi available, swap dùng 490/512Mi; một ảnh chụp cần đối chiếu hoạt động swap.",
+  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
   "commandId": "free-h",
   "optionFeedback": {
     "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",

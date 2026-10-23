@@ -300,7 +300,7 @@ function addBatchCase(meta) {
   const advanced = ticket.difficulty >= 2
   guidedBatch2.push({
     id: meta.id, objective: meta.objective,
-    ...(meta.probeOverrides ? { probeOverrides: meta.probeOverrides } : {}),
+    ...((meta.probeOverrides || meta.p1Override || meta.p2Override) ? { probeOverrides: { ...(meta.probeOverrides ?? {}), ...(meta.p1Override ? { P1: meta.p1Override } : {}), ...(meta.p2Override ? { P2: meta.p2Override } : {}) } } : {}),
     hints: [
       `Hãy mô tả triệu chứng khách báo trước khi suy luận: ${meta.symptom}`,
       `Đọc P1 (${p1.command}) và P2 (${p2.command}); ghi điều mỗi output thật sự chứng minh.`,
@@ -322,8 +322,8 @@ function addBatchCase(meta) {
         ['direct', p1.command, 'Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.'],
         ['wrong1', meta.wrongChecks[0], 'Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.'],
         ['wrong2', meta.wrongChecks[1], 'Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này.'],
-      ], ['direct'], `Đọc P1 trước khi khẳng định nguyên nhân. ${meta.p1.meaning}`, meta.p1.doc),
-      ask('output', 'interpret', 'output_interpretation', `Sau khi đọc P1/P2${extraIds.length ? ' và phép kiểm tra bổ sung' : ''}, cách hiểu nào đủ bằng chứng?`, [
+      ], ['direct'], 'Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.', meta.p1.doc),
+      ask('output', 'interpret', 'output_interpretation', meta.outputPrompt ?? `Sau khi đọc P1/P2${extraIds.length ? ' và phép kiểm tra bổ sung' : ''}, cách hiểu nào đủ bằng chứng?`, [
         ['supported', meta.finding, 'Đúng: cách diễn giải bám các output đã quan sát.'],
         ['over', meta.overclaim, 'Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.'],
         ['ignore', 'Các output không có giá trị điều tra nào.', 'Các output có thông tin hữu ích; cần đọc đúng giới hạn.'],
@@ -333,7 +333,7 @@ function addBatchCase(meta) {
         ['p2', meta.p2.meaning, 'Đúng theo P2 trong bài này.'],
         ['over', meta.overclaim, 'Chưa được P1/P2 chứng minh.'],
       ], ['p1', 'p2'], 'Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.', meta.p2.doc, ['P1', 'P2']),
-      ask('decision', 'decide', 'single_choice', 'Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?', [
+      ask('decision', 'decide', 'single_choice', meta.decisionPrompt ?? 'Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?', [
         ['safe', meta.safeNext, 'Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.'],
         ['unsafe', meta.unsafe, 'Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.'],
         ['close', 'Đóng ticket ngay mà không kiểm tra sau xử lý.', 'Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động.'],
@@ -677,6 +677,155 @@ addBatchCase({
   extras: [
     { command: 'dig mail.example.com A', output: 'mail.example.com. 300 IN A 198.51.100.20', purpose: 'Đối chiếu forward A của mail hostname.', meaning: 'Forward A khớp IP gửi trong fixture; PTR vẫn cần provider cấu hình.', commandId: 'dig-a', aliases: [], context: 'client' },
     { command: 'PANEL: outbound mail IP', output: 'Outbound SMTP source IP: 198.51.100.20', purpose: 'Xác nhận IP thực dùng gửi mail.', meaning: 'Đã có IP nguồn để yêu cầu rDNS; cần xác minh trên thử gửi sau thay đổi.', commandId: 'panel-rdns', aliases: [], context: 'panel' },
+  ],
+})
+// Batch 3: priority topics. P1/P2 stay in the original dataset; the two
+// source outputs containing editorial text are corrected only in Guided.
+addBatchCase({
+  id:'VPS-01-008', skill:'ssh-memory-correlation', objective:'Liên hệ rớt SSH với áp lực RAM khi chạy job nhưng không khẳng định sshd là process bị OOM kill.',
+  p1:{doc:'journal-boot',purpose:'OOM event của kernel trong cùng đợt job',meaning:'Kernel đã kill python3; dòng này không ghi sshd bị kill.'}, p2:{doc:'free-h',purpose:'available RAM và swap',meaning:'Chỉ còn 64 MiB available và không có swap tại thời điểm đo.'},
+  symptom:'SSH rớt từng đợt khi nightly job chạy.', redHerring:'SSH luôn báo host key changed ngay trước đăng nhập.',
+  finding:'OOM kill python3 trùng giai đoạn RAM cạn; tác động trực tiếp tới phiên SSH vẫn cần log và tái kiểm tra.', overclaim:'Kernel đã kill sshd và chứng minh đây là nguyên nhân duy nhất của mọi lần rớt.',
+  safeNext:'Thu timeline job, SSH log và memory trend; đề xuất giới hạn/tối ưu job với owner, chuyển cấp nếu VPS mất ổn định.', unsafe:'Tự reboot VPS và xóa job của khách.', verify:'Không còn OOM trong cửa sổ job, RAM đủ và phiên SSH ổn định qua nhiều lượt chạy.', wrongChecks:['dig example.com A','df -h /'],
+  outputPrompt:'Kernel kill python3 và RAM còn 64 MiB; mức kết luận nào hợp lý?', decisionPrompt:'Khách muốn reboot ngay để hết rớt SSH. Bạn xử lý thế nào?',
+  extras:[
+    {command:'journalctl -u sshd --since "yesterday 23:00" --no-pager',output:'Oct 22 23:12:04 vps sshd[842]: pam_unix(sshd:session): session closed for user ops',purpose:'Đối chiếu sự kiện SSH theo thời điểm job.',meaning:'Có phiên đóng gần thời gian sự cố; log không ghi lý do đóng.',commandId:'journalctl-unit',aliases:[]},
+    {command:'cat /proc/pressure/memory',output:'some avg10=24.12 avg60=11.34 avg300=4.20 total=8923012\nfull avg10=8.45 avg60=3.11 avg300=1.02 total=1981200',purpose:'Đọc áp lực bộ nhớ của guest.',meaning:'PSI cho thấy stall bộ nhớ trong cửa sổ đo; cần lấy trend cùng job.',commandId:'free-h',aliases:[]},
+  ],
+})
+addBatchCase({
+  id:'VPS-02-006',skill:'network-loss-scope',objective:'Đo loss end-to-end từ nhiều nguồn, không quy lỗi cho hop trung gian chỉ từ ICMP.',
+  p1:{doc:'mtr',purpose:'loss end-to-end trên đường đo từ client',meaning:'Destination có 25% loss trên 20 lượt từ nguồn này; chưa định vị đoạn lỗi.',context:'client'}, p2:{doc:'ping',purpose:'ICMP tới đích từ cùng nguồn',meaning:'5/20 gói không nhận phản hồi, phù hợp loss tại thời điểm mẫu.',context:'client'},
+  symptom:'SSH tới VPS Singapore chậm ngẫu nhiên.',redHerring:'VPS trả HTTP 403 cố định.',finding:'Hai phép đo cùng nguồn thấy 25% loss end-to-end; chưa biết lỗi ở access, transit hay đích.',overclaim:'Một hop MTR hạn chế ICMP chính là router hỏng.',
+  safeNext:'Thu source IP, thời gian, nhiều đợt MTR và phép TCP từ nguồn bị ảnh hưởng; chuyển đội network nếu loss lặp lại.',unsafe:'Tự đổi route hoặc firewall VPS khách để thử.',verify:'TCP/SSH và end-to-end loss bình thường từ nguồn bị ảnh hưởng trong giờ từng lỗi.',wrongChecks:['free -h','systemctl status nginx'],
+  outputPrompt:'Hai phép đo 20 gói cùng nguồn báo loss; bạn kết luận được phạm vi nào?',
+  extras:[
+    {command:'PANEL: network probe Singapore',output:'Source sg-probe-2 -> 203.0.113.20 TCP/22: 20/20 connected; median 12 ms',purpose:'So sánh nguồn khác gần đích.',meaning:'Probe khác ổn định; lỗi có thể theo đường/nguồn, chưa loại trừ gián đoạn ngắt quãng.',commandId:'panel-probes',aliases:[],context:'panel'},
+    {command:'ip -s link show dev ens3',output:'2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    RX: bytes packets errors dropped missed mcast\n    105020 1130 0 0 0 0\n    TX: bytes packets errors dropped carrier collsns\n    99210 1060 0 0 0 0',purpose:'Kiểm tra error/drop trên NIC guest.',meaning:'Snapshot guest không thấy error/drop; không loại trừ đường client tới VPS.',commandId:'ip-link',aliases:[]},
+  ],
+})
+addBatchCase({
+  id:'VPS-02-008',skill:'vpn-path-mtu',objective:'Khoanh vùng PMTU trên VPN bằng kích thước gói và giới hạn ICMP, không tự sửa MTU production.',
+  p1:{doc:'ping',purpose:'ICMP IPv4 DF với payload 1472 byte',meaning:'Gói DF lớn không đi qua path được; thông báo cần phân mảnh không xác định chính xác hop lỗi.',context:'client'}, p2:{doc:'ping',purpose:'ICMP IPv4 DF payload 1200 byte',meaning:'Gói nhỏ hơn nhận phản hồi trong cùng phép thử.',context:'client'},
+  symptom:'Upload HTTPS lớn qua VPN treo, request nhỏ vẫn chạy.',redHerring:'Mọi request trả HTTP 401.',finding:'Kích thước lớn bị giới hạn còn kích thước nhỏ qua được; nghi PMTU/MSS trên path VPN, cần thêm phép đo TCP và chiều ngược.',overclaim:'Chắc chắn MTU VPS sai và phải đặt 1200 trên interface public.',
+  safeNext:'Thu tracepath, MTU/MSS VPN và thử upload có giám sát; chuyển đội VPN/network với source, thời điểm, kích thước.',unsafe:'Tự hạ MTU interface khách từ phiên SSH duy nhất.',verify:'Upload lớn qua đúng VPN hoàn tất, không retransmit bất thường và request nhỏ vẫn hoạt động.',wrongChecks:['df -h /','systemctl status sshd'],
+  outputPrompt:'1472 byte báo DF/fragmentation, 1200 byte nhận được; điều này hỗ trợ giả thuyết nào?',
+  extras:[
+    {command:'tracepath 198.51.100.20',output:' 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms\n 2:  no reply\n 3:  198.51.100.20  31.228ms',purpose:'Quan sát PMTU và hop từ client VPN.',meaning:'Tracepath không xác nhận được PMTU thấp ở hop im lặng; cần kiểm tra TCP và thiết bị VPN.',commandId:'mtr',aliases:[],context:'client'},
+    {command:'PANEL: VPN tunnel settings',output:'Tunnel interface MTU: 1400; TCP MSS clamp: disabled',purpose:'Đọc cấu hình tunnel được phép xem.',meaning:'MTU tunnel nhỏ hơn 1500 là một giả thuyết phù hợp; cấu hình chưa chứng minh đây là nguyên nhân duy nhất.',commandId:'panel-probes',aliases:[],context:'panel'},
+  ],
+})
+addBatchCase({
+  id:'VPS-03-007',skill:'fd-exhaustion',objective:'Liên hệ EMFILE với limit và số FD thực tế; tách limit thấp khỏi rò rỉ FD chưa được chứng minh.',
+  p1:{doc:'journalctl-service',purpose:'lỗi runtime của unit myapp',meaning:'App gặp EMFILE tại thời điểm ghi log; chưa biết vì sao số FD tăng.'},p2:{doc:'ps-process',purpose:'soft/hard open-file limit của PID 1234',meaning:'Process có soft và hard limit 1024 FD; cần so với FD đang mở.'},
+  symptom:'API lỗi rải rác với Too many open files.',redHerring:'API bị lỗi DNS NXDOMAIN.',finding:'App có EMFILE, limit 1024 và gần chạm giới hạn; chưa chứng minh leak hay chỉ tải tăng hợp lệ.',overclaim:'Tăng LimitNOFILE vô hạn là đã sửa dứt điểm lỗi.',
+  safeNext:'Đo FD qua tải, phân loại socket/file và xác nhận ownership; lập change tăng limit phù hợp hoặc sửa leak với đội ứng dụng.',unsafe:'Kill PID và tăng limit vô hạn ngay trên production.',verify:'Trong tải đại diện FD ổn định dưới limit, log không còn EMFILE và API thành công.',wrongChecks:['ip route','dig example.com A'],
+  extras:[
+    {command:'ls /proc/1234/fd | wc -l',output:'1008',purpose:'Đếm FD mở của PID tại snapshot.',meaning:'1008 gần soft limit 1024; số lượng một lần chưa chứng minh leak.',commandId:'ps-process',aliases:[]},
+    {command:'systemctl show myapp -p LimitNOFILE',output:'LimitNOFILE=1024',purpose:'So limit unit với process.',meaning:'Unit đang đặt 1024; cần xem workload và cấu hình deploy trước khi đổi.',commandId:'systemctl-service',aliases:[]},
+  ],
+})
+addBatchCase({
+  id:'VPS-03-008',skill:'root-fs-integrity',objective:'Nhận diện root filesystem ro sau ext4 error và bảo vệ dữ liệu trước recovery.',
+  p1:{doc:'findmnt',purpose:'mount option của root filesystem',meaning:'Root đang mount read-only; không phải chỉ quyền file thông thường.'},p2:{doc:'journal-boot',purpose:'lỗi ext4 trong kernel journal',meaning:'Kernel ghi nhận ext4 error; chưa định vị lỗi ở disk vật lý hay filesystem metadata.'},
+  symptom:'Không thể tạo file, báo Read-only file system.',redHerring:'Chỉ một user nhập sai mật khẩu SSH.',finding:'Root ro đồng thời có ext4 error; nguy cơ integrity cần xử lý bởi đội hạ tầng theo runbook.',overclaim:'Đã xác định chính xác block disk hỏng và dữ liệu chắc chắn còn nguyên.',
+  safeNext:'Ngừng tác vụ ghi, ghi nhận device/timestamp, kiểm tra backup; chuyển incident storage để recovery có phê duyệt.',unsafe:'Remount rw và chạy fsck trực tiếp trên root đang mount.',verify:'Sau recovery được duyệt, kiểm tra filesystem, kernel log và phép ghi ứng dụng an toàn.',wrongChecks:['dig example.com A','systemctl restart nginx'],
+  extras:[
+    {command:'journalctl -k -b --no-pager | tail -n 10',output:'Oct 22 07:14:02 vps kernel: EXT4-fs error (device vda1): ext4_find_entry: inode #2\nOct 22 07:14:02 vps kernel: EXT4-fs (vda1): Remounting filesystem read-only',purpose:'Đọc device và chuỗi sự kiện kernel.',meaning:'vda1 bị remount ro sau ext4 error; chưa kết luận lỗi vật lý.',commandId:'journal-boot',aliases:[]},
+    {command:'PANEL: verified backup status',output:'Last verified backup: 2026-10-21 00:00 UTC; restore test: 2026-10-21 01:00 UTC',purpose:'Kiểm tra mốc backup được xác nhận.',meaning:'Có mốc khôi phục tham chiếu; phải đối chiếu RPO và phạm vi trước hành động.',commandId:'panel-backup-status',aliases:[],context:'panel'},
+  ],
+})
+addBatchCase({
+  id:'VPS-04-006',skill:'memory-trend',objective:'Đọc xu hướng RSS và OOM, phân biệt retention/leak với tăng theo workload.',
+  p1:{doc:'ps-process',purpose:'RSS và uptime process myapp',meaning:'RSS khoảng 850 MB sau 9 giờ; một mẫu không chứng minh tăng đều.'},p2:{doc:'journal-boot',purpose:'OOM kill của myapp',meaning:'Kernel đã kill myapp; chưa xác định vì leak, tải hoặc giới hạn cgroup.'},
+  symptom:'Daemon lớn dần rồi crash.',redHerring:'Website chỉ báo chứng chỉ TLS hết hạn.',finding:'Có OOM kill và các mẫu RSS tăng theo thời gian; nghi retention/leak nhưng cần profile theo workload.',overclaim:'Đã chứng minh một đoạn code cụ thể rò rỉ bộ nhớ.',
+  safeNext:'Thu RSS/cgroup theo thời gian cùng tải và deployment; chuyển đội ứng dụng phân tích heap, đánh giá capacity có kiểm soát.',unsafe:'Tắt OOM killer hoặc reboot lặp lại để che lỗi.',verify:'RSS ổn định qua uptime/tải đại diện, không còn OOM và service đáp ứng.',wrongChecks:['ip route','dig example.com A'],
+  extras:[
+    {command:'PANEL: myapp memory samples',output:'00:00 RSS 240 MiB\n03:00 RSS 430 MiB\n06:00 RSS 660 MiB\n09:00 RSS 830 MiB',purpose:'Đọc các mẫu RSS sau deploy cùng phiên chạy.',meaning:'Xu hướng tăng rõ; chưa tách tác động volume request/cache hợp lệ.',commandId:'panel-probes',aliases:[],context:'panel'},
+    {command:'systemctl show myapp -p MemoryMax',output:'MemoryMax=infinity',purpose:'Kiểm tra giới hạn unit.',meaning:'Không có MemoryMax của systemd; guest vẫn bị giới hạn RAM vật lý hoặc cgroup khác.',commandId:'systemctl-service',aliases:[]},
+  ],
+})
+addBatchCase({
+  id:'VPS-04-007',skill:'host-cpu-steal',objective:'Đối chiếu CPU steal của guest với node alert; chuyển cấp hạ tầng đúng quyền.',
+  p1:{doc:'top',purpose:'CPU steal và user CPU trong guest',meaning:'Guest có 50% steal ở mẫu này dù user CPU thấp.'},p2:{doc:'panel-probes',purpose:'alert CPU contention của node',meaning:'Node-4 có alert contention; cần correlation nhiều mẫu và phạm vi VM.',context:'panel'},
+  symptom:'VM chậm khi process trong guest dùng ít CPU.',redHerring:'App trả Permission denied vì thiếu account.',finding:'Steal cao đồng thời node alert; nhiều khả năng tranh chấp host, nhưng cần xác nhận timeline và VM khác.',overclaim:'Đã xác định chính xác VM hàng xóm gây lỗi và được phép migrate ngay.',
+  safeNext:'Thu nhiều mẫu steal, latency và node metrics; mở incident cho hạ tầng đánh giá placement/capacity.',unsafe:'Tự migrate hoặc hard stop VM khách mà không có kế hoạch.',verify:'Steal giảm và latency ứng dụng bình thường sau xử lý của hạ tầng.',wrongChecks:['df -i /','dig example.com A'],
+  extras:[
+    {command:'vmstat 1 2',output:'procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 2  0    0 85240 18000 102400 0  0  0  0 240 320 5 4 41 0 50',purpose:'Đo CPU steal thêm một mẫu trong guest.',meaning:'Mẫu tiếp theo vẫn có st cao; cần trend và đối chiếu host.',commandId:'vmstat',aliases:[]},
+    {command:'PANEL: node-4 contention window',output:'08:00-08:20 UTC CPU ready alert; 3 VMs affected',purpose:'Đối chiếu phạm vi node.',meaning:'Nhiều VM bị ảnh hưởng; đội hạ tầng cần xác nhận kế hoạch xử lý.',commandId:'panel-probes',aliases:[],context:'panel'},
+  ],
+})
+addBatchCase({
+  id:'VPS-04-008',skill:'backup-io-correlation',objective:'Đối chiếu thời gian backup với I/O wait và latency nhưng không khẳng định một lần trùng thời gian là nguyên nhân.',
+  p1:{doc:'journalctl-service',purpose:'thời gian backup-agent chạy',meaning:'Backup chạy 02:00–02:20; log chưa nói tác động hiệu năng.'},p2:{doc:'iostat',purpose:'device await trong cửa sổ backup',meaning:'vda await 95 ms trong mẫu này; cần so baseline và workload.'},
+  symptom:'Ứng dụng chậm ở khoảng 02:00 UTC.',redHerring:'SSH luôn thất bại vì sai username.',finding:'Backup và I/O latency cao trùng cửa sổ; nghi contention, cần so với ngày không backup và workload ứng dụng.',overclaim:'Chắc chắn backup-agent là lỗi duy nhất, có thể tắt backup ngay.',
+  safeNext:'Thu iostat/latency nhiều ngày, đối chiếu schedule và yêu cầu owner điều chỉnh backup nếu xác nhận; chuyển hạ tầng khi device latency bất thường.',unsafe:'Tắt backup không có phương án bảo vệ dữ liệu.',verify:'Trong cửa sổ backup mới app đạt latency mục tiêu và bản backup vẫn hoàn tất, kiểm tra restore riêng.',wrongChecks:['dig example.com A','getent passwd admin'],
+  extras:[
+    {command:'PANEL: app latency samples',output:'01:30 UTC p95 120 ms\n02:05 UTC p95 2400 ms\n02:30 UTC p95 130 ms',purpose:'So latency trước, trong và sau backup.',meaning:'Latency tăng cùng cửa sổ I/O; vẫn cần loại trừ traffic và job khác.',commandId:'panel-probes',aliases:[],context:'panel'},
+    {command:'PANEL: backup task result',output:'Backup task 2026-10-22 02:00 UTC: completed at 02:20 UTC',purpose:'Kiểm tra backup không thất bại trong cửa sổ.',meaning:'Task hoàn thành không chứng minh restore được.',commandId:'panel-backup-status',aliases:[],context:'panel'},
+  ],
+})
+addBatchCase({
+  id:'VPS-05-008',skill:'lvm-capacity-layers',objective:'Tách disk/PV/VG/LV/filesystem trước khi lên kế hoạch mở rộng dung lượng.',
+  p1:{doc:'lsblk',purpose:'dung lượng disk, partition và LV',meaning:'vdb/vdb1 80G còn LV 30G; lsblk không cho biết filesystem đã grow.'},p2:{doc:'lvm-report',purpose:'free extents trong vgdata',meaning:'VG có 50G free; chưa được cấp vào LV.'},
+  p1Override:'NAME          SIZE TYPE MOUNTPOINTS\nvdb            80G disk\n└─vdb1         80G part\n  └─vgdata-lvdata 30G lvm /data',p2Override:'VG      #PV #LV #SN Attr   VSize   VFree\nvgdata    1   1   0 wz--n- 79.99g 49.99g',
+  symptom:'Disk đã resize nhưng filesystem /data vẫn báo hết chỗ.',redHerring:'VPS mất DNS sau đổi nameserver.',finding:'VG còn extents, LV /data vẫn 30G và filesystem gần đầy; cần xác nhận mapping cùng backup trước change.',overclaim:'Chỉ cần thấy vdb 80G là filesystem đã có 80G.',
+  safeNext:'Xác nhận filesystem type, mapping, backup và quyền; lập change mở LV rồi grow filesystem bằng công cụ đúng loại.',unsafe:'Chạy mkfs trên vdb1 hoặc xóa dữ liệu /data.',verify:'lvs và df -h /data phản ánh dung lượng dự kiến, mount và ứng dụng vẫn đọc/ghi được.',wrongChecks:['free -h','dig example.com A'],
+  extras:[
+    {command:'lvs -o lv_name,vg_name,lv_size,lv_path',output:'LV     VG     LSize  Path\nlvdata vgdata 30.00g /dev/vgdata/lvdata',purpose:'Xác nhận LV mục tiêu.',meaning:'LV /data hiện 30G, phải map đúng trước change.',commandId:'lvm-report',aliases:[]},
+    {command:'df -hT /data',output:'Filesystem                Type Size Used Avail Use% Mounted on\n/dev/mapper/vgdata-lvdata xfs   30G  29G  1.0G  97% /data',purpose:'Đọc filesystem type và block usage của /data.',meaning:'XFS gần đầy; lệnh grow filesystem phải phù hợp XFS sau khi LV tăng.',commandId:'df-hT',aliases:[]},
+  ],
+})
+addBatchCase({
+  id:'VPS-07-003',skill:'nginx-document-root',objective:'Đối chiếu Nginx root với đường dẫn deploy; không coi mô tả trong source P2 là stdout.',
+  p1:{doc:'curl-head',purpose:'HTTP status local cho URL /start',meaning:'Nginx trả 404 local cho URL được hỏi; không tự nói file thiếu hay root sai.'},p2:{doc:'nginx-dump',purpose:'root directive của vhost đang dump',meaning:'Config trên disk khai báo root /var/www/html; cần so với deploy và vhost đang chạy.'},
+  p2Override:'server {\n    listen 80;\n    server_name example.com;\n    root /var/www/html;\n}',
+  symptom:'Sau deploy, mọi URL của site trả 404.',redHerring:'Trình duyệt chỉ cảnh báo chứng chỉ hết hạn.',finding:'Vhost dump dùng /var/www/html còn release có file dưới /srv/myapp/public; nghi root sai, cần xác nhận vhost phục vụ.',overclaim:'Chỉ từ HTTP 404 đã biết file bị xóa hoặc Nginx chưa chạy.',
+  safeNext:'Kiểm tra vhost/Host header, xác nhận deploy path rồi đề xuất chỉnh root và reload có duyệt sau nginx -t.',unsafe:'Xóa /var/www/html và reinstall Nginx.',verify:'Host đúng trả nội dung /start mong đợi từ client, Nginx config test và log sạch.',wrongChecks:['ip route','free -h'],
+  extras:[
+    {command:'ls -l /srv/myapp/public/start',output:'-rw-r--r-- 1 deploy deploy 2840 Oct 22 06:10 /srv/myapp/public/start',purpose:'Xác nhận file của release tồn tại.',meaning:'File tồn tại ở deploy path; chưa chứng minh vhost đang phục vụ path đó.',commandId:'ls-permission',aliases:[]},
+    {command:'curl -I -H "Host: example.com" http://127.0.0.1/start',output:'HTTP/1.1 404 Not Found\nServer: nginx',purpose:'Xác nhận đúng Host header khi hỏi localhost.',meaning:'Vhost được kiểm tra vẫn trả 404 trước change; cần đối chiếu server block và path.',commandId:'curl-head',aliases:[]},
+  ],
+})
+addBatchCase({
+  id:'VPS-07-005',skill:'tls-certificate-expiry',objective:'Đối chiếu certificate thực được phục vụ theo SNI với UTC, chain và lịch gia hạn.',
+  p1:{doc:'openssl-sni',purpose:'ngày hết hạn cert theo SNI từ client',meaning:'Endpoint trả certificate có notAfter 2026-09-01; cần xác nhận đúng hostname/chain.',context:'client'},p2:{doc:'hostnamectl',purpose:'UTC khi kiểm tra',meaning:'Thời điểm fixture sau notAfter; cert này đã hết hạn.',context:'client'},
+  symptom:'Browser báo certificate hết hạn.',redHerring:'HTTP 502 từ backend nhưng TLS bình thường.',finding:'Cert được endpoint phục vụ theo SNI đã quá notAfter; cần kiểm tra chain, vhost và automation gia hạn.',overclaim:'Chỉ cần thấy cert mới trong panel là client đã nhận cert mới.',
+  safeNext:'Kiểm tra SAN/chain và renewal job; owner duyệt renew/install/reload có rollback, rồi thử từ client.',unsafe:'Tắt TLS validation ở client hoặc thay cert không kiểm tra hostname.',verify:'Client lấy đúng cert còn hạn theo SNI, chain hợp lệ và HTTPS trả nội dung mong đợi.',wrongChecks:['df -h /','ip route'],
+  extras:[
+    {command:'PANEL: certificate inventory',output:'example.com: renewed certificate available; deployed to Nginx: no',purpose:'Đối chiếu cert trong panel với cert đang phục vụ.',meaning:'Panel có cert mới nhưng chưa deploy; không thay thế phép kiểm tra TLS từ client.',commandId:'panel-cert-inventory',aliases:[],context:'panel'},
+    {command:'systemctl status nginx',output:'● nginx.service - A high performance web server\n   Active: active (running)',purpose:'Xem Nginx đang phục vụ.',meaning:'Nginx active vẫn có thể đang dùng cert cũ.',commandId:'systemctl-nginx',aliases:[]},
+  ],
+})
+addBatchCase({
+  id:'VPS-07-008',skill:'upstream-timeout',objective:'Liên hệ 504 với latency backend dưới tải, kiểm tra dependency trước khi thay timeout.',
+  p1:{doc:'nginx-error-tail',purpose:'Nginx upstream timeout trong error log',meaning:'Proxy chờ response header quá hạn; chưa biết vì CPU, DB hay network.'},p2:{doc:'curl-head',purpose:'thời gian health endpoint backend local',meaning:'Health endpoint mất 31.4 giây tại mẫu này; cần so với timeout và tải.'},
+  symptom:'API trả 504 vào giờ cao điểm.',redHerring:'Nginx trả 404 cho một static asset.',finding:'Nginx timeout đọc backend và health local chậm; cần đo backend/DB dưới peak để khoanh nguyên nhân.',overclaim:'Tăng proxy_read_timeout vô hạn sẽ sửa backend.',
+  safeNext:'Thu latency và resource/dependency trong peak, trace request ID; chuyển đội ứng dụng, chỉ đổi timeout theo SLA được duyệt.',unsafe:'Restart proxy lặp lại hoặc tăng timeout vô hạn.',verify:'Tải peak đại diện không còn 504, p95/p99 latency trong SLA và backend health ổn.',wrongChecks:['dig example.com A','df -i /'],
+  extras:[
+    {command:'systemctl status myapp',output:'● myapp.service - API\n   Active: active (running)',purpose:'Kiểm tra backend unit.',meaning:'Unit chạy không chứng minh response nhanh.',commandId:'systemctl-service',aliases:[]},
+    {command:'PANEL: API peak latency',output:'19:00 UTC requests/min 4800; p95 28.1 s; 504 count 214\n20:00 UTC requests/min 920; p95 0.4 s; 504 count 0',purpose:'So latency và lỗi theo thời gian tải.',meaning:'Có tương quan peak; cần profile DB/CPU/queue để định vị bottleneck.',commandId:'panel-probes',aliases:[],context:'panel'},
+  ],
+})
+addBatchCase({
+  id:'VPS-08-006',skill:'dns-ipv6-aaaa',objective:'Tách A/AAAA DNS khỏi cấp phát IPv6 và reachability; sửa lỗi annotation trong source Guided.',
+  p1:{doc:'dig-a',purpose:'A record từ resolver client',meaning:'A record trỏ 198.51.100.20; không chứng minh IPv6 hoạt động.',context:'client'},p2:{doc:'dig-a',purpose:'AAAA record từ resolver client',meaning:'AAAA trỏ 2001:db8:bad::20; cần đối chiếu IPv6 cấp phát.',context:'client'},
+  p2Override:'2001:db8:bad::20',
+  symptom:'IPv4 tới site được nhưng IPv6 client thất bại.',redHerring:'Chỉ xảy ra Permission denied khi SSH.',finding:'AAAA tồn tại nhưng panel không cấp IPv6 cho VPS này; record không khớp allocation, cần kiểm tra authority/owner.',overclaim:'IPv4 A record sai vì IPv6 không dùng được.',
+  safeNext:'Xác nhận authoritative zone và quyền domain; owner sửa/xóa AAAA không dùng hoặc triển khai IPv6 đúng quy trình.',unsafe:'Tự đổi firewall IPv6 của VPS khách hoặc đoán địa chỉ khác.',verify:'DNS authoritative và validating resolver trả AAAA đúng nếu có IPv6; client IPv6 tải site hoặc không còn AAAA lỗi.',wrongChecks:['df -h /','systemctl restart nginx'],
+  extras:[
+    {command:'PANEL: IPv6 allocation',output:'Assigned IPv6 addresses: none',purpose:'Đối chiếu cấp phát IPv6 của VPS.',meaning:'VPS này không có IPv6 được cấp ở panel; AAAA cần chủ zone xác minh.',commandId:'panel-ip-allocation',aliases:[],context:'panel'},
+    {command:'dig @ns1.example.com example.com AAAA +short',output:'2001:db8:bad::20',purpose:'Hỏi authoritative nameserver về AAAA.',meaning:'Authoritative zone cũng có AAAA này; không phải chỉ cache ở một resolver.',commandId:'dig-a',aliases:[],context:'client'},
+  ],
+})
+addBatchCase({
+  id:'VPS-08-008',skill:'dnssec-validation',objective:'Phân biệt SERVFAIL có/không kiểm tra DNSSEC, thu DS/DNSKEY/RRSIG trước khi sửa delegation.',
+  p1:{doc:'dig-a',purpose:'A query qua validating resolver',meaning:'Resolver trả SERVFAIL; chưa chỉ ra thành phần DNSSEC hỏng.',context:'client'},p2:{doc:'dig-a',purpose:'Cùng query khi bật checking disabled',meaning:'Với +cd query trả NOERROR; phù hợp giả thuyết lỗi validation, chưa xác định DS hay RRSIG.',context:'client'},
+  symptom:'Một số resolver SERVFAIL, resolver khác trả IP.',redHerring:'Website luôn trả 502 từ Nginx local.',finding:'SERVFAIL khi validation và NOERROR với +cd gợi lỗi DNSSEC; cần DS/DNSKEY/RRSIG, thời gian và nhiều resolver.',overclaim:'Chắc chắn DS ở registrar sai và có thể xóa ngay.',
+  safeNext:'Thu DS ở parent, DNSKEY/RRSIG authoritative và kết quả nhiều validator; chuyển DNS owner/provider theo change có rollback.',unsafe:'Xóa DS hoặc tắt DNSSEC ngay mà chưa xác minh chain và quyền.',verify:'Validating resolvers trả bản ghi đúng, DNSSEC chain hợp lệ sau TTL và client tải site.',wrongChecks:['df -h /','systemctl status sshd'],
+  extras:[
+    {command:'dig @9.9.9.9 signed.example.test A +dnssec',output:';; ->>HEADER<<- opcode: QUERY, status: SERVFAIL, id: 19821\n;; flags: qr rd ra; QUERY: 1, ANSWER: 0',purpose:'So resolver validating khác.',meaning:'SERVFAIL lặp lại ở validator khác; chưa định vị mắt xích hỏng.',commandId:'dig-a',aliases:[],context:'client'},
+    {command:'dig @ns1.signed.example.test signed.example.test DNSKEY +dnssec',output:';; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 21044\n;; ANSWER SECTION:\nsigned.example.test. 3600 IN DNSKEY 257 3 13 AwEAAa... ',purpose:'Kiểm tra authoritative DNSKEY hiện có.',meaning:'Zone công bố DNSKEY; cần đối chiếu DS ở parent và RRSIG, không suy từ một key.',commandId:'dig-ns',aliases:[],context:'client'},
   ],
 })
 guidedContent.push(...guidedBatch2)

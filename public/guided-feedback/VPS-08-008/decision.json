@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Thu DS ở parent, DNSKEY/RRSIG authoritative và kết quả nhiều validator; chuyển DNS owner/provider theo change có rollback. Xác minh: Validating resolvers trả bản ghi đúng, DNSSEC chain hợp lệ sau TTL và client tải site.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}
