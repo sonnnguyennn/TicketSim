@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Giữ invoice/order/payment IDs, xác minh owner và chuyển billing sửa invoice/refund theo policy. Xác minh: Billing phát hành hóa đơn đúng, payment/refund ledger khớp và khách thấy một dịch vụ.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

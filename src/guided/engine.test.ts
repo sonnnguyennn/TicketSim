@@ -10,9 +10,9 @@ import type { GuidedCase } from './types'
 const cases = guidedPublic as GuidedCase[]
 
 describe('Guided content', () => {
-  it('provides one hundred and four Guided cases without answer keys in the initial payload', () => {
-    expect(cases).toHaveLength(104)
-    expect(new Set(cases.map(item => item.id)).size).toBe(104)
+  it('provides one hundred and twelve Guided cases without answer keys in the initial payload', () => {
+    expect(cases).toHaveLength(112)
+    expect(new Set(cases.map(item => item.id)).size).toBe(112)
     expect(cases.filter(item => ['VPS-01-003', 'VPS-03-003', 'VPS-05-004', 'VPS-08-003'].includes(item.id))).toHaveLength(4)
     for (const item of cases) {
       expect(item.probes.length).toBeGreaterThanOrEqual(2)
@@ -56,14 +56,14 @@ describe('Guided content', () => {
         expect(key.correctIds.every((id: string) => question.options.some(option => option.id === id))).toBe(true)
       }
     }
-    expect(commandLibrary.length).toBe(118)
+    expect(commandLibrary.length).toBe(122)
     expect(new Set(commandLibrary.map(item => item.id)).size).toBe(commandLibrary.length)
     expect(commandLibrary.every(item => item.exampleOutput && item.whenToUse && item.followUp && item.flags && item.centos && item.ubuntu)).toBe(true)
     expect(cases.some(item => item.questions.some(question => question.kind === 'step_order'))).toBe(true)
     const added = cases.slice(12)
-    expect(added).toHaveLength(92)
+    expect(added).toHaveLength(100)
     const tickets = JSON.parse(fs.readFileSync('starter-data/tickets.json', 'utf8')).tickets as { id: string; topic: string; difficulty: number }[]
-    expect(new Set(added.map(item => tickets.find(ticket => ticket.id === item.id)?.topic)).size).toBe(13)
+    expect(new Set(added.map(item => tickets.find(ticket => ticket.id === item.id)?.topic)).size).toBe(14)
     for (const item of added) {
       expect(item.questions.some(question => question.kind === 'multi_select')).toBe(true)
       expect(item.questions.some(question => question.kind === 'command_choice')).toBe(true)

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Xác minh owner, policy và trạng thái backup; chuyển billing/lifecycle on-call xin hold có audit trước deadline. Xác minh: Hold/extension được xác nhận bằng task ID và thời hạn mới; dữ liệu/backup trạng thái rõ.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

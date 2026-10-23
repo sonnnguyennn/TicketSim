@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Dashboard đột ngột ghi Suspended.",
+    "Đọc P1 (BILLING: service) và P2 (PANEL: invoices); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Billing xác nhận trạng thái hợp lệ, panel cập nhật và guest service được kiểm tra riêng."
+  ]
+}

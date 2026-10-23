@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Xác minh account owner, thời hạn và backup/export; ghi yêu cầu cancellation đúng mốc theo policy. Xác minh: Panel ghi cancellation effective date đúng, khách nhận xác nhận và dữ liệu được xử lý theo policy.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

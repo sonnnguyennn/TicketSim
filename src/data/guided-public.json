@@ -19793,5 +19793,1441 @@
       }
     ],
     "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Owner xác nhận VM đúng, billing/allocations được chỉnh và dữ liệu VM còn lại an toàn."
+  },
+  {
+    "id": "VPS-14-001",
+    "objective": "Đối chiếu service suspension với invoice và payment state trước khi hứa mở lại.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "BILLING: service",
+        "output": "Suspended: invoice overdue",
+        "context": "panel",
+        "purpose": "trạng thái dịch vụ trong billing",
+        "meaning": "Dịch vụ Suspended do invoice overdue; chưa cho biết khách đã thanh toán sau snapshot.",
+        "commandId": "billing-service",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: invoices",
+        "output": "INV-2026-101 overdue",
+        "context": "panel",
+        "purpose": "trạng thái invoice liên quan",
+        "meaning": "INV-2026-101 overdue trong panel; cần đối chiếu payment transaction.",
+        "commandId": "billing-invoice",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "BILLING: payment transaction INV-2026-101",
+        "output": "No settled payment recorded for INV-2026-101 at 2026-10-22 10:00 UTC",
+        "purpose": "Đối chiếu transaction đã settle.",
+        "meaning": "Tại snapshot chưa có settled payment; vẫn cần xem event mới trước thông báo cuối.",
+        "commandId": "billing-invoice",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Dashboard đột ngột ghi Suspended."
+          },
+          {
+            "id": "other",
+            "label": "Guest chỉ có SSH Permission denied."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "billing-suspension"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc trạng thái dịch vụ trong billing?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "BILLING: service"
+          },
+          {
+            "id": "wrong1",
+            "label": "systemctl status sshd"
+          },
+          {
+            "id": "wrong2",
+            "label": "ip route"
+          }
+        ],
+        "commandId": "billing-service",
+        "skill": "billing-suspension"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Service bị suspend và invoice overdue trong snapshot; quyền mở lại phụ thuộc billing/payment policy."
+          },
+          {
+            "id": "over",
+            "label": "Có thể mở lại bằng reboot VM dù invoice overdue."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "billing-invoice",
+        "skill": "billing-suspension"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Dịch vụ Suspended do invoice overdue; chưa cho biết khách đã thanh toán sau snapshot."
+          },
+          {
+            "id": "p2",
+            "label": "INV-2026-101 overdue trong panel; cần đối chiếu payment transaction."
+          },
+          {
+            "id": "over",
+            "label": "Có thể mở lại bằng reboot VM dù invoice overdue."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "billing-invoice",
+        "skill": "billing-suspension"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác minh invoice/payment event và account owner; hướng dẫn quy trình billing hoặc chuyển billing team."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự unsuspend dịch vụ hoặc yêu cầu khách gửi thẻ qua ticket."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "billing-suspension"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Billing xác nhận trạng thái hợp lệ, panel cập nhật và guest service được kiểm tra riêng.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Billing xác nhận trạng thái hợp lệ, panel cập nhật và guest service được kiểm tra riêng."
+  },
+  {
+    "id": "VPS-14-002",
+    "objective": "Tách invoice Paid khỏi event provisioning và tránh thu tiền trùng.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "BILLING: invoice",
+        "output": "Paid",
+        "context": "panel",
+        "purpose": "invoice payment state",
+        "meaning": "Invoice Paid; không chứng minh webhook/provision task đã xử lý.",
+        "commandId": "billing-invoice",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: provision status",
+        "output": "Waiting on payment event",
+        "context": "panel",
+        "purpose": "provisioning wait state",
+        "meaning": "Provision đang chờ payment event dù invoice đã Paid.",
+        "commandId": "panel-provision-task",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: payment event audit",
+        "output": "payment_id=pay-2202 settled=09:10 UTC; webhook delivery=failed; order=ord-1402",
+        "purpose": "Xác minh event giữa billing và provisioning.",
+        "meaning": "Payment đã settle nhưng webhook failed; đội control-plane phải reconcile an toàn.",
+        "commandId": "panel-task-queue",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Khách đã trả tiền nhưng VPS còn Pending."
+          },
+          {
+            "id": "other",
+            "label": "VPS Running và đã SSH được."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "payment-provision-event"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc invoice payment state?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "BILLING: invoice"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "systemctl status nginx"
+          }
+        ],
+        "commandId": "billing-invoice",
+        "skill": "payment-provision-event"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Billing Paid nhưng provision chờ event; có thể lag/missing event, cần audit queue."
+          },
+          {
+            "id": "over",
+            "label": "Yêu cầu khách trả lại vì panel chưa provision."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-provision-task",
+        "skill": "payment-provision-event"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Invoice Paid; không chứng minh webhook/provision task đã xử lý."
+          },
+          {
+            "id": "p2",
+            "label": "Provision đang chờ payment event dù invoice đã Paid."
+          },
+          {
+            "id": "over",
+            "label": "Yêu cầu khách trả lại vì panel chưa provision."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-provision-task",
+        "skill": "payment-provision-event"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Đối chiếu payment ID, webhook và order queue; chuyển billing/provisioning reconcile idempotent."
+          },
+          {
+            "id": "unsafe",
+            "label": "Thu tiền lại hoặc tạo VM thứ hai thủ công."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "payment-provision-event"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Một order tạo đúng một VM, panel Active và invoice không bị charge trùng.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Một order tạo đúng một VM, panel Active và invoice không bị charge trùng."
+  },
+  {
+    "id": "VPS-14-003",
+    "objective": "Phân biệt end-of-term cancellation với xóa VPS ngay và bảo vệ dữ liệu.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "BILLING: service",
+        "output": "Active until 2026-11-15",
+        "context": "panel",
+        "purpose": "service end date",
+        "meaning": "Service Active đến 15/11; chưa hủy ngay.",
+        "commandId": "billing-service",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: cancellation policy",
+        "output": "end-of-term cancellation supported",
+        "context": "panel",
+        "purpose": "policy hủy cuối kỳ",
+        "meaning": "Panel hỗ trợ end-of-term cancellation; cần owner xác nhận ngày và dữ liệu.",
+        "commandId": "panel-lifecycle-policy",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "BILLING: cancellation request audit",
+        "output": "No cancellation request submitted for service VPS-1403",
+        "purpose": "Kiểm tra request đã được ghi chưa.",
+        "meaning": "Chưa có request; cần owner xác thực và thực hiện quy trình.",
+        "commandId": "billing-service",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Khách yêu cầu hủy VPS cuối chu kỳ."
+          },
+          {
+            "id": "other",
+            "label": "Khách yêu cầu reboot VM ngay."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "end-term-cancellation"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc service end date?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "BILLING: service"
+          },
+          {
+            "id": "wrong1",
+            "label": "systemctl status sshd"
+          },
+          {
+            "id": "wrong2",
+            "label": "free -h"
+          }
+        ],
+        "commandId": "billing-service",
+        "skill": "end-term-cancellation"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Service còn Active và policy cho hủy cuối kỳ; chưa có lệnh hủy được phê duyệt."
+          },
+          {
+            "id": "over",
+            "label": "Yêu cầu hủy cuối kỳ cho phép xóa disk ngay hôm nay."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-lifecycle-policy",
+        "skill": "end-term-cancellation"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Service Active đến 15/11; chưa hủy ngay."
+          },
+          {
+            "id": "p2",
+            "label": "Panel hỗ trợ end-of-term cancellation; cần owner xác nhận ngày và dữ liệu."
+          },
+          {
+            "id": "over",
+            "label": "Yêu cầu hủy cuối kỳ cho phép xóa disk ngay hôm nay."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-lifecycle-policy",
+        "skill": "end-term-cancellation"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác minh account owner, thời hạn và backup/export; ghi yêu cầu cancellation đúng mốc theo policy."
+          },
+          {
+            "id": "unsafe",
+            "label": "Terminate VPS ngay hoặc xóa backup trước ngày hết hạn."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "end-term-cancellation"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Panel ghi cancellation effective date đúng, khách nhận xác nhận và dữ liệu được xử lý theo policy.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Panel ghi cancellation effective date đúng, khách nhận xác nhận và dữ liệu được xử lý theo policy."
+  },
+  {
+    "id": "VPS-14-004",
+    "objective": "Đọc ngày mua và policy review, không tự hứa refund.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "BILLING: purchased",
+        "output": "2026-10-15",
+        "context": "panel",
+        "purpose": "purchase timestamp",
+        "meaning": "Mua ngày 15/10 trong billing; cần policy và ticket review.",
+        "commandId": "billing-invoice",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: refund policy",
+        "output": "Eligibility requires review; no automatic approval",
+        "context": "panel",
+        "purpose": "refund eligibility policy",
+        "meaning": "Eligibility requires review; không có auto approval.",
+        "commandId": "panel-lifecycle-policy",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "BILLING: refund request state",
+        "output": "Request RF-1404: not submitted; decision: none",
+        "purpose": "Phân biệt yêu cầu với quyết định.",
+        "meaning": "Chưa có hồ sơ review; support không được tuyên bố approved.",
+        "commandId": "billing-invoice",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Khách muốn refund sau bảy ngày."
+          },
+          {
+            "id": "other",
+            "label": "Khách chỉ muốn đổi DNS record."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "refund-review"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc purchase timestamp?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "BILLING: purchased"
+          },
+          {
+            "id": "wrong1",
+            "label": "ip route"
+          },
+          {
+            "id": "wrong2",
+            "label": "df -h /"
+          }
+        ],
+        "commandId": "billing-invoice",
+        "skill": "refund-review"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Ngày mua và policy cho thấy cần review; chưa có kết luận eligible hay số tiền."
+          },
+          {
+            "id": "over",
+            "label": "Đúng bảy ngày nên refund tự động 100%."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-lifecycle-policy",
+        "skill": "refund-review"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Mua ngày 15/10 trong billing; cần policy và ticket review."
+          },
+          {
+            "id": "p2",
+            "label": "Eligibility requires review; không có auto approval."
+          },
+          {
+            "id": "over",
+            "label": "Đúng bảy ngày nên refund tự động 100%."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-lifecycle-policy",
+        "skill": "refund-review"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác minh owner, invoice, thời gian và điều khoản áp dụng; chuyển billing review, không hứa kết quả."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự phát refund hoặc yêu cầu thông tin thẻ qua ticket."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "refund-review"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Billing đưa quyết định có audit, giao dịch và trạng thái service được đối chiếu theo policy.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Billing đưa quyết định có audit, giao dịch và trạng thái service được đối chiếu theo policy."
+  },
+  {
+    "id": "VPS-14-005",
+    "objective": "Tách addon đã thanh toán khỏi IPAM allocation và manual review.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "BILLING: addon",
+        "output": "Additional IPv4 active",
+        "context": "panel",
+        "purpose": "addon billing state",
+        "meaning": "Additional IPv4 addon Active; chưa có IP được cấp.",
+        "commandId": "billing-invoice",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: IP allocation",
+        "output": "pending manual review",
+        "context": "panel",
+        "purpose": "IP allocation work state",
+        "meaning": "Allocation pending manual review; không phải lỗi network guest.",
+        "commandId": "panel-ip-allocation",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: IPv4 addon review",
+        "output": "case IP-1405 pending; ownership validation complete; pool assignment pending",
+        "purpose": "Định vị bước review còn lại.",
+        "meaning": "Thiếu pool assignment, chưa thể công bố IP hoặc thay guest.",
+        "commandId": "panel-ip-allocation",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: IPAM capacity",
+        "output": "region sg-02 free IPv4=3; reserved for approved requests=3",
+        "purpose": "Xem pool thực còn địa chỉ cấp tự do không.",
+        "meaning": "Không có IP chưa reserve; cần đội IPAM/capacity quyết định.",
+        "commandId": "panel-ip-allocation",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Khách trả tiền IPv4 bổ sung nhưng chỉ thấy một IP."
+          },
+          {
+            "id": "other",
+            "label": "Guest mất default route cho IP hiện có."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "ipv4-addon-review"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc addon billing state?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "BILLING: addon"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "systemctl status nginx"
+          }
+        ],
+        "commandId": "billing-invoice",
+        "skill": "ipv4-addon-review"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Addon active nhưng cấp IP còn review; cần biết policy và pool capacity."
+          },
+          {
+            "id": "over",
+            "label": "Addon Active đồng nghĩa IP mới phải có trong guest rồi."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "panel-ip-allocation",
+        "skill": "ipv4-addon-review"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Additional IPv4 addon Active; chưa có IP được cấp."
+          },
+          {
+            "id": "p2",
+            "label": "Allocation pending manual review; không phải lỗi network guest."
+          },
+          {
+            "id": "over",
+            "label": "Addon Active đồng nghĩa IP mới phải có trong guest rồi."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-ip-allocation",
+        "skill": "ipv4-addon-review"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Đối chiếu manual review, lý do chính sách/pool và order; chuyển IPAM, báo thời gian xử lý trung thực."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự gán IP bất kỳ hoặc đổi IP hiện có trong guest."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "ipv4-addon-review"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "IP được phê duyệt/cấp đúng owner, panel/guest route khớp và client reachability kiểm tra."
+          },
+          {
+            "id": "act",
+            "label": "Đối chiếu manual review, lý do chính sách/pool và order; chuyển IPAM, báo thời gian xử lý trung thực."
+          }
+        ],
+        "skill": "ipv4-addon-review"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: IP được phê duyệt/cấp đúng owner, panel/guest route khớp và client reachability kiểm tra.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: IP được phê duyệt/cấp đúng owner, panel/guest route khớp và client reachability kiểm tra."
+  },
+  {
+    "id": "VPS-14-006",
+    "objective": "Đọc mốc expiration/deletion, yêu cầu hold có quyền và bảo vệ dữ liệu.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "BILLING: expired",
+        "output": "2026-10-20",
+        "context": "panel",
+        "purpose": "expiration date",
+        "meaning": "Service hết hạn 20/10; không nói dữ liệu đã bị xóa.",
+        "commandId": "billing-service",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: retention",
+        "output": "Scheduled deletion 2026-10-25",
+        "context": "panel",
+        "purpose": "scheduled deletion date",
+        "meaning": "Deletion scheduled 25/10; thời gian còn ít và policy/approval quyết định hold.",
+        "commandId": "panel-lifecycle-policy",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: retention hold state",
+        "output": "service VPS-1406 hold=false; deletion_job=2026-10-25 00:00 UTC",
+        "purpose": "Xem hold thực đã áp chưa.",
+        "meaning": "Chưa có hold; support phải escalation kịp thời, không báo đã gia hạn.",
+        "commandId": "panel-lifecycle-policy",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: backup availability VPS-1406",
+        "output": "Last completed backup: 2026-10-19 00:00 UTC; restore verification: pending",
+        "purpose": "Đọc khả năng bảo toàn dữ liệu.",
+        "meaning": "Có backup cũ nhưng restore chưa kiểm chứng; không thay thế hold/owner approval.",
+        "commandId": "panel-backup-status",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Khách muốn kéo dài retention trước deletion."
+          },
+          {
+            "id": "other",
+            "label": "VPS chỉ có lỗi chứng chỉ TLS."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "retention-deletion-risk"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc expiration date?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "BILLING: expired"
+          },
+          {
+            "id": "wrong1",
+            "label": "systemctl status sshd"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "billing-service",
+        "skill": "retention-deletion-risk"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Service expired và scheduled deletion sắp tới; cần escalation khẩn để xem hold hợp lệ."
+          },
+          {
+            "id": "over",
+            "label": "Support có thể hứa giữ dữ liệu vô hạn bằng ticket này."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "panel-lifecycle-policy",
+        "skill": "retention-deletion-risk"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Service hết hạn 20/10; không nói dữ liệu đã bị xóa."
+          },
+          {
+            "id": "p2",
+            "label": "Deletion scheduled 25/10; thời gian còn ít và policy/approval quyết định hold."
+          },
+          {
+            "id": "over",
+            "label": "Support có thể hứa giữ dữ liệu vô hạn bằng ticket này."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-lifecycle-policy",
+        "skill": "retention-deletion-risk"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác minh owner, policy và trạng thái backup; chuyển billing/lifecycle on-call xin hold có audit trước deadline."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự hủy deletion task hoặc đảm bảo dữ liệu chưa sao lưu."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "retention-deletion-risk"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Hold/extension được xác nhận bằng task ID và thời hạn mới; dữ liệu/backup trạng thái rõ."
+          },
+          {
+            "id": "act",
+            "label": "Xác minh owner, policy và trạng thái backup; chuyển billing/lifecycle on-call xin hold có audit trước deadline."
+          }
+        ],
+        "skill": "retention-deletion-risk"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Hold/extension được xác nhận bằng task ID và thời hạn mới; dữ liệu/backup trạng thái rõ.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Hold/extension được xác nhận bằng task ID và thời hạn mới; dữ liệu/backup trạng thái rõ."
+  },
+  {
+    "id": "VPS-14-007",
+    "objective": "Phân biệt duplicate invoice line với số VM thực và chuyển billing reconciliation.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "BILLING: invoice lines",
+        "output": "VPS-100; VPS-100 duplicate",
+        "context": "panel",
+        "purpose": "invoice lines",
+        "meaning": "Invoice có hai dòng VPS-100; chưa biết gateway charge mấy lần.",
+        "commandId": "billing-invoice",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: service records",
+        "output": "VPS-100 exists once",
+        "context": "panel",
+        "purpose": "service records",
+        "meaning": "Panel chỉ có một VPS-100; cần đối chiếu order/payment ledger.",
+        "commandId": "panel-provision-task",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "BILLING: settled payment ledger",
+        "output": "invoice INV-1407 payment_id=pay-1407 amount=2x VPS plan; settled once",
+        "purpose": "Phân biệt invoice line trùng với charge giao dịch.",
+        "meaning": "Một giao dịch nhưng số tiền hai plan; billing cần xác định số tiền điều chỉnh.",
+        "commandId": "billing-invoice",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: order history VPS-100",
+        "output": "order ord-1407 quantity=1; provisioned VM count=1",
+        "purpose": "Xác nhận lượng đặt và cấp.",
+        "meaning": "Order một VM, củng cố billing mismatch; không tự quyết định refund.",
+        "commandId": "panel-provision-task",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Hóa đơn tính hai VPS nhưng khách chỉ đặt một."
+          },
+          {
+            "id": "other",
+            "label": "Hai VM đang chạy với hai IP khác nhau."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "duplicate-billing-line"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc invoice lines?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "BILLING: invoice lines"
+          },
+          {
+            "id": "wrong1",
+            "label": "ip route"
+          },
+          {
+            "id": "wrong2",
+            "label": "df -h /"
+          }
+        ],
+        "commandId": "billing-invoice",
+        "skill": "duplicate-billing-line"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Hai invoice lines cùng service nhưng panel chỉ một service; nghi duplicate billing line, phải đối chiếu ledger."
+          },
+          {
+            "id": "over",
+            "label": "Có thể tự refund một dòng mà chưa kiểm tra settled payments/tax."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "panel-provision-task",
+        "skill": "duplicate-billing-line"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Invoice có hai dòng VPS-100; chưa biết gateway charge mấy lần."
+          },
+          {
+            "id": "p2",
+            "label": "Panel chỉ có một VPS-100; cần đối chiếu order/payment ledger."
+          },
+          {
+            "id": "over",
+            "label": "Có thể tự refund một dòng mà chưa kiểm tra settled payments/tax."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-provision-task",
+        "skill": "duplicate-billing-line"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Giữ invoice/order/payment IDs, xác minh owner và chuyển billing sửa invoice/refund theo policy."
+          },
+          {
+            "id": "unsafe",
+            "label": "Xóa VM hoặc sửa invoice thủ công không audit."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "duplicate-billing-line"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Billing phát hành hóa đơn đúng, payment/refund ledger khớp và khách thấy một dịch vụ."
+          },
+          {
+            "id": "act",
+            "label": "Giữ invoice/order/payment IDs, xác minh owner và chuyển billing sửa invoice/refund theo policy."
+          }
+        ],
+        "skill": "duplicate-billing-line"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Billing phát hành hóa đơn đúng, payment/refund ledger khớp và khách thấy một dịch vụ.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Billing phát hành hóa đơn đúng, payment/refund ledger khớp và khách thấy một dịch vụ."
+  },
+  {
+    "id": "VPS-14-008",
+    "objective": "Tách abuse hold khỏi nonpayment và xử lý appeal theo security policy.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "BILLING: service",
+        "output": "Suspended: abuse case AB-2026-14",
+        "context": "panel",
+        "purpose": "suspension reason",
+        "meaning": "Service Suspended vì abuse case AB-2026-14; không phải overdue invoice.",
+        "commandId": "billing-service",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: security",
+        "output": "Investigation open",
+        "context": "panel",
+        "purpose": "security investigation state",
+        "meaning": "Investigation Open; chưa được phép unsuspend.",
+        "commandId": "panel-security-case",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: abuse case timeline",
+        "output": "AB-2026-14 opened 2026-10-22 11:00 UTC; appeal status=received; reviewer=security-oncall",
+        "purpose": "Theo dõi appeal và owner xử lý.",
+        "meaning": "Appeal đã nhận, chưa có quyết định mở lại.",
+        "commandId": "panel-security-case",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: suspension policy",
+        "output": "AB-2026-14 hold active until security review completed; override permission=security-lead",
+        "purpose": "Xác nhận quyền quyết định.",
+        "meaning": "Support không có quyền override; chỉ escalation.",
+        "commandId": "panel-security-case",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Khách muốn VPS đang bị abuse suspension online ngay."
+          },
+          {
+            "id": "other",
+            "label": "Invoice quá hạn là lý do duy nhất."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "abuse-suspension-appeal"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc suspension reason?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "BILLING: service"
+          },
+          {
+            "id": "wrong1",
+            "label": "systemctl status sshd"
+          },
+          {
+            "id": "wrong2",
+            "label": "df -h /"
+          }
+        ],
+        "commandId": "billing-service",
+        "skill": "abuse-suspension-appeal"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Suspension gắn abuse investigation còn mở; không thể tự mở lại trước quyết định security."
+          },
+          {
+            "id": "over",
+            "label": "Khách yêu cầu gấp là đủ để override abuse hold."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "panel-security-case",
+        "skill": "abuse-suspension-appeal"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Service Suspended vì abuse case AB-2026-14; không phải overdue invoice."
+          },
+          {
+            "id": "p2",
+            "label": "Investigation Open; chưa được phép unsuspend."
+          },
+          {
+            "id": "over",
+            "label": "Khách yêu cầu gấp là đủ để override abuse hold."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-security-case",
+        "skill": "abuse-suspension-appeal"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác minh owner, gửi appeal/evidence qua quy trình, chuyển abuse/security và thông báo status/ETA nếu có."
+          },
+          {
+            "id": "unsafe",
+            "label": "Unsuspend, đổi IP hoặc xóa logs để né investigation."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "abuse-suspension-appeal"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở."
+          },
+          {
+            "id": "act",
+            "label": "Xác minh owner, gửi appeal/evidence qua quy trình, chuyển abuse/security và thông báo status/ETA nếu có."
+          }
+        ],
+        "skill": "abuse-suspension-appeal"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở."
   }
 ]

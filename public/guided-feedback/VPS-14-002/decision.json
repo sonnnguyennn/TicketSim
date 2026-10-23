@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Đối chiếu payment ID, webhook và order queue; chuyển billing/provisioning reconcile idempotent. Xác minh: Một order tạo đúng một VM, panel Active và invoice không bị charge trùng.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

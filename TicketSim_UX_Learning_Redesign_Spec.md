@@ -4,6 +4,8 @@
 
 ### Phase 5C pickup update
 
+Batch 7 completes Guided coverage: **112/112** across 14 topics and all four difficulties. The original 112 tickets and v5 progress format remain unchanged. Stateful, Objective Exam and independent variants are still **6/112 each** at this checkpoint. See `Phase_5C_Batch_7_QA.md`. Phase 5D/5E independent assessment and broader case-by-case browser QA remain open.
+
 Batch 6 is implemented: **104/112 Guided**, covering all backup and control-panel tickets. The 112 source tickets and v5 progress format remain unchanged. Stateful, Objective Exam and independent variants remain **6/112**. See `Phase_5C_Batch_6_QA.md`. Batch 7 and independent assessment expansion remain open.
 
 Batch 5 is implemented: **88/112 Guided**, covering all security and container tickets. Empty stdout fixtures are explicitly supported for two Docker checks; they are supplemented by further probes and do not produce invented output. No changes were made to the 112 source tickets or v5 progress format. Stateful, Objective Exam and independent variants remain **6/112**. See `Phase_5C_Batch_5_QA.md`. Batch 6–7 and independent assessment expansion remain open.

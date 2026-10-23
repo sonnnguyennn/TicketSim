@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Xác minh owner, gửi appeal/evidence qua quy trình, chuyển abuse/security và thông báo status/ETA nếu có. Xác minh: Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

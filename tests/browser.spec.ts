@@ -210,6 +210,29 @@ test('Batch 6 L3 restore conflict requires panel network evidence before interpr
   await expect(page.locator('.guided-output pre').filter({ hasText: 'duplicate IPv4' })).toBeVisible()
 })
 
+test('Batch 7 L3 abuse appeal requires policy evidence before interpretation', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-14-008')
+  await page.locator('[data-ticket-id="VPS-14-008"]').click()
+  await page.getByRole('button', { name: /Guided/i }).first().click()
+  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
+  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-14-008')
+  for (const id of ['triage', 'check']) {
+    const key = JSON.parse(await readFile(`public/guided-feedback/VPS-14-008/${id}.json`, 'utf8'))
+    const question = item.questions.find((entry: { id: string }) => entry.id === id)
+    await page.getByLabel(question.options.find((option: { id: string }) => option.id === key.correctIds[0]).label).check()
+    await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
+    if (id === 'triage') await page.getByRole('button', { name: /Tiếp tục/i }).click()
+  }
+  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(0).click()
+  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(1).click()
+  await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeDisabled()
+  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(2).click()
+  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(3).click()
+  await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeEnabled()
+  await expect(page.locator('.guided-output pre').filter({ hasText: 'override permission=security-lead' })).toBeVisible()
+})
+
 test('support level persists and Independent keeps inline command lookup', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')

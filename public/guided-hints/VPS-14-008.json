@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách muốn VPS đang bị abuse suspension online ngay.",
+    "Đọc P1 (BILLING: service) và P2 (PANEL: security); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở."
+  ]
+}

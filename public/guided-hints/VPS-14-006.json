@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách muốn kéo dài retention trước deletion.",
+    "Đọc P1 (BILLING: expired) và P2 (PANEL: retention); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Hold/extension được xác nhận bằng task ID và thời hạn mới; dữ liệu/backup trạng thái rõ."
+  ]
+}
