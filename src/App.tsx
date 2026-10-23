@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { AlertCircle, ArrowDownToLine, ArrowRight, BookOpen, Check, CheckCircle2, ChevronDown, CircleHelp, Command, FileText, History, Lightbulb, RotateCcw, Search, Server, Settings2, ShieldCheck, Terminal, Upload } from 'lucide-react'
 import publicTickets from './data/tickets-public.json'
 import guidedPublic from './data/guided-public.json'
-import { answerUrl, customerSummary, DEFAULT_RUBRIC, emptyDraft, emptyProgress, filterTickets, hintUrl, isAnswer, isInvestigation, matchProbeForKind, scoreChecks, SCORE_KEYS, SCORE_LABELS, ticketStatus } from './lib'
+import { answerUrl, customerSummary, DEFAULT_RUBRIC, emptyDraft, emptyProgress, filterTickets, hintUrl, isAnswer, isInvestigation, matchProbeForKind, scoreChecks, SCORE_KEYS, SCORE_LABELS } from './lib'
 import { clearProgress, loadProgress, migrateProgress, saveProgress } from './storage'
 import { GuidedWorkspace } from './guided/GuidedWorkspace'
 import { CommandLibrary, CommandQuickLookup } from './guided/CommandLibrary'
@@ -11,12 +11,10 @@ import { ExamWorkspace } from './ExamWorkspace'
 import { StatefulWorkspace } from './guided/StatefulWorkspace'
 import { ObjectiveExamWorkspace } from './guided/ObjectiveExamWorkspace'
 import { Milestone5History } from './guided/Milestone5History'
-import { SupportLevelSelector } from './SupportLevelSelector'
 import { classifyGuidedCommand } from './guided/engine'
 import { commandLibrary } from './guided/commands'
-import { isMastered, mistakeIds } from './guided/review'
 import type { GuidedCase } from './guided/types'
-import type { Answer, Attempt, CommandEntry, Draft, FormFields, Progress, SupportLevel, Ticket } from './types'
+import type { Answer, Attempt, CommandEntry, Draft, FormFields, Progress, Ticket } from './types'
 
 const tickets = publicTickets as Ticket[]
 const guidedCases = guidedPublic as GuidedCase[]
@@ -33,19 +31,22 @@ const fieldMeta: { key: keyof FormFields; label: string; placeholder: string; lo
 ]
 const statusText = { new: 'Chưa làm', started: 'Đang làm', completed: 'Đã hoàn thành' }
 const priorityText = (value: string) => value.startsWith('High') ? 'Ưu tiên cao' : value === 'Normal' ? 'Ưu tiên thường' : value
+function guidedStatus(id: string, progress: Progress): 'new' | 'started' | 'completed' {
+  if (progress.guidedAttempts.some(attempt => attempt.ticketId === id)) return 'completed'
+  const draft = progress.guidedDrafts[id]
+  return draft && (draft.stage > 0 || draft.commands.length > 0 || draft.hintLevel > 0 || draft.note.trim() || Object.keys(draft.responses).length > 0 || Object.keys(draft.feedback).length > 0) ? 'started' : 'new'
+}
 
 function App() {
   const [progress, setProgress] = useState<Progress>(() => loadProgress())
   const supportLevel = progress.supportLevel ?? 'normal'
-  const changeSupportLevel = (value: SupportLevel) => setProgress(current => ({ ...current, supportLevel: value }))
   const [selectedId, setSelectedId] = useState(() => { try { const remembered = localStorage.getItem('ticketsim-last-ticket'); return tickets.some(item => item.id === remembered) ? remembered! : tickets[0].id } catch { return tickets[0].id } })
-  const [view, setView] = useState<'workspace' | 'guided' | 'stateful' | 'exam' | 'objective' | 'library' | 'review' | 'history' | 'settings'>('workspace')
+  const [view, setView] = useState<'workspace' | 'practice' | 'guided' | 'stateful' | 'exam' | 'objective' | 'library' | 'review' | 'history' | 'advanced-history' | 'settings'>('workspace')
   const [libraryFocus, setLibraryFocus] = useState<string | undefined>()
-  const [libraryOrigin, setLibraryOrigin] = useState<'guided' | 'exam' | 'stateful' | 'workspace'>('workspace')
+  const [libraryOrigin, setLibraryOrigin] = useState<'guided' | 'exam' | 'stateful' | 'workspace' | 'practice'>('workspace')
   const [topic, setTopic] = useState('all')
   const [level, setLevel] = useState('all')
   const [status, setStatus] = useState('all')
-  const [guidedOnly, setGuidedOnly] = useState(false)
   const [query, setQuery] = useState('')
   const [command, setCommand] = useState('')
   const [investigationInput, setInvestigationInput] = useState('')
@@ -60,7 +61,7 @@ function App() {
   const caseRef = useRef<HTMLDivElement>(null)
   const ticketListRef = useRef<HTMLDivElement>(null)
   const activeTicketIdRef = useRef(selectedId)
-  const lastFilterKeyRef = useRef(JSON.stringify(['all', 'all', 'all', '', false]))
+  const lastFilterKeyRef = useRef(JSON.stringify(['all', 'all', 'all', '']))
   const ticket = tickets.find(item => item.id === selectedId) ?? tickets[0]
   const guidedCase = guidedCases.find(item => item.id === ticket.id)
   const answer = answerResult?.ticketId === ticket.id ? answerResult.data : null
@@ -68,11 +69,9 @@ function App() {
   const draft = progress.drafts[ticket.id] ?? emptyDraft()
   const terminalProbes = ticket.probe_outputs.filter(probe => !isInvestigation(probe.command))
   const investigations = ticket.probe_outputs.filter(probe => isInvestigation(probe.command))
-  const visibleTickets = useMemo(() => filterTickets(tickets, { topic, level, status, query }, progress).filter(item => !guidedOnly || guidedIds.has(item.id)), [topic, level, status, query, guidedOnly, progress])
-  const completedIds = new Set([...progress.attempts.map(attempt => attempt.ticketId), ...progress.guidedAttempts.map(attempt => attempt.ticketId), ...progress.examAttempts.map(attempt => attempt.ticketId), ...progress.statefulAttempts.map(attempt => attempt.ticketId), ...progress.objectiveExamAttempts.map(attempt => attempt.ticketId)])
-  const startedCount = tickets.filter(item => ticketStatus(item.id, progress) === 'started').length
-  const masteredCount = guidedCases.filter(item => isMastered(progress, item)).length
-  const mistakeCount = guidedCases.reduce((total, item) => total + mistakeIds(progress, item).length, 0) + progress.objectiveExamAttempts.reduce((total, item) => total + item.errors.length, 0) + progress.statefulAttempts.reduce((total, item) => total + item.errors.length, 0) + Object.values(progress.statefulDrafts).filter(item => !item.completed).reduce((total, item) => total + item.errors.length, 0)
+  const visibleTickets = useMemo(() => filterTickets(tickets, { topic, level, status: 'all', query }, progress).filter(item => status === 'all' || guidedStatus(item.id, progress) === status), [topic, level, status, query, progress])
+  const completedIds = new Set(progress.guidedAttempts.map(attempt => attempt.ticketId))
+  const startedCount = tickets.filter(item => guidedStatus(item.id, progress) === 'started').length
   const hasNotes = Object.values(draft.form).some(value => value.trim())
   const latestAttempt = progress.attempts.find(attempt => attempt.ticketId === ticket.id)
   const attemptSnapshot = (form: FormFields, commands: CommandEntry[], checks: Draft['checks'], hintViewed: boolean, roundId?: string) => JSON.stringify({ form, commands, checks, hintViewed, roundId })
@@ -90,16 +89,17 @@ function App() {
     const listBounds = list.getBoundingClientRect()
     const rowBounds = row.getBoundingClientRect()
     if (rowBounds.top < listBounds.top || rowBounds.bottom > listBounds.bottom) list.scrollTop += rowBounds.top - listBounds.top - 4
-  }, [selectedId, view, topic, level, status, query, guidedOnly])
+  }, [selectedId, view, topic, level, status, query])
   useEffect(() => {
-    const filterKey = JSON.stringify([topic, level, status, query, guidedOnly])
+    if (view !== 'workspace' && view !== 'practice') return
+    const filterKey = JSON.stringify([topic, level, status, query])
     if (lastFilterKeyRef.current === filterKey) return
     lastFilterKeyRef.current = filterKey
     if (visibleTickets.length && !visibleTickets.some(item => item.id === selectedId)) {
       activeTicketIdRef.current = visibleTickets[0].id
       setSelectedId(visibleTickets[0].id)
     }
-  }, [visibleTickets, selectedId, topic, level, status, query, guidedOnly])
+  }, [visibleTickets, selectedId, topic, level, status, query, view])
 
   function updateDraft(changes: Partial<Draft> | ((currentDraft: Draft) => Partial<Draft>), id = ticket.id) {
     if (status !== 'all' && id === selectedId) setKeepCurrentOpen(true)
@@ -124,17 +124,10 @@ function App() {
     setKeepCurrentOpen(false)
     setTopic('all'); setLevel('all'); setStatus('all'); setQuery('')
     activeTicketIdRef.current = id
-    setSelectedId(id); setView('workspace')
+    setSelectedId(id); setView('practice')
   }
   function continueLearning() {
-    const stateful = progress.statefulDrafts[selectedId]
-    if (stateful && !stateful.completed && (stateful.commands.length || stateful.actionId || stateful.note)) { setView('stateful'); return }
-    const objective = progress.objectiveExamDrafts[selectedId]
-    if (objective && !objective.submittedAttemptId && (objective.commands.length || Object.keys(objective.responses).length)) { setView('objective'); return }
-    if (guidedIds.has(selectedId) && progress.guidedDrafts[selectedId] && !progress.guidedDrafts[selectedId].submitted) { setView('guided'); return }
-    const exam = progress.examDrafts[selectedId]
-    if (exam && !exam.submittedAttemptId && (exam.commands.length || Object.values(exam.form).some(value => value.trim()))) { setView('exam'); return }
-    caseRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (guidedIds.has(selectedId)) setView('guided')
   }
   function runProbe(input: string, kind: 'terminal' | 'investigation' = 'terminal') {
     if (!input.trim()) return
@@ -234,47 +227,44 @@ function App() {
       <div className="brand"><div className="brand-icon"><Terminal size={21} strokeWidth={2.3} /></div><div><strong>VPS Support</strong><span>Ticket Simulator</span></div></div>
       <nav aria-label="Điều hướng chính" className="main-nav">
         <button title="Kho ticket" className={view === 'workspace' ? 'nav-item active' : 'nav-item'} onClick={() => setView('workspace')}><Server size={18} /> Kho ticket <span>{tickets.length}</span></button>
-        <button title="Thư viện lệnh" className={view === 'library' ? 'nav-item active' : 'nav-item'} onClick={() => { setLibraryOrigin(view === 'guided' || view === 'exam' || view === 'stateful' ? view : 'workspace'); setLibraryFocus(undefined); setView('library') }}><BookOpen size={18} /> Thư viện lệnh</button>
-        <button title="Review Mistakes" className={view === 'review' ? 'nav-item active' : 'nav-item'} onClick={() => setView('review')}><RotateCcw size={18} /> Ôn lỗi <span>{mistakeCount}</span></button>
+        <button title="Thư viện lệnh" className={view === 'library' ? 'nav-item active' : 'nav-item'} onClick={() => { if (view !== 'library') setLibraryOrigin(view === 'guided' || view === 'exam' || view === 'stateful' || view === 'practice' ? view : 'workspace'); setLibraryFocus(undefined); setView('library') }}><BookOpen size={18} /> Thư viện lệnh</button>
         <button title="Lịch sử" className={view === 'history' ? 'nav-item active' : 'nav-item'} onClick={() => setView('history')}><History size={18} /> Lịch sử</button>
         <button title="Cài đặt" className={view === 'settings' ? 'nav-item active' : 'nav-item'} onClick={() => setView('settings')}><Settings2 size={18} /> Cài đặt</button>
       </nav>
       <div className="sidebar-spacer" />
-      <div className="fixture-note"><ShieldCheck size={16} /><span>Chạy local · không kết nối VPS thật</span></div>
+      <div className="fixture-note"><ShieldCheck size={16} /><span>Tiến độ tự lưu trên trình duyệt</span></div>
     </aside>
 
     <div className="main-area">
-      <header className="topbar"><div className="breadcrumb">{view === 'workspace' ? 'Kho ticket' : view === 'guided' ? 'Bài học Guided' : view === 'stateful' ? 'Stateful Simulator' : view === 'objective' ? 'Objective Exam' : view === 'exam' ? 'Exam tự luyện' : view === 'library' ? 'Thư viện lệnh' : view === 'review' ? 'Ôn lỗi' : view === 'history' ? 'Lịch sử làm bài' : 'Cài đặt'}</div><div className="topbar-right"><span className="live-dot" /> Chạy local</div></header>
+      <header className="topbar"><div className="breadcrumb">{view === 'workspace' ? 'Kho ticket' : view === 'guided' ? 'Học ticket' : view === 'practice' ? 'Luyện tự do' : view === 'stateful' ? 'Stateful Simulator' : view === 'objective' ? 'Objective Exam' : view === 'exam' ? 'Exam tự luyện' : view === 'library' ? 'Thư viện lệnh' : view === 'review' ? 'Ôn lỗi' : view === 'history' || view === 'advanced-history' ? 'Lịch sử làm bài' : 'Cài đặt'}</div><div className="topbar-right"><span className="live-dot" /> Chạy local</div></header>
       <main>
         {saveError && <div className="notice error storage-error" role="alert">Không thể lưu tiến độ. Kiểm tra dung lượng lưu trữ của trình duyệt.</div>}
-        {view === 'guided' && guidedCase && <GuidedWorkspace ticket={ticket} guidedCase={guidedCase} progress={progress} setProgress={setProgress} supportLevel={supportLevel} onSupportLevelChange={changeSupportLevel} onBack={() => setView('workspace')} onOpenLibrary={id => { setLibraryOrigin('guided'); setLibraryFocus(id); setView('library') }} />}
+        {(view === 'guided' || view === 'library' && libraryOrigin === 'guided') && guidedCase && <div hidden={view !== 'guided'}><GuidedWorkspace key={ticket.id} ticket={ticket} guidedCase={guidedCase} progress={progress} setProgress={setProgress} supportLevel={supportLevel} onSupportLevelChange={value => setProgress(current => ({ ...current, supportLevel: value }))} onBack={() => setView('workspace')} onOpenLibrary={id => { setLibraryOrigin('guided'); setLibraryFocus(id); setView('library') }} /></div>}
         {view === 'stateful' && guidedCase?.simulation && <StatefulWorkspace ticket={ticket} guidedCase={guidedCase} progress={progress} setProgress={setProgress} onBack={() => setView('workspace')} onOpenLibrary={id => { setLibraryOrigin('stateful'); setLibraryFocus(id); setView('library') }} onOpenExam={() => setView('objective')} />}
         {view === 'objective' && guidedCase?.objectiveExam && <ObjectiveExamWorkspace ticket={ticket} guidedCase={guidedCase} progress={progress} setProgress={setProgress} onBack={() => setView('workspace')} />}
         {view === 'exam' && <ExamWorkspace ticket={ticket} progress={progress} setProgress={setProgress} onBack={() => setView('workspace')} />}
         {view === 'library' && <CommandLibrary key={libraryFocus ?? 'all'} focusedId={libraryFocus} onBack={() => setView(libraryOrigin)} />}
         {view === 'review' && <ReviewWorkspace cases={guidedCases} progress={progress} setProgress={setProgress} onOpenTicket={id => { setSelectedId(id); setView('guided') }} onOpenRelated={(id, mode) => { setSelectedId(id); setView(mode) }} />}
-        {view === 'history' && <Milestone5History progress={progress} onOpen={(id, mode) => { setSelectedId(id); setView(mode) }} />}
-        {view === 'workspace' && <>
-          <section className="page-heading"><div><h1>Kho ticket</h1><p>Chọn một tình huống, kiểm tra bằng chứng và ghi hướng xử lý.</p><div className="continue-row"><button onClick={continueLearning}>Tiếp tục {selectedId}</button><button onClick={() => setView('review')}>Xem {mistakeCount} lỗi đã ghi</button></div></div><div className="progress-summary"><strong>{completedIds.size}/{tickets.length}</strong> Completed <span>·</span> <strong>{masteredCount}</strong> Mastered <span>·</span> {startedCount} đang làm</div></section>
-          <SupportLevelSelector value={supportLevel} onChange={changeSupportLevel} />
+        {view === 'advanced-history' && <Milestone5History progress={progress} onOpen={(id, mode) => { setSelectedId(id); setView(mode) }} />}
+        {(view === 'workspace' || view === 'practice') && <>
+          <section className="page-heading"><div><h1>Kho ticket</h1><p>Chọn ticket để học từng bước xử lý sự cố.</p></div><div className="progress-summary"><strong>{completedIds.size}/{tickets.length}</strong> đã hoàn thành <span>·</span> {startedCount} đang học</div></section>
           <div className="workspace-grid">
             <section className="ticket-panel" aria-label="Danh sách ticket">
               <div className="panel-heading"><div><h2>Danh sách ticket</h2><p>{visibleTickets.length} kết quả</p></div></div>
               <div className="filter-box"><div className="search-wrap"><Search size={16} /><input aria-label="Tìm ticket" placeholder="Tìm ID, triệu chứng..." value={query} onChange={event => { setKeepCurrentOpen(false); setQuery(event.target.value) }} /></div><div className="filter-row"><Select label="Chủ đề" value={topic} onChange={value => { setKeepCurrentOpen(false); setTopic(value) }} options={[['all', 'Tất cả chủ đề'], ...topics.map(([name, vi]) => [name, vi])]} /><Select label="Cấp độ" value={level} onChange={value => { setKeepCurrentOpen(false); setLevel(value) }} options={[['all', 'Mọi cấp độ'], ['0', 'L0'], ['1', 'L1'], ['2', 'L2'], ['3', 'L3']]} /></div><Select label="Trạng thái" value={status} onChange={value => { setKeepCurrentOpen(false); setStatus(value) }} options={[['all', 'Mọi trạng thái'], ['new', 'Chưa làm'], ['started', 'Đang làm'], ['completed', 'Đã hoàn thành']]} /></div>
-              <label className="guided-filter"><input type="checkbox" checked={guidedOnly} onChange={event => { setKeepCurrentOpen(false); setGuidedOnly(event.target.checked) }} /> Chỉ bài Guided ({guidedCases.length})</label>
               <div className="ticket-list" ref={ticketListRef}>{visibleTickets.length ? visibleTickets.map(item => {
-                const itemStatus = ticketStatus(item.id, progress)
+                const itemStatus = guidedStatus(item.id, progress)
                 return <button key={item.id} data-ticket-id={item.id} className={`ticket-row ${selectedId === item.id ? 'selected' : ''}`} onClick={() => selectTicket(item.id)} aria-current={selectedId === item.id ? 'true' : undefined}><div className="ticket-row-top"><span className="ticket-id">{item.id}</span><span className={`level level-${item.difficulty}`}>L{item.difficulty}</span></div><strong>{customerSummary(item.customer_message)}</strong><div className="ticket-row-bottom"><span>{item.topic_vi}</span><span className={`row-status ${itemStatus}`}>{itemStatus === 'completed' && <Check size={12} />}{statusText[itemStatus]}</span></div></button>
               }) : <div className="empty-list">Không có ticket phù hợp bộ lọc.</div>}</div>
             </section>
             {(visibleTickets.length || keepCurrentOpen) ? <div className="case-stack" ref={caseRef}>
               {!visibleTickets.some(item => item.id === ticket.id) && <div className="filter-note">Ticket đang mở đã đổi trạng thái và không còn trong danh sách lọc. Bạn có thể tiếp tục ghi bài hoặc chọn ticket khác.</div>}
-              <section className="case-card"><div className="case-header"><div><div className="case-overline">Ticket {ticket.id}</div><h2>{customerSummary(ticket.customer_message)}</h2><div className="case-tags"><span className={`level level-${ticket.difficulty}`}>L{ticket.difficulty} · {ticket.level_label.split(' - ')[1]}</span><span className="tag">{ticket.topic_vi}</span><span className="tag">{priorityText(ticket.priority)}</span></div></div><div className="case-actions"><div className={`case-status ${ticketStatus(ticket.id, progress)}`}>{statusText[ticketStatus(ticket.id, progress)]}</div>{(hasNotes || draft.commands.length > 0 || draft.hintViewed || progress.attempts.some(attempt => attempt.ticketId === ticket.id)) && <button className="restart-button" onClick={restartTicket}><RotateCcw size={13} /> Làm lại</button>}</div></div>
-                <div className="case-info"><div><span>Môi trường</span><strong>{ticket.environment}</strong></div><div><span>Guest OS</span><strong>{ticket.guest_os}</strong></div><div><span>Chế độ</span><strong>{ticket.hands_on_mode}</strong></div></div>
-                <div className="guided-entry"><div><strong>{guidedCase?.simulation ? 'Stateful pilot · Objective Exam' : guidedCase?.objectiveExam ? 'Guided · Objective Exam' : guidedCase ? 'Học có hướng dẫn hoặc tự kiểm tra' : 'Exam tự đánh giá'}</strong><span>{guidedCase?.simulation ? 'Điều tra, hành động giả lập, xác minh; 6 câu Exam được chấm khách quan.' : guidedCase?.objectiveExam ? 'Guided và 6 câu Objective Exam được chấm riêng; Legacy Exam vẫn tự đánh giá.' : guidedCase ? 'Guided phản hồi từng bước; Legacy Exam tự đánh giá.' : 'Legacy Exam dùng hai fixture gốc và tự đối chiếu.'}</span></div><div className="learning-actions">{guidedCase && <button onClick={() => setView('guided')}>Guided <ArrowRight size={15} /></button>}{guidedCase?.simulation && <button onClick={() => setView('stateful')}>Stateful <ArrowRight size={15} /></button>}{guidedCase?.objectiveExam && <button onClick={() => setView('objective')}>Objective Exam <ArrowRight size={15} /></button>}<button onClick={() => setView('exam')}>Legacy Exam <ArrowRight size={15} /></button></div></div>
+              <section className="case-card"><div className="case-header"><div><div className="case-overline">Ticket {ticket.id}</div><h2>{customerSummary(ticket.customer_message)}</h2><div className="case-tags"><span className={`level level-${ticket.difficulty}`}>L{ticket.difficulty} · {ticket.level_label.split(' - ')[1]}</span><span className="tag">{ticket.topic_vi}</span><span className="tag">{priorityText(ticket.priority)}</span></div></div><div className="case-actions"><div className={`case-status ${guidedStatus(ticket.id, progress)}`}>{statusText[guidedStatus(ticket.id, progress)]}</div>{view === 'practice' && (hasNotes || draft.commands.length > 0 || draft.hintViewed || progress.attempts.some(attempt => attempt.ticketId === ticket.id)) && <button className="restart-button" onClick={restartTicket}><RotateCcw size={13} /> Làm lại</button>}</div></div>
                 <div className="section-heading"><div className="section-icon"><FileText size={16} /></div><h3>Lời khách hàng</h3></div><div className="customer-message">{ticket.customer_message}</div>
+                {guidedCase && <div className="guided-entry"><p>Nhận diện vấn đề, thu thập bằng chứng và chọn hướng xử lý.</p><button className="primary-button" onClick={continueLearning}>{guidedStatus(ticket.id, progress) === 'started' || progress.guidedDrafts[ticket.id] ? 'Tiếp tục' : 'Học ticket'} <ArrowRight size={15} /></button></div>}
               </section>
 
+              {view === 'practice' && <>
               <section className="case-card"><div className="card-title-row"><div><div className="section-heading no-margin"><div className="section-icon terminal-icon"><Terminal size={16} /></div><h3>Điều tra sự cố</h3></div><p>{terminalProbes.length ? 'Nhập command để xem output có sẵn của ticket.' : 'Chọn hoặc nhập tác vụ kiểm tra để xem output có sẵn của ticket.'} Không chạy lệnh thật.</p></div></div>
                 {terminalProbes.length > 0 && <div className="terminal"><div className="terminal-bar"><span>Terminal mô phỏng</span><span className="terminal-safe"><ShieldCheck size={13} /> Chỉ dữ liệu JSON</span></div><div className="terminal-body" ref={terminalBodyRef} aria-live="polite"><div className="terminal-welcome">Output sẽ xuất hiện sau khi bạn chọn hoặc nhập command.</div>{draft.commands.filter(entry => entry.kind === 'terminal').map(entry => <div className="terminal-entry" key={entry.id}><div className="terminal-command"><span>$</span> {entry.command} {entry.probeId && <span className="probe-id">{entry.probeId}</span>}</div><pre className={entry.supported ? '' : 'unsupported-output'}>{entry.output}</pre>{entry.supported && <button className="cite-button" onClick={() => citeEvidence(entry)}>{draft.form.evidence.includes(`${entry.probeId} (${entry.command}): ${entry.output}`) ? 'Đã thêm vào bằng chứng' : 'Thêm vào bằng chứng'}</button>}</div>)}</div><form className="terminal-input" onSubmit={event => { event.preventDefault(); runProbe(command) }}><span>$</span><input aria-label="Nhập command mô phỏng" spellCheck={false} autoComplete="off" placeholder="Nhập command để kiểm tra..." value={command} onChange={event => setCommand(event.target.value)} list={supportLevel === 'independent' ? undefined : 'legacy-command-options'} />{supportLevel !== 'independent' && <datalist id="legacy-command-options">{terminalProbes.map(probe => <option key={probe.probe_id} value={probe.command} />)}</datalist>}<button type="submit" disabled={!command.trim()} aria-label="Chạy command mô phỏng"><ArrowRight size={18} /></button></form></div>}
                 <CommandQuickLookup key={ticket.id} />
@@ -288,11 +278,24 @@ function App() {
 
               {answer && <section className="case-card answer-card"><div className="answer-banner"><div className="answer-banner-icon"><CheckCircle2 size={20} /></div><div><h3>Đối chiếu đáp án</h3><p>So sánh với nhận định của bạn. Đây là đáp án fixture, không phải chẩn đoán production.</p></div></div><div className="answer-grid"><AnswerItem label="Chẩn đoán dự kiến" text={answer.expected_diagnosis} /><AnswerItem label="Kiểm tra tiếp" text={answer.recommended_next_checks} /><AnswerItem label="Hướng xử lý" text={answer.resolution_guidance} /><AnswerItem label="Xác minh" text={answer.verification} /><AnswerItem label="Escalation" text={answer.escalate_when} /></div><div className="warning"><AlertCircle size={17} /><span>{answer.production_warning}</span></div><div className="rubric"><div className="rubric-heading"><div><h3>Tự đánh giá theo rubric</h3><p>Chọn các tiêu chí bạn đã làm đạt. Điểm do bạn tự chấm, không phải AI grading.</p></div><strong>{scoreChecks(draft.checks, answer.scoring_rubric ?? DEFAULT_RUBRIC)}<span>/ 10</span></strong></div><div className="rubric-list">{SCORE_KEYS.map(key => <label key={key}><input type="checkbox" checked={draft.checks[key]} onChange={event => updateDraft(current => ({ checks: { ...current.checks, [key]: event.target.checked } }))} /><span>{SCORE_LABELS[key]}</span><b>+{(answer.scoring_rubric ?? DEFAULT_RUBRIC)[key]}</b></label>)}</div><button className="primary-button" onClick={saveAttempt} disabled={alreadySaved}><Check size={16} /> {alreadySaved ? 'Đã lưu lượt làm' : 'Lưu lượt làm bài'}</button></div></section>}
               {(notice || loadError) && <div className={`notice ${loadError ? 'error' : ''}`} role="status">{loadError || notice}</div>}
+              </>}
             </div> : <div className="empty-case"><Search size={22} /><h2>Không có ticket phù hợp</h2><p>Thay đổi bộ lọc hoặc từ khóa tìm kiếm để tiếp tục.</p></div>}
           </div>
         </>}
-        {view === 'history' && <section className="subpage"><h1>Lịch sử làm bài</h1><p>Guided chấm câu hỏi khách quan; Practice và Exam dùng rubric tự đánh giá.</p><div className="history-list">{progress.guidedAttempts.map(attempt => { const item = tickets.find(t => t.id === attempt.ticketId); const guided = guidedCases.find(t => t.id === attempt.ticketId); const missed = guided?.questions.filter(question => attempt.outcomes?.[question.id] === false) ?? []; return <article className="history-card" key={attempt.id}><div className="history-top"><span className="ticket-id">{attempt.ticketId} · Guided</span><span>{new Date(attempt.createdAt).toLocaleString('vi-VN')}</span></div><h3>{item ? customerSummary(item.customer_message) : attempt.ticketId}</h3><p>{attempt.note}</p>{missed.length > 0 && <details className="history-detail"><summary>{missed.length} câu cần xem lại</summary><ul>{missed.map(question => <li key={question.id}>{question.prompt}</li>)}</ul><button className="guided-secondary" onClick={() => setView('review')}>Mở Review Mistakes</button></details>}{!attempt.outcomes && <p className="muted">Lượt cũ chưa lưu kết quả từng câu; điểm tổng vẫn được giữ.</p>}<div className="history-foot"><span>{attempt.commands.filter(entry => entry.supported).length} probe · {attempt.hintLevel} gợi ý</span><strong>{attempt.score}/{attempt.total} câu khách quan</strong><button onClick={() => { setSelectedId(attempt.ticketId); setView('guided') }}>Mở bài <ArrowRight size={14} /></button></div></article> })}{progress.examAttempts.map(attempt => { const item = tickets.find(t => t.id === attempt.ticketId); return <article className="history-card" key={attempt.id}><div className="history-top"><span className="ticket-id">{attempt.ticketId} · Exam</span><span>{new Date(attempt.createdAt).toLocaleString('vi-VN')}</span></div><h3>{item ? customerSummary(item.customer_message) : attempt.ticketId}</h3><p>{attempt.form.hypothesis}</p><div className="history-foot"><span>{attempt.commands.filter(entry => entry.supported).length} fixture · không gợi ý</span><strong>{attempt.selfScore === undefined ? 'Chưa tự chấm' : `${attempt.selfScore}/10 · tự đánh giá`}</strong><button onClick={() => { setSelectedId(attempt.ticketId); setView('exam') }}>Mở Exam <ArrowRight size={14} /></button></div><details className="history-detail"><summary>Xem bản làm đã nộp</summary><div className="history-fields">{Object.entries(attempt.form).map(([key, value]) => <div key={key}><span>{key}</span><p>{value}</p></div>)}</div><div className="history-commands">{attempt.commands.map(entry => <div key={entry.id}><code>{entry.command}</code><pre>{entry.output}</pre></div>)}</div></details></article> })}{progress.attempts.map(attempt => { const item = tickets.find(t => t.id === attempt.ticketId); return <article className="history-card" key={attempt.id}><div className="history-top"><span className="ticket-id">{attempt.ticketId} · Practice</span><span>{new Date(attempt.createdAt).toLocaleString('vi-VN')}</span></div><h3>{item ? customerSummary(item.customer_message) : attempt.ticketId}</h3><p>{attempt.form.hypothesis || attempt.form.issue || 'Không có nội dung chẩn đoán'}</p><div className="history-foot"><span>{attempt.commands.length} bước điều tra</span><strong>{attempt.selfScore}/10 · tự đánh giá</strong><button onClick={() => openTicketFromHistory(attempt.ticketId)}>Mở ticket <ArrowRight size={14} /></button></div><details className="history-detail"><summary>Xem toàn bộ lượt làm</summary><div className="history-fields">{fieldMeta.map(field => <div key={field.key}><span>{field.label}</span><p>{attempt.form[field.key] || '—'}</p></div>)}</div><div className="history-commands"><strong>Command history</strong>{attempt.commands.length ? attempt.commands.map(entry => <div key={entry.id}><code>{entry.command}</code><pre>{entry.output}</pre></div>) : <p>Chưa chạy probe.</p>}</div></details></article> })}{!progress.attempts.length && !progress.guidedAttempts.length && !progress.examAttempts.length && <div className="empty-state"><History size={32} /><h3>Chưa có lượt làm bài</h3><p>Chọn một ticket và lưu lượt làm đầu tiên.</p><button className="primary-button" onClick={() => setView('workspace')}>Khám phá ticket <ArrowRight size={15} /></button></div>}</div></section>}
-        {view === 'settings' && <section className="subpage settings-page"><div className="eyebrow"><span className="eyebrow-line" /> LOCAL PREFERENCES</div><h1>Cài đặt & dữ liệu</h1><p>Ứng dụng chạy hoàn toàn local sau khi cài đặt, không dùng API key.</p><div className="settings-card"><div className="settings-icon"><ShieldCheck size={22} /></div><div><h3>Dữ liệu mô phỏng</h3><p>112 tình huống fictional từ bộ dữ liệu được cung cấp. Command chỉ tra output fixture; không chạy shell, SSH hoặc VirtualBox. Mọi hành động PANEL, BILLING và BACKUP LOG cũng là mô phỏng.</p></div></div><div className="settings-card"><div className="settings-icon"><ArrowDownToLine size={22} /></div><div><h3>Sao lưu tiến độ</h3><p>Ghi chú, command history và lượt làm được lưu trong localStorage của trình duyệt. Bạn có thể xuất file JSON rồi nhập lại.</p><div className="settings-actions"><button onClick={exportProgress}><ArrowDownToLine size={16} /> Xuất tiến độ</button><button onClick={() => importRef.current?.click()}><Upload size={16} /> Nhập tiến độ</button><input ref={importRef} type="file" accept="application/json,.json" hidden onChange={event => importProgress(event.target.files?.[0])} /></div></div></div><div className="settings-card"><div className="settings-icon danger-icon"><RotateCcw size={22} /></div><div><h3>Xóa dữ liệu học tập</h3><p>Xóa toàn bộ tiến độ trên trình duyệt này. Hãy xuất file JSON nếu muốn giữ bản sao.</p><button className="danger-button" onClick={resetProgress}><RotateCcw size={16} /> Đặt lại tiến độ</button></div></div>{notice && <div className="notice" role="status">{notice}</div>}</section>}
+        {view === 'history' && <section className="subpage"><h1>Lịch sử học ticket</h1><p>Các lượt Guided đã hoàn thành được lưu ở đây.</p><div className="history-list">{progress.guidedAttempts.map(attempt => {
+          const item = tickets.find(entry => entry.id === attempt.ticketId)
+          const guided = guidedCases.find(entry => entry.id === attempt.ticketId)
+          const missed = guided?.questions.filter(question => attempt.outcomes?.[question.id] === false) ?? []
+          return <article className="history-card" key={attempt.id}>
+            <div className="history-top"><span className="ticket-id">{attempt.ticketId}</span><span>{new Date(attempt.createdAt).toLocaleString('vi-VN')}</span></div>
+            <h3>{item ? customerSummary(item.customer_message) : attempt.ticketId}</h3><p>{attempt.note}</p>
+            {missed.length > 0 && <details className="history-detail"><summary>{missed.length} câu cần xem lại</summary><ul>{missed.map(question => <li key={question.id}>{question.prompt}</li>)}</ul></details>}
+            {!attempt.outcomes && <p className="muted">Lượt cũ chỉ lưu điểm tổng.</p>}
+            <div className="history-foot"><span>{attempt.commands.filter(entry => entry.supported).length} lượt kiểm tra</span><strong>{attempt.score}/{attempt.total} câu đúng</strong><button onClick={() => { setSelectedId(attempt.ticketId); setView('guided') }}>Mở bài <ArrowRight size={14} /></button></div>
+          </article>
+        })}{!progress.guidedAttempts.length && <div className="empty-state"><History size={32} /><h3>Chưa hoàn thành ticket nào</h3><p>Lượt học đã nộp sẽ xuất hiện tại đây.</p><button className="primary-button" onClick={() => setView('workspace')}>Chọn ticket <ArrowRight size={15} /></button></div>}</div></section>}
+        {view === 'advanced-history' && <section className="subpage"><h1>Lịch sử làm bài</h1><p>Guided chấm câu hỏi khách quan; Practice và Exam dùng rubric tự đánh giá.</p><div className="history-list">{progress.guidedAttempts.map(attempt => { const item = tickets.find(t => t.id === attempt.ticketId); const guided = guidedCases.find(t => t.id === attempt.ticketId); const missed = guided?.questions.filter(question => attempt.outcomes?.[question.id] === false) ?? []; return <article className="history-card" key={attempt.id}><div className="history-top"><span className="ticket-id">{attempt.ticketId} · Guided</span><span>{new Date(attempt.createdAt).toLocaleString('vi-VN')}</span></div><h3>{item ? customerSummary(item.customer_message) : attempt.ticketId}</h3><p>{attempt.note}</p>{missed.length > 0 && <details className="history-detail"><summary>{missed.length} câu cần xem lại</summary><ul>{missed.map(question => <li key={question.id}>{question.prompt}</li>)}</ul><button className="guided-secondary" onClick={() => setView('review')}>Mở Review Mistakes</button></details>}{!attempt.outcomes && <p className="muted">Lượt cũ chưa lưu kết quả từng câu; điểm tổng vẫn được giữ.</p>}<div className="history-foot"><span>{attempt.commands.filter(entry => entry.supported).length} probe · {attempt.hintLevel} gợi ý</span><strong>{attempt.score}/{attempt.total} câu khách quan</strong><button onClick={() => { setSelectedId(attempt.ticketId); setView('guided') }}>Mở bài <ArrowRight size={14} /></button></div></article> })}{progress.examAttempts.map(attempt => { const item = tickets.find(t => t.id === attempt.ticketId); return <article className="history-card" key={attempt.id}><div className="history-top"><span className="ticket-id">{attempt.ticketId} · Exam</span><span>{new Date(attempt.createdAt).toLocaleString('vi-VN')}</span></div><h3>{item ? customerSummary(item.customer_message) : attempt.ticketId}</h3><p>{attempt.form.hypothesis}</p><div className="history-foot"><span>{attempt.commands.filter(entry => entry.supported).length} fixture · không gợi ý</span><strong>{attempt.selfScore === undefined ? 'Chưa tự chấm' : `${attempt.selfScore}/10 · tự đánh giá`}</strong><button onClick={() => { setSelectedId(attempt.ticketId); setView('exam') }}>Mở Exam <ArrowRight size={14} /></button></div><details className="history-detail"><summary>Xem bản làm đã nộp</summary><div className="history-fields">{Object.entries(attempt.form).map(([key, value]) => <div key={key}><span>{key}</span><p>{value}</p></div>)}</div><div className="history-commands">{attempt.commands.map(entry => <div key={entry.id}><code>{entry.command}</code><pre>{entry.output}</pre></div>)}</div></details></article> })}{progress.attempts.map(attempt => { const item = tickets.find(t => t.id === attempt.ticketId); return <article className="history-card" key={attempt.id}><div className="history-top"><span className="ticket-id">{attempt.ticketId} · Practice</span><span>{new Date(attempt.createdAt).toLocaleString('vi-VN')}</span></div><h3>{item ? customerSummary(item.customer_message) : attempt.ticketId}</h3><p>{attempt.form.hypothesis || attempt.form.issue || 'Không có nội dung chẩn đoán'}</p><div className="history-foot"><span>{attempt.commands.length} bước điều tra</span><strong>{attempt.selfScore}/10 · tự đánh giá</strong><button onClick={() => openTicketFromHistory(attempt.ticketId)}>Mở ticket <ArrowRight size={14} /></button></div><details className="history-detail"><summary>Xem toàn bộ lượt làm</summary><div className="history-fields">{fieldMeta.map(field => <div key={field.key}><span>{field.label}</span><p>{attempt.form[field.key] || '—'}</p></div>)}</div><div className="history-commands"><strong>Command history</strong>{attempt.commands.length ? attempt.commands.map(entry => <div key={entry.id}><code>{entry.command}</code><pre>{entry.output}</pre></div>) : <p>Chưa chạy probe.</p>}</div></details></article> })}{!progress.attempts.length && !progress.guidedAttempts.length && !progress.examAttempts.length && <div className="empty-state"><History size={32} /><h3>Chưa có lượt làm bài</h3><p>Chọn một ticket và lưu lượt làm đầu tiên.</p><button className="primary-button" onClick={() => setView('workspace')}>Khám phá ticket <ArrowRight size={15} /></button></div>}</div></section>}
+        {view === 'settings' && <section className="subpage settings-page"><div className="eyebrow"><span className="eyebrow-line" /> DỮ LIỆU HỌC TẬP</div><h1>Cài đặt & dữ liệu</h1><p>Quản lý tiến độ được lưu trên trình duyệt này.</p><div className="settings-card"><div className="settings-icon"><ShieldCheck size={22} /></div><div><h3>Về bài học</h3><p>112 tình huống luyện tập. Lệnh và tác vụ kiểm tra chỉ hiển thị kết quả đã biên soạn, không kết nối hay thay đổi VPS thật.</p></div></div><div className="settings-card"><div className="settings-icon"><ArrowDownToLine size={22} /></div><div><h3>Sao lưu tiến độ</h3><p>Xuất file JSON để sao lưu ghi chú, lịch sử lệnh và các lượt học. Nhập lại file để khôi phục trên trình duyệt khác.</p><div className="settings-actions"><button onClick={exportProgress}><ArrowDownToLine size={16} /> Xuất tiến độ</button><button onClick={() => importRef.current?.click()}><Upload size={16} /> Nhập tiến độ</button><input ref={importRef} type="file" accept="application/json,.json" hidden onChange={event => importProgress(event.target.files?.[0])} /></div></div></div><div className="settings-card"><div className="settings-icon danger-icon"><RotateCcw size={22} /></div><div><h3>Xóa dữ liệu học tập</h3><p>Xóa toàn bộ tiến độ trên trình duyệt này. Hãy xuất file JSON nếu muốn giữ bản sao.</p><button className="danger-button" onClick={resetProgress}><RotateCcw size={16} /> Đặt lại tiến độ</button></div></div>{notice && <div className="notice" role="status">{notice}</div>}</section>}
       </main>
     </div>
   </div>
