@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Bảo vệ guest hiện tại, đối chiếu volume ID, backup scope và owner; chuyển storage reattach/restore đúng disk có duyệt. Xác minh: Đúng data volume gắn/mount, checksum hoặc app integrity và owner xác nhận dữ liệu.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

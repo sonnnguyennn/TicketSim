@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Ngắt/giữ NIC restored VM ở mạng cách ly qua đội ảo hóa, xác nhận owner và IP plan trước restore test. Xác minh: Production IP hoạt động ổn, restored VM dùng isolated network/IP riêng và dữ liệu restore được kiểm chứng.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

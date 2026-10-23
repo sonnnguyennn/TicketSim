@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS xuất hiện hai lần sau retry purchase.",
+    "Đọc P1 (PANEL: tasks) và P2 (PANEL: VM list); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Owner xác nhận VM đúng, billing/allocations được chỉnh và dữ liệu VM còn lại an toàn."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Backup tồn tại nhưng extract lỗi.",
+    "Đọc P1 (tar -tf /backup/app.tar) và P2 (sha256sum /backup/app.tar); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Checksum khớp baseline, archive list được và restore thử trên môi trường cách ly."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách thiếu đơn hàng hôm qua sau restore.",
+    "Đọc P1 (PANEL: restored backup) và P2 (PANEL: incident time); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Owner kiểm tra order set/integrity và ghi rõ RPO/data gap còn lại."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Restored VM gây conflict với production.",
+    "Đọc P1 (PANEL: restored VM NIC) và P2 (PANEL: live VM NIC); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Production IP hoạt động ổn, restored VM dùng isolated network/IP riêng và dữ liệu restore được kiểm chứng."
+  ]
+}

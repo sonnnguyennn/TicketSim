@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS nhận IP khác đơn hàng.",
+    "Đọc P1 (PANEL: order allocation) và P2 (ip -4 addr); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: IPAM, panel, guest IP/route và client reachability khớp kế hoạch được duyệt."
+  ]
+}
