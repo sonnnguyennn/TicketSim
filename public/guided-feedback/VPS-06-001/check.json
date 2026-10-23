@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Trạng thái máy ảo ở panel trả lời câu hỏi nguồn điện; DNS và dung lượng guest không thay thế được phép kiểm tra này.",
   "commandId": "virsh-dominfo",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Mục này cho biết VM đang Powered Off hay Running.",
+    "wrong1": "dig hỏi bản ghi DNS; một IP đúng vẫn không trả lời nếu VM đã tắt.",
+    "wrong2": "df đọc dung lượng trong guest và không cho biết trạng thái nguồn ở hypervisor."
   }
 }

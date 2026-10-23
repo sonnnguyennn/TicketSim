@@ -2,10 +2,10 @@
   "correctIds": [
     "refused"
   ],
-  "explanation": "Trước khi tìm nguyên nhân, hãy phân biệt connection refused với permission denied.",
+  "explanation": "Kết nối bị từ chối trước bước xác thực; cần kiểm tra dịch vụ và listener trước khi xét mật khẩu.",
   "optionFeedback": {
-    "auth": "Khách hàng chưa đi tới bước xác thực.",
-    "refused": "Đúng: “Connection refused” là lỗi ở bước thiết lập kết nối.",
-    "dns": "Ticket không nhắc tới lỗi DNS."
+    "auth": "Lỗi xác thực thường có Permission denied; ticket này báo Connection refused.",
+    "refused": "Connection refused mô tả thất bại khi mở kết nối, trước khi xác thực user.",
+    "dns": "Không có thông báo lỗi phân giải tên trong ticket; Connection refused thuộc bước kết nối."
   }
 }

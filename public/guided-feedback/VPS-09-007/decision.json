@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Bảo toàn auth/audit, xác minh owner/automation, chuyển security để containment, key rotation và forensic có duyệt. Xác minh: Security xác nhận phạm vi, access trái phép bị chặn theo change, key/audit được kiểm tra và monitoring sạch.",
+  "explanation": "Ưu tiên giữ auth/audit và chuyển security; containment cần đúng phạm vi, quyền và bảo toàn chứng cứ.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Đội security cần timeline, key và dữ liệu phiên để xử lý truy cập có thể trái phép.",
+    "unsafe": "Mất chứng cứ hoặc mất đường quản trị có thể cản điều tra và gây gián đoạn.",
+    "close": "Phiên kết thúc không chứng minh key/persistence đã được xử lý."
   }
 }

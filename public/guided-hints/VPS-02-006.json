@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: SSH tới VPS Singapore chậm ngẫu nhiên.",
-    "Đọc P1 (mtr -rw -c 20 203.0.113.20) và P2 (ping -c 20 203.0.113.20); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: TCP/SSH và end-to-end loss bình thường từ nguồn bị ảnh hưởng trong giờ từng lỗi."
+    "Khách báo gián đoạn, nên thời điểm và mạng nguồn của phép đo rất quan trọng.",
+    "So sánh tỷ lệ mất gói ở đích trong MTR với ping; ghi nguồn và thời gian đo.",
+    "Cả hai mẫu cùng nguồn mất 25% phản hồi, còn probe Singapore kết nối được. Điều này chưa chỉ ra router hay đoạn mạng gây lỗi."
   ]
 }

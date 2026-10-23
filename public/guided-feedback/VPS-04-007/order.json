@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Giữ timeline guest/node, chuyển đội có quyền rồi đo lại triệu chứng khách dưới tải tương đương.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Cần correlation thời gian trước khi đề xuất xử lý host.",
+    "verify": "Incident được đóng chưa thay thế số đo cải thiện của VM khách.",
+    "act": "Thay đổi placement hoặc tài nguyên phải do đội có quyền và kế hoạch quyết định."
   }
 }

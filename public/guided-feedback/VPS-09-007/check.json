@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Ở CentOS Stream 9, log unit sshd ghi sự kiện xác thực; Ubuntu thường dùng unit ssh và phải chọn đúng môi trường.",
   "commandId": "journalctl-unit",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Đọc log sshd trong ngày để tìm Accepted, user, IP và timestamp.",
+    "wrong1": "Dung lượng ổ đĩa không cho biết key nào vừa được SSH chấp nhận.",
+    "wrong2": "DNS của website không xác minh một phiên SSH root."
   }
 }

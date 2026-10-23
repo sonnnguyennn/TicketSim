@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đối chiếu audit actor và xác nhận owner muốn bật lại; chỉ chuyển yêu cầu start qua panel có quyền. Xác minh: Panel báo Running, guest boot xong và dịch vụ khách cần dùng phản hồi.",
+  "explanation": "Tắt có chủ đích không phải giấy phép cho support bật lại; cần xác nhận owner và kiểm tra dịch vụ sau start.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Xác minh người yêu cầu tránh bật máy đang được tắt có chủ đích hoặc bảo trì.",
+    "unsafe": "Start cần đúng quyền; reinstall còn có thể ghi đè dữ liệu và không cần thiết ở đây.",
+    "close": "Khách vẫn chưa sử dụng được VPS; cần làm rõ yêu cầu bật lại và xác minh kết quả."
   }
 }

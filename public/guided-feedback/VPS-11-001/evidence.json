@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Hai quan sát là tác vụ thất bại và quota đích bị vượt; chưa có kiểm tra restore.",
   "commandId": "backup-log",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Trạng thái được ghi trực tiếp trong bản tác vụ.",
+    "p2": "target quota exceeded nói tới hạn mức ở kho lưu.",
+    "over": "Không có kết quả xác minh hoặc thử khôi phục; failed không chứng minh bản mới dùng được."
   }
 }

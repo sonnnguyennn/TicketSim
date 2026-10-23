@@ -92,7 +92,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
 test('SSH Guided keeps exact outputs, neutral errors, library return and grading through completion', async ({ page }) => {
   const item = caseFor('VPS-01-001')
   const answerRequests: string[] = []
-  page.on('request', request => { if (request.url().includes('/answers/VPS-01-001.json')) answerRequests.push(request.url()) })
+  page.on('request', request => { if (request.url().includes('/guided-answers/VPS-01-001.json')) answerRequests.push(request.url()) })
   await page.goto('/')
   await openTicket(page, item.id)
   await answerQuestion(page, item, item.questions.find(question => question.stage === 'triage')!, true)

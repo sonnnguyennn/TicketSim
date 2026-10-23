@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Auth log và last ghi nhận root đăng nhập thành công từ 203.0.113.77. IP không có trong inventory hiện tại; tính được phép và danh tính người dùng key chưa được xác minh.",
+  "recommended_next_checks": "Giữ timestamp, fingerprint, auth/audit và dữ liệu phiên; đối chiếu owner, bastion, automation và change record với security.",
+  "resolution_guidance": "Chuyển security khẩn để đánh giá phạm vi và phê duyệt containment/key rotation theo quy trình ứng phó sự cố. Không tự kết luận attacker từ IP.",
+  "verification": "Security đối chiếu được các phiên và key, đánh giá persistence/phạm vi ảnh hưởng và theo dõi truy cập sau containment; logout không đủ chứng minh hệ thống sạch.",
+  "escalate_when": "Chuyển security ngay với timeline, IP, fingerprint và dữ liệu đã bảo toàn; thông báo owner theo quy trình.",
+  "production_warning": "Không xóa log, tự wipe/reboot hoặc khóa đường quản trị duy nhất trước khi có kế hoạch bảo toàn chứng cứ và containment.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

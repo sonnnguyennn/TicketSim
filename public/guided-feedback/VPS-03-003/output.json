@@ -2,11 +2,11 @@
   "correctIds": [
     "syntax"
   ],
-  "explanation": "Đối chiếu dòng và diff để sửa đúng chỗ; không đoán toàn bộ hệ thống.",
+  "explanation": "Vị trí parser phát hiện lỗi giúp khoanh vùng file; dấu ngoặc mất ở đoạn trước cũng có thể dẫn đến lỗi tại dòng này.",
   "commandId": "nginx-test",
   "optionFeedback": {
-    "syntax": "Đúng: nginx -t xác định file/dòng/token.",
-    "healthy": "P2 báo lỗi cú pháp.",
-    "all": "Output chỉ nói về config Nginx."
+    "syntax": "Thông báo test failed xác nhận kiểm tra cấu hình chưa qua.",
+    "healthy": "nginx -t báo test failed; chưa thể coi cấu hình hợp lệ hoặc quy lỗi mạng.",
+    "all": "Một lỗi cú pháp ở file cấu hình không kiểm tra tính toàn vẹn của mọi file."
   }
 }

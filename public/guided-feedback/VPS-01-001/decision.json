@@ -2,11 +2,11 @@
   "correctIds": [
     "logs"
   ],
-  "explanation": "Chỉ mô phỏng start khi đã xem bằng chứng, kiểm tra log và xác nhận quyền; sau đó phải xác minh lại.",
+  "explanation": "Cần tìm nguyên nhân và xác nhận quyền quản trị dịch vụ; sau thay đổi phải kiểm tra lại từ phía client.",
   "commandId": "journalctl-unit",
   "optionFeedback": {
-    "restart": "Thay đổi service cần kiểm tra nguyên nhân và quyền hạn trước.",
-    "logs": "Đúng: điều tra nguyên nhân và xác minh sau hành động.",
-    "ignore": "Connection refused xảy ra trước xác thực."
+    "restart": "Restart là thay đổi dịch vụ và có thể ảnh hưởng phiên đang dùng; trạng thái hiện tại chưa giải thích vì sao dừng.",
+    "logs": "Chuỗi này bổ sung bằng chứng, giữ quyền thao tác và xác minh đúng triệu chứng khách báo.",
+    "ignore": "Đổi mật khẩu không xử lý việc dịch vụ chưa nhận kết nối TCP."
   }
 }

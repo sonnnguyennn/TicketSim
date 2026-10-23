@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Yêu cầu là kiểm tra một lần backup chưa hoàn tất; chưa có thông tin VPS bị tắt hoặc mất dữ liệu.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đúng với điều khách báo; cần mở tác vụ tương ứng để kiểm tra.",
+    "other": "Khách không báo lỗi khởi động; đây là sự cố khác với lần backup chưa hoàn tất.",
+    "cause": "Khách chỉ mô tả kết quả. Muốn xác nhận quota phải đọc log và dung lượng kho."
   }
 }

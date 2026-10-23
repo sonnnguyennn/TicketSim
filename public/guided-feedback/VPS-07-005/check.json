@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Kết nối tới 443 với đúng SNI rồi đọc cert được gửi; ngày trong inventory không thay thế kết quả từ endpoint.",
   "commandId": "openssl-sni",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "s_client lấy cert theo SNI; x509-dates in notBefore và notAfter.",
+    "wrong1": "df đo dung lượng filesystem; không đọc cert gửi qua TLS.",
+    "wrong2": "Bảng route cho biết đường IP; không chứa ngày hết hạn cert."
   }
 }

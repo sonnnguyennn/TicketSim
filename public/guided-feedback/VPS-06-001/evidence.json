@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Power state mô tả hiện tại; event log bổ sung sự kiện trước đó, chưa xác nhận ý định của owner.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Đây là trạng thái máy ảo được panel ghi nhận.",
+    "p2": "Event log có thời điểm và loại yêu cầu shutdown.",
+    "over": "Không có cảnh báo host hoặc lỗi phần cứng trong hai mục được hỏi."
   }
 }

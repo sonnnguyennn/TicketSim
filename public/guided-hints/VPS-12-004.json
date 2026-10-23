@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Panel 4 vCPU nhưng guest thấy 2.",
-    "Đọc P1 (PANEL: plan) và P2 (nproc); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Host và guest thấy 4 online vCPU, workload bình thường và panel đồng bộ."
+    "Số CPU của gói dịch vụ và số CPU guest đang sử dụng không phải cùng một phép đo.",
+    "So PANEL: plan với nproc; sau đó xem current_vcpus, max_vcpus và tác vụ cập nhật.",
+    "nproc đếm CPU sẵn dùng cho tiến trình, có thể chịu giới hạn affinity. current_vcpus=2 và update_task=pending cần đội ảo hóa kiểm tra."
   ]
 }

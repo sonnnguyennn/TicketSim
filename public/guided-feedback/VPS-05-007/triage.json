@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Khách báo vấn đề khởi động và lưu trữ, nên cần giữ hiện trạng để điều tra thay vì coi là lỗi website riêng.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đây là phạm vi sự cố khách báo; chưa xác định mức hỏng dữ liệu.",
+    "other": "Không phải triệu chứng được nêu; rescue ảnh hưởng cả quá trình boot.",
+    "cause": "Chưa có sức khỏe thiết bị hoặc telemetry host để kết luận ổ vật lý."
   }
 }

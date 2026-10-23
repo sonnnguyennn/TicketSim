@@ -1,0 +1,155 @@
+[
+  {
+    "ticketId": "VPS-01-001",
+    "probeId": "P2",
+    "beforeCommand": "ss -ltnp",
+    "command": "ss -ltnp",
+    "before": "No listener on :22",
+    "after": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process",
+    "reason": "No listener on :22 là diễn giải, không phải stdout ss; thay bằng bảng không có listener.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html",
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-01-001",
+    "probeId": "G2",
+    "beforeCommand": "df -h /",
+    "command": "df -h /",
+    "before": "/dev/vda1 20G 8G 12G 40% /",
+    "after": "Filesystem     Size  Used Avail Use% Mounted on\n/dev/vda1       20G  8.0G   12G  40% /",
+    "reason": "Bổ sung tiêu đề df cho mẫu cùng dung lượng, không đổi kết luận.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html",
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-003",
+    "probeId": "P2",
+    "beforeCommand": "nginx -t",
+    "command": "nginx -t",
+    "before": "unexpected \"}\" in /etc/nginx/nginx.conf:45",
+    "after": "nginx: [emerg] unexpected \"}\" in /etc/nginx/nginx.conf:45\nnginx: configuration file /etc/nginx/nginx.conf test failed",
+    "reason": "Thêm prefix nginx [emerg] và dòng test failed đúng dạng stderr kiểm tra cấu hình.",
+    "references": [
+      "https://nginx.org/en/docs/switches.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-003",
+    "probeId": "P1",
+    "beforeCommand": "dig example.test NS",
+    "command": "dig example.test NS",
+    "before": "ns1.old-dns.example; ns2.old-dns.example",
+    "after": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40318\n;; ANSWER SECTION:\nexample.test. 300 IN NS ns1.old-dns.example.\nexample.test. 300 IN NS ns2.old-dns.example.",
+    "reason": "Dòng NS phân cách dấu chấm phẩy là mô tả, không phải dạng dig; thay bằng header và NS record có owner/type.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-007",
+    "probeId": "P2",
+    "beforeCommand": "systemctl --failed",
+    "command": "systemctl --failed",
+    "before": "systemd-fsck@dev-vda1.service failed",
+    "after": "  UNIT                              LOAD   ACTIVE SUB    DESCRIPTION\n● systemd-fsck@dev-vda1.service      loaded failed failed File System Check on /dev/vda1\n\n1 loaded units listed.",
+    "reason": "Thay mô tả unit failed bằng bảng systemctl --failed, giữ unit và trạng thái.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemd-fsck@.service.html",
+      "https://man7.org/linux/man-pages/man8/e2fsck.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-006",
+    "probeId": "P1",
+    "beforeCommand": "mtr -rw -c 20 203.0.113.20",
+    "command": "mtr -rw -c 20 203.0.113.20",
+    "before": "Destination 203.0.113.20 Loss% 25.0 Avg 190ms",
+    "after": "HOST: client                         Loss%   Snt   Last   Avg  Best  Wrst StDev\n  1.|-- 192.0.2.1                      0.0%    20    2.1   2.0   1.2   3.4   0.4\n  2.|-- 203.0.113.20                  25.0%    20  191.0 190.0 182.0 205.0   6.1",
+    "reason": "Thay dòng mô tả Destination bằng bảng báo cáo MTR có Snt/Loss%.",
+    "references": [
+      "https://github.com/traviscross/mtr/blob/master/man/mtr.8.in",
+      "https://man7.org/linux/man-pages/man8/ping.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-006",
+    "probeId": "P2",
+    "beforeCommand": "ping -c 20 203.0.113.20",
+    "command": "ping -c 20 203.0.113.20",
+    "before": "5 packets lost, 25% packet loss",
+    "after": "--- 203.0.113.20 ping statistics ---\n20 packets transmitted, 15 received, 25% packet loss, time 19025ms\nrtt min/avg/max/mdev = 182.000/190.000/205.000/6.100 ms",
+    "reason": "Thay câu 5 packets lost bằng thống kê ping transmitted/received chuẩn; tỷ lệ không đổi.",
+    "references": [
+      "https://github.com/traviscross/mtr/blob/master/man/mtr.8.in",
+      "https://man7.org/linux/man-pages/man8/ping.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-007",
+    "probeId": "G1",
+    "beforeCommand": "vmstat 1 2",
+    "command": "vmstat 1 2",
+    "before": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 2  0    0 85240 18000 102400 0  0  0  0 240 320 5 4 41 0 50",
+    "after": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 2  0    0 85240 18000 102400 0 0 0 0 240 320 5 4 41 0 50\n 2  0    0 85240 18000 102400 0 0 0 0 242 325 5 4 41 0 50",
+    "reason": "vmstat 1 2 phải có hai dòng số; thêm khoảng đo thứ hai và giải thích dòng since-boot.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/vmstat.8.html",
+      "https://man7.org/linux/man-pages/man1/top.1.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-07-005",
+    "probeId": "P1",
+    "beforeCommand": "echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null | openssl x509 -noout -dates",
+    "command": "echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null | openssl x509 -noout -dates",
+    "before": "notAfter=Sep 01 00:00:00 2026 GMT",
+    "after": "notBefore=Jun  3 00:00:00 2026 GMT\nnotAfter=Sep  1 00:00:00 2026 GMT",
+    "reason": "Lệnh x509-noout-dates in cả notBefore và notAfter, thay fragment thiếu dòng đầu.",
+    "references": [
+      "https://docs.openssl.org/3.0/man1/openssl-x509/"
+    ]
+  },
+  {
+    "ticketId": "VPS-10-005",
+    "probeId": "P1",
+    "beforeCommand": "lsblk",
+    "command": "lsblk",
+    "before": "vda 25G only",
+    "after": "NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda  252:0    0  25G  0 disk",
+    "reason": "Source vda 25G only là mô tả tiếng Anh, thay bằng bảng NAME/SIZE/TYPE lsblk tối thiểu.",
+    "references": [
+      "https://libvirt.org/manpages/virsh.html",
+      "https://man7.org/linux/man-pages/man8/lsblk.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-09-007",
+    "probeId": "P1",
+    "beforeCommand": "journalctl -u sshd --since today",
+    "command": "journalctl -u sshd --since today",
+    "before": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:AbCdEf123456",
+    "after": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
+    "reason": "Fingerprint mẫu ban đầu quá ngắn so với SHA256 fingerprint OpenSSH; thay chuỗi mẫu 43 ký tự.",
+    "references": [
+      "https://www.openssh.com/manual.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-09-007",
+    "probeId": "G1",
+    "beforeCommand": "journalctl -u sshd --since \"2026-10-22 00:00:00\" --no-pager",
+    "command": "journalctl -u sshd --since \"2026-10-22 00:00:00\" --no-pager",
+    "before": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:AbCdEf123456",
+    "after": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
+    "reason": "Đồng bộ fingerprint cùng sự kiện ở cửa sổ log cố định.",
+    "references": [
+      "https://www.openssh.com/manual.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  }
+]

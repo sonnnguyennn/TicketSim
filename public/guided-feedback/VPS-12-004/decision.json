@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đối chiếu libvirt vCPU current/max và guest online CPUs; chuyển ảo hóa nếu config chưa áp, lên change nếu cần downtime. Xác minh: Host và guest thấy 4 online vCPU, workload bình thường và panel đồng bộ.",
+  "explanation": "Phân biệt current với maximum trước khi lập change; cần đội ảo hóa xác nhận hotplug hoặc downtime, không tự reboot production.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Đội có quyền host đánh giá khả năng áp cấu hình; phía guest vẫn cần kiểm tra CPU offline và affinity.",
+    "unsafe": "Có gián đoạn mà chưa bảo đảm host cấp CPU mới; thiếu phê duyệt và kế hoạch.",
+    "close": "Plan đúng chưa giải quyết việc guest chỉ dùng được 2 CPU."
   }
 }

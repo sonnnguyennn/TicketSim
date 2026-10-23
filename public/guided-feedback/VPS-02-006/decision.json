@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu source IP, thời gian, nhiều đợt MTR và phép TCP từ nguồn bị ảnh hưởng; chuyển đội network nếu loss lặp lại. Xác minh: TCP/SSH và end-to-end loss bình thường từ nguồn bị ảnh hưởng trong giờ từng lỗi.",
+  "explanation": "Đội mạng cần các đường đo có thể đối chiếu theo nguồn và thời gian; đổi route guest trước khi định vị có thể tạo sự cố mới.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Giữ được đường và cửa sổ bị ảnh hưởng để so với probe khác và telemetry.",
+    "unsafe": "Chưa có bằng chứng route/firewall guest sai, và thay đổi có thể mất truy cập.",
+    "close": "Khách vẫn gặp lỗi trên đường khác; phải xác minh từ chính mạng bị ảnh hưởng."
   }
 }

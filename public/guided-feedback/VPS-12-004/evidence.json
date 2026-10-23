@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Chỉ chọn số của gói và kết quả nproc; chưa suy ra hành động phục hồi.",
   "commandId": "nproc",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Đây là thông số được đọc từ gói dịch vụ.",
+    "p2": "Đây là CPU sẵn dùng cho tiến trình nproc tại lúc đo; chưa khẳng định toàn bộ CPU vật lý hay tối đa của VM.",
+    "over": "Chưa có CPU online list hay bằng chứng host đã cấp current=4."
   }
 }

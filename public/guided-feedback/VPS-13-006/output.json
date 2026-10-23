@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Route container có, host IPv4 forwarding off; đây là một nguyên nhân khả dĩ, cần kiểm tra NAT/policy trước change.",
+  "explanation": "Forwarding bị tắt có thể ngăn egress bridge; vẫn cần kiểm tra NAT/firewall và yêu cầu policy trước thay đổi.",
   "commandId": "sysctl-read",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Hai lớp khác nhau: route hướng gói tới host, forwarding quyết định host có chuyển gói đi tiếp.",
+    "over": "Bật forwarding không tự chứng minh rule NAT và filter đã đúng.",
+    "ignore": "Default route mới đưa gói tới host; host vẫn phải được phép chuyển tiếp sang mạng ngoài."
   }
 }

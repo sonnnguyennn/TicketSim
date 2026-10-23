@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Lỗi xảy ra trước hay sau khi nhập thông tin đăng nhập?",
-    "Trong guest, hãy kiểm tra trạng thái sshd và cổng TCP/22.",
-    "Dùng systemctl status sshd, rồi ss -ltnp; giải thích điều mỗi output thực sự chứng minh."
+    "Connection refused xuất hiện trước khi nhập mật khẩu. Hãy bắt đầu ở dịch vụ và cổng SSH.",
+    "Từ console VPS, đọc trạng thái sshd rồi xem listener TCP/22 bằng ss -ltnp.",
+    "inactive cùng việc không thấy listener phù hợp với lỗi kết nối bị từ chối; journal mới giúp tìm vì sao dịch vụ dừng."
   ]
 }

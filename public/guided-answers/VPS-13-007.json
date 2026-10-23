@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "DB container failed due to memory allocation issue.",
+  "recommended_next_checks": "Check container resources, MariaDB settings, available RAM.",
+  "resolution_guidance": "Resolve DB resource issue before app restart.",
+  "verification": "Database and app healthchecks pass.",
+  "escalate_when": "Production database/data safety.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

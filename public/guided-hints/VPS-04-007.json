@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VM chậm khi process trong guest dùng ít CPU.",
-    "Đọc P1 (top -b -n1 | head -n 5) và P2 (PANEL: node metrics); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Steal giảm và latency ứng dụng bình thường sau xử lý của hạ tầng."
+    "CPU user thấp không có nghĩa máy ảo được cấp đủ thời gian CPU; tìm cột st.",
+    "Đối chiếu steal trong guest với cửa sổ cảnh báo node và các VM cùng bị ảnh hưởng.",
+    "st cao cùng cảnh báo node hỗ trợ hướng điều tra host, nhưng không xác định VM nào gây ra hay tự cho phép migration."
   ]
 }

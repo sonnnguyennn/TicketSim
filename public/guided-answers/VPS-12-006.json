@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Allocated address and guest configuration mismatch.",
+  "recommended_next_checks": "Check IPAM assignment, cloud-init/network profile and host mapping.",
+  "resolution_guidance": "Correct provisioning config via approved workflow.",
+  "verification": "Panel/guest/route match; client connects.",
+  "escalate_when": "IPAM or edge routing team.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

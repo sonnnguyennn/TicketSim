@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Khách báo successful login, không chỉ thử mật khẩu; cần xác minh quyền và bảo toàn dữ liệu liên quan.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Một phiên quyền root có thể ảnh hưởng rộng nên cần xác minh authorization.",
+    "other": "Failed login khác Accepted publickey và không mô tả điều khách đang hỏi.",
+    "cause": "IP nguồn không đủ gán danh tính và chưa biết đây có phải automation được duyệt."
   }
 }

@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Nginx denies directory listing with no index file.",
+  "recommended_next_checks": "Review nginx root/index config and document root content.",
+  "resolution_guidance": "Deploy proper index or adjust app route after owner approval.",
+  "verification": "Expected page loads without opening unnecessary directory listing.",
+  "escalate_when": "Access control is intentional.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

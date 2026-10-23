@@ -2,11 +2,11 @@
   "correctIds": [
     "review"
   ],
-  "explanation": "Fixture không mô phỏng việc sửa file hay service.",
+  "explanation": "Xem diff hoặc bản tốt giúp sửa đúng thay đổi; chỉ start/reload sau test qua và có quyền, rồi kiểm tra HTTP.",
   "commandId": "nginx-test",
   "optionFeedback": {
-    "review": "Đúng: kiểm tra cấu hình và tác động trước khi đổi service.",
-    "delete": "Có nguy cơ mất cấu hình và không có cơ sở.",
-    "restart": "Lỗi cú pháp chưa được giải quyết."
+    "review": "Giữ bản cũ, kiểm tra thay đổi và xác minh ở tầng request thay vì chỉ nhìn unit.",
+    "delete": "Nginx không tự khôi phục cấu hình ứng dụng khi xóa file; có thể mất vhost và đường dẫn.",
+    "restart": "Cú pháp sai vẫn khiến lần khởi động tiếp theo thất bại."
   }
 }

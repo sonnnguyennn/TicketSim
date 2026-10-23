@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Gói dịch vụ là thông tin cấp phát ở panel; phải tách khỏi việc CPU nào đang online hoặc được tiến trình sử dụng.",
   "commandId": "panel-provision-task",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Mục này xác nhận số vCPU của gói mà khách đã mua.",
+    "wrong1": "Lệnh đo CPU tiến trình guest sử dụng được, không đọc số vCPU cam kết trong gói.",
+    "wrong2": "Lệnh xem thông tin CPU trong guest; cần panel để xác nhận thông số gói đã mua."
   }
 }

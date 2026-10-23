@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Hai nguồn khớp hỗ trợ sự kiện truy cập, không thay cho điều tra ai thực hiện và làm gì.",
   "commandId": "last-logins",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Auth log ghi cách xác thực, user và địa chỉ nguồn.",
+    "p2": "Dữ liệu phiên củng cố timeline trong auth log.",
+    "over": "Chưa đối chiếu key/owner hay hoạt động sau đăng nhập."
   }
 }

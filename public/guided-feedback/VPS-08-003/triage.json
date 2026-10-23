@@ -2,10 +2,10 @@
   "correctIds": [
     "old"
   ],
-  "explanation": "Ghi hiện tượng trước khi gán nguyên nhân propagation.",
+  "explanation": "Triệu chứng là người dùng còn thấy IP cũ; chưa biết nguyên nhân nằm ở delegation, zone hay cache.",
   "optionFeedback": {
-    "old": "Đúng: cần kiểm tra nơi có thẩm quyền và cache.",
-    "ssh": "Ticket không nói SSH.",
-    "disk": "Không có triệu chứng disk."
+    "old": "Đây là kết quả khách muốn khắc phục sau thay đổi DNS.",
+    "ssh": "Permission denied không phải hiện tượng khách báo trong ticket DNS này.",
+    "disk": "Ticket không có thông tin dung lượng filesystem."
   }
 }

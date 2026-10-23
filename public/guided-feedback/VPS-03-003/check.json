@@ -2,11 +2,11 @@
   "correctIds": [
     "test"
   ],
-  "explanation": "Kiểm tra cú pháp trước khi đề xuất reload/start.",
+  "explanation": "nginx -t kiểm tra cú pháp và khả năng mở file liên quan; không khởi động dịch vụ.",
   "commandId": "nginx-test",
   "optionFeedback": {
-    "test": "Đúng: kiểm tra config mà không restart service.",
-    "restart": "Restart thay đổi trạng thái khi chưa biết lỗi.",
-    "disk": "Disk có thể cần điều tra trong case khác, nhưng chưa trực tiếp với chỉnh config."
+    "test": "-t kiểm tra cấu hình Nginx thay vì thay đổi trạng thái service.",
+    "restart": "Restart tác động dịch vụ nhưng không giải quyết cú pháp đang sai.",
+    "disk": "df đo dung lượng filesystem, không kiểm tra cấu trúc file nginx.conf."
   }
 }

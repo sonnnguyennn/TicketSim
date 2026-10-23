@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, BookOpen, Check, Lightbulb, RotateCcw, Terminal } from 'lucide-react'
-import { answerUrl, isAnswer } from '../lib'
+import { isAnswer } from '../lib'
 import type { Answer, CommandEntry, GuidedDraft, Progress, Ticket } from '../types'
 import { classifyGuidedCommand, emptyGuidedDraft, gradeSelection, objectiveScore, stageComplete, STAGES } from './engine'
 import { commandLibrary } from './commands'
@@ -52,7 +52,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
   useEffect(() => {
     if (!draft.submitted) return
     let active = true
-    fetch(answerUrl(ticket.id)).then(response => response.json()).then((value: unknown) => { if (active && isAnswer(value)) setAnswer(value) }).catch(() => { if (active) setError('Không tải được đáp án mẫu.') })
+    fetch(`${import.meta.env.BASE_URL}guided-answers/${ticket.id}.json`).then(response => response.json()).then((value: unknown) => { if (active && isAnswer(value)) setAnswer(value) }).catch(() => { if (active) setError('Không tải được đáp án mẫu.') })
     return () => { active = false }
   }, [draft.submitted, ticket.id])
 
@@ -132,7 +132,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
     <header className="guided-heading"><div><h1>{ticket.topic_vi}</h1><p>{guidedCase.objective}</p></div><button className="guided-secondary" onClick={() => onOpenLibrary()}><BookOpen size={16} /> Thư viện lệnh</button></header>
     <nav className="guided-steps" aria-label="Các bước bài học">{STAGES.map((item, index) => <button key={item.id} className={index === draft.stage ? 'current' : index < draft.stage ? 'done' : ''} aria-current={index === draft.stage ? 'step' : undefined} onClick={() => { if (index <= draft.stage) update({ stage: index }) }} disabled={index > draft.stage}><span>{index < draft.stage ? <Check size={13} /> : index + 1}</span>{item.label}</button>)}</nav>
     <div className="guided-main">
-      {stage.id === 'triage' ? <section className="guided-card guided-ticket"><h2>Lời khách hàng</h2><p>{ticket.customer_message}</p>{guidedCase.customerFollowup && <p className="customer-followup">{guidedCase.customerFollowup}</p>}</section> : <details className="guided-customer" key={stage.id}><summary>Xem lời khách hàng</summary><p>{ticket.customer_message}</p>{guidedCase.customerFollowup && <p>{guidedCase.customerFollowup}</p>}</details>}
+      {stage.id === 'triage' ? <section className="guided-card guided-ticket"><h2>Lời khách hàng</h2>{guidedCase.customerExplanation && <p className="customer-explanation">{guidedCase.customerExplanation}</p>}<p>{ticket.customer_message}</p>{guidedCase.customerFollowup && <p className="customer-followup">{guidedCase.customerFollowup}</p>}</section> : <details className="guided-customer" key={stage.id}><summary>Xem lời khách hàng</summary>{guidedCase.customerExplanation && <p className="customer-explanation">{guidedCase.customerExplanation}</p>}<p>{ticket.customer_message}</p>{guidedCase.customerFollowup && <p>{guidedCase.customerFollowup}</p>}</details>}
       {(stage.id === 'interpret' || stage.id === 'decide') && <details className="guided-reference"><summary>Bằng chứng đã thu thập · {evidence.length} kết quả</summary>{evidence.map(entry => {
         const probe = guidedCase.probes.find(item => item.id === entry.probeId)
         return <details key={entry.id}><summary><span>{probe ? contextLabel(probe.context) : 'Đã kiểm tra'}</span> <code>{entry.command}</code></summary><pre>{entry.output}</pre>{entry.output === '' && <p>Không có output.</p>}{probe && <p>{probe.meaning}</p>}</details>
@@ -150,7 +150,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
             return <div className="terminal-entry" key={entry.id} data-probe-id={entry.probeId}>
               <div className="terminal-command"><span>{probe ? contextLabel(probe.context) : entry.kind === 'investigation' ? 'Tác vụ' : 'Lệnh đã nhập'}</span><code>{probe?.context !== 'panel' ? '$ ' : ''}{entry.command}</code></div>
               {entry.supported ? <><pre>{entry.output}</pre>{entry.output === '' && <p className="terminal-empty-output">Không có output. Chưa đủ để kết luận nguyên nhân.</p>}</> : <p className="terminal-message">{entry.output}</p>}
-              {entry.supported && probe && <dl className="terminal-explanation"><div><dt>Kiểm tra gì?</dt><dd>{probe.purpose}</dd></div><div><dt>Cách đọc</dt><dd>{probe.meaning}</dd></div></dl>}
+              {entry.supported && probe && <dl className="terminal-explanation"><div><dt>Kiểm tra gì?</dt><dd>{probe.purpose}</dd></div>{probe.why && <div><dt>Vì sao dùng?</dt><dd>{probe.why}</dd></div>}<div><dt>Cách đọc</dt><dd>{probe.meaning}</dd></div></dl>}
             </div>
           }) : <p className="terminal-empty">Chọn hoặc nhập lệnh để kiểm tra.</p>}
         </div>

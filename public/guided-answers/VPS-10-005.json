@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Data disk không có trong guest và domblklist. Inventory còn vol-72 available; task migration ghi attach skipped. Điều này chỉ ra attachment còn thiếu, chưa chứng minh volume bị xóa hoặc dữ liệu nguyên vẹn.",
+  "recommended_next_checks": "Đối chiếu VM ID, volume ID, snapshot, lịch sử attachment và mapping host; xác nhận app không ghi vào thư mục thay thế trên OS disk.",
+  "resolution_guidance": "Chuyển đội storage/virtualization khôi phục attachment đúng volume qua change được duyệt, bảo toàn dữ liệu hiện tại và kiểm tra integrity.",
+  "verification": "Kiểm tra đúng volume ID, thiết bị, filesystem/mount /data và các bản ghi/chức năng ứng dụng; thấy vdb đơn thuần chưa đủ.",
+  "escalate_when": "Chuyển storage/virtualization khi thiếu attachment, mapping không rõ hoặc integrity review chưa hoàn thành.",
+  "production_warning": "Không mkfs, tạo volume thay thế hay gắn một disk chỉ vì tên/path giống; có thể phá dữ liệu hoặc gắn nhầm volume.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

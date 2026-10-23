@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Hypervisor datastore has insufficient free capacity.",
+  "recommended_next_checks": "Check storage pool health, snapshot chains and capacity.",
+  "resolution_guidance": "Escalate datastore capacity; do not delete snapshots blindly.",
+  "verification": "Snapshot succeeds and datastore headroom restored.",
+  "escalate_when": "Storage/virtualization team.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

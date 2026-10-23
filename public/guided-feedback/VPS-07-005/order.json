@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Đọc cert đang phục vụ trước, triển khai có kiểm soát sau, rồi xác minh lại từ phía client.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Biết đúng cert đang phục vụ và mốc thời gian trước khi chọn cert thay thế.",
+    "verify": "Cert mới trong panel chưa đủ; phải kiểm tra kết quả TLS và nội dung website.",
+    "act": "Deployment cần quyền, kiểm tra cấu hình và rollback trước reload."
   }
 }

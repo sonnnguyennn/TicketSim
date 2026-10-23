@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Steal cao đồng thời node alert; nhiều khả năng tranh chấp host, nhưng cần xác nhận timeline và VM khác.",
+  "explanation": "Bằng chứng guest và node cùng hỗ trợ vấn đề cấp CPU ở host; vẫn cần đội hạ tầng xác nhận diễn biến và hành động.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Steal cao đi cùng cảnh báo node, phù hợp điều tra scheduling/capacity host.",
+    "over": "Không có danh tính VM gây tranh chấp hoặc phê duyệt thay placement.",
+    "ignore": "CPU user thấp không phủ nhận st cao hoặc độ trễ mà khách quan sát."
   }
 }

@@ -8,6 +8,7 @@ import { emptyProgress } from '../lib'
 import type { GuidedCase } from './types'
 
 const cases = guidedPublic as GuidedCase[]
+const reviewedFixtures = JSON.parse(fs.readFileSync('qa/phase-b-fixture-changes.json', 'utf8')) as { ticketId: string; probeId: string; after: string; command: string }[]
 
 describe('Guided content', () => {
   it('provides one hundred and twelve Guided cases without answer keys in the initial payload', () => {
@@ -17,11 +18,15 @@ describe('Guided content', () => {
     for (const item of cases) {
       expect(item.probes.length).toBeGreaterThanOrEqual(2)
       const original = (JSON.parse(fs.readFileSync('starter-data/tickets.json', 'utf8')).tickets as { id: string; probe_outputs: { stdout: string }[] }[]).find(ticket => ticket.id === item.id)!
-      if (item.id === 'VPS-05-008') expect(item.probes[0].output).toContain('vgdata-lvdata 30G')
+      const reviewedFirst = reviewedFixtures.find(fixture => fixture.ticketId === item.id && fixture.probeId === 'P1')
+      const reviewedSecond = reviewedFixtures.find(fixture => fixture.ticketId === item.id && fixture.probeId === 'P2')
+      if (reviewedFirst) expect(item.probes[0].output).toBe(reviewedFirst.after)
+      else if (item.id === 'VPS-05-008') expect(item.probes[0].output).toContain('vgdata-lvdata 30G')
       else if (item.id === 'VPS-10-008') expect(item.probes[0].output).toContain('System clock synchronized: no')
       else if (['VPS-09-001', 'VPS-09-007', 'VPS-13-005', 'VPS-13-007', 'VPS-11-003'].includes(item.id)) expect(item.probes[0].output).not.toBe(original.probe_outputs[0].stdout)
       else expect(item.probes[0].output).toBe(original.probe_outputs[0].stdout)
-      if (item.id === 'VPS-07-007') {
+      if (reviewedSecond) expect(item.probes[1].output).toBe(reviewedSecond.after)
+      else if (item.id === 'VPS-07-007') {
         expect(original.probe_outputs[1].stdout).toBe('server_name shop.example.com missing')
         expect(item.probes[1].output).toContain('# configuration file /etc/nginx/conf.d/api.conf:')
         expect(item.probes[1].output).not.toContain('missing')

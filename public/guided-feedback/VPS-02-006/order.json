@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Cần có mẫu đúng phạm vi trước escalation, rồi xác minh lại đường của khách sau xử lý.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Đây là cơ sở để phân biệt lỗi theo đường đi với một mẫu đơn lẻ.",
+    "verify": "Mạng từng bị chậm phải được kiểm tra lại; một probe khác không thay thế.",
+    "act": "Escalation diễn ra sau khi có dữ liệu đủ để điều tra, không phải đổi route mù."
   }
 }

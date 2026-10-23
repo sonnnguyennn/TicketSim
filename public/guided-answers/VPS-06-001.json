@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Panel ghi máy ảo đã tắt và có yêu cầu shutdown từ tài khoản owner. Chưa có bằng chứng host hỏng hoặc shutdown ngoài ý muốn.",
+  "recommended_next_checks": "Đối chiếu request ID, tài khoản và thời điểm shutdown; xác nhận người có quyền muốn bật lại.",
+  "resolution_guidance": "Chỉ chuyển yêu cầu start qua người có quyền khi đã xác minh owner và không còn tác vụ bảo trì yêu cầu máy tắt.",
+  "verification": "Kiểm tra panel Running, guest khởi động xong và dịch vụ khách cần dùng phản hồi từ client.",
+  "escalate_when": "Chuyển đội ảo hóa nếu shutdown không có giải thích, lặp lại hoặc VM không khởi động sau yêu cầu được duyệt.",
+  "production_warning": "Không tự bật máy đang được tắt có chủ đích; không reinstall để chữa tình trạng Powered Off.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu nhiều mẫu steal, latency và node metrics; mở incident cho hạ tầng đánh giá placement/capacity. Xác minh: Steal giảm và latency ứng dụng bình thường sau xử lý của hạ tầng.",
+  "explanation": "Cần chuyển bằng chứng theo thời gian cho đội quản lý node; guest support không tự thay placement của VM.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Đội node có telemetry và quyền xử lý capacity; mẫu từ guest giúp xác minh ảnh hưởng.",
+    "unsafe": "Có rủi ro gián đoạn và nằm ngoài quyền khi chưa có kế hoạch hay phê duyệt.",
+    "close": "Đây chính là tình huống khách báo; chưa xác minh st và độ trễ đã cải thiện."
   }
 }

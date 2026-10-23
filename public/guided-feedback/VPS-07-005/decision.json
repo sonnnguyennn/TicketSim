@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Kiểm tra SAN/chain và renewal job; owner duyệt renew/install/reload có rollback, rồi thử từ client. Xác minh: Client lấy đúng cert còn hạn theo SNI, chain hợp lệ và HTTPS trả nội dung mong đợi.",
+  "explanation": "Cần đúng cert, đúng hostname/vhost và quyền triển khai; sau reload phải hỏi lại endpoint để kiểm tra cert thực được phục vụ.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Giữ rollback và thử lại từ client để xác nhận deployment thực sự có hiệu lực.",
+    "unsafe": "Cách này có thể che lỗi xác thực server và tạo rủi ro kết nối tới sai host.",
+    "close": "Khách vẫn nhận cert hết hạn; chưa kiểm chứng kết quả sau triển khai."
   }
 }

@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Giữ bằng chứng và xác nhận phương án phục hồi trước repair; sau đó cần kiểm tra cả boot lẫn dữ liệu ứng dụng.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Các dữ liệu này xác định rủi ro và phương án bảo toàn trước khi sửa.",
+    "verify": "Boot lên một lần chưa chứng minh dữ liệu ứng dụng đầy đủ hoặc storage ổn định.",
+    "act": "Repair cần đúng volume, trạng thái offline và quyền; support không tự áp lệnh phá hủy."
   }
 }

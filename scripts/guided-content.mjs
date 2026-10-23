@@ -1,5 +1,7 @@
 // Hand-authored learning content. The build script splits prompts from answer keys.
 import { readFileSync } from 'node:fs'
+import { applyGuidedEdits } from './content/apply-guided-edits.mjs'
+import { phaseBEdits } from './content/phase-b-index.mjs'
 const q = (id, stage, kind, prompt, options, correctIds, explanation, commandId, requiredProbeIds) => ({
   id, stage, kind, prompt,
   options: options.map(([id, label, feedback]) => ({ id, label, feedback })),
@@ -292,6 +294,9 @@ export const guidedContent = [
 const sourceTickets = new Map(JSON.parse(readFileSync(new URL('../starter-data/tickets.json', import.meta.url), 'utf8')).tickets.map(ticket => [ticket.id, ticket]))
 const guidedBatch2 = []
 function addBatchCase(meta) {
+  // Legacy scaffold preserves IDs, answer keys and evidence gates. Effective
+  // Phase B wording is authored case by case in scripts/content/phase-b-*.mjs
+  // and applied below after the hidden assessment definitions are assembled.
   const ticket = sourceTickets.get(meta.id)
   if (!ticket) throw new Error(`Missing source ticket ${meta.id}`)
   const [p1, p2] = ticket.probe_outputs
@@ -1302,4 +1307,7 @@ const objectiveVerification = {
   'VPS-14-008': q('exam-verify','verify','single_choice','Appeal abuse đã được nhận nhưng review còn mở. Cách ghi trạng thái ticket nào đúng?', [['online','Resolved vì khách đã nộp appeal','Appeal nhận chưa có quyết định mở service.'],['pending','Escalated/đang chờ security; chỉ xác minh panel và network sau quyết định có audit','Đúng: giữ ranh giới quyền và không hứa online sớm.'],['override','Tự unsuspend để khách làm việc','Support không có quyền override abuse hold.']],['pending'],'Xác minh escalation khác với xác minh dịch vụ đã khôi phục.'),
 }
 for (const content of guidedContent) if (objectiveVerification[content.id]) content.objectiveExam = { ...objectiveVerification[content.id], skill: content.questions[0]?.skill ?? 'verify' }
+
+export const unreviewedGuidedContent = structuredClone(guidedContent)
+applyGuidedEdits(guidedContent, phaseBEdits)
 

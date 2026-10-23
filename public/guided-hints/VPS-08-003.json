@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Thay đổi ở panel nào? Resolver đang báo nameserver nào?",
-    "So sánh P1 về NS và P2 về zone được chỉnh.",
-    "Hai nguồn đang khác nhau; kiểm tra delegation ở registrar và trả lời trực tiếp từ authoritative NS trước khi kết luận."
+    "Sửa một zone không tự đổi nameserver được domain sử dụng.",
+    "So kết quả NS với zone vừa sửa, rồi kiểm tra delegation ở registrar.",
+    "Hỏi trực tiếp nameserver mới để biết dữ liệu của zone đó; chỉ đổi delegation khi chủ domain duyệt."
   ]
 }

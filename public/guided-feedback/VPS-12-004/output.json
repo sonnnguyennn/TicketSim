@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Entitlement 4 còn guest online 2; chưa biết host config chưa áp hay CPU offline.",
+  "explanation": "Đã xác nhận có chênh lệch giữa cấu hình gói và CPU sẵn dùng; cần xem lớp host và guest để giải thích.",
   "commandId": "nproc",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "nproc không nói trực tiếp nguyên nhân; host config và CPU/affinity trong guest giúp phân biệt.",
+    "over": "Nếu host chỉ cấp current=2 hoặc affinity vẫn giới hạn thì reboot không bảo đảm thay đổi kết quả.",
+    "ignore": "Hai phép đo vẫn xác nhận điều khách thấy; khác lớp là lý do cần đối chiếu thêm, không phải bỏ qua."
   }
 }

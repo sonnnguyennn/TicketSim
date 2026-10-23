@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "lsblk liệt kê thiết bị ởguest; attachment ởhypervisor phải đọc bằng phép kiểm tra riêng.",
   "commandId": "lsblk",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Đọc cây thiết bị block và kích thước guest nhận được.",
+    "wrong1": "DNS không liệt kê volume của máy ảo.",
+    "wrong2": "Restart webservice là thay đổi; không kiểm tra attachment và không làm hiện disk bị thiếu."
   }
 }

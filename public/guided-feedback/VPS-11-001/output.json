@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Task failed và target quota exceeded; giới hạn nằm ở đích backup, chưa cần xóa dữ liệu guest.",
+  "explanation": "Log xác định quota ở đích backup; dọn dữ liệu trong guest không tự tăng quota của kho lưu.",
   "commandId": "backup-log",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Thông báo gọi rõ target; cần xem dung lượng, retention và bản backup hiện có.",
+    "over": "Panel vẫn lưu tác vụ thất bại; sự tồn tại của bản ghi không bảo đảm có bản backup hoàn chỉnh.",
+    "ignore": "Log đã cung cấp vị trí cần kiểm tra là đích backup; chưa biết cách khắc phục không có nghĩa là không định vị được lớp lỗi."
   }
 }

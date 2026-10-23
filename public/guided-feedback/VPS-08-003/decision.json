@@ -2,11 +2,11 @@
   "correctIds": [
     "verify"
   ],
-  "explanation": "Sau thay đổi được phép, kiểm tra delegation và A record từ nhiều điểm.",
+  "explanation": "Chờ TTL có ích sau khi xác minh đúng delegation/zone; nếu vẫn sửa nơi chưa được ủy quyền thì chờ không sửa được vấn đề.",
   "commandId": "dig-ns",
   "optionFeedback": {
-    "verify": "Đúng: tránh sửa sai zone hoặc đổi ủy quyền khi chưa có quyền.",
-    "delete": "Có thể làm gián đoạn domain khi chưa rõ delegation.",
-    "wait": "Có thể chờ nhầm khi zone được sửa không có thẩm quyền."
+    "verify": "Xác định đúng nơi domain dùng trước khi sửa hoặc đặt kỳ vọng về cache.",
+    "delete": "Xóa zone không chuyển delegation và có thể làm resolver còn dùng NS cũ bị lỗi.",
+    "wait": "Chưa biết cấu hình domain có trỏ tới zone vừa sửa hay không."
   }
 }

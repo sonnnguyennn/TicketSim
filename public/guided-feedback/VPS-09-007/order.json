@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Bảo toàn sự kiện trước khi can thiệp; security xử lý theo quyền rồi tiếp tục kiểm tra phạm vi và truy cập.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Can thiệp trước khi giữ dữ liệu có thể làm mất chứng cứ cần điều tra.",
+    "verify": "Không có phiên mới là một tín hiệu; kết luận sạch vẫn cần điều tra phạm vi.",
+    "act": "Containment phải bảo vệ khách và duy trì đường quản trị cần thiết."
   }
 }

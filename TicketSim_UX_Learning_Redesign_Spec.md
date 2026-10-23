@@ -2,6 +2,10 @@
 
 ## Current state and pickup guide — 2026-10-23
 
+### Phase B in progress — B1 checkpoint
+
+The case-specific authoring layer in `scripts/content/phase-b-*.mjs` supplies 14 reviewed samples, one per topic. It preserves question/option IDs, correct keys and gates; source112 and progress v5 are unchanged. Guided adds customerExplanation and per-probe why, plus separate authored Guided answer files. The reusable audit is `npm run audit:content -- --partial` at this checkpoint. B2/B3 remain open; see `Phase_B_Content_QA.md`.
+
 ### Phase A pickup update — Guided-first
 
 The default product flow is now Guided: ticket list → Học ticket/Tiếp tục → Nhận diện, Kiểm tra, Đọc bằng chứng, Quyết định, Tổng kết. Navigation keeps the ticket list, Command Library, Guided history and data settings. Practice, Stateful, Objective/Legacy Exam, Review and advanced history are hidden from the default UI; their engines and all v5 progress remain. Guided has one scrollable terminal history with explicit context labels, compact suggestions and authored explanations. The support selector is hidden; beginner-friendly presentation does not overwrite the saved support preference. Library return retains the current step and typed input. Counts remain 112 Guided, 122 command cards, 20 Objective, 6 Stateful, 20 variants. See `Phase_A_Guided_First_QA.md`. Phase B content review is next; older milestone and expansion notes below are historical.

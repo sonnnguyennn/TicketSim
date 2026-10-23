@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Trạng thái tác vụ thuộc hệ thống backup, không phải trạng thái service SSH hoặc dung lượng filesystem của guest.",
   "commandId": "panel-backup-task",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Đây là bản ghi trạng thái của chính tác vụ backup khách đang hỏi.",
+    "wrong1": "Lệnh đo dung lượng filesystem chứa / trong guest; không cho biết trạng thái tác vụ ở kho backup.",
+    "wrong2": "Danh sách điểm khôi phục cho biết các bản đã có, không thay thế trạng thái lần backup vừa thất bại."
   }
 }

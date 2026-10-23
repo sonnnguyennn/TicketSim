@@ -32,6 +32,8 @@ Stateful **6/112** (`VPS-01-001`, `VPS-02-001`, `VPS-03-001`, `VPS-05-001`, `VPS
 
 ## Phase B — Kiểm duyệt nội dung Guided
 
+B1: lớp biên soạn riêng theo case và 14 mẫu đại diện đã tích hợp, giữ nguyên ID/key/progress. B2 rà đủ112 và122 thẻ lệnh; B3 chốt audit/regression. Xem [QA Phase B](Phase_B_Content_QA.md).
+
 Đã hoàn thành Batch 3–7 theo [kế hoạch phủ 112](Guided_112_Batch_Plan.md). Mỗi batch có QA, test/build và commit riêng; [QA Batch 7](Phase_5C_Batch_7_QA.md) ghi kết quả mới nhất.
 
 1. Rà 112 Guided theo chuẩn ngắn, tự nhiên và sát ticket VPS Support; kiểm định câu hỏi, feedback, mục đích lệnh và cách đọc output.

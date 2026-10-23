@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Nightly backup không hoàn tất.",
-    "Đọc P1 (PANEL: backup task) và P2 (BACKUP LOG:); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Task mới Completed, artifact có checksum và restore test theo quy trình."
+    "Khách hỏi về lần sao lưu mới nhất, không phải việc VPS có đang chạy hay không.",
+    "Đối chiếu trạng thái tác vụ với BACKUP LOG để biết lỗi nằm ở nguồn hay đích.",
+    "Thông báo quota của đích cần được kiểm tra cùng dung lượng và chính sách giữ bản; chưa có căn cứ xóa bản cũ."
   ]
 }

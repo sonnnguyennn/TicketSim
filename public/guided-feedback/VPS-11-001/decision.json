@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận quota/retention và backup hiện có; chuyển đội backup/capacity tăng quota hoặc dọn theo policy được duyệt. Xác minh: Task mới Completed, artifact có checksum và restore test theo quy trình.",
+  "explanation": "Việc tăng quota hoặc dọn backup phải do đúng bên thực hiện theo retention; sau đó cần kiểm tra lần chạy lại và khả năng restore.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Giữ các bản còn phải lưu và giao việc thay đổi kho cho đúng bên có quyền.",
+    "unsafe": "Có thể xóa bản khôi phục cuối cùng hoặc bản bắt buộc phải giữ; cần chính sách và phê duyệt trước.",
+    "close": "Yêu cầu được gửi chưa có nghĩa quota đã đổi hoặc lần backup mới đã chạy thành công."
   }
 }

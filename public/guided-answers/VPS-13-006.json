@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Container có route qua bridge 172.17.0.1 nhưng Docker host đang tắt chuyển tiếp IPv4. Điều này không phù hợp policy cho phép egress; chưa xác minh toàn bộ NAT và firewall.",
+  "recommended_next_checks": "Kiểm tra bridge, next hop, host route, forwarding và rule NAT/filter của Docker theo backend đang dùng. Đối chiếu policy egress và phạm vi tác động đến container khác.",
+  "resolution_guidance": "Admin host lập change forwarding/NAT/firewall theo policy, có phê duyệt và rollback. Support không tự bật forwarding hoặc mở firewall rộng trên host khách.",
+  "verification": "Từ chính container thử IP, DNS và dịch vụ TCP được phép; kiểm tra firewall/NAT vẫn hạn chế đúng phạm vi và container khác không bị ảnh hưởng.",
+  "escalate_when": "Cần thay đổi Docker host dùng chung, rule của provider, hoặc routing/NAT ngoài phạm vi quyền support.",
+  "production_warning": "Bật ip_forward không tự sửa NAT/filter; sửa host networking có thể ảnh hưởng mọi container.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

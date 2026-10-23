@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác định đúng thiết bị và inventory trước; gắn lại có quyền; sau đó kiểm tra mount, dữ liệu và app.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Danh sách attachment và inventory giúp tránh gắn nhầmvolume.",
+    "verify": "Thiết bị hiện lại mới là bước đầu; phải kiểm chứng dữ liệu và chức năng app.",
+    "act": "Chỉ đội có quyền mới thao tác storage; không format để thử."
   }
 }

@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Đọc hồ sơ và policy trước, chuyển appeal đúng bên, rồi xác minh trạng thái thực theo quyết định được duyệt.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Đây là căn cứ xác định đúng hồ sơ và người được quyết định.",
+    "verify": "Approval và trạng thái được áp là hai bước; chỉ xác minh kết nối sau khi được phép mở.",
+    "act": "Đội có quyền đánh giá hồ sơ; support không tự thay thế quyết định này."
   }
 }

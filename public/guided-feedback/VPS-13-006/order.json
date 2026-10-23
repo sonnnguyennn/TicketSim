@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác định route/forwarding và policy trước; change ở host cần phê duyệt, rồi xác minh từ chính container.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Cần phân biệt cấu hình container với quyền chuyển tiếp ở host trước change.",
+    "verify": "Thử thực tế sau change để xác nhận đường đi, không chỉ đọc sysctl.",
+    "act": "Sau khi khoanh lớp lỗi, đúng người có quyền mới thay cấu hình host."
   }
 }

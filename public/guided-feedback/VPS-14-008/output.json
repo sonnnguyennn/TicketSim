@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Suspension gắn abuse investigation còn mở; không thể tự mở lại trước quyết định security.",
+  "explanation": "Phải phân biệt appeal đã nhận với quyết định cho mở lại; support chuyển hồ sơ và thông báo trạng thái, không tự vượt quyền.",
   "commandId": "panel-security-case",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Investigation chưa kết thúc và policy chưa cho phép support tự bỏ hold.",
+    "over": "Mức độ gấp không thay đổi người có quyền hoặc điều kiện policy.",
+    "ignore": "AB-2026-14 chỉ tới quy trình security; thanh toán không tự kết thúc điều tra abuse."
   }
 }

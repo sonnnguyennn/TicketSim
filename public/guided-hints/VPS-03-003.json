@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Service failed là trạng thái; tìm phép đọc giải thích vì sao không nạp cấu hình.",
-    "Chạy nginx -t rồi chú ý file, dòng và token trong thông báo.",
-    "P2 nêu dấu ngoặc } bất ngờ ở dòng 45; đối chiếu diff/backup trước khi sửa và kiểm tra lại -t."
+    "So sánh thời điểm chỉnh cấu hình với thời điểm dịch vụ dừng.",
+    "Đọc trạng thái Nginx và dùng nginx -t để kiểm tra cấu hình trên đĩa.",
+    "unexpected \"}\" chỉ vị trí parser gặp lỗi; xem cả đoạn cấu hình quanh dòng đó, không chỉ xóa ký tự được nhắc."
   ]
 }

@@ -13,10 +13,14 @@ const ids = new Set()
 const publicCases = guidedContent.map(content => {
   const ticket = source.find(item => item.id === content.id)
   if (!ticket || ids.has(content.id)) throw new Error(`Unknown or duplicate guided ticket: ${content.id}`)
+  const { expected_diagnosis, recommended_next_checks, resolution_guidance, verification, escalate_when, production_warning, scoring_rubric } = ticket
+  const answerPath = path.join(root, 'public/guided-answers', `${content.id}.json`)
+  fs.mkdirSync(path.dirname(answerPath), { recursive: true })
+  fs.writeFileSync(answerPath, JSON.stringify({ expected_diagnosis, recommended_next_checks, resolution_guidance, verification, escalate_when, production_warning, ...content.answerOverrides, scoring_rubric }, null, 2))
   if (content.probeOverrides && Object.keys(content.probeOverrides).some(id => !ticket.probe_outputs.some(probe => probe.probe_id === id))) throw new Error(`Unknown Guided probe override for ${content.id}`)
   ids.add(content.id)
   const probes = ticket.probe_outputs.map((probe, index) => ({
-    id: probe.probe_id, command: probe.command, output: content.probeOverrides?.[probe.probe_id] ?? probe.stdout, context: 'guest', ...content.probeNotes[index],
+    id: probe.probe_id, command: content.probeCommandOverrides?.[probe.probe_id] ?? probe.command, output: content.probeOverrides?.[probe.probe_id] ?? probe.stdout, context: 'guest', ...content.probeNotes[index],
   }))
   content.extras.forEach((probe, index) => probes.push({ id: `G${index + 1}`, context: 'guest', ...probe }))
   const variants = new Set()
@@ -76,7 +80,7 @@ const publicCases = guidedContent.map(content => {
     }) }
   })
   if (reviewVariants && new Set(reviewVariants.map(variant => variant.id)).size !== reviewVariants.length) throw new Error(`Duplicate review variant in ${content.id}`)
-  return { id: content.id, objective: content.objective, customerFollowup: content.customerFollowup, probes, questions, verificationPrompt: content.verificationPrompt, branches: content.branches, simulation: content.simulation, objectiveExam, reviewVariants }
+  return { id: content.id, objective: content.objective, customerFollowup: content.customerFollowup, customerExplanation: content.customerExplanation, probes, questions, verificationPrompt: content.verificationPrompt, branches: content.branches, simulation: content.simulation, objectiveExam, reviewVariants }
 })
 
 const outputPath = path.join(root, 'src/data/guided-public.json')

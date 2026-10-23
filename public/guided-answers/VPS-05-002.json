@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "All inodes used despite available disk blocks.",
+  "recommended_next_checks": "Find directories with many small files (cache/temp) safely.",
+  "resolution_guidance": "Coordinate deletion/archiving of known temporary files.",
+  "verification": "Inodes available and file creation works.",
+  "escalate_when": "Unknown data owner or inode leak.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

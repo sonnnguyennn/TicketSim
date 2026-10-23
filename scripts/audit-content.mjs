@@ -1,0 +1,115 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import crypto from 'node:crypto'
+import { guidedContent, unreviewedGuidedContent } from './guided-content.mjs'
+import { phaseBEdits, phaseBStage } from './content/phase-b-index.mjs'
+import { loadCommandLibrary } from './content/load-command-library.mjs'
+
+const root = path.resolve(import.meta.dirname, '..')
+const partial = process.argv.includes('--partial')
+const read = filename => JSON.parse(fs.readFileSync(path.join(root, filename), 'utf8'))
+const baseline = read('qa/phase-b-baseline.json')
+const source = read('starter-data/tickets.json').tickets
+const cards = await loadCommandLibrary(root)
+const hash = value => crypto.createHash('sha256').update(typeof value === 'string' ? value : JSON.stringify(value)).digest('hex')
+const errors = []
+const check = (condition, message) => { if (!condition) errors.push(message) }
+const oldById = new Map(unreviewedGuidedContent.map(content => [content.id, content]))
+const publicCases = read('src/data/guided-public.json')
+const fixtures = []
+const stats = { ticketsChanged: 0, reviewed: Object.keys(phaseBEdits).length, questionPromptsRewritten: 0, explanationsRewritten: 0, optionLabelsRewritten: 0, optionFeedbackRewritten: 0, hintsRewritten: 0, verificationPromptsRewritten: 0, answerFieldsRewritten: 0, cardsChanged: 0 }
+const filler = /\bP1\s*\/\s*P2\b|\bfixture\b|\broot cause\b|các output không có giá trị|cách diễn giải bám các output|thiếu bằng chứng, quyền hoặc bảo vệ|trực tiếp đọc fixture|hãy lưu ý rằng|điều quan trọng cần hiểu là/i
+const rows = []
+function probes(content, ticket) {
+  return [...ticket.probe_outputs.map((probe, index) => ({ id: probe.probe_id, command: content.probeCommandOverrides?.[probe.probe_id] ?? probe.command, output: content.probeOverrides?.[probe.probe_id] ?? probe.stdout, ...content.probeNotes[index] })), ...content.extras.map((probe, index) => ({ id: `G${index + 1}`, ...probe }))]
+}
+function duplicates(items) {
+  const groups = new Map()
+  for (const content of items) for (const question of content.questions) {
+    const text = question.prompt.trim().replace(/\s+/g, ' ').toLowerCase()
+    groups.set(text, [...(groups.get(text) ?? []), `${content.id}/${question.id}`])
+  }
+  return [...groups].filter(([, ids]) => ids.length > 1).map(([prompt, ids]) => ({ prompt, count: ids.length, ids })).sort((a, b) => b.count - a.count)
+}
+check(guidedContent.length === 112 && new Set(guidedContent.map(content => content.id)).size === 112, 'Expected112 uniqueGuided')
+check(cards.length === 122 && new Set(cards.map(card => card.id)).size === 122, 'Expected122 uniquecommandcards')
+if (!partial) check(stats.reviewed === 112 && phaseBStage === 'all', 'Fullreview requires112 explicitcase records')
+for (const [filename, digest] of Object.entries(baseline.protectedFiles)) check(hash(fs.readFileSync(path.join(root, filename), 'utf8').replace(/\r\n/g, '\n')) === digest, `Protected source/progress/engine changed: ${filename}`)
+for (const content of guidedContent) {
+  const ticket = source.find(item => item.id === content.id)
+  const old = baseline.tickets.find(item => item.id === content.id)
+  const edit = phaseBEdits[content.id]
+  const caseProbes = probes(content, ticket)
+  const initial = caseProbes.filter(probe => !probe.requiredState || probe.requiredState.includes('initial'))
+  const ids = new Set(caseProbes.map(probe => probe.id))
+  const docIds = new Set(cards.map(card => card.id))
+  const generated = publicCases.find(item => item.id === content.id)
+  check(content.questions.length === old.questions.length, `${content.id}: question count changed`)
+  check(hash({ simulation: content.simulation, objectiveExam: content.objectiveExam, reviewVariants: content.reviewVariants }) === old.hiddenHash, `${content.id}: hidden assessment changed`)
+  let changed = false
+  for (const question of content.questions) {
+    const before = old.questions.find(item => item.id === question.id)
+    check(!!before, `${content.id}: unknown question ${question.id}`)
+    if (!before) continue
+    check(question.kind === before.kind && hash(question.correctIds) === hash(before.correctIds) && hash(question.requiredProbeIds ?? []) === hash(before.requiredProbeIds), `${content.id}/${question.id}: grading or gate changed`)
+    check(hash(question.options.map(option => option.id)) === hash(before.options.map(option => option.id)), `${content.id}/${question.id}: optionidentity changed`)
+    check(new Set(question.options.map(option => option.id)).size === question.options.length, `${content.id}/${question.id}: duplicateoption`)
+    check(new Set(question.correctIds).size === question.correctIds.length && question.correctIds.every(id => question.options.some(option => option.id === id)), `${content.id}/${question.id}: invalidcorrectIDs`)
+    check(question.kind === 'step_order' ? question.correctIds.length === question.options.length : question.kind === 'multi_select' ? question.correctIds.length >= 1 : question.correctIds.length === 1, `${content.id}/${question.id}: invalidkeyarity`)
+    check((question.requiredProbeIds ?? []).every(id => ids.has(id) && initial.some(probe => probe.id === id)), `${content.id}/${question.id}: unreachableevidence`)
+    if (question.commandId) check(docIds.has(question.commandId), `${content.id}/${question.id}: missingcommanddoc`)
+    check(question.explanation?.length > 9 && question.options.every(option => option.feedback?.length > 4), `${content.id}/${question.id}: missingfeedback`)
+    if (hash(question.prompt) !== before.promptHash) { stats.questionPromptsRewritten++; changed = true }
+    if (hash(question.explanation) !== before.explanationHash) { stats.explanationsRewritten++; changed = true }
+    for (const option of question.options) {
+      const previous = before.options.find(item => item.id === option.id)
+      if (hash(option.label) !== previous.labelHash) { stats.optionLabelsRewritten++; changed = true }
+      if (hash(option.feedback) !== previous.feedbackHash) { stats.optionFeedbackRewritten++; changed = true }
+    }
+    if (edit) check(!filler.test([question.prompt, question.explanation, ...question.options.flatMap(option => [option.label, option.feedback])].join('\n')), `${content.id}/${question.id}: placeholder/internaljargon`)
+  }
+  for (const probe of caseProbes) check(docIds.has(probe.commandId), `${content.id}/${probe.id}: missingprobedoc`)
+  if (edit) {
+    check(content.customerExplanation?.length >= 15 && initial.every(probe => probe.purpose?.length > 4 && probe.why?.length >= 10 && probe.meaning?.length > 4), `${content.id}: incompletelearningcontext`)
+    check(edit.review?.technical?.length > 30 && edit.review?.editorial?.length > 20 && (edit.review?.references?.length > 0 || initial.every(probe => probe.context === 'panel')), `${content.id}: missingcaseinspectionnotes`)
+    check(!filler.test([content.customerExplanation, content.verificationPrompt, ...content.hints, ...initial.flatMap(probe => [probe.purpose, probe.why, probe.meaning])].join('\n')), `${content.id}: internallearningjargon`)
+    const previousProbes = probes(oldById.get(content.id), ticket)
+    for (const probe of initial) {
+      const previous = previousProbes.find(item => item.id === probe.id)
+      if (probe.output !== previous.output || probe.command !== previous.command) {
+        const reason = edit.review.fixtureChanges?.find(item => item.probeId === probe.id)
+        check(!!reason?.reason, `${content.id}/${probe.id}: undocumentedfixturechange`)
+        fixtures.push({ ticketId: content.id, probeId: probe.id, beforeCommand: previous.command, command: probe.command, before: previous.output, after: probe.output, reason: reason?.reason, references: reason?.reference ? [reason.reference] : edit.review.references })
+      }
+    }
+    const answer = read(`public/guided-answers/${content.id}.json`)
+    for (const [field, text] of Object.entries(content.answerOverrides ?? {})) {
+      check(answer[field] === text && !filler.test(text), `${content.id}: finalanswer ${field}`)
+      if (ticket[field] !== text) stats.answerFieldsRewritten++
+    }
+    if (!partial) check(Object.keys(content.answerOverrides ?? {}).length === 6, `${content.id}: finalanswer not reviewed`)
+  }
+  check(content.hints.length === 3 && content.hints.every(hint => hint.length > 9), `${content.id}: missinghints`)
+  stats.hintsRewritten += content.hints.filter((hint, index) => hash(hint) !== old.hints[index]).length
+  if (hash(content.verificationPrompt) !== old.verificationHash) stats.verificationPromptsRewritten++
+  if (changed) stats.ticketsChanged++
+  check(generated.questions.every(question => !('correctIds' in question) && !('explanation' in question) && !question.options.some(option => 'feedback' in option)), `${content.id}: publicanswerleak`)
+  rows.push({ id: content.id, topic: ticket.topic_vi, level: ticket.difficulty, status: edit ? 'Đã rà soát và sửa' : 'Chờ rà soát', technical: edit?.review.technical ?? '', editorial: edit?.review.editorial ?? '', references: edit?.review.references ?? [] })
+}
+const beforeDuplicates = duplicates(unreviewedGuidedContent), afterDuplicates = duplicates(guidedContent)
+if (!partial) check(!afterDuplicates.some(group => group.count >= 8), 'Massrepeated questiontemplate remains')
+for (const card of cards) {
+  const previous = baseline.commands.find(item => item.id === card.id)
+  check(!!previous, `New commandcard ${card.id}`)
+  check(['purpose', 'flags', 'centos', 'ubuntu', 'interpretation', 'whenToUse', 'followUp', 'pitfalls', 'privilege'].every(field => typeof card[field] === 'string' && card[field].length > 0), `${card.id}: incompletecard`)
+  if (previous && Object.entries(card).some(([field, value]) => hash(value) !== previous.fields[field])) stats.cardsChanged++
+}
+const result = { stage: phaseBStage, stats, sourceTickets: source.length, guided: guidedContent.length, commands: cards.length, fixtureChanges: fixtures.length, beforeDuplicates, afterDuplicates, errors, rows }
+fs.mkdirSync(path.join(root, 'qa'), { recursive: true })
+fs.writeFileSync(path.join(root, 'qa/phase-b-audit.json'), JSON.stringify(result, null, 2))
+fs.writeFileSync(path.join(root, 'qa/phase-b-fixture-changes.json'), JSON.stringify(fixtures, null, 2))
+fs.writeFileSync(path.join(root, 'Phase_B_Ticket_Audit.md'), '# Phase B — Audit theo ticket\n\nCác ghi chú dưới đây là rà soát từng case bởi agent, không phải chỉ schema validation và không phải chứng nhận độc lập của chuyên gia con người.\n\n| ID | Topic | Level | Trạng thái | Kiểm tra kỹ thuật | Biên tập |\n|---|---|---|---|---|---|\n' + rows.map(row => `| ${row.id} | ${row.topic} | L${row.level} | ${row.status} | ${row.technical.replaceAll('|', '/')} | ${row.editorial.replaceAll('|', '/')} |`).join('\n') + '\n')
+fs.writeFileSync(path.join(root, 'Phase_B_Duplicate_Report.md'), '# Phase B — Duplicate/template report\n\nPhát hiện trùng chỉ là chỉ báo; không chứng minh chất lượng sư phạm.\n\n' + [['Trước', beforeDuplicates], ['Sau', afterDuplicates]].map(([label, groups]) => `## ${label}\n\n${groups.length} nhóm prompt trùng; nhóm lớn nhất ${groups[0]?.count ?? 1} câu.\n\n` + groups.map(group => `- ${group.count}× ${group.prompt}`).join('\n')).join('\n\n') + '\n')
+fs.writeFileSync(path.join(root, 'Phase_B_Fixture_Changes.md'), '# Phase B — Guided-only fixture corrections\n\nSource112 và output đã lưu trong tiến độ không bị viết lại. Các mẫu bên dưới được biên soạn theo định dạng tài liệu tham khảo; không chạy trên VPS thật.\n\n' + fixtures.map(item => `## ${item.ticketId}/${item.probeId}\n\n${item.reason}\n\nCommand trước: \`${item.beforeCommand}\`; sau: \`${item.command}\`.\n\nTrước:\n\n\`\`\`text\n${item.before}\n\`\`\`\n\nSau:\n\n\`\`\`text\n${item.after}\n\`\`\`\n\nTham khảo: ${item.references.join(', ')}`).join('\n\n') + '\n')
+console.log(JSON.stringify({ ...stats, guided: guidedContent.length, commands: cards.length, fixtureChanges: fixtures.length, maxDuplicateBefore: beforeDuplicates[0]?.count ?? 1, maxDuplicateAfter: afterDuplicates[0]?.count ?? 1, errors: errors.length }, null, 2))
+if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Cần đọc bảng route trong đúng network namespace của container, trước khi đánh giá host forwarding.",
   "commandId": "ip-route",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "docker exec chạy phép đọc route trong container api, nơi gói bắt đầu đi.",
+    "wrong1": "Nếu chạy trên host, lệnh chỉ đọc route của host; cần docker exec để xem route trong container api.",
+    "wrong2": "Lệnh liệt kê các Docker network, không hiện bảng route mà container api thực sự đang dùng."
   }
 }

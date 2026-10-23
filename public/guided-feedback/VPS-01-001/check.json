@@ -2,11 +2,11 @@
   "correctIds": [
     "service"
   ],
-  "explanation": "Ưu tiên một phép đọc trạng thái service trước khi đề xuất thay đổi.",
+  "explanation": "Đọc trạng thái sshd là bước kiểm tra dịch vụ. Listener cần được kiểm tra riêng bằng ss.",
   "commandId": "systemctl-status",
   "optionFeedback": {
-    "service": "Đúng: xem daemon có đang hoạt động.",
-    "disk": "Lệnh hợp lệ nhưng chưa trực tiếp với triệu chứng SSH.",
-    "dns": "DNS không phải dấu hiệu nổi bật ở ticket này."
+    "service": "status đọc trạng thái unit sshd mà không khởi động hoặc dừng dịch vụ.",
+    "disk": "df đo dung lượng filesystem, không đọc trạng thái dịch vụ SSH.",
+    "dns": "dig hỏi bản ghi DNS của example.com; không kiểm tra sshd trong VPS."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Gián đoạn theo thời điểm đòi hỏi đo cùng lúc khách gặp lỗi và lưu mạng nguồn.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đúng với mô tả random delays của khách; chưa biết lớp mạng hay ứng dụng.",
+    "other": "Khách đang nói về SSH chậm; không có mã HTTP trong ticket.",
+    "cause": "Chưa có phép đo nào trong lời khách để định vị một đoạn đường truyền."
   }
 }

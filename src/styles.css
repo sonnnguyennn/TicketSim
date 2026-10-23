@@ -461,6 +461,7 @@ main { max-width: 1560px; margin: auto; padding: 25px 28px 70px; }
 .guided-focused .guided-main { gap: 16px; }
 .guided-focused .guided-card { padding: 22px; }
 .guided-focused .guided-ticket h2 { font-size: 14px; color: #607186; margin-bottom: 10px; }
+.customer-explanation { color: #294f71; font-weight: 600; }
 .guided-customer, .guided-reference, .guided-hints { border: 1px solid #dfe5eb; border-radius: 7px; background: #fff; padding: 13px 17px; font-size: 14px; color: #40566e; }
 .guided-customer summary, .guided-reference summary, .guided-hints summary, .guided-options-menu summary, .guided-feedback summary { cursor: pointer; line-height: 1.5; }
 .guided-customer p { white-space: pre-wrap; line-height: 1.6; margin: 12px 0 0; }

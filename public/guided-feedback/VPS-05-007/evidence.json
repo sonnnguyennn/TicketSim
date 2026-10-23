@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Hai phép đọc xác nhận dấu hiệu lỗi filesystem và kiểm tra boot; không thay thế đánh giá phần cứng hoặc kế hoạch sửa.",
   "commandId": "systemctl-failed",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Log kernel nêu EXT4-fs error trên thiết bị này.",
+    "p2": "systemctl liệt kê unit fsck tương ứng ở trạng thái failed.",
+    "over": "Hai kết quả không xác nhận điều kiện an toàn cho repair; cần bảo toàn và chuẩn bị offline."
   }
 }

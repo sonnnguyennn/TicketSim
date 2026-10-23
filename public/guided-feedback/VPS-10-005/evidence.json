@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Thiếu ở cả hai lớp khác với trường hợp host có disk nhưng guest chưa nhận; chưa được suy ra dữ liệu bên trong.",
   "commandId": "virsh-domblklist",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Không có vdb trong danh sách thiết bị được guest nhìn thấy.",
+    "p2": "Host chưa liệt kê data disk cho VM này.",
+    "over": "Danh sách thiết bị gắn vào VM không phải toàn bộ inventory storage."
   }
 }

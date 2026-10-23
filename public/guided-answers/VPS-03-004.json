@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "SELinux policy/context denies intended write operation.",
+  "recommended_next_checks": "ls -Z /srv/app/uploads; audit2why (if installed)",
+  "resolution_guidance": "Restore correct security context or approved policy, do not disable SELinux globally.",
+  "verification": "Works in enforcing mode; no new related AVC denial.",
+  "escalate_when": "Custom SELinux policy required.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

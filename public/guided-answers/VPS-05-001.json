@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Root filesystem has no space available; logs occupy large part.",
+  "recommended_next_checks": "Find largest safe-to-review files and log growth source.",
+  "resolution_guidance": "Use approved rotation/cleanup or disk upgrade after backup.",
+  "verification": "Available disk restored and app writes.",
+  "escalate_when": "Unknown high-growth logs or data criticality.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

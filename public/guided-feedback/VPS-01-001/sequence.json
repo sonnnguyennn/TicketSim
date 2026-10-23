@@ -5,12 +5,12 @@
     "approve",
     "verify"
   ],
-  "explanation": "Trình tự là quan sát → điều tra → xin phép hành động → xác minh.",
+  "explanation": "Giữ bằng chứng ban đầu, điều tra rồi mới thay đổi dịch vụ có phép; xác minh phải gồm đường kết nối từ client.",
   "commandId": "journalctl-unit",
   "optionFeedback": {
-    "status": "Đầu tiên giữ bằng chứng trạng thái trước mọi thay đổi.",
-    "logs": "Điều tra nguyên nhân sau khi xác nhận triệu chứng.",
-    "approve": "Không thay đổi service trước khi có quyền.",
-    "verify": "Xác minh kết quả sau hành động được duyệt."
+    "status": "Quan sát trước giúp biết trạng thái ban đầu và tránh làm mất dấu vết.",
+    "logs": "Sau khi xác nhận dịch vụ dừng, tìm lỗi có thể khiến nó không khởi động.",
+    "approve": "Thay đổi chỉ nên diễn ra khi có quyền và cấu hình phù hợp.",
+    "verify": "Service chạy là một phần; kết nối và xác thực của khách mới xác minh chức năng."
   }
 }

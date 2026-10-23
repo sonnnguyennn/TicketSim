@@ -2,11 +2,11 @@
   "correctIds": [
     "stopped"
   ],
-  "explanation": "Quan sát “inactive” là bằng chứng; nguyên nhân dừng vẫn là điều chưa biết.",
+  "explanation": "inactive mô tả trạng thái hiện tại; log hoặc kiểm tra cấu hình mới giúp xác định lý do dừng.",
   "commandId": "systemctl-status",
   "optionFeedback": {
-    "stopped": "Đúng: đây là trạng thái hiện tại.",
-    "cause": "Trạng thái service không nêu nguyên nhân; cần log.",
-    "host": "Guest vẫn có thể hoạt động khi một service dừng."
+    "stopped": "Đây chính là trạng thái inactive mà systemctl báo.",
+    "cause": "Dòng trạng thái không có lỗi cú pháp hay nguyên nhân dừng.",
+    "host": "Một unit inactive không phải trạng thái nguồn của VPS; console vẫn sử dụng được."
   }
 }

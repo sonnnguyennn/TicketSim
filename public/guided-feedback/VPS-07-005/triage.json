@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Cảnh báo hết hạn thuộc quá trình kiểm tra chứng chỉ, không tự chứng minh lỗi backend HTTP.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Khách thấy cảnh báo thời hạn cert khi truy cập website.",
+    "other": "Khách báo certificate expired, không phải một HTTP502 đã được đo.",
+    "cause": "Gia hạn trong panel chưa chứng minh endpoint đã phục vụ cert mới."
   }
 }

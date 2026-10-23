@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Resolver vẫn trả old-dns, còn zone được sửa nằm ở new-dns. Tác vụ registrar bổ sung xác nhận delegation vẫn ở old-dns; vì vậy chỉnh zone mới chưa làm resolver dùng zone đó.",
+  "recommended_next_checks": "Đối chiếu delegation ở registrar và truy vấn trực tiếp các authoritative NS; kiểm tra record mong muốn ở cả nơi cũ và mới.",
+  "resolution_guidance": "Chủ domain phê duyệt thay delegation hoặc chỉnh đúng zone đang có thẩm quyền. Giữ dịch vụ DNS cũ trong quá trình cache chuyển tiếp khi còn cần.",
+  "verification": "Kiểm tra delegation, authoritative answer và resolver client riêng; theo dõi TTL thay vì khẳng định mọi người dùng cập nhật cùng lúc.",
+  "escalate_when": "Chuyển registrar/DNS owner nếu không có quyền domain, delegation không đúng hoặc các authoritative NS trả dữ liệu bất nhất.",
+  "production_warning": "Không xóa zone cũ để ép client đổi NS; việc đó có thể gây lỗi cho resolver còn dùng delegation cũ.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

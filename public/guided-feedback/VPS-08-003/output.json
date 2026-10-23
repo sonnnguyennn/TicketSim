@@ -2,11 +2,11 @@
   "correctIds": [
     "different"
   ],
-  "explanation": "Phân biệt zone được sửa với nameserver được domain dùng.",
+  "explanation": "Có hai nguồn khác nhau; cần delegation và truy vấn authoritative để phân biệt sửa nhầm nơi với cache chưa cập nhật.",
   "commandId": "dig-ns",
   "optionFeedback": {
-    "different": "Đúng: chưa đủ chứng minh registrar hiện trỏ đâu.",
-    "changed": "Panel zone không phải bằng chứng delegation ở registrar.",
-    "broken": "Chỉ có một điểm truy vấn trong fixture."
+    "different": "Sự không khớp xác định lớp cần điều tra, chưa tự khẳng định trạng thái registrar.",
+    "changed": "Mục edited zone chỉ mô tả nơi được sửa, không phải cấu hình registrar.",
+    "broken": "Một câu trả lời NS cũ có thể phản ánh delegation hoặc cache hợp lệ."
   }
 }

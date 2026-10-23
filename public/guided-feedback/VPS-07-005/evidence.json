@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Cần cả hạn của cert được gửi và mốc thời gian kiểm tra; không chỉ trạng thái service hay inventory.",
   "commandId": "hostnamectl",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Giá trị này được openssl x509 đọc từ cert nhận qua TLS.",
+    "p2": "Mốc UTC này nằm sau ngày hết hạn đã đọc.",
+    "over": "Mục deployed:no và cert nhận được đều không hỗ trợ nhận định này."
   }
 }

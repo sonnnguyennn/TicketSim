@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Lần backup thất bại vì đích lưu báo vượt quota. Kho backup-pool-2 đã dùng 500/500 GiB; không có bằng chứng bản backup mới đã hoàn tất.",
+  "recommended_next_checks": "Đối chiếu đúng task và kho lưu, retention, các bản còn phải giữ và tác vụ đang chạy. Kiểm tra có bản backup gần nhất nào đã thử khôi phục được.",
+  "resolution_guidance": "Chuyển đội backup/capacity xử lý quota hoặc dọn bản hết retention theo phê duyệt. Không xóa dữ liệu guest hay bản khôi phục cuối cùng để thử.",
+  "verification": "Tác vụ chạy lại thành công, kiểm tra tính toàn vẹn và thử restore trong vùng riêng. Xác nhận phạm vi dữ liệu và mốc thời gian khôi phục.",
+  "escalate_when": "Cần đổi quota, dọn kho dùng chung, hoặc không còn bản đã xác minh đáp ứng yêu cầu dữ liệu của khách.",
+  "production_warning": "Dọn kho backup cần retention và quyền của chủ kho. Không ghi đè production để thử bản backup mới.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

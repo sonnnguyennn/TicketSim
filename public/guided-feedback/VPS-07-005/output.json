@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Cert được endpoint phục vụ theo SNI đã quá notAfter; cần kiểm tra chain, vhost và automation gia hạn.",
+  "explanation": "So thời gian xác nhận cert đang phục vụ đã hết hạn; trạng thái chưa deploy giải thích vì sao gia hạn chưa có tác dụng tại endpoint.",
   "commandId": "hostnamectl",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Ngày kiểm tra sau notAfter, và inventory ghi cert mới chưa cài vào Nginx.",
+    "over": "Inventory không phản ánh chắc chắn cert được load ở từng vhost/endpoint.",
+    "ignore": "Service đang chạy vẫn có thể dùng cert đã hết hạn."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Dừng ghi vào path có thể thay thế, đối chiếu volume ID/snapshot và chuyển đội storage/virtualization reattach có kiểm soát. Xác minh: Đúng volume ID gắn lại, filesystem mount đúng và dữ liệu ứng dụng kiểm tra integrity.",
+  "explanation": "Cần đúng volume ID, kiểm tra snapshot và quyền đội host; tránh để app ghi vào thư mục/data trên disk OS thay thế.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Giữ nguyên volume, đối chiếu ID/snapshot và phối hợp đúng đội có quyền host.",
+    "unsafe": "Có thể ghi dữ liệu lên sai disk hoặc phá dữ liệu nếu thao tác nhầmvolume.",
+    "close": "Task có warning và app còn thiếuvolume; trạng thái Completed chưa giải quyết triệu chứng."
   }
 }

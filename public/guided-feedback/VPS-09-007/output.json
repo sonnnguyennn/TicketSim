@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Hai nguồn ghi login root thành công từ .77; tính được phép chưa biết, cần incident/security ngay.",
+  "explanation": "Đã có truy cập thành công và thiếu đối chiếu quyền; cần security xác minh, chưa thể kết luận actor hay phạm vi xâm nhập.",
   "commandId": "last-logins",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Hai nguồn khớp sự kiện, nhưng inventory và log chưa xác nhận người/key có được phê duyệt.",
+    "over": "IP không định danh actor; kết thúc phiên không loại bỏ key, persistence hay hành động trước đó.",
+    "ignore": "Accepted là xác thực đã được chấp nhận, khác Failed publickey."
   }
 }

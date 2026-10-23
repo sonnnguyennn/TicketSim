@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác minh owner, gửi appeal/evidence qua quy trình, chuyển abuse/security và thông báo status/ETA nếu có. Xác minh: Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở.",
+  "explanation": "Cần xác minh người yêu cầu, chuyển evidence/appeal đúng quy trình và chỉ thông báo ETA đã được xác nhận.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Tiếp tục xử lý đúng người có quyền và tránh hứa thời điểm chưa được cung cấp.",
+    "unsafe": "Né hold có thể làm tiếp diễn abuse và vượt quyền; không phải biện pháp hỗ trợ được phép.",
+    "close": "Chuyển hồ sơ chưa phải kết thúc yêu cầu; cần theo dõi tiếp nhận và quyết định."
   }
 }

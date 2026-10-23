@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Dòng CPU của top phân biệt us/sy/id/st; st mới cho biết thời gian bị hypervisor lấy khỏi VM.",
   "commandId": "top",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Phần đầu top có dòng tổng CPU, bao gồm st của VM.",
+    "wrong1": "df -i đo inode, không đo thời gian CPU bị lấy khỏi VM.",
+    "wrong2": "dig đo truy vấn DNS, không phản ánh CPU scheduling của VM."
   }
 }

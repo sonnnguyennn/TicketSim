@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Không phản hồi là triệu chứng; trạng thái nguồn và lý do mất kết nối phải được kiểm tra riêng.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đây là điều khách quan sát được; chưa phân biệt máy tắt với lỗi đường mạng.",
+    "other": "Khách không báo một dịch vụ riêng lẻ hoặc xác nhận SSH vẫn hoạt động.",
+    "cause": "Mất kết nối cũng có thể do shutdown có chủ đích; lời báo chưa chứng minh lỗi host."
   }
 }

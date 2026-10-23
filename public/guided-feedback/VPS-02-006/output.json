@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Hai phép đo cùng nguồn thấy 25% loss end-to-end; chưa biết lỗi ở access, transit hay đích.",
+  "explanation": "Mẫu cho thấy loss trên đường đo từ nguồn khách; chưa phân biệt access, transit hay phía đích bằng ICMP và một probe khác.",
   "commandId": "ping",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Hai phép đo cùng nguồn cùng có loss, còn điểm đo khác không bị trong cửa sổ mẫu.",
+    "over": "Router có thể hạn chế ICMP dành cho chính nó; cần nhìn loss tiếp diễn tới đích và phép TCP.",
+    "ignore": "Khác đường đi có thể cho kết quả khác; probe khác tốt không bác bỏ mẫu của khách."
   }
 }

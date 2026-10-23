@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Chứng chỉ endpoint gửi theo SNI đã hết hạn: notAfter 01/09/2026, trong khi máy kiểm tra ở 22/10/2026 UTC. Panel có cert mới nhưng chưa deploy.",
+  "recommended_next_checks": "Kiểm tra SAN, chain, vhost và đường dẫn cert; đối chiếu renewal job với trạng thái deployment.",
+  "resolution_guidance": "Owner/admin triển khai cert đúng hostname theo quy trình được duyệt, kiểm tra cấu hình trước reload và giữ khả năng quay lại cấu hình trước.",
+  "verification": "Kết nối lại từ client với đúng SNI; kiểm tra cert còn hạn, chain hợp lệ, hostname được bao phủ và trang trả đúng nội dung.",
+  "escalate_when": "Chuyển owner TLS/CA nếu thiếu quyền cert hoặc private key, renewal thất bại hay nhiều endpoint trả cert không đồng nhất.",
+  "production_warning": "Không tắt TLS verification, gửi private key qua ticket hoặc reload cấu hình chưa kiểm tra.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

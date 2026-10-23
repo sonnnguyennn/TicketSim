@@ -3,12 +3,12 @@
     "old",
     "new"
   ],
-  "explanation": "Hai quan sát khác nhau; cần thêm phép kiểm tra trước khi sửa.",
+  "explanation": "Câu hỏi này chỉ dùng hai nguồn đầu; trạng thái registrar phải được đọc bằng tác vụ delegation riêng.",
   "commandId": "panel-zone",
   "optionFeedback": {
-    "old": "Đúng từ P1.",
-    "new": "Đúng từ P2.",
-    "registrar": "Chưa có dữ liệu registrar.",
-    "a": "Chưa hỏi authoritative A record."
+    "old": "Câu trả lời NS hiện có ns1/ns2.old-dns.",
+    "new": "Đây là thông tin trong mục edited zone của panel.",
+    "registrar": "Chúng chưa trực tiếp đọc registrar; cần tác vụ delegation để xác minh.",
+    "a": "Chưa có cặp A record từ cả hai nameserver để so sánh."
   }
 }

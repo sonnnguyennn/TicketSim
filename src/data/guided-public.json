@@ -1,53 +1,58 @@
 [
   {
     "id": "VPS-01-001",
-    "objective": "Phân biệt lỗi kết nối TCP với lỗi xác thực SSH; dùng trạng thái service và cổng lắng nghe làm bằng chứng.",
+    "objective": "Đọc trạng thái SSH và cổng đang lắng nghe để giải thích lỗi Connection refused.",
+    "customerExplanation": "Khách không mở được phiên SSH vì kết nối bị từ chối. Cần phân biệt bước kết nối với bước nhập thông tin đăng nhập.",
     "probes": [
       {
         "id": "P1",
         "command": "systemctl status sshd",
         "output": "Active: inactive (dead)",
         "context": "guest",
-        "purpose": "Kiểm tra SSH daemon có đang chạy trong guest không.",
-        "meaning": "inactive (dead) chỉ nói sshd hiện không chạy; chưa cho biết nguyên nhân dừng.",
+        "purpose": "Kiểm tra dịch vụ SSH đang chạy hay đã dừng.",
+        "meaning": "inactive (dead) nghĩa là sshd hiện không chạy. Dòng này chưa cho biết vì sao dịch vụ dừng.",
         "commandId": "systemctl-status",
         "aliases": [
           "sudo systemctl status sshd"
-        ]
+        ],
+        "why": "Client báo Connection refused nên cần biết có dịch vụ nhận kết nối trong VPS không."
       },
       {
         "id": "P2",
         "command": "ss -ltnp",
-        "output": "No listener on :22",
+        "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process",
         "context": "guest",
-        "purpose": "Xem các cổng TCP đang lắng nghe.",
-        "meaning": "Không có listener ở :22 phù hợp với lỗi connection refused.",
+        "purpose": "Liệt kê cổng TCP đang lắng nghe.",
+        "meaning": "Không có dòng LISTEN trong kết quả này, nên chưa thấy dịch vụ lắng nghe TCP/22.",
         "commandId": "ss-ltnp",
         "aliases": [
           "sudo ss -ltnp"
-        ]
+        ],
+        "why": "Dịch vụ dừng thường không còn listener, nhưng cần kiểm tra cổng thực tế."
       },
       {
         "id": "G1",
         "context": "guest",
         "command": "journalctl -u sshd -n 50 --no-pager",
         "output": "-- No entries --",
-        "purpose": "Tìm log gần đây của SSH service.",
-        "meaning": "Fixture không có log bổ sung; chưa thể kết luận vì sao service dừng.",
+        "purpose": "Đọc tối đa 50 dòng journal của sshd.",
+        "meaning": "Truy vấn không trả bản ghi. Có thể do chưa có log, phạm vi lưu trữ hoặc quyền; chưa thể xác định nguyên nhân.",
         "commandId": "journalctl-unit",
         "aliases": [
           "sudo journalctl -u sshd -n 50 --no-pager"
-        ]
+        ],
+        "why": "Trạng thái inactive không giải thích nguyên nhân dừng; log có thể cung cấp thời điểm và lỗi."
       },
       {
         "id": "G2",
         "context": "guest",
         "command": "df -h /",
-        "output": "/dev/vda1 20G 8G 12G 40% /",
-        "purpose": "Loại trừ tình huống root filesystem đầy.",
-        "meaning": "Ổ đĩa còn chỗ; đây không phải bằng chứng trực tiếp cho nguyên nhân SSH dừng.",
+        "output": "Filesystem     Size  Used Avail Use% Mounted on\n/dev/vda1       20G  8.0G   12G  40% /",
+        "purpose": "Đọc dung lượng filesystem chứa thư mục gốc.",
+        "meaning": "Filesystem đang dùng 40%, còn khoảng 12G; mẫu này không hỗ trợ giả thuyết hết block space.",
         "commandId": "df-h",
-        "aliases": []
+        "aliases": [],
+        "why": "Ổ đầy có thể ảnh hưởng dịch vụ, nên kiểm tra như một giả thuyết bổ sung."
       },
       {
         "id": "G3",
@@ -98,19 +103,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Khách hàng đang báo hiện tượng nào?",
+        "prompt": "Connection refused cho biết SSH đang lỗi ở bước nào?",
         "options": [
           {
             "id": "auth",
-            "label": "SSH từ chối mật khẩu"
+            "label": "SSH đã hỏi mật khẩu rồi từ chối đăng nhập."
           },
           {
             "id": "refused",
-            "label": "Kết nối TCP tới SSH bị từ chối"
+            "label": "Kết nối TCP tới dịch vụ SSH bị từ chối."
           },
           {
             "id": "dns",
-            "label": "Tên miền không phân giải"
+            "label": "Client không tìm được địa chỉ IP của VPS."
           }
         ],
         "skill": "triage"
@@ -119,7 +124,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Trong guest console, phép kiểm tra nào trực tiếp nhất để bắt đầu?",
+        "prompt": "Lệnh nào cho biết dịch vụ SSH trong VPS đang chạy hay đã dừng?",
         "options": [
           {
             "id": "service",
@@ -141,19 +146,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Output “Active: inactive (dead)” chứng minh điều gì?",
+        "prompt": "Dòng Active: inactive (dead) cho phép ghi nhận điều gì?",
         "options": [
           {
             "id": "stopped",
-            "label": "sshd hiện không chạy"
+            "label": "sshd hiện không chạy."
           },
           {
             "id": "cause",
-            "label": "Đã biết chính xác lý do sshd dừng"
+            "label": "Đã xác định cấu hình sai làm sshd dừng."
           },
           {
             "id": "host",
-            "label": "Máy chủ vật lý chắc chắn bị tắt"
+            "label": "Toàn bộ VPS đã tắt."
           }
         ],
         "requiredProbeIds": [
@@ -166,23 +171,23 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn các kết luận được hai output hiện có hỗ trợ.",
+        "prompt": "Những nhận định nào được trạng thái dịch vụ và bảng listener hỗ trợ?",
         "options": [
           {
             "id": "inactive",
-            "label": "sshd đang inactive"
+            "label": "sshd được báo inactive."
           },
           {
             "id": "noport",
-            "label": "Không có listener ở TCP/22"
+            "label": "Chưa có listener TCP/22 trong kết quả ss."
           },
           {
             "id": "why",
-            "label": "Cấu hình SSH sai là nguyên nhân đã xác nhận"
+            "label": "Đã xác nhận lỗi cú pháp trong cấu hình SSH."
           },
           {
             "id": "disk",
-            "label": "Root filesystem đã đầy"
+            "label": "Filesystem gốc đã hết dung lượng."
           }
         ],
         "requiredProbeIds": [
@@ -196,19 +201,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Bước tiếp theo an toàn nhất là gì?",
+        "prompt": "Trước khi đề xuất khởi động sshd, support cần làm gì?",
         "options": [
           {
             "id": "restart",
-            "label": "Restart sshd ngay trên VPS khách hàng"
+            "label": "Restart sshd ngay vì client bị từ chối."
           },
           {
             "id": "logs",
-            "label": "Xem log, xác nhận quyền; chỉ đề xuất start nếu được phép, rồi kiểm tra lại SSH"
+            "label": "Xem log/cấu hình, xác nhận quyền rồi đề xuất start và thử lại SSH."
           },
           {
             "id": "ignore",
-            "label": "Kết luận do khách nhập sai mật khẩu"
+            "label": "Yêu cầu khách đổi mật khẩu trước."
           }
         ],
         "commandId": "journalctl-unit",
@@ -218,23 +223,23 @@
         "id": "sequence",
         "stage": "decide",
         "kind": "step_order",
-        "prompt": "Sắp xếp quy trình xử lý SSH an toàn.",
+        "prompt": "Đặt các bước khôi phục SSH theo thứ tự an toàn.",
         "options": [
           {
             "id": "status",
-            "label": "Ghi nhận service và listener hiện tại"
+            "label": "Ghi trạng thái sshd và listener hiện tại."
           },
           {
             "id": "logs",
-            "label": "Xem log và kiểm tra cấu hình để tìm nguyên nhân"
+            "label": "Đọc log và kiểm tra cấu hình SSH."
           },
           {
             "id": "approve",
-            "label": "Xác nhận quyền rồi mới đề xuất start nếu phù hợp"
+            "label": "Xin phép và đề xuất start nếu điều kiện cho phép."
           },
           {
             "id": "verify",
-            "label": "Kiểm tra lại listener và SSH từ client"
+            "label": "Thử listener và đăng nhập SSH từ client."
           }
         ],
         "requiredProbeIds": [
@@ -248,12 +253,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Viết 2–3 dòng: hiện tượng, bằng chứng đã quan sát, bước kiểm tra hoặc xử lý an toàn tiếp theo và cách xác minh.",
+        "prompt": "Ghi trạng thái sshd, kết quả kiểm tra cổng 22, điều chưa biết về nguyên nhân dừng và cách thử lại SSH từ client sau xử lý được duyệt.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Viết 2–3 dòng: hiện tượng, bằng chứng đã quan sát, bước kiểm tra hoặc xử lý an toàn tiếp theo và cách xác minh.",
+    "verificationPrompt": "Ghi trạng thái sshd, kết quả kiểm tra cổng 22, điều chưa biết về nguyên nhân dừng và cách thử lại SSH từ client sau xử lý được duyệt.",
     "simulation": {
       "states": [
         "initial",
@@ -2464,28 +2469,31 @@
   {
     "id": "VPS-03-003",
     "objective": "Điều tra service dừng sau khi chỉnh config bằng trạng thái và phép kiểm tra cú pháp.",
+    "customerExplanation": "Dịch vụ ngừng hoạt động sau khi khách chỉnh cấu hình. Mốc thay đổi giúp chọn phép kiểm tra, chưa tự chứng minh chỗ nào bị sai.",
     "probes": [
       {
         "id": "P1",
         "command": "systemctl status nginx",
         "output": "Active: failed",
         "context": "guest",
-        "purpose": "Xem trạng thái Nginx sau khi khách sửa config.",
-        "meaning": "Nginx đang failed, nhưng status rút gọn chưa nêu nguyên nhân.",
+        "purpose": "Đọc trạng thái unit Nginx.",
+        "meaning": "failed nghĩa là unit bị lỗi; dòng trạng thái không chỉ ra lỗi cú pháp cụ thể.",
         "commandId": "systemctl-nginx",
-        "aliases": []
+        "aliases": [],
+        "why": "Khách báo dịch vụ dừng sau sửa file; cần xác nhận trạng thái hiện tại."
       },
       {
         "id": "P2",
         "command": "nginx -t",
-        "output": "unexpected \"}\" in /etc/nginx/nginx.conf:45",
+        "output": "nginx: [emerg] unexpected \"}\" in /etc/nginx/nginx.conf:45\nnginx: configuration file /etc/nginx/nginx.conf test failed",
         "context": "guest",
-        "purpose": "Kiểm tra cú pháp cấu hình Nginx mà không restart.",
-        "meaning": "Bộ kiểm tra cú pháp báo dấu } bất ngờ trong nginx.conf dòng 45.",
+        "purpose": "Kiểm tra cú pháp và các file Nginx tham chiếu.",
+        "meaning": "Parser gặp dấu } không mong đợi ở nginx.conf dòng 45. Cần xem ngữ cảnh quanh dòng; chưa xác định ai đã sửa.",
         "commandId": "nginx-test",
         "aliases": [
           "sudo nginx -t"
-        ]
+        ],
+        "why": "Thay đổi gần nhất nằm ở cấu hình, nên kiểm tra trước khi start/reload."
       }
     ],
     "questions": [
@@ -2493,19 +2501,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Lời khách cho biết mốc thay đổi nào?",
+        "prompt": "Thông tin nào giúp chọn bước kiểm tra đầu tiên khi service vừa dừng?",
         "options": [
           {
             "id": "config",
-            "label": "Service dừng sau khi chỉnh config"
+            "label": "Service dừng sau khi cấu hình được chỉnh."
           },
           {
             "id": "host",
-            "label": "VPS đã tắt nguồn"
+            "label": "VPS đã tắt nguồn."
           },
           {
             "id": "dns",
-            "label": "DNS bị đổi"
+            "label": "DNS chắc chắn sai."
           }
         ],
         "skill": "triage"
@@ -2514,7 +2522,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Sau status, phép đọc nào kiểm tra cú pháp Nginx?",
+        "prompt": "Lệnh nào kiểm tra cấu hình Nginx trước khi tác động tới dịch vụ?",
         "options": [
           {
             "id": "test",
@@ -2536,19 +2544,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Thông báo “unexpected } ... nginx.conf:45” hỗ trợ kết luận nào?",
+        "prompt": "Nginx báo unexpected \"}\" tại dòng 45. Cần hiểu dòng báo lỗi thế nào?",
         "options": [
           {
             "id": "syntax",
-            "label": "Config có lỗi cú pháp liên quan dấu } tại dòng 45"
+            "label": "Cấu hình chưa hợp lệ; cần xem đoạn quanh nginx.conf:45."
           },
           {
             "id": "healthy",
-            "label": "Config hợp lệ nhưng mạng hỏng"
+            "label": "Cấu hình hợp lệ, chỉ đường mạng bị lỗi."
           },
           {
             "id": "all",
-            "label": "Mọi file trên VPS bị hỏng"
+            "label": "Mọi file trên VPS đều bị hỏng."
           }
         ],
         "requiredProbeIds": [
@@ -2561,23 +2569,23 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Hai output chứng minh những gì?",
+        "prompt": "Những điều nào đã được trạng thái unit và nginx -t xác nhận?",
         "options": [
           {
             "id": "failed",
-            "label": "Nginx hiện failed"
+            "label": "Unit Nginx đang failed."
           },
           {
             "id": "line",
-            "label": "nginx -t báo lỗi ở nginx.conf:45"
+            "label": "Cấu hình kiểm tra không qua tại nginx.conf:45."
           },
           {
             "id": "cause",
-            "label": "Đã xác định ai chỉnh file"
+            "label": "Đã xác định người chỉnh sai cấu hình."
           },
           {
             "id": "fixed",
-            "label": "HTTP đã hồi phục"
+            "label": "Website đã phục vụ HTTP bình thường."
           }
         ],
         "requiredProbeIds": [
@@ -2591,19 +2599,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quy trình xử lý an toàn?",
+        "prompt": "Cần làm gì với bản cấu hình vừa chỉnh trước khi đưa Nginx chạy lại?",
         "options": [
           {
             "id": "review",
-            "label": "Đối chiếu diff/backup, sửa có quyền, chạy nginx -t rồi mới start/reload và thử HTTP"
+            "label": "Đối chiếu diff/backup, sửa có phép, test cấu hình rồi kiểm tra lại HTTP."
           },
           {
             "id": "delete",
-            "label": "Xóa nginx.conf để service tự tạo lại"
+            "label": "Xóa nginx.conf để Nginx tạo lại mặc định."
           },
           {
             "id": "restart",
-            "label": "Restart lặp lại cho tới khi service chạy"
+            "label": "Restart lặp lại cho đến khi service lên."
           }
         ],
         "commandId": "nginx-test",
@@ -2613,12 +2621,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi status failed, vị trí lỗi cấu hình, bước đối chiếu/duyệt sửa và xác minh syntax cùng HTTP sau đó.",
+        "prompt": "Ghi trạng thái Nginx và vị trí lỗi cấu hình; nêu cách đối chiếu bản sửa, quyền áp dụng, kiểm tra nginx -t và thử HTTP sau khi dịch vụ chạy lại.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi status failed, vị trí lỗi cấu hình, bước đối chiếu/duyệt sửa và xác minh syntax cùng HTTP sau đó."
+    "verificationPrompt": "Ghi trạng thái Nginx và vị trí lỗi cấu hình; nêu cách đối chiếu bản sửa, quyền áp dụng, kiểm tra nginx -t và thử HTTP sau khi dịch vụ chạy lại."
   },
   {
     "id": "VPS-05-004",
@@ -2961,46 +2969,51 @@
   {
     "id": "VPS-08-003",
     "objective": "Điều tra vì sao thay đổi DNS trong panel chưa xuất hiện với người dùng.",
+    "customerExplanation": "Khách vừa sửa DNS trong panel nhưng người dùng vẫn nhận IP cũ. Cần biết tên miền đang ủy quyền cho nameserver nào, rồi mới đánh giá cache.",
     "probes": [
       {
         "id": "P1",
         "command": "dig example.test NS",
-        "output": "ns1.old-dns.example; ns2.old-dns.example",
+        "output": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40318\n;; ANSWER SECTION:\nexample.test. 300 IN NS ns1.old-dns.example.\nexample.test. 300 IN NS ns2.old-dns.example.",
         "context": "client",
-        "purpose": "Tra NS của example.test từ điểm truy vấn hiện tại.",
-        "meaning": "Truy vấn hiện trả old-dns; một kết quả resolver chưa tự chứng minh trạng thái registrar hiện tại.",
+        "purpose": "Hỏi bản ghi NS của example.test từ resolver hiện tại.",
+        "meaning": "Câu trả lời hiện liệt kê ns1/ns2.old-dns; một resolver vẫn có thể đang dùng cache.",
         "commandId": "dig-ns",
-        "aliases": []
+        "aliases": [],
+        "why": "Muốn biết người dùng đang được dẫn tới nhóm nameserver nào."
       },
       {
         "id": "P2",
         "command": "PANEL: edited zone",
         "output": "ns1.new-dns.example",
         "context": "panel",
-        "purpose": "Xem tên nameserver của zone vừa chỉnh trong panel mô phỏng.",
-        "meaning": "Panel ghi new-dns; đây là nơi được chỉnh, chưa chứng minh domain đã ủy quyền tới đó.",
+        "purpose": "Xem zone khách vừa sửa nằm ở nameserver nào.",
+        "meaning": "Panel ghi zone tại new-dns; đây chưa phải xác nhận rằng registrar đã đổi delegation.",
         "commandId": "panel-zone",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần so nơi được chỉnh với nơi tên miền đang sử dụng."
       },
       {
         "id": "G1",
         "context": "panel",
         "command": "PANEL: registrar delegation",
         "output": "Delegated NS: old-dns.example.test",
-        "purpose": "Đọc delegation đang được registrar ghi nhận.",
-        "meaning": "Registrar còn trỏ old-dns; panel zone new-dns chưa được ủy quyền.",
+        "purpose": "Đọc delegation domain tại registrar.",
+        "meaning": "Registrar còn ghi old-dns; việc chỉnh zone new-dns không tự đưa truy vấn người dùng sang đó.",
         "commandId": "panel-zone",
-        "aliases": []
+        "aliases": [],
+        "why": "Bản ghi NS ở resolver có thể cũ; cần nguồn quản lý delegation để đối chiếu."
       },
       {
         "id": "G2",
         "context": "client",
         "command": "dig @new-dns.example.test example.test A",
         "output": "example.test. 300 IN A 198.51.100.20",
-        "purpose": "Hỏi A record trực tiếp từ new-dns.",
-        "meaning": "Zone mới có IP dự kiến, nhưng chưa chứng minh resolver của người dùng dùng NS này.",
+        "purpose": "Hỏi trực tiếp A record từ nameserver mới.",
+        "meaning": "new-dns trả 198.51.100.20; chưa chứng minh resolver client đang hỏi new-dns.",
         "commandId": "dig-a",
-        "aliases": []
+        "aliases": [],
+        "why": "Kiểm tra zone mới có IP mong muốn trước khi thay delegation."
       },
       {
         "id": "G3",
@@ -3047,19 +3060,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Khách báo hiện tượng nào sau khi sửa DNS?",
+        "prompt": "Sau khi chỉnh DNS trong panel, khách vẫn gặp vấn đề gì?",
         "options": [
           {
             "id": "old",
-            "label": "Người dùng chưa thấy IP mới"
+            "label": "Người dùng chưa nhận IP mới."
           },
           {
             "id": "ssh",
-            "label": "SSH Permission denied"
+            "label": "SSH từ chối xác thực."
           },
           {
             "id": "disk",
-            "label": "Filesystem hết chỗ"
+            "label": "Filesystem không còn chỗ ghi."
           }
         ],
         "skill": "triage"
@@ -3068,7 +3081,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Cần đọc thông tin NS hiện trả về bằng gì?",
+        "prompt": "Lệnh nào hỏi tên nameserver hiện được resolver trả cho example.test?",
         "options": [
           {
             "id": "dig",
@@ -3090,19 +3103,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "P1 trả old-dns, còn panel P2 ghi new-dns. Kết luận nào vừa đủ?",
+        "prompt": "Resolver trả old-dns, panel vừa sửa zone new-dns. Bạn nên hiểu sự khác biệt này thế nào?",
         "options": [
           {
             "id": "different",
-            "label": "Hai nguồn hiện không khớp; phải kiểm tra delegation và authoritative answer"
+            "label": "NS resolver và nơi chỉnh zone khác nhau; cần kiểm tra delegation."
           },
           {
             "id": "changed",
-            "label": "Registrar chắc chắn đã đổi sang new-dns"
+            "label": "Registrar chắc chắn đã chuyển sang new-dns."
           },
           {
             "id": "broken",
-            "label": "Mọi DNS resolver đều bị hỏng"
+            "label": "Tất cả resolver đều hỏng vì chúng chưa trả IP mới."
           }
         ],
         "requiredProbeIds": [
@@ -3116,23 +3129,23 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn điều hai fixture thực sự cho biết.",
+        "prompt": "Chỉ từ kết quả hỏi NS và mục edited zone, chọn hai điều đã biết.",
         "options": [
           {
             "id": "old",
-            "label": "Truy vấn NS hiện trả old-dns"
+            "label": "Resolver đang trả old-dns."
           },
           {
             "id": "new",
-            "label": "Panel mô phỏng ghi zone new-dns đã được chỉnh"
+            "label": "Zone vừa sửa nằm ở new-dns."
           },
           {
             "id": "registrar",
-            "label": "Registrar đã xác nhận delegation tới old-dns"
+            "label": "Hai nguồn này đã xác nhận delegation tại registrar."
           },
           {
             "id": "a",
-            "label": "A record ở old-dns và new-dns giống nhau"
+            "label": "A record tại old-dns và new-dns giống nhau."
           }
         ],
         "requiredProbeIds": [
@@ -3146,19 +3159,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Bước tiếp theo an toàn nhất?",
+        "prompt": "Làm gì trước khi bảo khách chỉ cần chờ cache hết hạn?",
         "options": [
           {
             "id": "verify",
-            "label": "Xác nhận NS ở registrar và hỏi trực tiếp authoritative NS; đổi delegation chỉ khi chủ domain duyệt"
+            "label": "Đối chiếu registrar và authoritative answer; đổi delegation khi được duyệt."
           },
           {
             "id": "delete",
-            "label": "Xóa zone cũ ngay"
+            "label": "Xóa zone old-dns ngay để ép client dùng new-dns."
           },
           {
             "id": "wait",
-            "label": "Chỉ chờ propagation mà không kiểm tra gì"
+            "label": "Chỉ chờ propagation, không hỏi thêm nameserver nào."
           }
         ],
         "commandId": "dig-ns",
@@ -3168,12 +3181,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi NS thấy từ truy vấn và panel, điều chưa biết về registrar, bước xác nhận ủy quyền và kiểm tra authoritative A record.",
+        "prompt": "Ghi NS đang được trả về, zone khách sửa và delegation ở registrar. Nêu cách đối chiếu authoritative answer với resolver client sau thay đổi có quyền.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi NS thấy từ truy vấn và panel, điều chưa biết về registrar, bước xác nhận ủy quyền và kiểm tra authoritative A record.",
+    "verificationPrompt": "Ghi NS đang được trả về, zone khách sửa và delegation ở registrar. Nêu cách đối chiếu authoritative answer với resolver client sau thay đổi có quyền.",
     "simulation": {
       "states": [
         "initial",
@@ -6890,46 +6903,51 @@
   {
     "id": "VPS-05-007",
     "objective": "Đọc kernel error và fsck failure, bảo vệ dữ liệu trước mọi sửa chữa filesystem.",
+    "customerExplanation": "Sau sự cố storage, VPS vào môi trường rescue thay vì khởi động bình thường. Ưu tiên giữ dữ liệu và xác định điều kiện phục hồi trước khi sửa filesystem.",
     "probes": [
       {
         "id": "P1",
         "command": "journalctl -k -b -p err",
         "output": "EXT4-fs error on /dev/vda1",
         "context": "guest",
-        "purpose": "kernel error của filesystem",
-        "meaning": "Kernel ghi EXT4-fs error trên /dev/vda1; có rủi ro integrity.",
+        "purpose": "Đọc log kernel mức lỗi trong lần boot hiện tại.",
+        "meaning": "Kernel ghi lỗi EXT4 liên quan /dev/vda1. Cần log chi tiết và sức khỏe storage để phân biệt lỗi logic với I/O bên dưới.",
         "commandId": "journal-boot",
-        "aliases": []
+        "aliases": [],
+        "why": "VPS vào rescue sau sự cố storage; cần xem kernel có ghi lỗi filesystem hay thiết bị không."
       },
       {
         "id": "P2",
         "command": "systemctl --failed",
-        "output": "systemd-fsck@dev-vda1.service failed",
+        "output": "  UNIT                              LOAD   ACTIVE SUB    DESCRIPTION\n● systemd-fsck@dev-vda1.service      loaded failed failed File System Check on /dev/vda1\n\n1 loaded units listed.",
         "context": "guest",
-        "purpose": "unit fsck bị fail",
-        "meaning": "systemd-fsck@dev-vda1.service failed; cần log chi tiết và trạng thái mount.",
+        "purpose": "Liệt kê unit systemd đang failed.",
+        "meaning": "Unit systemd-fsck@dev-vda1.service đang failed. Tên unit không cho biết repair đã chạy tới đâu hay dữ liệu hỏng mức nào.",
         "commandId": "systemctl-failed",
-        "aliases": []
+        "aliases": [],
+        "why": "Một kiểm tra filesystem lúc boot có thể góp phần khiến hệ thống không lên bình thường."
       },
       {
         "id": "G1",
         "context": "guest",
         "command": "findmnt -no SOURCE,OPTIONS /",
         "output": "/dev/vda1 ro,relatime",
-        "purpose": "Đọc mode mount của root trong rescue.",
-        "meaning": "Root đang ro; không thử ghi hoặc sửa online.",
+        "purpose": "Đọc thiết bị và lựa chọn mount của filesystem gốc.",
+        "meaning": "/dev/vda1 đang mount ro. Read-only giảm thao tác ghi, nhưng không phải xác nhận dữ liệu nguyên vẹn.",
         "commandId": "findmnt",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần biết volume đang mount thế nào trước khi lên phương án kiểm tra hoặc sửa offline."
       },
       {
         "id": "G2",
         "context": "panel",
         "command": "PANEL: verified backup status",
         "output": "Last verified backup: 2026-10-21 00:00 UTC",
-        "purpose": "Xác nhận mốc backup trước recovery.",
-        "meaning": "Có một bản backup đã kiểm tra; cần xác nhận phạm vi và RPO với khách.",
+        "purpose": "Đọc mốc backup đã được xác minh trong panel.",
+        "meaning": "Có mốc backup 2026-10-21 00:00 UTC. Phải xác nhận phạm vi, giao dịch mới hơn và thử phục hồi trước khi cam kết.",
         "commandId": "panel-backup-status",
-        "aliases": []
+        "aliases": [],
+        "why": "Quyết định recovery cần biết có bản phục hồi nào và chấp nhận mất dữ liệu đến đâu."
       }
     ],
     "questions": [
@@ -6937,19 +6955,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Khi VPS vào rescue sau sự cố storage, điều gì cần được ghi nhận trước?",
         "options": [
           {
             "id": "symptom",
-            "label": "VPS vào rescue mode sau sự cố storage."
+            "label": "VPS không boot bình thường và đang ở rescue."
           },
           {
             "id": "other",
-            "label": "Chỉ một URL trả 404."
+            "label": "Chỉ một URL của website trả 404."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Đã xác định ổ vật lý bị hỏng hoàn toàn."
           }
         ],
         "skill": "filesystem-integrity"
@@ -6958,7 +6976,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc kernel error của filesystem?",
+        "prompt": "Cần xem lỗi kernel của lần boot này bằng lệnh nào?",
         "options": [
           {
             "id": "direct",
@@ -6980,11 +6998,11 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "prompt": "Lỗi EXT4, unit fsck failed và mount ro cho phép quyết định điều gì?",
         "options": [
           {
             "id": "supported",
-            "label": "Filesystem có lỗi và fsck unit thất bại; cần quy trình recovery/offline và backup."
+            "label": "Cần kiểm tra storage/backup và lập quy trình phục hồi offline."
           },
           {
             "id": "over",
@@ -6992,7 +7010,7 @@
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Chỉ cần mount ro là dữ liệu đã an toàn và có thể đóng sự cố."
           }
         ],
         "requiredProbeIds": [
@@ -7008,19 +7026,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Nhận định nào được log kernel và danh sách unit failed hỗ trợ?",
         "options": [
           {
             "id": "p1",
-            "label": "Kernel ghi EXT4-fs error trên /dev/vda1; có rủi ro integrity."
+            "label": "Kernel đã ghi lỗi EXT4 liên quan vda1."
           },
           {
             "id": "p2",
-            "label": "systemd-fsck@dev-vda1.service failed; cần log chi tiết và trạng thái mount."
+            "label": "Unit kiểm tra filesystem của vda1 bị failed."
           },
           {
             "id": "over",
-            "label": "Có thể chạy fsck -y trên filesystem đang mount đọc ghi."
+            "label": "Có thể repair filesystem đang mount đọc ghi ngay."
           }
         ],
         "requiredProbeIds": [
@@ -7034,19 +7052,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "prompt": "Hướng xử lý nào bảo vệ dữ liệu khi chưa biết mức hỏng filesystem?",
         "options": [
           {
             "id": "safe",
-            "label": "Giữ trạng thái, kiểm tra backup và disk health, chuyển đội storage để repair offline có kế hoạch."
+            "label": "Giữ hiện trạng, xác minh backup và chuyển đội storage lập recovery offline."
           },
           {
             "id": "unsafe",
-            "label": "Chạy fsck -y trực tiếp trên root filesystem đang mounted."
+            "label": "Chạy fsck -y trên root filesystem đang mount."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket vì panel vẫn có backup cũ."
           }
         ],
         "skill": "filesystem-integrity"
@@ -7055,19 +7073,19 @@
         "id": "order",
         "stage": "verify",
         "kind": "step_order",
-        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "prompt": "Xếp thứ tự phục hồi VPS đang ở rescue vì lỗi filesystem.",
         "options": [
           {
             "id": "evidence",
-            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+            "label": "Ghi lỗi, trạng thái mount và xác nhận phạm vi backup."
           },
           {
             "id": "verify",
-            "label": "Filesystem mount sạch sau repair, dữ liệu ứng dụng được kiểm tra và boot ổn định."
+            "label": "Kiểm tra filesystem, dữ liệu ứng dụng và nhiều lần boot theo kế hoạch."
           },
           {
             "id": "act",
-            "label": "Giữ trạng thái, kiểm tra backup và disk health, chuyển đội storage để repair offline có kế hoạch."
+            "label": "Đội storage thực hiện recovery offline theo kế hoạch đã duyệt."
           }
         ],
         "skill": "filesystem-integrity"
@@ -7076,12 +7094,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Filesystem mount sạch sau repair, dữ liệu ứng dụng được kiểm tra và boot ổn định.",
+        "prompt": "Ghi lỗi filesystem, unit thất bại, trạng thái mount và mốc backup; nêu dữ liệu còn cần bảo toàn, quyền phục hồi offline và cách kiểm tra boot cùng dữ liệu ứng dụng sau đó.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Filesystem mount sạch sau repair, dữ liệu ứng dụng được kiểm tra và boot ổn định."
+    "verificationPrompt": "Ghi lỗi filesystem, unit thất bại, trạng thái mount và mốc backup; nêu dữ liệu còn cần bảo toàn, quyền phục hồi offline và cách kiểm tra boot cùng dữ liệu ứng dụng sau đó."
   },
   {
     "id": "VPS-07-002",
@@ -8757,46 +8775,51 @@
   {
     "id": "VPS-02-006",
     "objective": "Đo loss end-to-end từ nhiều nguồn, không quy lỗi cho hop trung gian chỉ từ ICMP.",
+    "customerExplanation": "SSH tới VPS Singapore đôi lúc phản hồi chậm. Cần đo đúng đường đi từ mạng đang bị ảnh hưởng thay vì chỉ nhìn tình trạng VPS.",
     "probes": [
       {
         "id": "P1",
         "command": "mtr -rw -c 20 203.0.113.20",
-        "output": "Destination 203.0.113.20 Loss% 25.0 Avg 190ms",
+        "output": "HOST: client                         Loss%   Snt   Last   Avg  Best  Wrst StDev\n  1.|-- 192.0.2.1                      0.0%    20    2.1   2.0   1.2   3.4   0.4\n  2.|-- 203.0.113.20                  25.0%    20  191.0 190.0 182.0 205.0   6.1",
         "context": "client",
-        "purpose": "loss end-to-end trên đường đo từ client",
-        "meaning": "Destination có 25% loss trên 20 lượt từ nguồn này; chưa định vị đoạn lỗi.",
+        "purpose": "Đo độ trễ và tỷ lệ phản hồi tại các hop tới VPS.",
+        "meaning": "Đích 203.0.113.20 mất 25% phản hồi trong 20 lần gửi. Mẫu này chưa xác định đoạn mạng gây mất gói.",
         "commandId": "mtr",
-        "aliases": []
+        "aliases": [],
+        "why": "SSH bị chậm theo từng lúc nên cần kiểm tra loss tới chính đích từ mạng khách."
       },
       {
         "id": "P2",
         "command": "ping -c 20 203.0.113.20",
-        "output": "5 packets lost, 25% packet loss",
+        "output": "--- 203.0.113.20 ping statistics ---\n20 packets transmitted, 15 received, 25% packet loss, time 19025ms\nrtt min/avg/max/mdev = 182.000/190.000/205.000/6.100 ms",
         "context": "client",
-        "purpose": "ICMP tới đích từ cùng nguồn",
-        "meaning": "5/20 gói không nhận phản hồi, phù hợp loss tại thời điểm mẫu.",
+        "purpose": "Đếm phản hồi ICMP từ cùng đích.",
+        "meaning": "Gửi 20 gói, nhận 15 phản hồi: mất 25% trong cửa sổ đo này. ICMP không trực tiếp đo độ trễ ứng dụng SSH.",
         "commandId": "ping",
-        "aliases": []
+        "aliases": [],
+        "why": "Dùng phép đo thứ hai để đối chiếu kết quả loss tại đích trong MTR."
       },
       {
         "id": "G1",
         "context": "panel",
         "command": "PANEL: network probe Singapore",
         "output": "Source sg-probe-2 -> 203.0.113.20 TCP/22: 20/20 connected; median 12 ms",
-        "purpose": "So sánh nguồn khác gần đích.",
-        "meaning": "Probe khác ổn định; lỗi có thể theo đường/nguồn, chưa loại trừ gián đoạn ngắt quãng.",
+        "purpose": "Đọc kết quả TCP/22 từ điểm đo Singapore.",
+        "meaning": "Probe Singapore mở được 20/20 kết nối TCP/22. Chưa thể suy ra đường từ khách cũng tốt.",
         "commandId": "panel-probes",
-        "aliases": []
+        "aliases": [],
+        "why": "So sánh mạng gần VPS với đường đi từ client để xác định phạm vi ảnh hưởng."
       },
       {
         "id": "G2",
         "context": "guest",
         "command": "ip -s link show dev ens3",
         "output": "2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    RX: bytes packets errors dropped missed mcast\n    105020 1130 0 0 0 0\n    TX: bytes packets errors dropped carrier collsns\n    99210 1060 0 0 0 0",
-        "purpose": "Kiểm tra error/drop trên NIC guest.",
-        "meaning": "Snapshot guest không thấy error/drop; không loại trừ đường client tới VPS.",
+        "purpose": "Đọc bộ đếm lỗi và gói bị drop trên ens3.",
+        "meaning": "Các bộ đếm errors/dropped trong mẫu đều 0. Một ảnh chụp không loại trừ lỗi ngoài guest hoặc ngoài thời điểm đo.",
         "commandId": "ip-link",
-        "aliases": []
+        "aliases": [],
+        "why": "Nếu NIC guest ghi nhiều lỗi trong lúc chậm, cần gửi kèm khi điều tra đường tới VPS."
       }
     ],
     "questions": [
@@ -8804,7 +8827,7 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Cần ghi nhận đặc điểm nào của sự cố SSH tới Singapore?",
         "options": [
           {
             "id": "symptom",
@@ -8812,11 +8835,11 @@
           },
           {
             "id": "other",
-            "label": "VPS trả HTTP 403 cố định."
+            "label": "Mọi lần truy cập HTTP đều trả 403."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Đường truyền quốc tế đã được xác định là nguyên nhân."
           }
         ],
         "skill": "network-loss-scope"
@@ -8825,7 +8848,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc loss end-to-end trên đường đo từ client?",
+        "prompt": "Muốn đo loss tới VPS từ mạng khách, chọn phép kiểm tra nào?",
         "options": [
           {
             "id": "direct",
@@ -8847,19 +8870,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Hai phép đo 20 gói cùng nguồn báo loss; bạn kết luận được phạm vi nào?",
+        "prompt": "MTR và ping mất 25% phản hồi, còn probe Singapore kết nối đủ. Bạn khoanh vùng đến đâu?",
         "options": [
           {
             "id": "supported",
-            "label": "Hai phép đo cùng nguồn thấy 25% loss end-to-end; chưa biết lỗi ở access, transit hay đích."
+            "label": "Đường từ nguồn đo có loss; chưa xác định đoạn gây lỗi."
           },
           {
             "id": "over",
-            "label": "Một hop MTR hạn chế ICMP chính là router hỏng."
+            "label": "Hop trung gian phản hồi ít chính là router hỏng."
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Probe Singapore tốt nên có thể bỏ qua loss từ khách."
           }
         ],
         "requiredProbeIds": [
@@ -8875,19 +8898,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Chọn các số liệu thực sự xuất hiện ở hai phép đo từ client.",
         "options": [
           {
             "id": "p1",
-            "label": "Destination có 25% loss trên 20 lượt từ nguồn này; chưa định vị đoạn lỗi."
+            "label": "MTR gửi 20 lượt và báo loss 25% tại đích."
           },
           {
             "id": "p2",
-            "label": "5/20 gói không nhận phản hồi, phù hợp loss tại thời điểm mẫu."
+            "label": "Ping gửi 20, nhận 15 phản hồi."
           },
           {
             "id": "over",
-            "label": "Một hop MTR hạn chế ICMP chính là router hỏng."
+            "label": "Đã biết router trung gian nào bị hỏng."
           }
         ],
         "requiredProbeIds": [
@@ -8901,19 +8924,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "prompt": "Bộ bằng chứng nào nên gửi đội mạng nếu lỗi lặp lại?",
         "options": [
           {
             "id": "safe",
-            "label": "Thu source IP, thời gian, nhiều đợt MTR và phép TCP từ nguồn bị ảnh hưởng; chuyển đội network nếu loss lặp lại."
+            "label": "Thu IP nguồn, thời gian, nhiều mẫu MTR và TCP/SSH rồi chuyển đội mạng."
           },
           {
             "id": "unsafe",
-            "label": "Tự đổi route hoặc firewall VPS khách để thử."
+            "label": "Đổi route hoặc firewall VPS để thử ngay."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket vì probe Singapore kết nối được."
           }
         ],
         "skill": "network-loss-scope"
@@ -8922,19 +8945,19 @@
         "id": "order",
         "stage": "verify",
         "kind": "step_order",
-        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "prompt": "Xếp thứ tự xử lý trường hợp mất gói ngắt quãng này.",
         "options": [
           {
             "id": "evidence",
-            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+            "label": "Ghi nguồn, thời gian và đối chiếu loss ở đích qua nhiều mẫu."
           },
           {
             "id": "verify",
-            "label": "TCP/SSH và end-to-end loss bình thường từ nguồn bị ảnh hưởng trong giờ từng lỗi."
+            "label": "Đo lại TCP/SSH từ mạng khách trong khoảng giờ từng lỗi."
           },
           {
             "id": "act",
-            "label": "Thu source IP, thời gian, nhiều đợt MTR và phép TCP từ nguồn bị ảnh hưởng; chuyển đội network nếu loss lặp lại."
+            "label": "Gửi mẫu MTR/TCP cùng thông tin nguồn cho đội mạng nếu loss lặp lại."
           }
         ],
         "skill": "network-loss-scope"
@@ -8943,12 +8966,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: TCP/SSH và end-to-end loss bình thường từ nguồn bị ảnh hưởng trong giờ từng lỗi.",
+        "prompt": "Ghi nguồn/đích và thời gian mất gói, so sánh với probe Singapore, nêu giới hạn kết luận và dữ liệu cần gửi đội mạng; xác minh lại SSH từ mạng từng bị chậm.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: TCP/SSH và end-to-end loss bình thường từ nguồn bị ảnh hưởng trong giờ từng lỗi.",
+    "verificationPrompt": "Ghi nguồn/đích và thời gian mất gói, so sánh với probe Singapore, nêu giới hạn kết luận và dữ liệu cần gửi đội mạng; xác minh lại SSH từ mạng từng bị chậm.",
     "objectiveExam": {
       "id": "exam-verify",
       "stage": "verify",
@@ -9939,46 +9962,51 @@
   {
     "id": "VPS-04-007",
     "objective": "Đối chiếu CPU steal của guest với node alert; chuyển cấp hạ tầng đúng quyền.",
+    "customerExplanation": "VPS phản hồi chậm dù process bên trong không dùng nhiều CPU. Cần phân biệt tải của ứng dụng với thời gian CPU mà máy ảo không được chạy.",
     "probes": [
       {
         "id": "P1",
         "command": "top -b -n1 | head -n 5",
         "output": "%Cpu(s): 5 us, 4 sy, 41 id, 50 st",
         "context": "guest",
-        "purpose": "CPU steal và user CPU trong guest",
-        "meaning": "Guest có 50% steal ở mẫu này dù user CPU thấp.",
+        "purpose": "Đọc tỷ lệ CPU user, system, idle và steal trong guest.",
+        "meaning": "st 50% cho thấy thời gian bị lấy khỏi VM trong mẫu CPU. Không xác định process hoặc VM khác gây tranh chấp.",
         "commandId": "top",
-        "aliases": []
+        "aliases": [],
+        "why": "Process dùng ít CPU nhưng khách vẫn chậm; cần xem VM có chờ CPU từ hypervisor không."
       },
       {
         "id": "P2",
         "command": "PANEL: node metrics",
         "output": "CPU contention alert on node-4",
         "context": "panel",
-        "purpose": "alert CPU contention của node",
-        "meaning": "Node-4 có alert contention; cần correlation nhiều mẫu và phạm vi VM.",
+        "purpose": "Đọc cảnh báo tài nguyên của node chứa VM.",
+        "meaning": "Node-4 đang có cảnh báo contention; cần đối chiếu cửa sổ thời gian với sự cố của khách.",
         "commandId": "panel-probes",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần so bằng chứng guest với telemetry hạ tầng thay vì tự kết luận từ top."
       },
       {
         "id": "G1",
         "context": "guest",
         "command": "vmstat 1 2",
-        "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 2  0    0 85240 18000 102400 0  0  0  0 240 320 5 4 41 0 50",
-        "purpose": "Đo CPU steal thêm một mẫu trong guest.",
-        "meaning": "Mẫu tiếp theo vẫn có st cao; cần trend và đối chiếu host.",
+        "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 2  0    0 85240 18000 102400 0 0 0 0 240 320 5 4 41 0 50\n 2  0    0 85240 18000 102400 0 0 0 0 242 325 5 4 41 0 50",
+        "purpose": "Lấy hai báo cáo vmstat cách nhau một giây.",
+        "meaning": "Dòng đầu là trung bình từ boot; dòng sau là khoảng một giây. st vẫn 50% ở khoảng đo, nhưng cần nhiều mẫu hơn để có xu hướng.",
         "commandId": "vmstat",
-        "aliases": []
+        "aliases": [],
+        "why": "Muốn biết steal vẫn cao ở mẫu tiếp theo hay chỉ là trung bình từ lúc boot."
       },
       {
         "id": "G2",
         "context": "panel",
         "command": "PANEL: node-4 contention window",
         "output": "08:00-08:20 UTC CPU ready alert; 3 VMs affected",
-        "purpose": "Đối chiếu phạm vi node.",
-        "meaning": "Nhiều VM bị ảnh hưởng; đội hạ tầng cần xác nhận kế hoạch xử lý.",
+        "purpose": "Đọc thời gian contention và số VM bị ảnh hưởng.",
+        "meaning": "Cửa sổ 08:00–08:20 UTC có CPU ready alert trên ba VM. Chưa chỉ ra bên gây tranh chấp hay hành động nào đã được duyệt.",
         "commandId": "panel-probes",
-        "aliases": []
+        "aliases": [],
+        "why": "Sự cố chung nhiều VM cần đội node đánh giá capacity hoặc placement."
       }
     ],
     "questions": [
@@ -9986,19 +10014,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Vì sao cần kiểm tra thêm khi process dùng ít CPU mà VM vẫn chậm?",
         "options": [
           {
             "id": "symptom",
-            "label": "VM chậm khi process trong guest dùng ít CPU."
+            "label": "Khách thấy chậm dù process trong VM dùng ít CPU."
           },
           {
             "id": "other",
-            "label": "App trả Permission denied vì thiếu account."
+            "label": "Ứng dụng từ chối đăng nhập vì user không tồn tại."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Đã biết VM khác nào chiếm CPU trên node."
           }
         ],
         "skill": "host-cpu-steal"
@@ -10007,7 +10035,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc cpu steal và user cpu trong guest?",
+        "prompt": "Muốn phân biệt CPU user với steal trong guest, xem phép đọc nào?",
         "options": [
           {
             "id": "direct",
@@ -10029,19 +10057,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "prompt": "Steal 50% trùng cảnh báo contention trên node-4 hỗ trợ hướng điều tra nào?",
         "options": [
           {
             "id": "supported",
-            "label": "Steal cao đồng thời node alert; nhiều khả năng tranh chấp host, nhưng cần xác nhận timeline và VM khác."
+            "label": "Khả năng tranh chấp CPU host; cần đối chiếu timeline và VM khác."
           },
           {
             "id": "over",
-            "label": "Đã xác định chính xác VM hàng xóm gây lỗi và được phép migrate ngay."
+            "label": "Đã biết VM hàng xóm gây lỗi và có thể migrate ngay."
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Process CPU thấp đủ để loại trừ sự cố hiệu năng."
           }
         ],
         "requiredProbeIds": [
@@ -10057,19 +10085,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Những số liệu nào đã thấy trong guest và panel?",
         "options": [
           {
             "id": "p1",
-            "label": "Guest có 50% steal ở mẫu này dù user CPU thấp."
+            "label": "Guest có st 50% trong mẫu CPU."
           },
           {
             "id": "p2",
-            "label": "Node-4 có alert contention; cần correlation nhiều mẫu và phạm vi VM."
+            "label": "Panel có cảnh báo CPU contention trên node-4."
           },
           {
             "id": "over",
-            "label": "Đã xác định chính xác VM hàng xóm gây lỗi và được phép migrate ngay."
+            "label": "Đã có quyền migrate VM khách."
           }
         ],
         "requiredProbeIds": [
@@ -10083,19 +10111,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "prompt": "Support nên làm gì khi dấu hiệu guest và node cùng cho thấy tranh chấp CPU?",
         "options": [
           {
             "id": "safe",
-            "label": "Thu nhiều mẫu steal, latency và node metrics; mở incident cho hạ tầng đánh giá placement/capacity."
+            "label": "Thu nhiều mẫu steal/latency và mở incident cho đội node đánh giá."
           },
           {
             "id": "unsafe",
-            "label": "Tự migrate hoặc hard stop VM khách mà không có kế hoạch."
+            "label": "Tự migrate hoặc hard stop VM khách ngay."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket vì process guest dùng CPU thấp."
           }
         ],
         "skill": "host-cpu-steal"
@@ -10104,19 +10132,19 @@
         "id": "order",
         "stage": "verify",
         "kind": "step_order",
-        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "prompt": "Xếp thứ tự điều tra và theo dõi sự cố CPU ở lớp host.",
         "options": [
           {
             "id": "evidence",
-            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+            "label": "Ghi nhiều mẫu steal và đối chiếu cửa sổ node alert."
           },
           {
             "id": "verify",
-            "label": "Steal giảm và latency ứng dụng bình thường sau xử lý của hạ tầng."
+            "label": "Đo lại steal và độ trễ ứng dụng trong giờ/tải từng bị chậm."
           },
           {
             "id": "act",
-            "label": "Thu nhiều mẫu steal, latency và node metrics; mở incident cho hạ tầng đánh giá placement/capacity."
+            "label": "Chuyển incident cho đội node đánh giá capacity và phương án xử lý."
           }
         ],
         "skill": "host-cpu-steal"
@@ -10125,12 +10153,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Steal giảm và latency ứng dụng bình thường sau xử lý của hạ tầng.",
+        "prompt": "Ghi steal time, thời gian node cảnh báo và phạm vi VM bị ảnh hưởng; nêu điều chưa biết, nội dung escalation và cách đo lại độ trễ khách sau xử lý hạ tầng.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Steal giảm và latency ứng dụng bình thường sau xử lý của hạ tầng.",
+    "verificationPrompt": "Ghi steal time, thời gian node cảnh báo và phạm vi VM bị ảnh hưởng; nêu điều chưa biết, nội dung escalation và cách đo lại độ trễ khách sau xử lý hạ tầng.",
     "objectiveExam": {
       "id": "exam-verify",
       "stage": "verify",
@@ -10902,46 +10930,51 @@
   {
     "id": "VPS-07-005",
     "objective": "Đối chiếu certificate thực được phục vụ theo SNI với UTC, chain và lịch gia hạn.",
+    "customerExplanation": "Trình duyệt báo chứng chỉ HTTPS đã hết hạn. Cần kiểm tra chứng chỉ mà máy khách thực sự nhận từ đúng hostname.",
     "probes": [
       {
         "id": "P1",
         "command": "echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null | openssl x509 -noout -dates",
-        "output": "notAfter=Sep 01 00:00:00 2026 GMT",
+        "output": "notBefore=Jun  3 00:00:00 2026 GMT\nnotAfter=Sep  1 00:00:00 2026 GMT",
         "context": "client",
-        "purpose": "ngày hết hạn cert theo SNI từ client",
-        "meaning": "Endpoint trả certificate có notAfter 2026-09-01; cần xác nhận đúng hostname/chain.",
+        "purpose": "Đọc ngày hiệu lực của chứng chỉ được endpoint gửi.",
+        "meaning": "notAfter là 01/09/2026 UTC; riêng ngày này phải so với thời gian kiểm tra và đúng hostname.",
         "commandId": "openssl-sni",
-        "aliases": []
+        "aliases": [],
+        "why": "Trình duyệt có thể nhận cert cũ dù panel đã gia hạn cert mới."
       },
       {
         "id": "P2",
         "command": "date -u",
         "output": "Thu Oct 22 07:00:00 UTC 2026",
         "context": "client",
-        "purpose": "UTC khi kiểm tra",
-        "meaning": "Thời điểm fixture sau notAfter; cert này đã hết hạn.",
-        "commandId": "hostnamectl",
-        "aliases": []
+        "purpose": "Đọc giờ UTC của máy kiểm tra.",
+        "meaning": "Ngày 22/10/2026 đã sau notAfter 01/09/2026; chứng chỉ đang phục vụ đã hết hạn tại mốc này.",
+        "commandId": "date-utc",
+        "aliases": [],
+        "why": "Sai giờ client có thể gây cảnh báo chứng chỉ, nên cần một mốc để so sánh."
       },
       {
         "id": "G1",
         "context": "panel",
         "command": "PANEL: certificate inventory",
         "output": "example.com: renewed certificate available; deployed to Nginx: no",
-        "purpose": "Đối chiếu cert trong panel với cert đang phục vụ.",
-        "meaning": "Panel có cert mới nhưng chưa deploy; không thay thế phép kiểm tra TLS từ client.",
+        "purpose": "Xem cert mới đã được cài vào Nginx chưa.",
+        "meaning": "Cert mới có sẵn nhưng deployed to Nginx:no; client vẫn có thể nhận cert cũ.",
         "commandId": "panel-cert-inventory",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần phân biệt gia hạn thành công với triển khai thành công."
       },
       {
         "id": "G2",
         "context": "guest",
         "command": "systemctl status nginx",
         "output": "● nginx.service - A high performance web server\n   Active: active (running)",
-        "purpose": "Xem Nginx đang phục vụ.",
-        "meaning": "Nginx active vẫn có thể đang dùng cert cũ.",
+        "purpose": "Đọc trạng thái Nginx.",
+        "meaning": "Nginx active chỉ xác nhận process service, không xác nhận cert đang dùng đã được cập nhật.",
         "commandId": "systemctl-nginx",
-        "aliases": []
+        "aliases": [],
+        "why": "Web server có thể vẫn phục vụ HTTPS bằng cert cũ trong khi service active."
       }
     ],
     "questions": [
@@ -10949,19 +10982,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Cảnh báo trình duyệt trong ticket liên quan đến phần nào của HTTPS?",
         "options": [
           {
             "id": "symptom",
-            "label": "Browser báo certificate hết hạn."
+            "label": "Trình duyệt báo chứng chỉ HTTPS hết hạn."
           },
           {
             "id": "other",
-            "label": "HTTP 502 từ backend nhưng TLS bình thường."
+            "label": "Backend trả502 sau khi TLS đã hợp lệ."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Cert đã gia hạn nên trình duyệt chắc chắn báo sai."
           }
         ],
         "skill": "tls-certificate-expiry"
@@ -10970,7 +11003,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc ngày hết hạn cert theo sni từ client?",
+        "prompt": "Làm sao đọc ngày hết hạn của cert mà example.com:443 thực sự gửi?",
         "options": [
           {
             "id": "direct",
@@ -10992,19 +11025,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "prompt": "Cert hết hạn 01/09 nhưng client kiểm tra ngày 22/10; panel có cert mới chưa deploy. Kết luận nào đúng?",
         "options": [
           {
             "id": "supported",
-            "label": "Cert được endpoint phục vụ theo SNI đã quá notAfter; cần kiểm tra chain, vhost và automation gia hạn."
+            "label": "Endpoint còn phục vụ cert hết hạn; cần kiểm tra deployment và vhost."
           },
           {
             "id": "over",
-            "label": "Chỉ cần thấy cert mới trong panel là client đã nhận cert mới."
+            "label": "Có cert mới trong panel nghĩa là mọi client đã nhận cert mới."
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Nginx active đủ để bỏ qua cảnh báo thời hạn cert."
           }
         ],
         "requiredProbeIds": [
@@ -11020,19 +11053,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Chọn hai dữ kiện dùng để xác định cert nhận được đã quá hạn.",
         "options": [
           {
             "id": "p1",
-            "label": "Endpoint trả certificate có notAfter 2026-09-01; cần xác nhận đúng hostname/chain."
+            "label": "Cert từ endpoint có notAfter 01/09/2026 UTC."
           },
           {
             "id": "p2",
-            "label": "Thời điểm fixture sau notAfter; cert này đã hết hạn."
+            "label": "Máy kiểm tra đang ở 22/10/2026 UTC."
           },
           {
             "id": "over",
-            "label": "Chỉ cần thấy cert mới trong panel là client đã nhận cert mới."
+            "label": "Client chắc chắn đã dùng cert mới trong panel."
           }
         ],
         "requiredProbeIds": [
@@ -11046,19 +11079,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "prompt": "Nên sửa cảnh báo hết hạn mà vẫn giữ xác thực TLS như thế nào?",
         "options": [
           {
             "id": "safe",
-            "label": "Kiểm tra SAN/chain và renewal job; owner duyệt renew/install/reload có rollback, rồi thử từ client."
+            "label": "Kiểm tra SAN/chain rồi triển khai cert mới theo change được duyệt."
           },
           {
             "id": "unsafe",
-            "label": "Tắt TLS validation ở client hoặc thay cert không kiểm tra hostname."
+            "label": "Bỏ kiểm tra TLS ở client hoặc cài cert không kiểm tra hostname."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket vì Nginx active và panel đã có cert mới."
           }
         ],
         "skill": "tls-certificate-expiry"
@@ -11067,19 +11100,19 @@
         "id": "order",
         "stage": "verify",
         "kind": "step_order",
-        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "prompt": "Sắp xếp các bước thay cert HTTPS mà không bỏ qua kiểm tra endpoint.",
         "options": [
           {
             "id": "evidence",
-            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+            "label": "Đọc cert theo SNI, giờ UTC và tình trạng deployment."
           },
           {
             "id": "verify",
-            "label": "Client lấy đúng cert còn hạn theo SNI, chain hợp lệ và HTTPS trả nội dung mong đợi."
+            "label": "Kết nối lại từ client: cert còn hạn, chain hợp lệ, site trả đúng."
           },
           {
             "id": "act",
-            "label": "Kiểm tra SAN/chain và renewal job; owner duyệt renew/install/reload có rollback, rồi thử từ client."
+            "label": "Cài cert đúng SAN/chain vào vhost và reload theo phê duyệt."
           }
         ],
         "skill": "tls-certificate-expiry"
@@ -11088,12 +11121,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Client lấy đúng cert còn hạn theo SNI, chain hợp lệ và HTTPS trả nội dung mong đợi.",
+        "prompt": "Ghi hostname/SNI, ngày hết hạn và thời gian kiểm tra. Nêu cách triển khai chứng chỉ được duyệt, rồi xác minh SAN, chain và HTTPS từ client.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Client lấy đúng cert còn hạn theo SNI, chain hợp lệ và HTTPS trả nội dung mong đợi.",
+    "verificationPrompt": "Ghi hostname/SNI, ngày hết hạn và thời gian kiểm tra. Nêu cách triển khai chứng chỉ được duyệt, rồi xác minh SAN, chain và HTTPS từ client.",
     "objectiveExam": {
       "id": "exam-verify",
       "stage": "verify",
@@ -11888,36 +11921,40 @@
   {
     "id": "VPS-06-001",
     "objective": "Đối chiếu power state với lịch sử thao tác và quyền bật VPS.",
+    "customerExplanation": "Khách không truy cập được VPS. Trước khi kiểm tra từng dịch vụ, cần biết máy ảo còn bật hay đã tắt.",
     "probes": [
       {
         "id": "P1",
         "command": "PANEL: VM state",
         "output": "Powered Off",
         "context": "panel",
-        "purpose": "power state ở panel",
-        "meaning": "Panel ghi Powered Off; chưa biết vì lỗi hay thao tác có chủ đích.",
+        "purpose": "Đọc trạng thái bật/tắt của máy ảo.",
+        "meaning": "Powered Off cho biết máy ảo đã tắt; chưa nói vì sao hoặc ai tắt.",
         "commandId": "virsh-dominfo",
-        "aliases": []
+        "aliases": [],
+        "why": "Máy đang tắt sẽ không trả lời SSH hay HTTP dù cấu hình dịch vụ không đổi."
       },
       {
         "id": "P2",
         "command": "PANEL: event log",
         "output": "User requested shutdown 12:30",
         "context": "panel",
-        "purpose": "sự kiện shutdown trong panel",
-        "meaning": "Event log ghi yêu cầu shutdown lúc 12:30; cần xác nhận người yêu cầu.",
+        "purpose": "Đọc sự kiện shutdown trong panel.",
+        "meaning": "Panel ghi user requested shutdown lúc 12:30; cần audit để xác định tài khoản gửi yêu cầu.",
         "commandId": "panel-probes",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần biết mất kết nối có trùng với một yêu cầu tắt máy không."
       },
       {
         "id": "G1",
         "context": "panel",
         "command": "PANEL: shutdown audit",
         "output": "12:30 UTC action=shutdown actor=account-owner request_id=act-731",
-        "purpose": "Xác minh actor của yêu cầu.",
-        "meaning": "Audit gắn thao tác với tài khoản owner; vẫn cần xác nhận ý muốn khởi động lại.",
+        "purpose": "Đối chiếu tài khoản và mã yêu cầu shutdown.",
+        "meaning": "Yêu cầu act-731 gắn với account-owner; vẫn cần owner xác nhận mong muốn hiện tại.",
         "commandId": "panel-probes",
-        "aliases": []
+        "aliases": [],
+        "why": "Phân biệt thao tác của owner với sự cố ngoài ý muốn trước khi bật máy."
       }
     ],
     "questions": [
@@ -11925,19 +11962,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Khi khách nói VPS không phản hồi, điều nào đã biết từ lời báo?",
         "options": [
           {
             "id": "symptom",
-            "label": "VPS không phản hồi từ mạng."
+            "label": "VPS không phản hồi khi truy cập qua mạng."
           },
           {
             "id": "other",
-            "label": "Chỉ HTTP trả 403 còn SSH bình thường."
+            "label": "Chỉ website lỗi 403 còn SSH vẫn dùng được."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Máy chủ vật lý đã hỏng nên VPS mất kết nối."
           }
         ],
         "skill": "vm-power-state"
@@ -11946,7 +11983,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc power state ở panel?",
+        "prompt": "Muốn biết VPS có đang bật, xem mục nào trước?",
         "options": [
           {
             "id": "direct",
@@ -11968,19 +12005,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Power state và audit hiện chứng minh điều gì?",
+        "prompt": "Powered Off cùng sự kiện user requested shutdown cho phép nhận định nào?",
         "options": [
           {
             "id": "supported",
-            "label": "VM đang off và panel có sự kiện user requested shutdown; chưa thể gọi là lỗi host."
+            "label": "VM đang tắt; cần xác minh yêu cầu shutdown trước khi bật lại."
           },
           {
             "id": "over",
-            "label": "Sự kiện này chứng minh provider tự ý tắt VM."
+            "label": "Provider đã tự ý tắt VPS của khách."
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Không phản hồi chứng minh guest đang treo dù panel báo tắt."
           }
         ],
         "requiredProbeIds": [
@@ -11994,19 +12031,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Chọn hai điều được trạng thái nguồn và event log ghi nhận.",
         "options": [
           {
             "id": "p1",
-            "label": "Panel ghi Powered Off; chưa biết vì lỗi hay thao tác có chủ đích."
+            "label": "Panel hiển thị Powered Off."
           },
           {
             "id": "p2",
-            "label": "Event log ghi yêu cầu shutdown lúc 12:30; cần xác nhận người yêu cầu."
+            "label": "Có yêu cầu shutdown lúc 12:30."
           },
           {
             "id": "over",
-            "label": "Sự kiện này chứng minh provider tự ý tắt VM."
+            "label": "Host đã gặp sự cố phần cứng."
           }
         ],
         "requiredProbeIds": [
@@ -12020,19 +12057,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Khách muốn bật lại sau shutdown. Bước nào đúng quyền?",
+        "prompt": "Audit chỉ ra account-owner đã shutdown. Nên xử lý yêu cầu bật lại thế nào?",
         "options": [
           {
             "id": "safe",
-            "label": "Đối chiếu audit actor và xác nhận owner muốn bật lại; chỉ chuyển yêu cầu start qua panel có quyền."
+            "label": "Xác nhận owner muốn bật lại rồi chuyển yêu cầu start theo quyền."
           },
           {
             "id": "unsafe",
-            "label": "Tự bật hoặc reinstall VPS khi chưa xác minh owner."
+            "label": "Tự bật hoặc reinstall để khôi phục kết nối."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket vì đã tìm được sự kiện shutdown."
           }
         ],
         "skill": "vm-power-state"
@@ -12041,12 +12078,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Panel báo Running, guest boot xong và dịch vụ khách cần dùng phản hồi.",
+        "prompt": "Ghi trạng thái nguồn, sự kiện shutdown và ai cần xác nhận yêu cầu bật lại. Sau thao tác được duyệt, kiểm tra guest khởi động và dịch vụ khách sử dụng.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Panel báo Running, guest boot xong và dịch vụ khách cần dùng phản hồi."
+    "verificationPrompt": "Ghi trạng thái nguồn, sự kiện shutdown và ai cần xác nhận yêu cầu bật lại. Sau thao tác được duyệt, kiểm tra guest khởi động và dịch vụ khách sử dụng."
   },
   {
     "id": "VPS-06-002",
@@ -14077,46 +14114,51 @@
   {
     "id": "VPS-10-005",
     "objective": "Tách guest lsblk khỏi domblklist host và bảo vệ volume trước reattach.",
+    "customerExplanation": "Sau chuyển máy ảo sang node khác, ứng dụng không còn thấy volume dữ liệu. Cần so ổ đĩa guest nhìn thấy với attachment phía host.",
     "probes": [
       {
         "id": "P1",
         "command": "lsblk",
-        "output": "vda 25G only",
+        "output": "NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda  252:0    0  25G  0 disk",
         "context": "guest",
-        "purpose": "block devices nhìn từ guest",
-        "meaning": "Guest chỉ thấy vda, chưa thấy vdb.",
+        "purpose": "Liệt kê thiết bị block guest đang nhìn thấy.",
+        "meaning": "Guest chỉ liệt kê vda 25G; không thấy thiết bị dữ liệu vdb trong lần đo.",
         "commandId": "lsblk",
-        "aliases": []
+        "aliases": [],
+        "why": "Volume mất sau migration có thể chưa gắn ở host hoặc chưa được guest nhận."
       },
       {
         "id": "P2",
         "command": "virsh domblklist vm-102",
         "output": "Target   Source\n------------------------------------------------\nvda      /var/lib/libvirt/images/os.qcow2",
         "context": "hypervisor",
-        "purpose": "block attachment ở host",
-        "meaning": "Host domblklist không có vdb; chưa biết data volume đang ở đâu.",
+        "purpose": "Đọc disk attachment của vm-102 tại hypervisor.",
+        "meaning": "domblklist chỉ có vda; không có attachment vdb, nhưng chưa chứng minh volume bị xóa.",
         "commandId": "virsh-domblklist",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần phân biệt host chưa gắn volume với guest chưa nhận thiết bị đã gắn."
       },
       {
         "id": "G1",
         "context": "panel",
         "command": "PANEL: data volume inventory",
         "output": "vol-72 status=available; last attached vm-102 before migration; integrity review pending",
-        "purpose": "Xác định volume ID và tình trạng.",
-        "meaning": "Volume còn trong inventory, nhưng integrity chưa được xác minh.",
+        "purpose": "Tìm volume dữ liệu theo ID trong inventory.",
+        "meaning": "vol-72 còn trong inventory, trạng tháiavailable; integrity vẫn pending nên chưa hứa dữ liệu nguyên vẹn.",
         "commandId": "panel-probes",
-        "aliases": []
+        "aliases": [],
+        "why": "Không được gắn một volume chỉ vì tên/path tương tự; cần đúng ID và lịch sử attachment."
       },
       {
         "id": "G2",
         "context": "panel",
         "command": "PANEL: migration storage task",
         "output": "08:00 migration completed with warning: optional disk vol-72 attach skipped",
-        "purpose": "Đối chiếu thời điểm lỗi attachment.",
-        "meaning": "Task có warning phù hợp, cần host team khôi phục attachment đúng ID.",
+        "purpose": "Đọc kết quả bước storage trong migration.",
+        "meaning": "Task 08:00 ghi attach vol-72 bị skip; cần đội host xác minh và khôi phục attachment theo quyền.",
         "commandId": "panel-probes",
-        "aliases": []
+        "aliases": [],
+        "why": "Liên hệ thời điểm mất volume với task chuyển node."
       }
     ],
     "questions": [
@@ -14124,19 +14166,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Ứng dụng mất volume sau migration: triệu chứng nào cần khoanh trước?",
         "options": [
           {
             "id": "symptom",
-            "label": "App volume biến mất sau migration."
+            "label": "Ứng dụng không thấy volume dữ liệu sau migration."
           },
           {
             "id": "other",
-            "label": "Website chỉ sai chứng chỉ."
+            "label": "Website chỉ dùng sai chứng chỉTLS."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Dữ liệu chắc chắn đã bị xóa trong migration."
           }
         ],
         "skill": "detached-data-volume"
@@ -14145,7 +14187,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc block devices nhìn từ guest?",
+        "prompt": "Trong guest, lệnh nào cho biết hiện có những block device nào?",
         "options": [
           {
             "id": "direct",
@@ -14167,19 +14209,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "prompt": "Guest chỉ thấy vda, host không có vdb và task ghi attach skipped. Bạn xác định được gì?",
         "options": [
           {
             "id": "supported",
-            "label": "vdb vắng ở cả guest và domblklist; cần inventory volume và storage incident."
+            "label": "Data volume chưa gắn vào VM; cần inventory và đội storage/virtualization."
           },
           {
             "id": "over",
-            "label": "Volume chắc chắn bị xóa vĩnh viễn."
+            "label": "Volume đã bị xóa vĩnh viễn nên không thể phục hồi."
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Chỉ cần mount /data vì host đã gắn vdb đầy đủ."
           }
         ],
         "requiredProbeIds": [
@@ -14195,19 +14237,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Chọn hai quan sát so sánh guest và host trong ca mấtvolume.",
         "options": [
           {
             "id": "p1",
-            "label": "Guest chỉ thấy vda, chưa thấy vdb."
+            "label": "lsblk trong guest chỉ liệt kê vda."
           },
           {
             "id": "p2",
-            "label": "Host domblklist không có vdb; chưa biết data volume đang ở đâu."
+            "label": "domblklist của VM chỉ có attachment vda."
           },
           {
             "id": "over",
-            "label": "Volume chắc chắn bị xóa vĩnh viễn."
+            "label": "Hai danh sách xác nhận data volume không còn tồn tại."
           }
         ],
         "requiredProbeIds": [
@@ -14221,19 +14263,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "prompt": "Cách nào bảo vệ dữ liệu khi cần khôi phục attachmentvol-72?",
         "options": [
           {
             "id": "safe",
-            "label": "Dừng ghi vào path có thể thay thế, đối chiếu volume ID/snapshot và chuyển đội storage/virtualization reattach có kiểm soát."
+            "label": "Hạn chế ghi nhầm /data và chuyển đội storage gắn đúng volume có kiểm soát."
           },
           {
             "id": "unsafe",
-            "label": "Tạo filesystem mới ở path /data để app chạy lại."
+            "label": "Tạo filesystem mới tại /data để app chạy lại."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket ngay khi task migration báo Completed."
           }
         ],
         "skill": "detached-data-volume"
@@ -14242,19 +14284,19 @@
         "id": "order",
         "stage": "verify",
         "kind": "step_order",
-        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "prompt": "Sắp xếp quy trình phục hồi data volume bị thiếu sau migration.",
         "options": [
           {
             "id": "evidence",
-            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+            "label": "So guest/host, volume ID và cảnh báo task migration."
           },
           {
             "id": "verify",
-            "label": "Đúng volume ID gắn lại, filesystem mount đúng và dữ liệu ứng dụng kiểm tra integrity."
+            "label": "Kiểm tra đúng volume, mount /data và dữ liệu ứng dụng."
           },
           {
             "id": "act",
-            "label": "Dừng ghi vào path có thể thay thế, đối chiếu volume ID/snapshot và chuyển đội storage/virtualization reattach có kiểm soát."
+            "label": "Độihost khôi phục attachment đúng ID theo change được duyệt."
           }
         ],
         "skill": "detached-data-volume"
@@ -14263,12 +14305,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đúng volume ID gắn lại, filesystem mount đúng và dữ liệu ứng dụng kiểm tra integrity.",
+        "prompt": "Ghi thiết bị thiếu, volume ID và cảnh báo migration. Nêu dữ liệu cần gửi đội storage, điều kiện gắn lại và cách kiểm tra đúng mount/dữ liệu ứng dụng.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đúng volume ID gắn lại, filesystem mount đúng và dữ liệu ứng dụng kiểm tra integrity.",
+    "verificationPrompt": "Ghi thiết bị thiếu, volume ID và cảnh báo migration. Nêu dữ liệu cần gửi đội storage, điều kiện gắn lại và cách kiểm tra đúng mount/dữ liệu ứng dụng.",
     "objectiveExam": {
       "id": "exam-verify",
       "stage": "verify",
@@ -16006,46 +16048,51 @@
   {
     "id": "VPS-09-007",
     "objective": "Xử lý Accepted root login từ IP lạ như incident nghiêm trọng nhưng chưa quy kết actor.",
+    "customerExplanation": "Khách thấy một lần đăng nhập root thành công từ IP không nhận ra. Cần xác minh đây có phải quyền truy cập được duyệt và bảo toàn bằng chứng.",
     "probes": [
       {
         "id": "P1",
         "command": "journalctl -u sshd --since today",
-        "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:AbCdEf123456",
+        "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
         "context": "guest",
-        "purpose": "Accepted root SSH event",
-        "meaning": "sshd ghi Accepted publickey cho root từ IP .77; cần kiểm tra fingerprint/key và owner.",
+        "purpose": "Đọc sự kiện xác thực SSH của root.",
+        "meaning": "Accepted publickey lúc 09:14 từ 203.0.113.77 cho biết key đã được chấp nhận; chưa xác định actor có được phép.",
         "commandId": "journalctl-unit",
-        "aliases": []
+        "aliases": [],
+        "why": "Lần đăng nhập thành công có mức ảnh hưởng khác với thử mật khẩu thất bại."
       },
       {
         "id": "P2",
         "command": "last -n 10",
         "output": "root     pts/0        203.0.113.77    Thu Oct 22 09:14   still logged in",
         "context": "guest",
-        "purpose": "session root trong last",
-        "meaning": "last có root session từ cùng IP; củng cố login thành công, không xác định người đứng sau.",
+        "purpose": "Đọc các phiên đăng nhập được ghi trong wtmp.",
+        "meaning": "last có phiên root từ cùng IP lúc 09:14; không chứng minh danh tính hoặc mọi hành động trong phiên.",
         "commandId": "last-logins",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần đối chiếu event SSH với phiên root và nguồn IP."
       },
       {
         "id": "G1",
         "context": "guest",
         "command": "journalctl -u sshd --since \"2026-10-22 00:00:00\" --no-pager",
-        "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:AbCdEf123456",
-        "purpose": "Lấy timestamp và fingerprint key từ auth log.",
-        "meaning": "Có key fingerprint để đối chiếu inventory; không tiết lộ private key.",
+        "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
+        "purpose": "Đọc SSH log trong cửa sổ thời gian cố định.",
+        "meaning": "Event cùng fingerprint giúp nối timeline; fingerprint không phải private key và chưa nói ai dùng key.",
         "commandId": "journalctl-unit",
-        "aliases": []
+        "aliases": [],
+        "why": "Giữ timestamp và fingerprint để security đối chiếu key; tránh chỉ dựa vào mốc today."
       },
       {
         "id": "G2",
         "context": "panel",
         "command": "PANEL: approved access inventory",
         "output": "Approved root SSH source IPs: 198.51.100.12; 203.0.113.77: not listed",
-        "purpose": "Đối chiếu IP với allowlist được duyệt.",
-        "meaning": "IP không có trong inventory; cần owner/security xác minh thay vì tự kết luận actor.",
+        "purpose": "So nguồn đăng nhập với inventory đã được duyệt.",
+        "meaning": "203.0.113.77 không có trong inventory hiện tại; cần owner/security xác minh, không tự quy danh tính.",
         "commandId": "panel-probes",
-        "aliases": []
+        "aliases": [],
+        "why": "Một IP có thể thuộc automation hoặc truy cập ngoài quyền; cần nguồn đối chiếu owner."
       }
     ],
     "questions": [
@@ -16053,19 +16100,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Vì sao lần truy cập root khách báo cần được kiểm tra ngay?",
         "options": [
           {
             "id": "symptom",
-            "label": "Khách thấy successful root SSH từ IP không nhận ra."
+            "label": "Có đăng nhập root thành công từ IP khách chưa nhận ra."
           },
           {
             "id": "other",
-            "label": "Chỉ có failed password cho user không tồn tại."
+            "label": "Chỉ có lần thử mật khẩu thất bại cho user không tồn tại."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Đã biết chính xác người tấn công từ địa chỉ IP."
           }
         ],
         "skill": "unknown-root-login"
@@ -16074,7 +16121,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc accepted root ssh event?",
+        "prompt": "Muốn đọc lần SSH chấp nhận key cho root, bắt đầu bằng phép kiểm tra nào?",
         "options": [
           {
             "id": "direct",
@@ -16096,19 +16143,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "prompt": "Auth log và last cùng ghi root từ .77, còn inventory không có IP này. Kết luận nào đủ căn cứ?",
         "options": [
           {
             "id": "supported",
-            "label": "Hai nguồn ghi login root thành công từ .77; tính được phép chưa biết, cần incident/security ngay."
+            "label": "Root đã đăng nhập từ .77; quyền truy cập chưa xác minh, cần chuyển security."
           },
           {
             "id": "over",
-            "label": "IP lạ chứng minh attacker cụ thể và hệ thống đã sạch sau logout."
+            "label": "Đã biết kẻ tấn công và hệ thống sẽ sạch khi logout."
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Accepted publickey chỉ là lần thử key thất bại."
           }
         ],
         "requiredProbeIds": [
@@ -16124,19 +16171,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Chọn hai quan sát xác nhận đã có phiên root từ 203.0.113.77.",
         "options": [
           {
             "id": "p1",
-            "label": "sshd ghi Accepted publickey cho root từ IP .77; cần kiểm tra fingerprint/key và owner."
+            "label": "sshd ghi Accepted publickey cho root từ .77."
           },
           {
             "id": "p2",
-            "label": "last có root session từ cùng IP; củng cố login thành công, không xác định người đứng sau."
+            "label": "last liệt kê phiên root từ cùng IP lúc 09:14."
           },
           {
             "id": "over",
-            "label": "IP lạ chứng minh attacker cụ thể và hệ thống đã sạch sau logout."
+            "label": "Log đã xác nhận danh tính attacker và không còn rủi ro."
           }
         ],
         "requiredProbeIds": [
@@ -16150,19 +16197,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "prompt": "Support nên làm gì khi owner chưa nhận ra phiên root này?",
         "options": [
           {
             "id": "safe",
-            "label": "Bảo toàn auth/audit, xác minh owner/automation, chuyển security để containment, key rotation và forensic có duyệt."
+            "label": "Giữ log, xác minh owner/automation và chuyển security điều phối containment."
           },
           {
             "id": "unsafe",
-            "label": "Xóa log, reboot hoặc khóa root ngay khi chưa có containment plan."
+            "label": "Xóa log rồi reboot hoặc khóa root ngay theo phỏng đoán."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket khi IP ngừng kết nối, không cần xem key."
           }
         ],
         "skill": "unknown-root-login"
@@ -16171,19 +16218,19 @@
         "id": "order",
         "stage": "verify",
         "kind": "step_order",
-        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "prompt": "Sắp xếp việc xử lý phiên root chưa được xác minh quyền.",
         "options": [
           {
             "id": "evidence",
-            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+            "label": "Giữ auth/audit và đối chiếu IP, thời gian, key với owner."
           },
           {
             "id": "verify",
-            "label": "Security xác nhận phạm vi, access trái phép bị chặn theo change, key/audit được kiểm tra và monitoring sạch."
+            "label": "Theo dõi access mới và xác minh phạm vi ảnh hưởng với security."
           },
           {
             "id": "act",
-            "label": "Bảo toàn auth/audit, xác minh owner/automation, chuyển security để containment, key rotation và forensic có duyệt."
+            "label": "Security phê duyệt containment và thay key theo kế hoạch."
           }
         ],
         "skill": "unknown-root-login"
@@ -16192,12 +16239,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security xác nhận phạm vi, access trái phép bị chặn theo change, key/audit được kiểm tra và monitoring sạch.",
+        "prompt": "Ghi IP, thời gian, cách xác thực và dữ liệu chưa xác minh. Nêu bước bảo toàn log, chuyển security và cách theo dõi containment được duyệt; không khẳng định hệ thống sạch chỉ vì phiên kết thúc.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security xác nhận phạm vi, access trái phép bị chặn theo change, key/audit được kiểm tra và monitoring sạch.",
+    "verificationPrompt": "Ghi IP, thời gian, cách xác thực và dữ liệu chưa xác minh. Nêu bước bảo toàn log, chuyển security và cách theo dõi containment được duyệt; không khẳng định hệ thống sạch chỉ vì phiên kết thúc.",
     "objectiveExam": {
       "id": "exam-verify",
       "stage": "verify",
@@ -17447,47 +17494,52 @@
   },
   {
     "id": "VPS-13-006",
-    "objective": "Đọc container route với host forwarding off; không tự thay sysctl/firewall VPS.",
+    "objective": "Phân biệt route trong container với chuyển tiếp IPv4 và NAT ở Docker host, rồi chọn cách sửa có kiểm soát.",
+    "customerExplanation": "Container liên lạc được với host nhưng chưa ra được Internet. Điều này cần kiểm tra đường ra ngoài container, không chỉ cổng ứng dụng.",
     "probes": [
       {
         "id": "P1",
         "command": "docker exec api ip route",
         "output": "default via 172.17.0.1 dev eth0",
         "context": "guest",
-        "purpose": "default route trong container",
-        "meaning": "Container có route qua 172.17.0.1; chưa chứng minh host forward/NAT.",
+        "purpose": "Đọc bảng route IPv4 bên trong container api.",
+        "meaning": "default via 172.17.0.1 dev eth0 là đường mặc định qua bridge host. Nó không chứng minh host cho chuyển tiếp hoặc có NAT.",
         "commandId": "ip-route",
-        "aliases": []
+        "aliases": [],
+        "why": "Container tới host được nhưng cần kiểm tra có đường mặc định tới ngoài subnet hay không."
       },
       {
         "id": "P2",
         "command": "sysctl net.ipv4.ip_forward",
         "output": "net.ipv4.ip_forward = 0",
         "context": "guest",
-        "purpose": "IPv4 forwarding trên host",
-        "meaning": "net.ipv4.ip_forward=0 trên host; là rào cản forwarding cần đối chiếu policy.",
+        "purpose": "Đọc cờ chuyển tiếp IPv4 của Docker host.",
+        "meaning": "net.ipv4.ip_forward = 0 cho biết forwarding IPv4 đang tắt; đây là một rào cản, chưa đánh giá NAT hoặc toàn bộ firewall.",
         "commandId": "sysctl-read",
-        "aliases": []
+        "aliases": [],
+        "why": "Muốn ra Internet qua bridge, gói container phải được host chuyển tiếp theo policy."
       },
       {
         "id": "G1",
         "context": "guest",
         "command": "docker network inspect bridge --format \"{{json .IPAM.Config}}\"",
         "output": "[{\"Subnet\":\"172.17.0.0/16\",\"Gateway\":\"172.17.0.1\"}]",
-        "purpose": "Đối chiếu gateway bridge.",
-        "meaning": "Route container trỏ bridge gateway hợp lệ; vẫn cần forwarding/NAT ở host.",
+        "purpose": "Đọc subnet và gateway của Docker bridge.",
+        "meaning": "Bridge dùng 172.17.0.0/16, gateway 172.17.0.1; route container trỏ đúng gateway được ghi trong cấu hình.",
         "commandId": "docker-inspect",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần xác nhận next hop trong container có khớp mạng do Docker quản lý không."
       },
       {
         "id": "G2",
         "context": "panel",
         "command": "PANEL: host network policy",
         "output": "Container egress expected: allowed via Docker bridge; change approval required",
-        "purpose": "Đọc expected policy và quyền.",
-        "meaning": "Forwarding đang off khác desired policy; admin host cần xử lý.",
+        "purpose": "Đọc chính sách egress và yêu cầu phê duyệt của host.",
+        "meaning": "Policy cho phép egress qua bridge nhưng yêu cầu phê duyệt thay đổi. Chưa có xác nhận quyền thực hiện change.",
         "commandId": "panel-probes",
-        "aliases": []
+        "aliases": [],
+        "why": "Không tự bật forwarding nếu chưa biết host có được phép cho container ra ngoài hay không."
       }
     ],
     "questions": [
@@ -17495,19 +17547,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Kết nối nào còn hoạt động, và kết nối nào đang lỗi?",
         "options": [
           {
             "id": "symptom",
-            "label": "Container tới host được nhưng không tới Internet."
+            "label": "Container tới host được, nhưng không tới Internet."
           },
           {
             "id": "other",
-            "label": "App chỉ sai mật khẩu database."
+            "label": "Ứng dụng chỉ bị từ chối mật khẩu database."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Từ lời khách đã xác nhận thiếu NAT trên host."
           }
         ],
         "skill": "container-forwarding"
@@ -17516,7 +17568,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc default route trong container?",
+        "prompt": "Lệnh nào xem container api đang chọn gateway nào để ra ngoài?",
         "options": [
           {
             "id": "direct",
@@ -17524,11 +17576,11 @@
           },
           {
             "id": "wrong1",
-            "label": "df -h /"
+            "label": "ip route"
           },
           {
             "id": "wrong2",
-            "label": "getent passwd admin"
+            "label": "docker network ls"
           }
         ],
         "commandId": "ip-route",
@@ -17538,19 +17590,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "prompt": "Route qua 172.17.0.1 đã có nhưng host ip_forward=0. Kết luận nào phù hợp?",
         "options": [
           {
             "id": "supported",
-            "label": "Route container có, host IPv4 forwarding off; đây là một nguyên nhân khả dĩ, cần kiểm tra NAT/policy trước change."
+            "label": "Container có default route; host đang tắt forwarding, còn NAT/policy cần đối chiếu."
           },
           {
             "id": "over",
-            "label": "Bật ip_forward=1 sẽ tự sửa mọi vấn đề NAT/firewall."
+            "label": "Chỉ bật ip_forward là mọi lỗi NAT và firewall sẽ hết."
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Vì container có default route nên host forwarding không còn liên quan."
           }
         ],
         "requiredProbeIds": [
@@ -17566,19 +17618,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Chọn hai điều đã được kiểm tra trực tiếp trong container và host.",
         "options": [
           {
             "id": "p1",
-            "label": "Container có route qua 172.17.0.1; chưa chứng minh host forward/NAT."
+            "label": "Container có default route qua 172.17.0.1."
           },
           {
             "id": "p2",
-            "label": "net.ipv4.ip_forward=0 trên host; là rào cản forwarding cần đối chiếu policy."
+            "label": "Host đang đặt net.ipv4.ip_forward bằng 0."
           },
           {
             "id": "over",
-            "label": "Bật ip_forward=1 sẽ tự sửa mọi vấn đề NAT/firewall."
+            "label": "NAT và firewall chắc chắn đúng ngay sau khi bật forwarding."
           }
         ],
         "requiredProbeIds": [
@@ -17592,19 +17644,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "prompt": "Policy cho phép egress nhưng cần phê duyệt. Nên chuyển hướng xử lý thế nào?",
         "options": [
           {
             "id": "safe",
-            "label": "Kiểm tra Docker bridge/NAT và host security policy; chuyển admin được ủy quyền lập change/rollback."
+            "label": "Nhờ admin host kiểm tra bridge/NAT/firewall và lập change được duyệt."
           },
           {
             "id": "unsafe",
-            "label": "Tự bật forwarding và mở firewall toàn bộ."
+            "label": "Bật forwarding và mở toàn bộ firewall để thử kết nối."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket vì route trong container đã có."
           }
         ],
         "skill": "container-forwarding"
@@ -17613,19 +17665,19 @@
         "id": "order",
         "stage": "verify",
         "kind": "step_order",
-        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "prompt": "Sắp xếp các bước khôi phục egress qua Docker host.",
         "options": [
           {
             "id": "evidence",
-            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+            "label": "Đối chiếu route, bridge gateway, forwarding và policy egress."
           },
           {
             "id": "verify",
-            "label": "Container tới đích IP và DNS theo policy; host firewall/NAT vẫn đúng."
+            "label": "Thử IP và DNS từ container; kiểm tra lại NAT/firewall theo policy."
           },
           {
             "id": "act",
-            "label": "Kiểm tra Docker bridge/NAT và host security policy; chuyển admin được ủy quyền lập change/rollback."
+            "label": "Admin host áp change NAT/forwarding được duyệt, có rollback."
           }
         ],
         "skill": "container-forwarding"
@@ -17634,12 +17686,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Container tới đích IP và DNS theo policy; host firewall/NAT vẫn đúng.",
+        "prompt": "Ghi route của container, giá trị forwarding và policy egress. Nêu bên có quyền đổi host, kế hoạch rollback và phép thử IP/DNS từ container sau xử lý.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Container tới đích IP và DNS theo policy; host firewall/NAT vẫn đúng."
+    "verificationPrompt": "Ghi route của container, giá trị forwarding và policy egress. Nêu bên có quyền đổi host, kế hoạch rollback và phép thử IP/DNS từ container sau xử lý."
   },
   {
     "id": "VPS-13-007",
@@ -18035,37 +18087,41 @@
   },
   {
     "id": "VPS-11-001",
-    "objective": "Phân biệt backup task failed vì target quota với dung lượng guest.",
+    "objective": "Đọc trạng thái backup và lỗi quota của đích lưu, rồi xác định cách chạy lại mà không xóa nhầm bản còn cần giữ.",
+    "customerExplanation": "Khách cho biết lần sao lưu ban đêm chưa hoàn tất. Cần kiểm tra tác vụ và log, chưa thể nói đã có bản sao lưu dùng được.",
     "probes": [
       {
         "id": "P1",
         "command": "PANEL: backup task",
         "output": "failed",
         "context": "panel",
-        "purpose": "trạng thái backup task",
-        "meaning": "Task failed; cần đọc log để biết lý do.",
+        "purpose": "Đọc trạng thái tác vụ sao lưu.",
+        "meaning": "failed nghĩa là tác vụ thất bại; riêng trạng thái này chưa nêu lý do hoặc xác nhận bản backup dùng được.",
         "commandId": "panel-backup-task",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần biết lần backup khách đang hỏi đã hoàn tất hay bị lỗi."
       },
       {
         "id": "P2",
         "command": "BACKUP LOG:",
         "output": "target quota exceeded",
         "context": "panel",
-        "purpose": "backup agent/target error",
-        "meaning": "Target quota exceeded; chưa có backup mới thành công.",
+        "purpose": "Đọc lỗi do tác vụ sao lưu ghi lại.",
+        "meaning": "target quota exceeded chỉ ra giới hạn dung lượng của đích backup. Chưa có bằng chứng lần backup này đã hoàn tất.",
         "commandId": "backup-log",
-        "aliases": []
+        "aliases": [],
+        "why": "Log giúp phân biệt lỗi đích lưu với lỗi đọc dữ liệu trong VPS."
       },
       {
         "id": "G1",
         "context": "panel",
         "command": "PANEL: backup target usage",
         "output": "Target backup-pool-2: 500 GiB used / 500 GiB quota",
-        "purpose": "Xác nhận quota target.",
-        "meaning": "Đích đầy; không cho biết backup cũ nào có thể xóa.",
+        "purpose": "Đọc dung lượng và quota của kho backup.",
+        "meaning": "Kho backup-pool-2 đã dùng 500/500 GiB. Số liệu không cho biết bản cũ nào được phép xóa.",
         "commandId": "panel-backup-task",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần đối chiếu lỗi vượt quota với số liệu của đúng kho lưu."
       }
     ],
     "questions": [
@@ -18073,19 +18129,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Khách cần xác minh điều gì về lần backup ban đêm?",
         "options": [
           {
             "id": "symptom",
-            "label": "Nightly backup không hoàn tất."
+            "label": "Lần backup ban đêm chưa hoàn tất."
           },
           {
             "id": "other",
-            "label": "VPS không boot vì fstab lỗi."
+            "label": "VPS không khởi động sau khi sửa fstab."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Đã có thể xác nhận kho backup đầy từ lời khách."
           }
         ],
         "skill": "backup-target-quota"
@@ -18094,7 +18150,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc trạng thái backup task?",
+        "prompt": "Mở mục nào để biết lần backup vừa rồi đã thành công hay thất bại?",
         "options": [
           {
             "id": "direct",
@@ -18106,7 +18162,7 @@
           },
           {
             "id": "wrong2",
-            "label": "systemctl status sshd"
+            "label": "PANEL: restore points"
           }
         ],
         "commandId": "panel-backup-task",
@@ -18116,19 +18172,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "prompt": "Tác vụ failed và log báo target quota exceeded. Lỗi đang chỉ tới đâu?",
         "options": [
           {
             "id": "supported",
-            "label": "Task failed và target quota exceeded; giới hạn nằm ở đích backup, chưa cần xóa dữ liệu guest."
+            "label": "Tác vụ bị lỗi quota ở đích lưu; cần kiểm tra kho backup."
           },
           {
             "id": "over",
-            "label": "Backup đã an toàn vì task có bản ghi trong panel."
+            "label": "Có bản ghi tác vụ trong panel nghĩa là backup đã an toàn."
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Chưa thể phân biệt lỗi nguồn và đích dù log đã ghi target quota."
           }
         ],
         "requiredProbeIds": [
@@ -18142,19 +18198,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Chọn hai điều được trạng thái tác vụ và log xác nhận.",
         "options": [
           {
             "id": "p1",
-            "label": "Task failed; cần đọc log để biết lý do."
+            "label": "Tác vụ backup có trạng thái failed."
           },
           {
             "id": "p2",
-            "label": "Target quota exceeded; chưa có backup mới thành công."
+            "label": "Log ghi lỗi quota của đích backup."
           },
           {
             "id": "over",
-            "label": "Backup đã an toàn vì task có bản ghi trong panel."
+            "label": "Backup mới đã được xác minh là khôi phục được."
           }
         ],
         "requiredProbeIds": [
@@ -18168,19 +18224,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "prompt": "Nên xử lý lỗi quota này thế nào để giữ khả năng khôi phục?",
         "options": [
           {
             "id": "safe",
-            "label": "Xác nhận quota/retention và backup hiện có; chuyển đội backup/capacity tăng quota hoặc dọn theo policy được duyệt."
+            "label": "Kiểm tra retention và bản hiện có; chuyển đội backup xử lý quota theo phê duyệt."
           },
           {
             "id": "unsafe",
-            "label": "Xóa backup cũ hoặc dữ liệu guest không kiểm tra retention."
+            "label": "Xóa bản backup cũ để trống kho mà chưa kiểm tra retention."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket ngay khi gửi yêu cầu tăng quota."
           }
         ],
         "skill": "backup-target-quota"
@@ -18189,12 +18245,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Task mới Completed, artifact có checksum và restore test theo quy trình.",
+        "prompt": "Ghi lần backup thất bại, lỗi tại đích lưu và bên cần xử lý quota. Nêu cách kiểm tra lần chạy lại và thử khôi phục mà không ghi đè dữ liệu thật.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Task mới Completed, artifact có checksum và restore test theo quy trình."
+    "verificationPrompt": "Ghi lần backup thất bại, lỗi tại đích lưu và bên cần xử lý quota. Nêu cách kiểm tra lần chạy lại và thử khôi phục mà không ghi đè dữ liệu thật."
   },
   {
     "id": "VPS-11-002",
@@ -20061,37 +20117,41 @@
   },
   {
     "id": "VPS-12-004",
-    "objective": "Đối chiếu plan, host config và guest CPU online; không reboot tự ý.",
+    "objective": "Đối chiếu số vCPU của gói dịch vụ, cấu hình VM và số CPU tiến trình guest sử dụng được trước khi đề xuất thay đổi.",
+    "customerExplanation": "Khách thấy gói dịch vụ ghi 4 vCPU nhưng lệnh trong VPS trả 2. Cần đối chiếu các lớp; chưa thể chọn reboot chỉ từ chênh lệch này.",
     "probes": [
       {
         "id": "P1",
         "command": "PANEL: plan",
         "output": "4 vCPU",
         "context": "panel",
-        "purpose": "vCPU trong plan",
-        "meaning": "Panel ghi plan 4 vCPU; không chứng minh guest thấy đủ.",
+        "purpose": "Đọc số vCPU của gói dịch vụ.",
+        "meaning": "Plan ghi 4 vCPU. Đây là cấu hình mong muốn, chưa chứng minh VM đang được cấp đủ 4 CPU.",
         "commandId": "panel-provision-task",
-        "aliases": []
+        "aliases": [],
+        "why": "Đây là số CPU khách đang dùng để đối chiếu với guest."
       },
       {
         "id": "P2",
         "command": "nproc",
         "output": "2",
         "context": "guest",
-        "purpose": "CPU online guest nhìn thấy",
-        "meaning": "nproc trả 2; cần so host config và offline CPU.",
+        "purpose": "Đếm CPU sẵn dùng cho tiến trình đang chạy nproc.",
+        "meaning": "nproc trả 2. Kết quả không tự phân biệt VM chỉ được cấp 2 CPU với CPU offline hoặc giới hạn affinity.",
         "commandId": "nproc",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần ghi lại điều guest thực sự quan sát, rồi so với cấu hình và giới hạn tiến trình."
       },
       {
         "id": "G1",
         "context": "panel",
         "command": "PANEL: host vCPU config",
         "output": "vm-102 current_vcpus=2; max_vcpus=4; update_task=pending",
-        "purpose": "Tách max và current vCPU.",
-        "meaning": "Host chưa áp current=4; đội ảo hóa cần change/hotplug assessment.",
+        "purpose": "Đọc số vCPU hiện tại và giới hạn của VM trên host.",
+        "meaning": "current_vcpus=2, max_vcpus=4 và tác vụ còn pending. Giới hạn tối đa 4 không đồng nghĩa VM đang chạy với 4 CPU.",
         "commandId": "panel-provision-task",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần biết gói 4 CPU đã được áp vào cấu hình đang chạy hay chưa."
       }
     ],
     "questions": [
@@ -20099,19 +20159,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Hai số liệu nào khách cho biết đang không khớp?",
         "options": [
           {
             "id": "symptom",
-            "label": "Panel 4 vCPU nhưng guest thấy 2."
+            "label": "Panel ghi 4 vCPU, guest chỉ báo 2."
           },
           {
             "id": "other",
-            "label": "Container memory limit 512 MiB."
+            "label": "Container có giới hạn bộ nhớ 512 MiB."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Có thể xác nhận ngay guest cần reboot để nhận CPU."
           }
         ],
         "skill": "vcpu-plan-mismatch"
@@ -20120,7 +20180,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc vcpu trong plan?",
+        "prompt": "Muốn xác nhận gói dịch vụ cam kết bao nhiêu vCPU, nên đọc mục nào?",
         "options": [
           {
             "id": "direct",
@@ -20128,11 +20188,11 @@
           },
           {
             "id": "wrong1",
-            "label": "df -h /"
+            "label": "nproc"
           },
           {
             "id": "wrong2",
-            "label": "dig example.com A"
+            "label": "lscpu"
           }
         ],
         "commandId": "panel-provision-task",
@@ -20142,19 +20202,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "prompt": "Plan ghi 4 còn nproc trả 2. Hai kết quả này cho phép kết luận tới đâu?",
         "options": [
           {
             "id": "supported",
-            "label": "Entitlement 4 còn guest online 2; chưa biết host config chưa áp hay CPU offline."
+            "label": "Gói là 4 vCPU, tiến trình guest đang dùng được 2; cần đối chiếu host và giới hạn guest."
           },
           {
             "id": "over",
-            "label": "Reboot guest chắc chắn tăng lên 4."
+            "label": "Reboot guest chắc chắn làm nproc tăng lên 4."
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Không thể xác nhận có chênh lệch vì hai phép đo khác lớp."
           }
         ],
         "requiredProbeIds": [
@@ -20168,19 +20228,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Chọn hai quan sát về vCPU được dữ liệu hỗ trợ.",
         "options": [
           {
             "id": "p1",
-            "label": "Panel ghi plan 4 vCPU; không chứng minh guest thấy đủ."
+            "label": "Plan trong panel ghi 4 vCPU."
           },
           {
             "id": "p2",
-            "label": "nproc trả 2; cần so host config và offline CPU."
+            "label": "nproc trong guest trả về 2."
           },
           {
             "id": "over",
-            "label": "Reboot guest chắc chắn tăng lên 4."
+            "label": "Guest đã nhận 4 vCPU và reboot sẽ tự bật hết."
           }
         ],
         "requiredProbeIds": [
@@ -20194,19 +20254,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "prompt": "Sau khi thấy host current=2, max=4 và task pending, hướng tiếp theo là gì?",
         "options": [
           {
             "id": "safe",
-            "label": "Đối chiếu libvirt vCPU current/max và guest online CPUs; chuyển ảo hóa nếu config chưa áp, lên change nếu cần downtime."
+            "label": "Chuyển đội ảo hóa đối chiếu task, current/max và CPU guest; lập change nếu cần."
           },
           {
             "id": "unsafe",
-            "label": "Tự reboot production VPS để thử."
+            "label": "Reboot VPS khách hàng để thử nhận thêm CPU."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket vì plan đã ghi đúng 4 vCPU."
           }
         ],
         "skill": "vcpu-plan-mismatch"
@@ -20215,12 +20275,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Host và guest thấy 4 online vCPU, workload bình thường và panel đồng bộ.",
+        "prompt": "Ghi ba số liệu: vCPU của gói, nproc và current/max ở host. Nêu điều chưa biết về CPU offline/affinity, bên được phép cập nhật và cách xác minh guest sau change.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Host và guest thấy 4 online vCPU, workload bình thường và panel đồng bộ."
+    "verificationPrompt": "Ghi ba số liệu: vCPU của gói, nproc và current/max ở host. Nêu điều chưa biết về CPU offline/affinity, bên được phép cập nhật và cách xác minh guest sau change."
   },
   {
     "id": "VPS-12-005",
@@ -22349,47 +22409,52 @@
   },
   {
     "id": "VPS-14-008",
-    "objective": "Tách abuse hold khỏi nonpayment và xử lý appeal theo security policy.",
+    "objective": "Đọc lý do đình chỉ dịch vụ, theo dõi hồ sơ abuse và chuyển đúng người có quyền quyết định mở lại.",
+    "customerExplanation": "Khách yêu cầu VPS đang bị đình chỉ hoạt động lại ngay. Trước hết cần xác định lý do đình chỉ và trạng thái xử lý; chưa thể hứa thời điểm mở lại.",
     "probes": [
       {
         "id": "P1",
         "command": "BILLING: service",
         "output": "Suspended: abuse case AB-2026-14",
         "context": "panel",
-        "purpose": "suspension reason",
-        "meaning": "Service Suspended vì abuse case AB-2026-14; không phải overdue invoice.",
+        "purpose": "Đọc lý do dịch vụ bị đình chỉ.",
+        "meaning": "Suspended gắn hồ sơ AB-2026-14. Bản ghi này không nói hóa đơn chưa thanh toán hoặc cho phép support tự mở dịch vụ.",
         "commandId": "billing-service",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần phân biệt nợ phí với đình chỉ liên quan abuse trước khi trả lời khách."
       },
       {
         "id": "P2",
         "command": "PANEL: security",
         "output": "Investigation open",
         "context": "panel",
-        "purpose": "security investigation state",
-        "meaning": "Investigation Open; chưa được phép unsuspend.",
+        "purpose": "Đọc trạng thái điều tra security.",
+        "meaning": "Investigation open nghĩa là hồ sơ còn đang được điều tra. Chưa có bằng chứng cho phép mở lại.",
         "commandId": "panel-security-case",
-        "aliases": []
+        "aliases": [],
+        "why": "Lý do đình chỉ gắn abuse nên phải xem đội security đã có quyết định chưa."
       },
       {
         "id": "G1",
         "context": "panel",
         "command": "PANEL: abuse case timeline",
         "output": "AB-2026-14 opened 2026-10-22 11:00 UTC; appeal status=received; reviewer=security-oncall",
-        "purpose": "Theo dõi appeal và owner xử lý.",
-        "meaning": "Appeal đã nhận, chưa có quyết định mở lại.",
+        "purpose": "Đọc thời điểm, trạng thái appeal và người nhận xử lý.",
+        "meaning": "Appeal đã nhận, reviewer là security-oncall; received không phải approved và chưa có ETA hoàn tất.",
         "commandId": "panel-security-case",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần cung cấp trạng thái có thể kiểm chứng và chuyển hồ sơ tới đúng người đang phụ trách."
       },
       {
         "id": "G2",
         "context": "panel",
         "command": "PANEL: suspension policy",
         "output": "AB-2026-14 hold active until security review completed; override permission=security-lead",
-        "purpose": "Xác nhận quyền quyết định.",
-        "meaning": "Support không có quyền override; chỉ escalation.",
+        "purpose": "Đọc điều kiện kết thúc hold và quyền override.",
+        "meaning": "Hold còn hiệu lực đến khi review xong; quyền override thuộc security-lead. Support không được tự bỏ hold.",
         "commandId": "panel-security-case",
-        "aliases": []
+        "aliases": [],
+        "why": "Cần biết ai được quyết định, thay vì xử lý theo mức độ gấp của yêu cầu."
       }
     ],
     "questions": [
@@ -22397,19 +22462,19 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "prompt": "Trước khi mở hồ sơ, điều gì thực sự đã biết từ lời khách?",
         "options": [
           {
             "id": "symptom",
-            "label": "Khách muốn VPS đang bị abuse suspension online ngay."
+            "label": "VPS đang bị đình chỉ; khách yêu cầu hoạt động lại ngay."
           },
           {
             "id": "other",
-            "label": "Invoice quá hạn là lý do duy nhất."
+            "label": "Hóa đơn quá hạn là lý do duy nhất của việc đình chỉ."
           },
           {
             "id": "cause",
-            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+            "label": "Có đủ dữ kiện để cho phép mở lại ngay."
           }
         ],
         "skill": "abuse-suspension-appeal"
@@ -22418,7 +22483,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Phép kiểm tra nào trực tiếp đọc suspension reason?",
+        "prompt": "Để biết dịch vụ bị đình chỉ vì lý do gì, nên đọc đâu trước?",
         "options": [
           {
             "id": "direct",
@@ -22426,11 +22491,11 @@
           },
           {
             "id": "wrong1",
-            "label": "systemctl status sshd"
+            "label": "PANEL: VM state"
           },
           {
             "id": "wrong2",
-            "label": "df -h /"
+            "label": "PANEL: invoices"
           }
         ],
         "commandId": "billing-service",
@@ -22440,19 +22505,19 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "prompt": "Hồ sơ abuse còn open và policy giới hạn quyền override. Support có thể kết luận gì?",
         "options": [
           {
             "id": "supported",
-            "label": "Suspension gắn abuse investigation còn mở; không thể tự mở lại trước quyết định security."
+            "label": "Hold còn hiệu lực; cần quyết định của security trước khi mở lại."
           },
           {
             "id": "over",
-            "label": "Khách yêu cầu gấp là đủ để override abuse hold."
+            "label": "Khách yêu cầu gấp nên support được bỏ qua abuse hold."
           },
           {
             "id": "ignore",
-            "label": "Các output không có giá trị điều tra nào."
+            "label": "Không cần đọc mã hồ sơ vì mọi đình chỉ xử lý như nợ phí."
           }
         ],
         "requiredProbeIds": [
@@ -22468,19 +22533,19 @@
         "id": "evidence",
         "stage": "interpret",
         "kind": "multi_select",
-        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "prompt": "Chọn hai trạng thái được hồ sơ dịch vụ và security ghi nhận.",
         "options": [
           {
             "id": "p1",
-            "label": "Service Suspended vì abuse case AB-2026-14; không phải overdue invoice."
+            "label": "Dịch vụ Suspended, gắn hồ sơ AB-2026-14."
           },
           {
             "id": "p2",
-            "label": "Investigation Open; chưa được phép unsuspend."
+            "label": "Investigation đang open."
           },
           {
             "id": "over",
-            "label": "Khách yêu cầu gấp là đủ để override abuse hold."
+            "label": "Yêu cầu khẩn của khách đã thay thế approval của security."
           }
         ],
         "requiredProbeIds": [
@@ -22494,19 +22559,19 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "prompt": "Khách cần câu trả lời gấp nhưng security chưa kết luận. Nên làm gì?",
         "options": [
           {
             "id": "safe",
-            "label": "Xác minh owner, gửi appeal/evidence qua quy trình, chuyển abuse/security và thông báo status/ETA nếu có."
+            "label": "Xác minh owner, gửi appeal và bằng chứng cho security; báo trạng thái có thể xác nhận."
           },
           {
             "id": "unsafe",
-            "label": "Unsuspend, đổi IP hoặc xóa logs để né investigation."
+            "label": "Mở lại hoặc đổi IP để khách tạm dùng khi điều tra còn mở."
           },
           {
             "id": "close",
-            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+            "label": "Đóng ticket ngay vì đã chuyển security."
           }
         ],
         "skill": "abuse-suspension-appeal"
@@ -22515,19 +22580,19 @@
         "id": "order",
         "stage": "verify",
         "kind": "step_order",
-        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "prompt": "Sắp xếp việc xử lý appeal khi VPS bị abuse hold.",
         "options": [
           {
             "id": "evidence",
-            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+            "label": "Đối chiếu mã abuse, trạng thái review, owner và quyền theo policy."
           },
           {
             "id": "verify",
-            "label": "Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở."
+            "label": "Đối chiếu quyết định với panel; nếu cho mở lại thì kiểm tra kết nối và dịch vụ."
           },
           {
             "id": "act",
-            "label": "Xác minh owner, gửi appeal/evidence qua quy trình, chuyển abuse/security và thông báo status/ETA nếu có."
+            "label": "Chuyển appeal/bằng chứng cho security và theo dõi quyết định có audit."
           }
         ],
         "skill": "abuse-suspension-appeal"
@@ -22536,12 +22601,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở.",
+        "prompt": "Ghi mã hồ sơ, lý do đình chỉ, trạng thái appeal và bên đang xử lý. Nêu điều kiện được mở lại, ai có quyền quyết định và cách kiểm tra dịch vụ sau quyết định.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở.",
+    "verificationPrompt": "Ghi mã hồ sơ, lý do đình chỉ, trạng thái appeal và bên đang xử lý. Nêu điều kiện được mở lại, ai có quyền quyết định và cách kiểm tra dịch vụ sau quyết định.",
     "objectiveExam": {
       "id": "exam-verify",
       "stage": "verify",

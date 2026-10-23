@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "App process reached file descriptor limit.",
+  "recommended_next_checks": "ls /proc/1234/fd | wc -l; systemctl show myapp -p LimitNOFILE",
+  "resolution_guidance": "Find leak; adjust limit only after root cause/resource assessment.",
+  "verification": "No file descriptor errors during representative load.",
+  "escalate_when": "Application bug or host-wide limit.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

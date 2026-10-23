@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Đọc đúng các lớp: guest ghi steal, panel ghi cảnh báo node; cả hai chưa định danh workload gây tranh chấp.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Cột st của top và khoảng đo vmstat đều 50.",
+    "p2": "Đây là thông tin node, không phải lỗi riêng của một process guest.",
+    "over": "Không có phê duyệt migration trong output; cảnh báo không tự cấp quyền thao tác."
   }
 }

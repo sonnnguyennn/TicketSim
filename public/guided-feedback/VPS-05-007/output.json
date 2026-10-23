@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Filesystem có lỗi và fsck unit thất bại; cần quy trình recovery/offline và backup.",
+  "explanation": "Các dấu hiệu đủ để bảo vệ dữ liệu và chuẩn bị recovery; chưa đủ cho repair tự động hay khẳng định toàn bộ dữ liệu còn nguyên.",
   "commandId": "systemctl-failed",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Có lỗi filesystem cùng thất bại khi kiểm tra boot; repair phải theo trạng thái volume và kế hoạch đã duyệt.",
+    "over": "Sửa filesystem đang được sử dụng có thể gây hỏng thêm; -y chấp nhận thay đổi tự động.",
+    "ignore": "ro không sửa lỗi hoặc kiểm chứng tính toàn vẹn của dữ liệu."
   }
 }

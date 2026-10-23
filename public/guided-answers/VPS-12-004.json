@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Plan ghi 4 vCPU nhưng nproc trả 2. Host ghi current_vcpus=2, max_vcpus=4 và tác vụ cập nhật còn pending; cấu hình mong muốn chưa đồng nghĩa CPU đang được guest dùng.",
+  "recommended_next_checks": "Đội ảo hóa đối chiếu cấu hình live/persistent, tác vụ cập nhật và hỗ trợ hotplug. Trong guest kiểm tra CPU online và affinity của tiến trình đo.",
+  "resolution_guidance": "Phối hợp đội ảo hóa áp thay đổi tài nguyên được duyệt. Nếu cần downtime, xác nhận lịch và phương án khôi phục với owner; không tự reboot VPS.",
+  "verification": "So lại plan, vCPU đang chạy ở host, CPU online và nproc trong điều kiện không bị giới hạn affinity; xác minh dịch vụ khách vẫn hoạt động.",
+  "escalate_when": "Task cập nhật chưa áp, host current/max không khớp, hoặc cần thay đổi có downtime/hotplug ngoài quyền support.",
+  "production_warning": "Reboot không bảo đảm tăng CPU và làm gián đoạn ứng dụng. Chỉ thực hiện change khi đúng người có quyền phê duyệt.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

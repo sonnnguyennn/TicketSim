@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Khách báo thiếu thiết bị/dữ liệu sau chuyển node; phải xác định lớp attachment trước khi xử lý filesystem.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đây là thay đổi quan sát được, chưa nói dữ liệu đã mất vĩnh viễn.",
+    "other": "Cảnh báo cert không giải thích volume block biến mất khỏi guest.",
+    "cause": "Không thấy thiết bị cũng có thể do attachment bị bỏ qua."
   }
 }

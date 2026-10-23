@@ -44,6 +44,8 @@ Tiến độ lưu ở `localStorage` phiên bản 5 và có thể xuất/nhập 
 
 ## QA và giới hạn hiện tại
 
+Phase B đang triển khai: B1 có lớp nội dung riêng theo case và 14 mẫu đại diện cho 14 topic. Xem [QA Phase B](Phase_B_Content_QA.md); các mốc kiểm thử Phase A bên dưới là lịch sử.
+
 Xem [QA Phase A](Phase_A_Guided_First_QA.md) cho các luồng đã kiểm tra, ảnh desktop/mobile và giới hạn. Phase B sẽ kiểm duyệt nội dung của 112 Guided; Phase A chỉ đổi cách sử dụng, không viết lại hàng loạt câu hỏi/feedback.
 
 Guided phủ 112/112; Objective Exam và bài biến thể 20/112; Stateful 6/112. Một số output gốc rất ngắn và vẫn được giữ nguyên. State transitions là tình huống cố định, không dự đoán trạng thái Linux thật, không mô phỏng đầy đủ network propagation, ứng dụng phía sau hay integrity storage. Xem [QA Phase 5E](Phase_5E_QA.md), [QA Phase 5D](Phase_5D_QA.md), [QA Batch 7](Phase_5C_Batch_7_QA.md) và [roadmap](ROADMAP.md).

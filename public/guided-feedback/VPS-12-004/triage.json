@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Khách đang so số vCPU trên panel với kết quả bên trong VM; chưa nêu nguyên nhân chênh lệch.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đúng với yêu cầu cần đối chiếu của khách.",
+    "other": "Khách không nêu container hoặc giới hạn RAM.",
+    "cause": "Chưa xem cấu hình host, CPU offline hoặc affinity; reboot chưa phải kết luận từ lời khách."
   }
 }
