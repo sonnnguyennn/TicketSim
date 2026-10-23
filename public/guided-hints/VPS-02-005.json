@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: IPv6 hoạt động nhưng IPv4 SSH thất bại từ các client.",
+    "Đọc P1 (ip -6 addr show dev enp0s3) và P2 (ip -4 addr show dev enp0s3); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: IPv4 xuất hiện, route IPv4 đúng và TCP/22 từ client thành công."
+  ]
+}

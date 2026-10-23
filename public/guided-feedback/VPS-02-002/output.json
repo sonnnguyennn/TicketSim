@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "supported"
+  ],
+  "explanation": "Phân biệt bằng chứng với giả thuyết: Một phép thử IP thành công còn truy vấn DNS timeout; cần tìm resolver và đường tới nó.",
+  "commandId": "dig-a",
+  "optionFeedback": {
+    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
+    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
+    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+  }
+}

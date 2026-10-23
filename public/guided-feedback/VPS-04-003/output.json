@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "supported"
+  ],
+  "explanation": "Phân biệt bằng chứng với giả thuyết: Kernel OOM kill và unit oom-kill cùng chỉ vào app; cần xác định giới hạn và peak bộ nhớ.",
+  "commandId": "systemctl-service",
+  "optionFeedback": {
+    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
+    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
+    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+  }
+}

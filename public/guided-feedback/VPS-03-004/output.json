@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "supported"
+  ],
+  "explanation": "Phân biệt bằng chứng với giả thuyết: AVC liên quan write của httpd hỗ trợ giả thuyết SELinux; cần đọc context và policy trước khi đổi.",
+  "commandId": "ausearch-avc",
+  "optionFeedback": {
+    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
+    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
+    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+  }
+}

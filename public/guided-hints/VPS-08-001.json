@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Domain vẫn mở server cũ sau migration.",
+    "Đọc P1 (dig +short shop.example.test A) và P2 (PANEL: current assigned IP); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Authoritative answer đúng IP mới và website của khách hoạt động qua domain."
+  ]
+}

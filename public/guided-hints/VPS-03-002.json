@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Ứng dụng báo Permission denied khi ghi vào uploads.",
+    "Đọc P1 (ls -ld /srv/app/uploads) và P2 (id webapp); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: webapp ghi được file thử và quyền vẫn theo least privilege."
+  ]
+}

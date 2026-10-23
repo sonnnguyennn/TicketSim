@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "direct"
+  ],
+  "explanation": "Đọc P1 trước khi khẳng định nguyên nhân. Resolver trả 203.0.113.10; một điểm truy vấn chưa chứng minh authoritative zone hiện tại.",
+  "commandId": "dig-a",
+  "optionFeedback": {
+    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
+    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
+    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+  }
+}

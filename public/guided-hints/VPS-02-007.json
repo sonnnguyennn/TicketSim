@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS tới được từ Nhật nhưng timeout từ hai ISP nội địa.",
+    "Đọc P1 (PANEL: probes) và P2 (sshd -T | grep port); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: TCP/22 thành công từ các ISP từng lỗi ở nhiều thời điểm."
+  ]
+}

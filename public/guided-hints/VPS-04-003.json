@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Ứng dụng kết thúc ngẫu nhiên mà không hiện lỗi cho khách.",
+    "Đọc P1 (journalctl -k -b | grep -i \"killed process\") và P2 (systemctl status app); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Không còn OOM khi chạy workload tương đương, ứng dụng vẫn ổn định."
+  ]
+}

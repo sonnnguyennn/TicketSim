@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Container api chậm lúc cao điểm dù host CPU còn dư.",
+    "Đọc P1 (cat /sys/fs/cgroup/cpu.stat) và P2 (docker stats --no-stream); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Tỷ lệ throttling và latency giảm ở tải cao điểm tương đương."
+  ]
+}

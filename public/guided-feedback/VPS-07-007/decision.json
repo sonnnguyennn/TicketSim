@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Xác minh DNS A/AAAA, vhost và SAN; deploy cert bao phủ domain và mapping đúng sau phê duyệt. Xác minh: Kết nối SNI tới domain trả chain hợp lệ bao phủ shop.example.com và trang đúng.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

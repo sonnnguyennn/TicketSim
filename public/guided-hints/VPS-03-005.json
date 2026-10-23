@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Ứng dụng database không start sau reboot.",
+    "Đọc P1 (systemctl status myapp) và P2 (systemctl status mariadb); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: MariaDB khỏe, myapp active và endpoint ứng dụng trả đúng."
+  ]
+}

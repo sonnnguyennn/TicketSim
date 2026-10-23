@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS chậm dù CPU không bận rõ rệt.",
+    "Đọc P1 (free -h) và P2 (vmstat 1 3); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: si/so giảm, available cải thiện và ứng dụng ổn định khi tải tương đương."
+  ]
+}

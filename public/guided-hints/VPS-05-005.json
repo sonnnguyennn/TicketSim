@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Sau nâng disk lên 40G, Linux vẫn báo / chỉ 20G.",
+    "Đọc P1 (lsblk) và P2 (df -h /); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: lsblk và df phản ánh dung lượng dự kiến, filesystem khỏe và dữ liệu đọc được."
+  ]
+}

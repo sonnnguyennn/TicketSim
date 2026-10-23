@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "supported"
+  ],
+  "explanation": "Phân biệt bằng chứng với giả thuyết: Proxy active nhưng upstream TCP/3000 từ chối; cần kiểm tra backend và cấu hình upstream.",
+  "commandId": "nginx-error-tail",
+  "optionFeedback": {
+    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
+    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
+    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+  }
+}

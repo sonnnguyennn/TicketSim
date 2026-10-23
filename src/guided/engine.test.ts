@@ -10,9 +10,9 @@ import type { GuidedCase } from './types'
 const cases = guidedPublic as GuidedCase[]
 
 describe('Guided content', () => {
-  it('provides twelve reviewed Guided cases without answer keys in the initial payload', () => {
-    expect(cases).toHaveLength(12)
-    expect(new Set(cases.map(item => item.id)).size).toBe(12)
+  it('provides forty-two Guided cases without answer keys in the initial payload', () => {
+    expect(cases).toHaveLength(42)
+    expect(new Set(cases.map(item => item.id)).size).toBe(42)
     expect(cases.filter(item => ['VPS-01-003', 'VPS-03-003', 'VPS-05-004', 'VPS-08-003'].includes(item.id))).toHaveLength(4)
     for (const item of cases) {
       expect(item.probes.length).toBeGreaterThanOrEqual(2)
@@ -37,10 +37,34 @@ describe('Guided content', () => {
         expect(key.correctIds.every((id: string) => question.options.some(option => option.id === id))).toBe(true)
       }
     }
-    expect(commandLibrary.length).toBe(76)
+    expect(commandLibrary.length).toBe(96)
     expect(new Set(commandLibrary.map(item => item.id)).size).toBe(commandLibrary.length)
     expect(commandLibrary.every(item => item.exampleOutput && item.whenToUse && item.followUp && item.flags && item.centos && item.ubuntu)).toBe(true)
     expect(cases.some(item => item.questions.some(question => question.kind === 'step_order'))).toBe(true)
+    const added = cases.slice(12)
+    expect(added).toHaveLength(30)
+    const tickets = JSON.parse(fs.readFileSync('starter-data/tickets.json', 'utf8')).tickets as { id: string; topic: string; difficulty: number }[]
+    expect(new Set(added.map(item => tickets.find(ticket => ticket.id === item.id)?.topic)).size).toBe(7)
+    for (const item of added) {
+      expect(item.questions.some(question => question.kind === 'multi_select')).toBe(true)
+      expect(item.questions.some(question => question.kind === 'command_choice')).toBe(true)
+      expect(item.questions.some(question => question.kind === 'output_interpretation')).toBe(true)
+      const difficulty = tickets.find(ticket => ticket.id === item.id)!.difficulty
+      if (difficulty >= 2) {
+        expect(item.probes.length).toBeGreaterThanOrEqual(3)
+        expect(item.questions.some(question => question.kind === 'step_order')).toBe(true)
+        expect(item.questions.some(question => question.requiredProbeIds?.includes('G1'))).toBe(true)
+        const order = item.questions.find(question => question.kind === 'step_order')!
+        const orderKey = JSON.parse(fs.readFileSync(`public/guided-feedback/${item.id}/${order.id}.json`, 'utf8'))
+        expect(gradeSelection(order.options.map(option => option.id).reverse(), orderKey, 'step_order')).toBe(false)
+      }
+      for (const question of objectiveQuestions(item)) {
+        const key = JSON.parse(fs.readFileSync(`public/guided-feedback/${item.id}/${question.id}.json`, 'utf8'))
+        expect(gradeSelection(key.correctIds, key, question.kind === 'step_order' ? 'step_order' : 'selection')).toBe(true)
+        const incorrect = question.kind === 'step_order' ? [...key.correctIds].reverse() : [question.options.find(option => !key.correctIds.includes(option.id))!.id]
+        expect(gradeSelection(incorrect, key, question.kind === 'step_order' ? 'step_order' : 'selection')).toBe(false)
+      }
+    }
   })
   it('keeps exact probe output and vetted sudo alias, without inventing output for other commands', () => {
     const pilot = cases.find(item => item.id === 'VPS-01-001')!
@@ -88,7 +112,7 @@ describe('Guided content', () => {
   it('can complete every authored Guided path with exact fixture evidence and its own answer keys', () => {
     for (const guidedCase of cases) {
       const draft = emptyGuidedDraft()
-      draft.commands = guidedCase.probes.filter(probe => ['P1', 'P2'].includes(probe.id)).map(probe => ({ id: probe.id, probeId: probe.id, command: probe.command, output: probe.output, supported: true, kind: probe.context === 'panel' ? 'investigation' : 'terminal', at: '' }))
+      draft.commands = guidedCase.probes.filter(probe => !probe.requiredState || probe.requiredState.includes('initial')).map(probe => ({ id: probe.id, probeId: probe.id, command: probe.command, output: probe.output, supported: true, kind: probe.context === 'panel' ? 'investigation' : 'terminal', at: '' }))
       for (const question of objectiveQuestions(guidedCase)) {
         const key = JSON.parse(fs.readFileSync(`public/guided-feedback/${guidedCase.id}/${question.id}.json`, 'utf8'))
         draft.responses[question.id] = key.correctIds

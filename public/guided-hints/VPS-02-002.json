@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Site mở theo IP nhưng tên miền không tải.",
+    "Đọc P1 (ping -c 2 1.1.1.1) và P2 (dig example.com A); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Resolver được cấu hình trả A record và truy cập site theo domain hoạt động."
+  ]
+}

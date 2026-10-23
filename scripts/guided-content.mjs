@@ -1,4 +1,5 @@
 // Hand-authored learning content. The build script splits prompts from answer keys.
+import { readFileSync } from 'node:fs'
 const q = (id, stage, kind, prompt, options, correctIds, explanation, commandId, requiredProbeIds) => ({
   id, stage, kind, prompt,
   options: options.map(([id, label, feedback]) => ({ id, label, feedback })),
@@ -285,6 +286,398 @@ export const guidedContent = [
     ],
   },
 ]
+
+// Batch 2 uses the immutable P1/P2 source commands and outputs, while every
+// interpretation, decision, distractor and extra fixture below is reviewed by case.
+const sourceTickets = new Map(JSON.parse(readFileSync(new URL('../starter-data/tickets.json', import.meta.url), 'utf8')).tickets.map(ticket => [ticket.id, ticket]))
+const guidedBatch2 = []
+function addBatchCase(meta) {
+  const ticket = sourceTickets.get(meta.id)
+  if (!ticket) throw new Error(`Missing source ticket ${meta.id}`)
+  const [p1, p2] = ticket.probe_outputs
+  const ask = (id, stage, kind, prompt, options, correctIds, explanation, commandId, requiredProbeIds) => ({ ...q(id, stage, kind, prompt, options, correctIds, explanation, commandId, requiredProbeIds), skill: meta.skill })
+  const extraIds = meta.extras?.map((_, index) => `G${index + 1}`) ?? []
+  const advanced = ticket.difficulty >= 2
+  guidedBatch2.push({
+    id: meta.id, objective: meta.objective,
+    hints: [
+      `Hãy mô tả triệu chứng khách báo trước khi suy luận: ${meta.symptom}`,
+      `Đọc P1 (${p1.command}) và P2 (${p2.command}); ghi điều mỗi output thật sự chứng minh.`,
+      `Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: ${meta.verify}`,
+    ],
+    probeNotes: [
+      { purpose: meta.p1.purpose, meaning: meta.p1.meaning, commandId: meta.p1.doc, aliases: [], context: meta.p1.context ?? 'guest' },
+      { purpose: meta.p2.purpose, meaning: meta.p2.meaning, commandId: meta.p2.doc, aliases: [], context: meta.p2.context ?? 'guest' },
+    ],
+    extras: meta.extras ?? [],
+    verificationPrompt: `Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: ${meta.verify}`,
+    questions: [
+      ask('triage', 'triage', 'single_choice', 'Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?', [
+        ['symptom', meta.symptom, 'Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.'],
+        ['other', meta.redHerring, 'Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.'],
+        ['cause', 'Đã xác định chính xác root cause chỉ từ lời khách.', 'Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân.'],
+      ], ['symptom'], 'Tách lời khách hàng khỏi giả thuyết kỹ thuật.'),
+      ask('check', 'investigate', 'command_choice', `Phép kiểm tra nào trực tiếp đọc ${meta.p1.purpose.toLowerCase()}?`, [
+        ['direct', p1.command, 'Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.'],
+        ['wrong1', meta.wrongChecks[0], 'Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.'],
+        ['wrong2', meta.wrongChecks[1], 'Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này.'],
+      ], ['direct'], `Đọc P1 trước khi khẳng định nguyên nhân. ${meta.p1.meaning}`, meta.p1.doc),
+      ask('output', 'interpret', 'output_interpretation', `Sau khi đọc P1/P2${extraIds.length ? ' và phép kiểm tra bổ sung' : ''}, cách hiểu nào đủ bằng chứng?`, [
+        ['supported', meta.finding, 'Đúng: cách diễn giải bám các output đã quan sát.'],
+        ['over', meta.overclaim, 'Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.'],
+        ['ignore', 'Các output không có giá trị điều tra nào.', 'Các output có thông tin hữu ích; cần đọc đúng giới hạn.'],
+      ], ['supported'], `Phân biệt bằng chứng với giả thuyết: ${meta.finding}`, meta.p2.doc, advanced ? ['P1', 'P2', ...extraIds] : ['P1', 'P2']),
+      ask('evidence', 'interpret', 'multi_select', 'Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.', [
+        ['p1', meta.p1.meaning, 'Đúng theo P1 trong bài này.'],
+        ['p2', meta.p2.meaning, 'Đúng theo P2 trong bài này.'],
+        ['over', meta.overclaim, 'Chưa được P1/P2 chứng minh.'],
+      ], ['p1', 'p2'], 'Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.', meta.p2.doc, ['P1', 'P2']),
+      ask('decision', 'decide', 'single_choice', 'Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?', [
+        ['safe', meta.safeNext, 'Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.'],
+        ['unsafe', meta.unsafe, 'Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.'],
+        ['close', 'Đóng ticket ngay mà không kiểm tra sau xử lý.', 'Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động.'],
+      ], ['safe'], `Bước tiếp theo: ${meta.safeNext} Xác minh: ${meta.verify}`),
+      ...(advanced ? [ask('order', 'verify', 'step_order', 'Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.', [
+        ['evidence', 'Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết.', 'Đúng ở đầu: thu thập và giới hạn kết luận.'],
+        ['verify', meta.verify, 'Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.'],
+        ['act', meta.safeNext, 'Đúng sau khi bằng chứng và quyền đã được xác nhận.'],
+      ], ['evidence', 'act', 'verify'], 'Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.')] : []),
+    ],
+  })
+}
+
+addBatchCase({
+  id: 'VPS-01-004', skill: 'ssh-firewall', objective: 'Phân biệt daemon đang chạy với đường TCP từ client bị chặn; kiểm tra đúng firewalld zone.',
+  p1: { doc: 'systemctl-status', purpose: 'trạng thái SSH daemon', meaning: 'sshd trả active tại thời điểm đọc; chưa chứng minh client tới TCP/22.' },
+  p2: { doc: 'firewall-list', purpose: 'dịch vụ và port trong firewalld zone', meaning: 'Output zone được hỏi không liệt kê ssh hay TCP/22; cần xác nhận zone đang áp dụng.' },
+  symptom: 'Ping được VPS nhưng SSH từ client bị timeout.', redHerring: 'SSH báo Permission denied sau khi nhập mật khẩu.',
+  finding: 'sshd active, nhưng rule của zone được hỏi chưa cho thấy SSH; phải xác nhận active zone và thử TCP từ client.',
+  overclaim: 'Đã chứng minh mọi lớp mạng khác đều cho TCP/22 đi qua.', safeNext: 'Xác nhận active zone, listener và phép thử TCP từ client; chỉ mở SSH theo policy khi được duyệt.',
+  unsafe: 'Mở tất cả port của firewall để thử.', verify: 'TCP/22 và đăng nhập từ client được phép, rule còn hiệu lực sau reload.',
+  wrongChecks: ['df -h /', 'dig example.com A'],
+})
+addBatchCase({
+  id: 'VPS-01-005', skill: 'ssh-host-key', objective: 'Xử lý cảnh báo host key bằng kênh tin cậy sau reinstall, không bỏ qua xác thực host.',
+  p1: { doc: 'ssh-vvv', purpose: 'cảnh báo host key từ client', meaning: 'Client từ chối host key hiện nhận được; chưa chứng minh đây là key hợp lệ.' , context: 'client' },
+  p2: { doc: 'panel-rebuild', purpose: 'lịch sử rebuild trong panel', meaning: 'Panel ghi nhận reinstall 15 phút trước; đây là bối cảnh, không xác thực fingerprint mới.', context: 'panel' },
+  symptom: 'SSH từ client dừng ở cảnh báo host key changed sau reinstall.', redHerring: 'VPS hết dung lượng và không ghi được file.',
+  finding: 'Reinstall có thể giải thích key đổi, nhưng phải đối chiếu fingerprint qua console đáng tin cậy.',
+  overclaim: 'Reinstall tự động chứng minh host key mới an toàn để chấp nhận.', safeNext: 'Lấy fingerprint host key qua console tin cậy, so với client rồi mới thay known_hosts entry nếu khớp.',
+  unsafe: 'Tắt StrictHostKeyChecking và chấp nhận mọi key mới.', verify: 'Fingerprint khớp qua kênh tin cậy và SSH đăng nhập tới đúng host.',
+  wrongChecks: ['df -h /', 'systemctl status nginx'],
+  extras: [{ command: 'ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub', output: '256 SHA256:p5H2S8FvJ3eBNnQmK9wR42Yz0cLaT6dXrM1qV7uE8A0 root@reinstalled-vm (ED25519)', purpose: 'Đọc fingerprint từ guest console tin cậy.', meaning: 'Có fingerprint để so với client; một giá trị riêng lẻ chưa xác nhận hai đầu khớp.', commandId: 'ssh-host-fingerprint', aliases: [], context: 'guest' }],
+})
+addBatchCase({
+  id: 'VPS-01-006', skill: 'ssh-source-ban', objective: 'Xác nhận source IP bị chặn có đúng là của khách trước khi cân nhắc unban.',
+  p1: { doc: 'fail2ban-status', purpose: 'danh sách IP bị ban của jail sshd', meaning: '198.51.100.14 xuất hiện trong ban list; chưa xác minh đó là IP hiện tại của khách.' },
+  p2: { doc: 'fail2ban-log', purpose: 'log ban gần đây của Fail2ban', meaning: 'Log ghi hành động ban 198.51.100.14; cần xem sự kiện đăng nhập dẫn tới ban.' },
+  symptom: 'Chỉ mạng văn phòng của khách timeout khi SSH; mạng khác còn vào được.', redHerring: 'Tất cả client đều nhận Permission denied.',
+  finding: 'IP trong jail bị ban; cần đối chiếu IP nguồn và auth failures trước khi kết luận đây là nguyên nhân của khách.',
+  overclaim: 'Mọi attempt từ 198.51.100.14 đều là hợp lệ.', safeNext: 'Xác minh IP nguồn, quyền sở hữu và auth log; unban theo policy nếu phù hợp, đồng thời xử lý nguyên nhân ban.',
+  unsafe: 'Tắt Fail2ban toàn bộ để thử SSH.', verify: 'SSH từ IP được phép hoạt động và không bị ban lại bất thường.',
+  wrongChecks: ['df -h /', 'dig example.com NS'],
+  extras: [{ command: 'journalctl -u sshd -n 20 --no-pager', output: 'Failed password for invalid user admin from 198.51.100.14 port 50221 ssh2', purpose: 'Đối chiếu lý do ban với auth log.', meaning: 'Có failed login từ IP này; chưa chứng minh người dùng hợp lệ hay attacker.', commandId: 'journalctl-unit', aliases: [] }],
+})
+addBatchCase({
+  id: 'VPS-01-007', skill: 'ssh-custom-port', objective: 'Phân biệt port SSH thực đang nghe với port client mặc định và kiểm tra policy mạng.',
+  p1: { doc: 'ss-ltnp', purpose: 'listener TCP của guest', meaning: 'Output chỉ cho thấy listener ở TCP/2222; không thấy TCP/22 trong snapshot.' },
+  p2: { doc: 'sshd-effective', purpose: 'dòng Port trong sshd_config', meaning: 'File cấu hình có Port 2222; chưa chứng minh config nạp thành công hay port được phép từ client.' },
+  symptom: 'SSH tới port 22 bị từ chối dù console VPS còn hoạt động.', redHerring: 'Tên miền của VPS trả NXDOMAIN.',
+  finding: 'Listener và cấu hình đều chỉ TCP/2222; cần xác nhận cấu hình hiệu lực, firewall và kết nối từ client.',
+  overclaim: 'Mọi client đều đăng nhập được trên TCP/2222.', safeNext: 'Xác nhận port được chủ VPS dự định, kiểm tra sshd -t và firewall/ACL rồi hướng client dùng ssh -p 2222.',
+  unsafe: 'Đổi lại port 22 qua phiên SSH duy nhất mà không có console/rollback.', verify: 'TCP/2222 và xác thực từ client được phép thành công.',
+  wrongChecks: ['df -h /', 'free -h'],
+  extras: [
+    { command: 'sshd -T | grep port', output: 'port 2222', purpose: 'Đọc cấu hình sshd hiệu lực.', meaning: 'Effective port là 2222; vẫn cần thử đường TCP từ client.', commandId: 'sshd-effective', aliases: [] },
+    { command: 'firewall-cmd --list-ports', output: '2222/tcp', purpose: 'Đọc port firewalld trong zone đang được hỏi.', meaning: 'Zone được hỏi cho TCP/2222; phải xác nhận active zone và provider ACL.', commandId: 'firewall-list', aliases: [] },
+  ],
+})
+addBatchCase({
+  id: 'VPS-02-002', skill: 'resolver-vs-ip', objective: 'Tách IP reachability khỏi khả năng phân giải tên và xác định resolver guest.',
+  p1: { doc: 'ping', purpose: 'ICMP tới IP công cộng', meaning: 'IP 1.1.1.1 trả lời ICMP trong hai thử nghiệm; không chứng minh mọi TCP path khỏe.' },
+  p2: { doc: 'dig-a', purpose: 'A record qua resolver hiện tại', meaning: 'dig timeout vì không liên lạc được DNS server được dùng; chưa biết resolver nào.' },
+  symptom: 'Site mở theo IP nhưng tên miền không tải.', redHerring: 'Mọi gói IP ra ngoài đều bị chặn.',
+  finding: 'Một phép thử IP thành công còn truy vấn DNS timeout; cần tìm resolver và đường tới nó.',
+  overclaim: 'Bản ghi A của example.com chắc chắn không tồn tại.', safeNext: 'Đọc resolv.conf và DNS từ NetworkManager, thử trực tiếp resolver đã cấu hình trước khi sửa.',
+  unsafe: 'Ghi đè /etc/resolv.conf bằng IP đoán mà không xem network profile.', verify: 'Resolver được cấu hình trả A record và truy cập site theo domain hoạt động.',
+  wrongChecks: ['df -h /', 'systemctl status nginx'],
+})
+addBatchCase({
+  id: 'VPS-02-003', skill: 'network-profile', objective: 'Đọc interface và NetworkManager profile trước khi thay đổi kết nối có rủi ro mất SSH.',
+  p1: { doc: 'ip-addr', purpose: 'địa chỉ trên interface guest', meaning: 'enp0s3 UP nhưng output không có IPv4 trên interface này.' },
+  p2: { doc: 'nmcli-device-status', purpose: 'trạng thái NetworkManager device', meaning: 'NetworkManager báo enp0s3 disconnected; cần đối chiếu profile dự kiến.' },
+  symptom: 'VPS chạy sau migration nhưng không thấy IPv4 ở guest.', redHerring: 'VPS có IPv4 nhưng chỉ DNS không hoạt động.',
+  finding: 'Thiết bị có mặt nhưng chưa gắn profile IPv4 hoạt động; cần xem cấp phát và MAC/profile.',
+  overclaim: 'Provider chắc chắn chưa cấp địa chỉ IPv4.', safeNext: 'Đối chiếu profile/MAC và thông tin cấp phát; dùng console và rollback nếu kích hoạt connection được duyệt.',
+  unsafe: 'Chạy nmcli connection down qua phiên SSH quản trị duy nhất.', verify: 'Guest có IPv4, route đúng và TCP từ ngoài vào hoạt động.',
+  wrongChecks: ['df -h /', 'dig example.com NS'],
+})
+addBatchCase({
+  id: 'VPS-02-004', skill: 'https-firewall', objective: 'Phân biệt listener HTTPS trong guest với khả năng truy cập TCP/443 từ ngoài.',
+  p1: { doc: 'ss-ltnp', purpose: 'listener TCP/443 trong guest', meaning: 'Có listener ở 0.0.0.0:443 tại thời điểm kiểm tra.' },
+  p2: { doc: 'firewall-list', purpose: 'dịch vụ và port được firewalld liệt kê', meaning: 'Zone được hỏi chỉ liệt kê ssh, không có https/443; cần xác nhận zone active.' },
+  symptom: 'HTTPS ngoài VPS không tới được, còn local curl thành công.', redHerring: 'Nginx không thể bind port 443 ở guest.',
+  finding: 'Guest nghe 443 nhưng firewalld zone được hỏi không cho thấy HTTPS; cần test từ client và xác nhận zone.',
+  overclaim: 'Chắc chắn chỉ có guest firewall, không có edge filtering.', safeNext: 'Xác nhận active zone, local HTTPS và client TCP; chỉ thêm rule HTTPS theo policy khi được duyệt.',
+  unsafe: 'Tắt toàn bộ firewalld để làm website hoạt động.', verify: 'HTTPS từ client ngoài trả nội dung mong đợi, rule còn hiệu lực.',
+  wrongChecks: ['df -h /', 'free -h'],
+})
+addBatchCase({
+  id: 'VPS-02-005', skill: 'ipv4-provisioning', objective: 'Phân biệt IPv6 còn hoạt động với IPv4 thiếu ở guest và kiểm tra cấp phát trước khi sửa profile.',
+  p1: { doc: 'ip-family-addr', purpose: 'địa chỉ IPv6 của enp0s3', meaning: 'Guest có IPv6 2001:db8:100::25/64 trên enp0s3.' },
+  p2: { doc: 'ip-family-addr', purpose: 'địa chỉ IPv4 của enp0s3', meaning: 'Output không có dòng inet IPv4; cần kiểm tra panel và profile.' },
+  symptom: 'IPv6 hoạt động nhưng IPv4 SSH thất bại từ các client.', redHerring: 'Chỉ một user nhập sai mật khẩu SSH.',
+  finding: 'Guest có IPv6 nhưng không có IPv4 trên interface; chưa biết thiếu ở cấp phát hay profile.',
+  overclaim: 'IPv4 chưa từng được provider cấp cho VPS.', safeNext: 'Đối chiếu IPv4 được panel cấp với profile guest rồi khôi phục có console, approval và rollback.',
+  unsafe: 'Tự đoán một IPv4 trong subnet rồi gán cho guest.', verify: 'IPv4 xuất hiện, route IPv4 đúng và TCP/22 từ client thành công.',
+  wrongChecks: ['df -h /', 'dig example.com NS'],
+  extras: [{ command: 'PANEL: IPv4 allocation for enp0s3', output: 'Assigned IPv4: 192.0.2.25/24; gateway: 192.0.2.1', purpose: 'Đối chiếu địa chỉ IPv4 provider cấp.', meaning: 'Panel có địa chỉ cấp phát; chưa chứng minh guest đã cấu hình đúng.', commandId: 'panel-ip-allocation', aliases: [], context: 'panel' }],
+})
+addBatchCase({
+  id: 'VPS-02-007', skill: 'source-dependent-path', objective: 'Điều tra reachability theo nguồn với bằng chứng client, guest và edge; không đoán nguyên nhân BGP/ACL.',
+  p1: { doc: 'panel-probes', purpose: 'TCP/22 từ ba điểm quan sát', meaning: 'Tokyo kết nối được; hai ISP nội địa timeout theo panel; chưa biết gói bị chặn ở đâu.', context: 'panel' },
+  p2: { doc: 'sshd-effective', purpose: 'port hiệu lực của sshd', meaning: 'sshd được cấu hình port 22; không chứng minh gói từ ISP bị ảnh hưởng tới guest.' },
+  symptom: 'VPS tới được từ Nhật nhưng timeout từ hai ISP nội địa.', redHerring: 'sshd từ chối mật khẩu cho mọi client.',
+  finding: 'Lỗi phụ thuộc nguồn; SSH port 22 được cấu hình nhưng đường đi hoặc filtering còn cần chứng cứ.',
+  overclaim: 'Đã xác định chính xác một ISP hoặc BGP peer gây lỗi.', safeNext: 'Thu source IP, timestamp, TCP probe cùng port và capture giới hạn tại guest; chuyển đội mạng/edge khi cần.',
+  unsafe: 'Đổi SSH port hoặc reboot VPS để che lỗi chưa được định vị.', verify: 'TCP/22 thành công từ các ISP từng lỗi ở nhiều thời điểm.',
+  wrongChecks: ['df -h /', 'free -h'],
+  extras: [
+    { command: 'ss -ltnp', output: 'LISTEN 0 128 0.0.0.0:22 users:(("sshd",pid=881,fd=3))', purpose: 'Kiểm tra listener thật trong guest.', meaning: 'Guest nghe TCP/22; chưa chứng minh SYN từ ISP nội địa tới được guest.', commandId: 'ss-ltnp', aliases: [] },
+    { command: 'PANEL: edge ACL summary', output: 'No source-specific edge ACL recorded for TCP/22', purpose: 'Đọc ACL edge được ghi nhận.', meaning: 'Không có rule được ghi nhận ở panel; không loại trừ upstream/routing hoặc rule khác.', commandId: 'panel-probes', aliases: [], context: 'panel' },
+  ],
+})
+addBatchCase({
+  id: 'VPS-03-002', skill: 'unix-permission', objective: 'Đọc owner/mode của thư mục và user chạy app trước khi đề xuất quyền ghi hẹp nhất.',
+  p1: { doc: 'ls-permission', purpose: 'mode và owner của uploads', meaning: 'uploads thuộc root:root và mode 755; chỉ owner có write theo mode hiển thị.' },
+  p2: { doc: 'id-user', purpose: 'UID/GID của process webapp', meaning: 'webapp UID/GID 1001 không phải root; cần xét ACL và thư mục cha nếu có.' },
+  symptom: 'Ứng dụng báo Permission denied khi ghi vào uploads.', redHerring: 'Ứng dụng không thể resolve tên miền.',
+  finding: 'Mode 755 root:root không cấp write cho webapp theo quyền cơ bản; ACL/mount cần đối chiếu nếu có.',
+  overclaim: 'Chắc chắn mọi thư mục cha và ACL đều cho phép truy cập.', safeNext: 'Kiểm tra namei/getfacl và owner mục tiêu; thay quyền hẹp theo owner approval, tránh world-writable.',
+  unsafe: 'chmod -R 777 /srv/app/uploads để sửa nhanh.', verify: 'webapp ghi được file thử và quyền vẫn theo least privilege.',
+  wrongChecks: ['dig example.com A', 'ip route'],
+})
+addBatchCase({
+  id: 'VPS-03-004', skill: 'selinux-avc', objective: 'Đọc AVC theo process và đường dẫn để xử lý context/policy, không tắt SELinux.',
+  p1: { doc: 'getenforce', purpose: 'chế độ SELinux', meaning: 'SELinux hiện Enforcing; riêng mode chưa xác định rule nào chặn.' },
+  p2: { doc: 'ausearch-avc', purpose: 'AVC denial gần đây cho httpd uploads', meaning: 'AVC ghi httpd bị deny write ở uploads; cần đối chiếu thời gian, context và intended access.' },
+  symptom: 'App chỉ ghi được khi SELinux permissive, thất bại khi Enforcing.', redHerring: 'VPS không có default route.',
+  finding: 'AVC liên quan write của httpd hỗ trợ giả thuyết SELinux; cần đọc context và policy trước khi đổi.',
+  overclaim: 'Có thể tắt SELinux vĩnh viễn mà không ảnh hưởng bảo mật.', safeNext: 'Đọc context và nguyên nhân AVC; sửa label/policy đúng phạm vi theo phê duyệt.',
+  unsafe: 'Giữ setenforce 0 như giải pháp production.', verify: 'Tác vụ ghi hoạt động trong Enforcing và không có AVC liên quan mới.',
+  wrongChecks: ['df -h /', 'dig example.com A'],
+})
+addBatchCase({
+  id: 'VPS-03-005', skill: 'service-dependency', objective: 'Lần dependency chain từ app sang database và điều tra database trước khi restart app.',
+  p1: { doc: 'systemctl-service', purpose: 'trạng thái unit myapp', meaning: 'myapp báo Dependency failed; chưa biết dependency nào đến khi đối chiếu unit và service liên quan.' },
+  p2: { doc: 'systemctl-service', purpose: 'trạng thái unit mariadb', meaning: 'mariadb đang failed; cần journal để biết nguyên nhân database lỗi.' },
+  symptom: 'Ứng dụng database không start sau reboot.', redHerring: 'Chỉ một client không resolve domain.',
+  finding: 'App có dependency failure và database failed; nguyên nhân database vẫn chưa được xác định.',
+  overclaim: 'Đã chứng minh dữ liệu MariaDB bị hỏng.', safeNext: 'Đọc journal mariadb và dependency graph; sửa nguyên nhân DB theo owner rồi mới khởi động app.',
+  unsafe: 'Restart myapp liên tục và bỏ qua MariaDB failed.', verify: 'MariaDB khỏe, myapp active và endpoint ứng dụng trả đúng.',
+  wrongChecks: ['dig example.com A', 'df -i /'],
+  extras: [{ command: 'journalctl -u mariadb -b -n 80 --no-pager', output: 'mariadb.service: Failed to start due to missing /var/lib/mysql directory', purpose: 'Đọc lỗi MariaDB ở boot hiện tại.', meaning: 'Log nêu thiếu đường dẫn; cần kiểm tra mount/volume và backup trước khi tạo hoặc khôi phục dữ liệu.', commandId: 'journalctl-service', aliases: [] }],
+})
+addBatchCase({
+  id: 'VPS-03-006', skill: 'service-runtime', objective: 'Phân biệt service auto-restart với lỗi runtime Python và đối chiếu môi trường deploy.',
+  p1: { doc: 'systemctl-service', purpose: 'trạng thái custom-app', meaning: 'Unit liên tục auto-restart sau exit-code; restart lặp lại không sửa runtime.' },
+  p2: { doc: 'journalctl-service', purpose: 'exception gần đây của custom-app', meaning: 'Log ghi ModuleNotFoundError: requests; cần xác định interpreter/venv thực được unit dùng.' },
+  symptom: 'Custom daemon restart liên tục và không phục vụ request.', redHerring: 'Nginx trả certificate expired.',
+  finding: 'App thoát do thiếu module trong runtime đang dùng; package manifest và unit ExecStart cần đối chiếu.',
+  overclaim: 'Cài requests toàn hệ thống chắc chắn sửa đúng môi trường app.', safeNext: 'Xác nhận ExecStart/venv và manifest; sửa dependency trong đúng môi trường hoặc rollback release được duyệt.',
+  unsafe: 'pip install vào system Python rồi restart production không kiểm tra venv.', verify: 'Service ổn định qua nhiều chu kỳ và healthcheck endpoint thành công.',
+  wrongChecks: ['ip route', 'dig example.com NS'],
+  extras: [{ command: 'systemctl cat custom-app', output: 'ExecStart=/opt/custom/venv/bin/python /opt/custom/app.py', purpose: 'Đọc interpreter unit thực dùng.', meaning: 'Unit dùng venv cụ thể; dependency phải khớp môi trường này.', commandId: 'systemctl-cat', aliases: [] }],
+})
+addBatchCase({
+  id: 'VPS-04-001', skill: 'cpu-process', objective: 'Đọc mức CPU và process tại thời điểm chậm, rồi xác nhận workload trước khi can thiệp.',
+  p1: { doc: 'top', purpose: 'CPU user trong snapshot top', meaning: '98.5% us cho thấy CPU dành nhiều cho user process tại thời điểm lấy mẫu.' },
+  p2: { doc: 'ps-cpu', purpose: 'process đứng đầu theo CPU', meaning: 'python3 PID 2601 ở 97.4% CPU; cần đối chiếu script, owner và thời gian chạy.' },
+  symptom: 'VPS chậm khi script định kỳ chạy.', redHerring: 'VPS bị mất địa chỉ IPv4.',
+  finding: 'CPU user cao đồng thời một process python3 dùng gần một core; cần xác nhận nó là script dự kiến.',
+  overclaim: 'Script chắc chắn độc hại và cần kill ngay.', safeNext: 'Xác định owner, lịch và tác động của PID 2601; phối hợp tối ưu hoặc dời lịch nếu được duyệt.',
+  unsafe: 'Kill PID 2601 ngay mà không biết công việc của nó.', verify: 'Độ trễ khách giảm và CPU trở lại baseline ở lần chạy tương đương.',
+  wrongChecks: ['dig example.com A', 'df -i /'],
+})
+addBatchCase({
+  id: 'VPS-04-002', skill: 'memory-swap', objective: 'Dùng available memory và swap in/out để phân biệt áp lực RAM với CPU.',
+  p1: { doc: 'free-h', purpose: 'available RAM và swap đã dùng', meaning: 'Chỉ còn 40Mi available, swap dùng 490/512Mi; một ảnh chụp cần đối chiếu hoạt động swap.' },
+  p2: { doc: 'vmstat', purpose: 'swap in/out trong vmstat', meaning: 'si 280 và so 310 cho thấy swapping đang diễn ra trong mẫu.' },
+  symptom: 'VPS chậm dù CPU không bận rõ rệt.', redHerring: 'SSH chỉ lỗi từ một địa chỉ IP.',
+  finding: 'RAM available thấp và swap đang hoạt động; phù hợp memory pressure, chưa định process gây ra.',
+  overclaim: 'Đã xác định ứng dụng nào bị memory leak.', safeNext: 'Đọc RSS/process và xu hướng, kiểm tra OOM; điều chỉnh workload hoặc RAM với chủ dịch vụ.',
+  unsafe: 'Tắt swap và reboot ngay khi chưa biết workload.', verify: 'si/so giảm, available cải thiện và ứng dụng ổn định khi tải tương đương.',
+  wrongChecks: ['dig example.com NS', 'firewall-cmd --list-all'],
+})
+addBatchCase({
+  id: 'VPS-04-003', skill: 'oom-killer', objective: 'Liên hệ kernel OOM event với unit app và kiểm tra giới hạn bộ nhớ trước khi tăng tài nguyên.',
+  p1: { doc: 'journal-boot', purpose: 'kernel log về process bị kill', meaning: 'Kernel ghi OOM và kill PID 2525 (java); cần đối chiếu thời điểm lỗi.' },
+  p2: { doc: 'systemctl-service', purpose: 'kết quả unit app', meaning: 'systemd ghi Result: oom-kill cho app; chưa biết memory peak hoặc giới hạn cgroup.' },
+  symptom: 'Ứng dụng kết thúc ngẫu nhiên mà không hiện lỗi cho khách.', redHerring: 'Chỉ website báo TLS certificate expired.',
+  finding: 'Kernel OOM kill và unit oom-kill cùng chỉ vào app; cần xác định giới hạn và peak bộ nhớ.',
+  overclaim: 'Chắc chắn chỉ cần tăng RAM, không cần điều tra heap hoặc cgroup.', safeNext: 'Đối chiếu thời gian OOM, RAM/cgroup limit và Java heap; thay cấu hình hoặc capacity theo owner.',
+  unsafe: 'Tăng heap tối đa lên toàn bộ RAM VPS mà không kiểm tra limit.', verify: 'Không còn OOM khi chạy workload tương đương, ứng dụng vẫn ổn định.',
+  wrongChecks: ['dig example.com A', 'ss -ltnp'],
+  extras: [{ command: 'free -h', output: 'Mem: 2.0Gi total 80Mi available; Swap: 1.0Gi total 920Mi used', purpose: 'Đọc bộ nhớ hiện tại sau sự kiện OOM.', meaning: 'Snapshot vẫn cho thấy ít available; không xác định một mình peak khi kill.', commandId: 'free-h', aliases: [] }],
+})
+addBatchCase({
+  id: 'VPS-04-004', skill: 'io-wait', objective: 'Phân biệt CPU user thấp với I/O wait cao, rồi xác minh device và host trước kết luận.',
+  p1: { doc: 'vmstat', purpose: 'tỷ lệ CPU wa của vmstat', meaning: 'wa 76% trong mẫu phản ánh nhiều thời gian CPU chờ I/O; cần đối chiếu các mẫu.' },
+  p2: { doc: 'iostat', purpose: 'await và %util của vda', meaning: 'vda await 180ms, %util 99% trong mẫu; cần so với baseline và workload.' },
+  symptom: 'VPS chậm dù CPU user thấp.', redHerring: 'Chỉ DNS record của domain bị sai.',
+  finding: 'wa cao cùng độ trễ I/O vda cao phù hợp nghẽn storage, chưa định nguồn workload hay host.',
+  overclaim: 'Đã chứng minh đĩa vật lý hỏng.', safeNext: 'Tìm process I/O, đối chiếu host metrics và disk health; chuyển storage team nếu có dấu hiệu node.',
+  unsafe: 'Xóa dữ liệu ứng dụng để giảm I/O mà không xác định nguồn.', verify: 'await và độ trễ ứng dụng trở lại baseline dưới tải tương đương.',
+  wrongChecks: ['dig example.com A', 'firewall-cmd --list-all'],
+})
+addBatchCase({
+  id: 'VPS-04-005', skill: 'cpu-cgroup', objective: 'Đọc cgroup throttling cùng container stats và limit, không suy luận chỉ từ host CPU.',
+  p1: { doc: 'cgroup-cpu-stat', purpose: 'cgroup cpu.stat và số lần throttled', meaning: '760/1400 periods bị throttled trong counter; cần biết khoảng đo và quota cấu hình.' },
+  p2: { doc: 'docker-stats', purpose: 'CPU container api tại thời điểm đo', meaning: 'api được báo 99.8% CPU trong snapshot; không tự chứng minh host hết CPU.' },
+  symptom: 'Container api chậm lúc cao điểm dù host CPU còn dư.', redHerring: 'VPS không có default route.',
+  finding: 'Có dấu hiệu quota throttling; cần đối chiếu CPU limit, lưu lượng và latency cùng thời gian.',
+  overclaim: 'CPU vật lý của host chắc chắn đã cạn.', safeNext: 'Đọc giới hạn container/cgroup, request latency và traffic; điều chỉnh quota/capacity được duyệt.',
+  unsafe: 'Bỏ mọi CPU limit production mà không kiểm tra tác động tenant khác.', verify: 'Tỷ lệ throttling và latency giảm ở tải cao điểm tương đương.',
+  wrongChecks: ['dig example.com NS', 'df -i /'],
+  extras: [{ command: 'docker inspect api --format "{{.HostConfig.NanoCpus}}"', output: '1000000000', purpose: 'Đọc CPU quota cấu hình cho api.', meaning: 'NanoCpus 1e9 tương ứng giới hạn một CPU; cần đối chiếu cgroup đang dùng.', commandId: 'docker-inspect', aliases: [] }],
+})
+addBatchCase({
+  id: 'VPS-05-003', skill: 'journal-retention', objective: 'Đo journal và filesystem rồi dọn theo retention có phê duyệt, không xóa log mù.',
+  p1: { doc: 'journal-disk-usage', purpose: 'dung lượng active và archived journal', meaning: 'Journal dùng 8.0G; con số gồm active và archived, không bằng toàn bộ /var/log.' },
+  p2: { doc: 'df-h', purpose: 'block usage của root filesystem', meaning: '/ đang 94% theo fixture; còn chỗ nhưng cần ngăn tăng trưởng.' },
+  symptom: 'Log hệ thống chiếm phần lớn ổ đĩa.', redHerring: 'Không có IPv4 trên interface.',
+  finding: 'Journal lớn và / dùng 94%; cần tìm nguồn log tăng và retention hợp lệ.',
+  overclaim: 'Có thể xóa toàn bộ /var/log mà không ảnh hưởng bằng chứng.', safeNext: 'Xác nhận retention/backup, rà nguồn log; vacuum archived journal trong phạm vi được duyệt.',
+  unsafe: 'rm -rf /var/log để lấy chỗ ngay.', verify: 'df và journal usage giảm, log cần thiết vẫn còn và app ghi được.',
+  wrongChecks: ['dig example.com A', 'ss -ltnp'],
+})
+addBatchCase({
+  id: 'VPS-05-005', skill: 'disk-grow-layers', objective: 'Phân biệt virtual disk, partition và filesystem trước khi lập kế hoạch mở rộng.',
+  p1: { doc: 'lsblk', purpose: 'kích thước vda và partition vda1', meaning: 'vda đã 40G nhưng vda1 còn 20G; chưa biết filesystem type hay layout.' },
+  p2: { doc: 'df-h', purpose: 'kích thước filesystem chứa /', meaning: '/dev/vda1 vẫn báo filesystem 20G; disk 40G chưa tự mở rộng filesystem.' },
+  symptom: 'Sau nâng disk lên 40G, Linux vẫn báo / chỉ 20G.', redHerring: 'SSH bị ban theo IP văn phòng.',
+  finding: 'Disk lớn hơn partition và filesystem; cần kiểm tra layout/FS trước khi chọn quy trình grow.',
+  overclaim: 'Có thể chạy xfs_growfs mà không cần xem filesystem type.', safeNext: 'Kiểm tra partition layout, filesystem type và backup; lập change plan grow đúng lớp với quyền và rollback.',
+  unsafe: 'Sửa partition trực tiếp trên production khi chưa có backup/layout.', verify: 'lsblk và df phản ánh dung lượng dự kiến, filesystem khỏe và dữ liệu đọc được.',
+  wrongChecks: ['dig example.com A', 'ss -ltnp'],
+  extras: [{ command: 'findmnt -no SOURCE,FSTYPE /', output: '/dev/vda1 xfs', purpose: 'Xác nhận nguồn và filesystem type của root.', meaning: 'Root dùng XFS trong fixture; vẫn cần mở rộng partition trước khi grow filesystem.', commandId: 'findmnt', aliases: [] }],
+})
+addBatchCase({
+  id: 'VPS-05-006', skill: 'deleted-open-file', objective: 'Giải thích vì sao xóa file chưa giải phóng block khi process còn giữ file descriptor.',
+  p1: { doc: 'df-h', purpose: 'block usage của root sau xóa log', meaning: '/ vẫn 95% sau thao tác xóa; cần so với open file handles.' },
+  p2: { doc: 'lsof-deleted', purpose: 'file đã unlink nhưng còn được process mở', meaning: 'java PID 2300 giữ app.log (deleted) 5G; block có thể chưa được giải phóng.' },
+  symptom: 'Đã xóa log lớn nhưng df gần như không giảm.', redHerring: 'DNS trả IP cũ sau migration.',
+  finding: 'Deleted file 5G còn open bởi PID 2300 là ứng viên giải thích block chưa được giải phóng.',
+  overclaim: 'Kill -9 mọi process java là an toàn.', safeNext: 'Xác nhận PID/service owner và log rotation; phối hợp reopen/restart graceful nếu được duyệt.',
+  unsafe: 'Kill -9 PID 2300 ngay trên dịch vụ đang phục vụ khách.', verify: 'lsof +L1 hết handle liên quan và df tăng free space; app vẫn khỏe.',
+  wrongChecks: ['dig example.com NS', 'ip route'],
+  extras: [{ command: 'ps -p 2300 -o pid,comm,args', output: 'PID COMMAND COMMAND\n2300 java /usr/bin/java -jar /srv/app/api.jar', purpose: 'Nhận diện process giữ file descriptor.', meaning: 'PID 2300 là app Java; cần phối hợp với owner trước restart.', commandId: 'ps-process', aliases: [] }],
+})
+addBatchCase({
+  id: 'VPS-05-007', skill: 'filesystem-integrity', objective: 'Đọc kernel error và fsck failure, bảo vệ dữ liệu trước mọi sửa chữa filesystem.',
+  p1: { doc: 'journal-boot', purpose: 'kernel error của filesystem', meaning: 'Kernel ghi EXT4-fs error trên /dev/vda1; có rủi ro integrity.' },
+  p2: { doc: 'systemctl-failed', purpose: 'unit fsck bị fail', meaning: 'systemd-fsck@dev-vda1.service failed; cần log chi tiết và trạng thái mount.' },
+  symptom: 'VPS vào rescue mode sau sự cố storage.', redHerring: 'Chỉ một URL trả 404.',
+  finding: 'Filesystem có lỗi và fsck unit thất bại; cần quy trình recovery/offline và backup.',
+  overclaim: 'Có thể chạy fsck -y trên filesystem đang mount đọc ghi.', safeNext: 'Giữ trạng thái, kiểm tra backup và disk health, chuyển đội storage để repair offline có kế hoạch.',
+  unsafe: 'Chạy fsck -y trực tiếp trên root filesystem đang mounted.', verify: 'Filesystem mount sạch sau repair, dữ liệu ứng dụng được kiểm tra và boot ổn định.',
+  wrongChecks: ['dig example.com A', 'curl -I http://127.0.0.1'],
+  extras: [
+    { command: 'findmnt -no SOURCE,OPTIONS /', output: '/dev/vda1 ro,relatime', purpose: 'Đọc mode mount của root trong rescue.', meaning: 'Root đang ro; không thử ghi hoặc sửa online.', commandId: 'findmnt', aliases: [] },
+    { command: 'PANEL: verified backup status', output: 'Last verified backup: 2026-10-21 00:00 UTC', purpose: 'Xác nhận mốc backup trước recovery.', meaning: 'Có một bản backup đã kiểm tra; cần xác nhận phạm vi và RPO với khách.', commandId: 'panel-backup-status', aliases: [], context: 'panel' },
+  ],
+})
+addBatchCase({
+  id: 'VPS-07-002', skill: 'http-403-index', objective: 'Phân biệt 403 do index/directory listing với permission và policy truy cập.',
+  p1: { doc: 'curl-head', purpose: 'HTTP status từ localhost', meaning: 'HTTP local trả 403; server đã phản hồi, không phải connection refused.' },
+  p2: { doc: 'nginx-error-tail', purpose: 'dòng Nginx error về directory index', meaning: 'Nginx từ chối directory index ở /srv/site/; cần kiểm tra index và intended access.' },
+  symptom: 'Website mở được nhưng trả 403 Forbidden.', redHerring: 'TCP tới web server bị từ chối hoàn toàn.',
+  finding: 'Nginx phản hồi 403 và log nêu directory index forbidden; chưa biết index file dự kiến có tồn tại.',
+  overclaim: 'Chắc chắn phải bật autoindex công khai cho thư mục.', safeNext: 'Đối chiếu root/index và nội dung deploy; thêm index/route đúng theo owner, giữ access control.',
+  unsafe: 'Bật autoindex cho toàn bộ site production để hết 403.', verify: 'URL mong đợi tải đúng trang và thư mục nhạy cảm không bị liệt kê.',
+  wrongChecks: ['ip route', 'free -h'],
+})
+addBatchCase({
+  id: 'VPS-07-004', skill: 'http-upstream', objective: 'Đọc 502 cùng Nginx log để điều tra backend TCP/3000 thay vì restart proxy mù.',
+  p1: { doc: 'systemctl-nginx', purpose: 'trạng thái Nginx', meaning: 'Nginx active; một proxy chạy vẫn có thể trả lỗi upstream.' },
+  p2: { doc: 'nginx-error-tail', purpose: 'lỗi kết nối upstream trong Nginx log', meaning: 'Nginx không kết nối được 127.0.0.1:3000 ở thời điểm log; cần kiểm tra backend listener.' },
+  symptom: 'Domain trả 502 Bad Gateway.', redHerring: 'Không có HTTP response do Nginx dừng hoàn toàn.',
+  finding: 'Proxy active nhưng upstream TCP/3000 từ chối; cần kiểm tra backend và cấu hình upstream.',
+  overclaim: 'Nginx restart chắc chắn sửa được backend.', safeNext: 'Đọc listener TCP/3000, backend status/log và target upstream; sửa đúng service sau approval.',
+  unsafe: 'Restart Nginx liên tục mà không kiểm tra backend.', verify: 'Backend health và HTTP từ ngoài trả nội dung đúng, không còn 502.',
+  wrongChecks: ['df -i /', 'dig example.com NS'],
+})
+addBatchCase({
+  id: 'VPS-07-006', skill: 'http-503-backend', objective: 'Phân biệt 503 sau deploy với tình trạng unit app auto-restart và điều tra release.',
+  p1: { doc: 'curl-head', purpose: 'HTTP status sau deploy', meaning: 'Local HTTP trả 503; proxy/ứng dụng vẫn phản hồi lỗi, không chứng minh DNS hỏng.' },
+  p2: { doc: 'systemctl-service', purpose: 'trạng thái unit app', meaning: 'app auto-restart; cần log và healthcheck để biết nguyên nhân crash hoặc chưa ready.' },
+  symptom: 'Website trả 503 ngay sau deploy.', redHerring: 'Domain không có A record.',
+  finding: 'HTTP 503 cùng unit auto-restart gợi vấn đề app/release; cần log và readiness.',
+  overclaim: 'Đã chứng minh Nginx config syntax sai.', safeNext: 'Đọc app journal, deploy diff và readiness; rollback release nếu runbook/owner cho phép.',
+  unsafe: 'Reload proxy liên tục và bỏ qua app auto-restart.', verify: 'App ổn định và URL trả nội dung đúng dưới request thực.',
+  wrongChecks: ['dig example.com NS', 'df -i /'],
+  extras: [{ command: 'journalctl -u app -n 30 --no-pager', output: 'app.service: Main process exited, code=exited, status=1/FAILURE\napp: missing required APP_CONFIG', purpose: 'Đọc lỗi app sau deploy.', meaning: 'Config APP_CONFIG thiếu trong runtime; cần đối chiếu release/secret qua quy trình, không in giá trị secret.', commandId: 'journalctl-service', aliases: [] }],
+})
+addBatchCase({
+  id: 'VPS-07-007', skill: 'tls-sni-vhost', objective: 'Đọc chứng chỉ theo SNI và vhost, tách DNS/cert coverage trước thay đổi TLS.',
+  p1: { doc: 'openssl-sni', purpose: 'chứng chỉ trả về cho shop.example.com theo SNI', meaning: 'Endpoint 198.51.100.20:443 trả cert CN api.example.com; cần xem SAN và vhost.' , context: 'client' },
+  p2: { doc: 'nginx-dump', purpose: 'server_name trong Nginx config', meaning: 'Fixture không thấy server_name shop.example.com; cần kiểm tra đầy đủ vhost và config được nạp.' },
+  symptom: 'Chỉ một domain trên VPS báo cảnh báo certificate.', redHerring: 'Toàn VPS không phản hồi TCP/443.',
+  finding: 'SNI shop nhận cert api và config không thấy vhost shop; DNS, SAN và mapping cần đối chiếu.',
+  overclaim: 'Chỉ cần tắt kiểm tra TLS ở browser của khách.', safeNext: 'Xác minh DNS A/AAAA, vhost và SAN; deploy cert bao phủ domain và mapping đúng sau phê duyệt.',
+  unsafe: 'Bật bỏ qua TLS verification cho toàn bộ khách truy cập.', verify: 'Kết nối SNI tới domain trả chain hợp lệ bao phủ shop.example.com và trang đúng.',
+  wrongChecks: ['df -h /', 'free -h'],
+  extras: [
+    { command: 'dig +short shop.example.com A', output: '198.51.100.20', purpose: 'Đối chiếu domain tới đúng IP đang kiểm tra TLS.', meaning: 'A record trỏ IP đang thử; AAAA/IPv6 và cache cũng cần cân nhắc.', commandId: 'dig-a', aliases: [], context: 'client' },
+    { command: 'PANEL: certificate inventory', output: 'Installed certificate names: api.example.com only', purpose: 'Đọc certificate inventory ở panel.', meaning: 'Panel chỉ ghi cert api; cần xác minh cert thực được Nginx nạp và SAN.', commandId: 'panel-cert-inventory', aliases: [], context: 'panel' },
+  ],
+})
+addBatchCase({
+  id: 'VPS-08-001', skill: 'dns-a-cutover', objective: 'So sánh A record đang trả với IP VPS được cấp và quyền chỉnh zone.',
+  p1: { doc: 'dig-a', purpose: 'A record shop.example.test từ resolver hiện tại', meaning: 'Resolver trả 203.0.113.10; một điểm truy vấn chưa chứng minh authoritative zone hiện tại.' , context: 'client' },
+  p2: { doc: 'panel-ip-allocation', purpose: 'IP mới được panel cấp', meaning: 'Panel ghi VPS mới dùng 198.51.100.20; cần xác nhận đây là target cutover.', context: 'panel' },
+  symptom: 'Domain vẫn mở server cũ sau migration.', redHerring: 'VPS mới không có địa chỉ IPv4.',
+  finding: 'A record nhìn thấy khác IP VPS mới; cần kiểm tra authoritative zone và kế hoạch cutover.',
+  overclaim: 'Mọi resolver trên Internet chắc chắn đều có cùng A record cũ.', safeNext: 'Xác nhận owner, authoritative NS và cutover; cập nhật A record ở zone có thẩm quyền khi được duyệt.',
+  unsafe: 'Xóa zone cũ ngay khi chưa xác nhận delegation/cache.', verify: 'Authoritative answer đúng IP mới và website của khách hoạt động qua domain.',
+  wrongChecks: ['df -h /', 'systemctl status sshd'],
+})
+addBatchCase({
+  id: 'VPS-08-004', skill: 'guest-resolver', objective: 'Tách HTTP theo IP thành công khỏi DNS guest timeout, kiểm tra resolver và profile.',
+  p1: { doc: 'curl-head', purpose: 'HTTP tới IP trực tiếp', meaning: 'HTTP theo IP trả 200; không chứng minh DNS name resolution hoạt động.' },
+  p2: { doc: 'dig-a', purpose: 'DNS A query qua resolver mặc định', meaning: 'dig timeout và không tới DNS server; cần xác định resolver cấu hình.' },
+  symptom: 'VPS tới IP công cộng được nhưng không resolve domain.', redHerring: 'Mọi kết nối HTTP tới IP đều thất bại.',
+  finding: 'IP HTTP thành công còn DNS query timeout; nghi resolver hoặc đường tới resolver, chưa biết bản ghi domain sai.',
+  overclaim: 'example.com chắc chắn không có bản ghi A.', safeNext: 'Đọc resolv.conf, NetworkManager DNS và thử resolver được cấu hình; sửa theo policy.',
+  unsafe: 'Ghi đè DNS guest bằng địa chỉ ngẫu nhiên mà không kiểm tra profile.', verify: 'dig và ứng dụng phân giải tên thành công bằng resolver hợp lệ.',
+  wrongChecks: ['df -h /', 'systemctl status nginx'],
+})
+addBatchCase({
+  id: 'VPS-08-005', skill: 'dns-cache-authority', objective: 'So sánh authoritative với recursive answer và TTL trước khi nói propagation hoàn tất.',
+  p1: { doc: 'dig-a', purpose: 'A record từ authoritative.example', meaning: 'Authoritative được hỏi trả 198.51.100.20; cần biết các NS có đồng nhất không.', context: 'client' },
+  p2: { doc: 'dig-a', purpose: 'A record từ recursive 1.1.1.1', meaning: '1.1.1.1 còn trả IP cũ với TTL 120; cache có thể chưa hết.', context: 'client' },
+  symptom: 'Một số người dùng còn tới server cũ sau đổi DNS.', redHerring: 'VPS mới đã tắt Nginx.',
+  finding: 'Một authoritative trả IP mới trong khi resolver 1.1.1.1 còn IP cũ; cần so nhiều NS/resolver.',
+  overclaim: 'Mọi authoritative nameserver đều chắc chắn trả IP mới.', safeNext: 'Kiểm tra các authoritative NS và TTL thực từ nhiều resolver; chờ cache hợp lệ hoặc xử lý bất nhất.',
+  unsafe: 'Xóa server cũ ngay khi recursive vẫn trả IP cũ.', verify: 'Các authoritative thống nhất và resolver từng lỗi hội tụ về IP mới sau TTL.',
+  wrongChecks: ['df -h /', 'free -h'],
+  extras: [{ command: 'dig @9.9.9.9 shop.example.com A', output: '198.51.100.20 TTL 80', purpose: 'So sánh recursive khác ở cùng thời điểm.', meaning: 'Resolver này đã thấy IP mới; cache giữa resolver khác nhau là có thể.', commandId: 'dig-a', aliases: [], context: 'client' }],
+})
+addBatchCase({
+  id: 'VPS-08-007', skill: 'dns-ptr-mail', objective: 'Phân biệt reverse DNS PTR với forward A và quyền đổi rDNS của IP provider.',
+  p1: { doc: 'dig-ptr', purpose: 'PTR reverse lookup của IP gửi mail', meaning: 'Reverse lookup trả NXDOMAIN; chưa biết forward A hay chính sách mail khác.', context: 'client' },
+  p2: { doc: 'panel-rdns', purpose: 'cấu hình reverse DNS ở panel provider', meaning: 'Panel ghi reverse DNS chưa được đặt; thay đổi thuộc IP owner/provider.', context: 'panel' },
+  symptom: 'Mail provider từ chối SMTP outbound vì thiếu reverse DNS.', redHerring: 'Website domain trả HTTP 403.',
+  finding: 'PTR lookup NXDOMAIN và panel chưa đặt rDNS; cần xác nhận IP gửi thực, forward A và quyền provider.',
+  overclaim: 'Chỉ thêm A record sẽ tự tạo PTR cho IP.', safeNext: 'Đối chiếu IP gửi và hostname forward; yêu cầu provider/IP owner đặt PTR theo policy.',
+  unsafe: 'Sửa A record ngẫu nhiên và báo mail đã hoạt động.', verify: 'PTR của IP gửi trỏ hostname đúng, forward A khớp và mail provider chấp nhận thử gửi.',
+  wrongChecks: ['df -h /', 'systemctl status nginx'],
+  extras: [
+    { command: 'dig mail.example.com A', output: 'mail.example.com. 300 IN A 198.51.100.20', purpose: 'Đối chiếu forward A của mail hostname.', meaning: 'Forward A khớp IP gửi trong fixture; PTR vẫn cần provider cấu hình.', commandId: 'dig-a', aliases: [], context: 'client' },
+    { command: 'PANEL: outbound mail IP', output: 'Outbound SMTP source IP: 198.51.100.20', purpose: 'Xác nhận IP thực dùng gửi mail.', meaning: 'Đã có IP nguồn để yêu cầu rDNS; cần xác minh trên thử gửi sau thay đổi.', commandId: 'panel-rdns', aliases: [], context: 'panel' },
+  ],
+})
+guidedContent.push(...guidedBatch2)
 
 // Independent review uses a different customer situation and fresh evidence.
 // These fixtures are never passed to the terminal; they are authored assessment data.

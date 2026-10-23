@@ -2,6 +2,10 @@
 
 ## Current state and pickup guide — 2026-10-23
 
+### Phase 1–2 pickup update
+
+Milestone 5B and the first Guided expansion batch are now implemented. The app has 42/112 Guided cases, 96 command/task cards, six Stateful + Objective Exam cases, and six independent review variants with delayed Mastered. The 30 new Guided cases span SSH, Network, Linux Services, Performance, Disk, Web and DNS; L2/L3 require extra authored probes before interpretation. Desktop/mobile Chromium, keyboard, import/export, refresh and migration smoke tests are in `tests/browser.spec.ts`. See `Milestone_5B_QA.md` and `Phase_2_Guided_QA.md`. The older 12-case figures below are the Milestone 5A pickup snapshot, retained as history; `README.md` and `ROADMAP.md` carry current counts. A Git repository was initialized with baseline and per-phase commits.
+
 ### Milestone 5A pickup update
 
 Six of the 12 Guided cases now have a separate Stateful Simulator and Objective Exam: `VPS-01-001`, `VPS-02-001`, `VPS-03-001`, `VPS-05-001`, `VPS-05-004`, `VPS-08-003`. Authored state transitions and post-action fixtures live in `scripts/guided-content.mjs`. The pure transition/verification engine is `src/guided/stateful.ts`; its UI is `src/guided/StatefulWorkspace.tsx`. Objective Exam uses six authored choice questions per case and separate feedback files; the free-text Legacy Exam remains self-assessed on all 112. v5 progress migrates v1–v4. Repeating an identical retest no longer grants Mastered; scenario variants need authoring. The original source ticket fixtures are unchanged. See `README.md` and `ROADMAP.md` for scope and remaining work.
