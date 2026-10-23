@@ -23,6 +23,8 @@ Stateful + Objective Exam + bài ôn biến thể: **6/112** (`VPS-01-001`, `VPS
 
 ## Việc tiếp theo để làm mới đủ 112 ticket
 
+Các batch còn lại đã được chia theo ID/topic và mức đếm trong [kế hoạch phủ 112](Guided_112_Batch_Plan.md): 14 + 16 + 16 + 16 + 8 case, lần lượt đạt 56, 72, 88, 104 và 112 Guided. Mỗi batch có checklist nội dung, schema/fixture, chấm điểm, command/state, browser, test/build và báo cáo QA. [Phase 3 QA](Phase_3_QA.md) ghi kiểm kê hiện tại.
+
 1. Biên soạn Guided cho 70 ticket còn lại theo lô chủ đề và mức độ. Mỗi case phải rà bằng chứng, câu hỏi, feedback, command và giới hạn kết luận; không chấp nhận câu hỏi sinh trực tiếp từ trường `expected_diagnosis`.
 2. Làm giàu output ngắn bằng fixture được biên soạn và kiểm định riêng, giữ nguyên 224 source probe của bộ gốc. Thêm nhánh điều tra và phân biệt mức độ khó thật sự, nhất là L2/L3.
 3. Mở Objective Exam sang case có đủ đáp án, bằng chứng và câu hỏi xác minh; giữ Legacy Exam tự đánh giá cho phần còn lại. Không chấm prose bằng keyword.

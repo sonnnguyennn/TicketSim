@@ -43,6 +43,8 @@ Tiến độ lưu ở `localStorage` phiên bản 5 và có thể xuất/nhập 
 
 Guided đã phủ 42/112 ticket; Stateful/Objective Exam và bài biến thể phủ 6/112. Một số output gốc rất ngắn và vẫn được giữ nguyên. State transitions là tình huống cố định, không dự đoán trạng thái Linux thật, không mô phỏng đầy đủ network propagation, ứng dụng phía sau hay integrity storage. Còn 70 Guided case cần biên soạn và kiểm định kỹ thuật. Xem [QA batch 30](Phase_2_Guided_QA.md), [kiểm tra 12 case đầu](Milestone_2_Content_Audit.md) và [roadmap](ROADMAP.md).
 
+Các batch 3–7 cho 70 case còn lại được liệt kê theo ID và checklist nghiệm thu trong [kế hoạch Guided 112](Guided_112_Batch_Plan.md); đây là kế hoạch nội dung, chưa phải 70 bài đã triển khai.
+
 ## Milestone 5B update
 
 Sáu Stateful case có tình huống ôn độc lập được biên soạn riêng. `Mastered` chỉ được cấp khi đúng toàn bộ câu hỏi của tình huống mới sau ít nhất 24 giờ từ lượt Guided gần nhất. Case chưa có biến thể vẫn ở `Completed`. Đáp án ôn tách khỏi prompt; ghi chú tự do vẫn do người học tự đối chiếu.
