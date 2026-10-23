@@ -14,16 +14,18 @@ Guided increased from **12 to 42 of 112**; **70 remain**. The 30 new cases are:
 | Web Server & HTTP | VPS-07-002 (L0), 004 (L1), 006 (L2), 007 (L3) | 403 index/access; 502 upstream while Nginx active; 503 after deploy plus app auto-restart; SNI/vhost/cert mapping with DNS and inventory checks. |
 | DNS & Domain | VPS-08-001 (L0), 004 (L1), 005 (L2), 007 (L3) | A record vs assigned IP; guest resolver timeout vs IP HTTP; authoritative vs recursive cache/TTL; PTR vs forward A and provider IP ownership. |
 
-Each case has a customer symptom, two unchanged original P1/P2 outputs, case-specific explanations, five scored choices (recognition, command, output, evidence select, decision), and a self-reviewed short ticket note. L2/L3 cases add one or two authored probe outputs that are required before interpretation plus an ordered investigation/decision/verification question. The new 20 Command Library cards explain distinct techniques and panel tasks, taking the library from 76 to **96** cards. No batch case was made Stateful or Objective Exam solely to raise the count.
+Each case has a customer symptom, two source P1/P2 commands, case-specific explanations, five scored choices (recognition, command, output, evidence select, decision), and a self-reviewed short ticket note. L2/L3 cases add one or two authored probe outputs that are required before interpretation plus an ordered investigation/decision/verification question. The new 20 Command Library cards explain distinct techniques and panel tasks, taking the library from 76 to **96** cards. No batch case was made Stateful or Objective Exam solely to raise the count.
 
-The source ticket fixture for VPS-08-006 mixes a panel allocation note into a `dig` output; VPS-07-003 embeds an “intended deploy” annotation inside `nginx -T` output. Both were excluded from this batch pending fixture correction so a learner is not taught that those tools produce panel/business context. P1/P2 for all 112 tickets remain unchanged. New output is explicitly authored in `scripts/guided-content.mjs` and generated through `npm run prepare-data`.
+The source ticket fixture for VPS-08-006 mixes a panel allocation note into a `dig` output; VPS-07-003 embeds an “intended deploy” annotation inside `nginx -T` output. Both were excluded from this batch pending fixture correction. The source P2 for VPS-07-007 similarly says “server_name shop.example.com missing”, which `nginx -T` would not print. Guided now uses an authored, realistic `nginx -T` config dump for that one P2; the original P2 remains unchanged for Practice and legacy history. The Command Library explains that `nginx -T` tests and dumps config files on disk, which does not by itself prove the running master has reloaded them. New Guided output is explicitly authored in `scripts/guided-content.mjs` and generated through `npm run prepare-data`.
+
+Selected semantics were cross-checked against [OpenSSH sshd -T](https://man.openbsd.org/sshd), [systemd journal disk usage/vacuum](https://www.freedesktop.org/software/systemd/man/258/journalctl.html), [lsof +L1](https://github.com/lsof-org/lsof/blob/master/docs/faq.md), [kernel cgroup v2 cpu.stat](https://docs.kernel.org/admin-guide/cgroup-v2.html) and [Nginx -T](https://nginx.org/en/docs/switches.html). This supports the command explanations; fictional ticket outputs remain authored simulation data.
 
 ## Acceptance checks
 
 | Gate | Result |
 |---|---|
 | Schema and duplicate command/alias validation | Passed in `npm run prepare-data`: 112 original, 42 Guided |
-| Every Guided P1/P2 equals original fixture; every command links a library card | Passed in `src/guided/engine.test.ts` |
+| Original 112 P1/P2 unchanged; Guided P1/P2 match source except one reviewed VPS-07-007 P2 override; every command links a library card | Passed in `src/lib.test.ts` and `src/guided/engine.test.ts` |
 | All public questions have separated keys and answer-specific feedback; correct and incorrect grading checked | Passed in `src/guided/engine.test.ts` |
 | Exact fixture/alias/state matching and no fabricated unmatched output | Passed in existing command/state tests |
 | L2/L3 required extra probes and ordered answer is not preselected correctly | Passed in `src/guided/engine.test.ts` |

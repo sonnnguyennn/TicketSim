@@ -13,9 +13,10 @@ const ids = new Set()
 const publicCases = guidedContent.map(content => {
   const ticket = source.find(item => item.id === content.id)
   if (!ticket || ids.has(content.id)) throw new Error(`Unknown or duplicate guided ticket: ${content.id}`)
+  if (content.probeOverrides && Object.keys(content.probeOverrides).some(id => !ticket.probe_outputs.some(probe => probe.probe_id === id))) throw new Error(`Unknown Guided probe override for ${content.id}`)
   ids.add(content.id)
   const probes = ticket.probe_outputs.map((probe, index) => ({
-    id: probe.probe_id, command: probe.command, output: probe.stdout, context: 'guest', ...content.probeNotes[index],
+    id: probe.probe_id, command: probe.command, output: content.probeOverrides?.[probe.probe_id] ?? probe.stdout, context: 'guest', ...content.probeNotes[index],
   }))
   content.extras.forEach((probe, index) => probes.push({ id: `G${index + 1}`, context: 'guest', ...probe }))
   const variants = new Set()

@@ -36,6 +36,8 @@ Sáu case **Stateful + Objective Exam**: `VPS-01-001` (SSH service stopped), `VP
 
 `scripts/guided-content.mjs` là nguồn nội dung Guided. Sau khi sửa, chạy `npm run prepare-data`; không sửa trực tiếp JSON sinh ra trong `src/data/` và `public/`. Script xác thực schema, giữ nguyên 112 ticket và tách câu hỏi công khai khỏi feedback, gợi ý và đáp án. Tách file là rào chắn học tập của UI local, không phải bảo mật trước người có quyền đọc build.
 
+VPS-07-007 có một output `nginx -T` gốc mang câu chú thích “missing” không phải stdout thật. Guided dùng fixture thay thế đã biên soạn trong cùng file nguồn; Practice và 112 ticket gốc không đổi. Xem [QA batch 30](Phase_2_Guided_QA.md).
+
 Terminal **chỉ trả đúng output JSON đã biên soạn cho command/alias và trạng thái của ticket**. Command chưa có fixture không tạo output và không tính sai; thao tác thay đổi hệ thống chỉ đi qua action mô phỏng có điều kiện. Không có shell, SSH, VirtualBox hay kết nối VPS thật. Các thẻ command và ví dụ output chỉ là tài liệu tham khảo. Đối với một sự cố thực, service active/route xuất hiện/incident được mở chưa đủ để kết luận yêu cầu khách hàng đã được giải quyết.
 
 Tiến độ lưu ở `localStorage` phiên bản 5 và có thể xuất/nhập JSON. App chuyển dữ liệu hợp lệ từ v1–v4 sang v5, giữ key cũ làm bản dự phòng; lịch sử cũ không bị xóa. Stateful, Objective Exam, Legacy Exam, Guided và Practice có bản nháp/lượt làm riêng. Dữ liệu trình duyệt phụ thuộc origin, nên `localhost` và `127.0.0.1` có tiến độ riêng.

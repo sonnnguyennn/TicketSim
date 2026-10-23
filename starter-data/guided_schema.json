@@ -9,6 +9,7 @@
       "id": { "type": "string", "pattern": "^VPS-[0-9]{2}-[0-9]{3}$" },
       "objective": { "type": "string", "minLength": 10 },
       "customerFollowup": { "type": "string", "minLength": 10 },
+      "probeOverrides": { "type": "object", "propertyNames": { "enum": ["P1", "P2"] }, "additionalProperties": { "type": "string", "minLength": 10 } },
       "branches": { "type": "array", "items": { "type": "object", "required": ["id", "requiredProbeIds", "probeIds", "questionIds"], "properties": { "id": { "type": "string" }, "requiredProbeIds": { "type": "array", "items": { "type": "string" } }, "probeIds": { "type": "array", "items": { "type": "string" } }, "questionIds": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
       "hints": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "type": "string", "minLength": 10 } },
       "probeNotes": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/probeNote" } },

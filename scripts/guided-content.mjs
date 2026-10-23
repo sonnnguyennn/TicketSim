@@ -300,6 +300,7 @@ function addBatchCase(meta) {
   const advanced = ticket.difficulty >= 2
   guidedBatch2.push({
     id: meta.id, objective: meta.objective,
+    ...(meta.probeOverrides ? { probeOverrides: meta.probeOverrides } : {}),
     hints: [
       `Hãy mô tả triệu chứng khách báo trước khi suy luận: ${meta.symptom}`,
       `Đọc P1 (${p1.command}) và P2 (${p2.command}); ghi điều mỗi output thật sự chứng minh.`,
@@ -620,8 +621,9 @@ addBatchCase({
 })
 addBatchCase({
   id: 'VPS-07-007', skill: 'tls-sni-vhost', objective: 'Đọc chứng chỉ theo SNI và vhost, tách DNS/cert coverage trước thay đổi TLS.',
+  probeOverrides: { P2: '# configuration file /etc/nginx/nginx.conf:\nevents {}\nhttp { include /etc/nginx/conf.d/*.conf; }\n# configuration file /etc/nginx/conf.d/api.conf:\nserver { listen 443 ssl default_server; server_name api.example.com; ssl_certificate /etc/pki/tls/certs/api.crt; ssl_certificate_key /etc/pki/tls/private/api.key; }' },
   p1: { doc: 'openssl-sni', purpose: 'chứng chỉ trả về cho shop.example.com theo SNI', meaning: 'Endpoint 198.51.100.20:443 trả cert CN api.example.com; cần xem SAN và vhost.' , context: 'client' },
-  p2: { doc: 'nginx-dump', purpose: 'server_name trong Nginx config', meaning: 'Fixture không thấy server_name shop.example.com; cần kiểm tra đầy đủ vhost và config được nạp.' },
+  p2: { doc: 'nginx-dump', purpose: 'server_name trong Nginx config trên đĩa', meaning: 'Guided fixture chỉ có vhost mặc định api.example.com; phải đối chiếu cấu hình chạy thực và cert theo SNI.' },
   symptom: 'Chỉ một domain trên VPS báo cảnh báo certificate.', redHerring: 'Toàn VPS không phản hồi TCP/443.',
   finding: 'SNI shop nhận cert api và config không thấy vhost shop; DNS, SAN và mapping cần đối chiếu.',
   overclaim: 'Chỉ cần tắt kiểm tra TLS ở browser của khách.', safeNext: 'Xác minh DNS A/AAAA, vhost và SAN; deploy cert bao phủ domain và mapping đúng sau phê duyệt.',
@@ -661,7 +663,7 @@ addBatchCase({
   overclaim: 'Mọi authoritative nameserver đều chắc chắn trả IP mới.', safeNext: 'Kiểm tra các authoritative NS và TTL thực từ nhiều resolver; chờ cache hợp lệ hoặc xử lý bất nhất.',
   unsafe: 'Xóa server cũ ngay khi recursive vẫn trả IP cũ.', verify: 'Các authoritative thống nhất và resolver từng lỗi hội tụ về IP mới sau TTL.',
   wrongChecks: ['df -h /', 'free -h'],
-  extras: [{ command: 'dig @9.9.9.9 shop.example.com A', output: '198.51.100.20 TTL 80', purpose: 'So sánh recursive khác ở cùng thời điểm.', meaning: 'Resolver này đã thấy IP mới; cache giữa resolver khác nhau là có thể.', commandId: 'dig-a', aliases: [], context: 'client' }],
+  extras: [{ command: 'dig @9.9.9.9 shop.example.com A', output: 'shop.example.com. 80 IN A 198.51.100.20', purpose: 'So sánh recursive khác ở cùng thời điểm.', meaning: 'Resolver này đã thấy IP mới; cache giữa resolver khác nhau là có thể.', commandId: 'dig-a', aliases: [], context: 'client' }],
 })
 addBatchCase({
   id: 'VPS-08-007', skill: 'dns-ptr-mail', objective: 'Phân biệt reverse DNS PTR với forward A và quyền đổi rDNS của IP provider.',

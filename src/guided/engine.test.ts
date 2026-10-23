@@ -18,7 +18,11 @@ describe('Guided content', () => {
       expect(item.probes.length).toBeGreaterThanOrEqual(2)
       const original = (JSON.parse(fs.readFileSync('starter-data/tickets.json', 'utf8')).tickets as { id: string; probe_outputs: { stdout: string }[] }[]).find(ticket => ticket.id === item.id)!
       expect(item.probes[0].output).toBe(original.probe_outputs[0].stdout)
-      expect(item.probes[1].output).toBe(original.probe_outputs[1].stdout)
+      if (item.id === 'VPS-07-007') {
+        expect(original.probe_outputs[1].stdout).toBe('server_name shop.example.com missing')
+        expect(item.probes[1].output).toContain('# configuration file /etc/nginx/conf.d/api.conf:')
+        expect(item.probes[1].output).not.toContain('missing')
+      } else expect(item.probes[1].output).toBe(original.probe_outputs[1].stdout)
       expect(item.questions.filter(question => question.kind !== 'short_answer').length).toBeGreaterThanOrEqual(5)
       expect(item.questions.some(question => question.kind === 'short_answer')).toBe(true)
       expect(item.questions.every(question => !('correctIds' in question) && !('optionFeedback' in question))).toBe(true)

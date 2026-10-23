@@ -7591,10 +7591,10 @@
       {
         "id": "P2",
         "command": "nginx -T",
-        "output": "server_name shop.example.com missing",
+        "output": "# configuration file /etc/nginx/nginx.conf:\nevents {}\nhttp { include /etc/nginx/conf.d/*.conf; }\n# configuration file /etc/nginx/conf.d/api.conf:\nserver { listen 443 ssl default_server; server_name api.example.com; ssl_certificate /etc/pki/tls/certs/api.crt; ssl_certificate_key /etc/pki/tls/private/api.key; }",
         "context": "guest",
-        "purpose": "server_name trong Nginx config",
-        "meaning": "Fixture không thấy server_name shop.example.com; cần kiểm tra đầy đủ vhost và config được nạp.",
+        "purpose": "server_name trong Nginx config trên đĩa",
+        "meaning": "Guided fixture chỉ có vhost mặc định api.example.com; phải đối chiếu cấu hình chạy thực và cert theo SNI.",
         "commandId": "nginx-dump",
         "aliases": []
       },
@@ -7703,7 +7703,7 @@
           },
           {
             "id": "p2",
-            "label": "Fixture không thấy server_name shop.example.com; cần kiểm tra đầy đủ vhost và config được nạp."
+            "label": "Guided fixture chỉ có vhost mặc định api.example.com; phải đối chiếu cấu hình chạy thực và cert theo SNI."
           },
           {
             "id": "over",
@@ -8104,7 +8104,7 @@
         "id": "G1",
         "context": "client",
         "command": "dig @9.9.9.9 shop.example.com A",
-        "output": "198.51.100.20 TTL 80",
+        "output": "shop.example.com. 80 IN A 198.51.100.20",
         "purpose": "So sánh recursive khác ở cùng thời điểm.",
         "meaning": "Resolver này đã thấy IP mới; cache giữa resolver khác nhau là có thể.",
         "commandId": "dig-a",
