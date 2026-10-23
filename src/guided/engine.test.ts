@@ -30,6 +30,12 @@ describe('Guided content', () => {
         expect(question.options.every(option => typeof key.optionFeedback[option.id] === 'string' && key.optionFeedback[option.id].length > 5)).toBe(true)
         expect(key.correctIds.every((id: string) => question.options.some(option => option.id === id))).toBe(true)
       }
+      for (const variant of item.reviewVariants ?? []) for (const question of variant.questions) {
+        expect('correctIds' in question).toBe(false)
+        const key = JSON.parse(fs.readFileSync(`public/review-feedback/${item.id}/${variant.id}/${question.id}.json`, 'utf8'))
+        expect(question.options.every(option => typeof key.optionFeedback[option.id] === 'string')).toBe(true)
+        expect(key.correctIds.every((id: string) => question.options.some(option => option.id === id))).toBe(true)
+      }
     }
     expect(commandLibrary.length).toBe(76)
     expect(new Set(commandLibrary.map(item => item.id)).size).toBe(commandLibrary.length)
@@ -108,5 +114,15 @@ describe('Guided content', () => {
     const ids = objectiveQuestions(guidedCase).map(question => question.id)
     progress.reviewAttempts.push({ id: 'review-2', ticketId: guidedCase.id, sourceAttemptId: source.id, createdAt: '2026-10-21T01:00:00Z', kind: 'retest', questionIds: ids, responses: {}, outcomes: Object.fromEntries(ids.map(id => [id, true])) })
     expect(isMastered(progress, guidedCase)).toBe(false)
+    const variant = guidedCase.reviewVariants?.[0]
+    expect(variant).toBeDefined()
+    const variantIds = variant!.questions.map(question => question.id)
+    expect(variant!.questions.every(question => !guidedCase.questions.some(original => original.prompt === question.prompt))).toBe(true)
+    progress.reviewAttempts.push({ id: 'review-too-early', ticketId: guidedCase.id, sourceAttemptId: source.id, createdAt: '2026-10-20T23:59:59Z', kind: 'retest', variantId: variant!.id, questionIds: variantIds, responses: {}, outcomes: Object.fromEntries(variantIds.map(id => [id, true])) })
+    expect(isMastered(progress, guidedCase)).toBe(false)
+    progress.reviewAttempts.push({ id: 'review-incomplete', ticketId: guidedCase.id, sourceAttemptId: source.id, createdAt: '2026-10-21T01:00:00Z', kind: 'retest', variantId: variant!.id, questionIds: variantIds, responses: {}, outcomes: Object.fromEntries(variantIds.map((id, index) => [id, index > 0])) })
+    expect(isMastered(progress, guidedCase)).toBe(false)
+    progress.reviewAttempts.push({ id: 'review-independent', ticketId: guidedCase.id, sourceAttemptId: source.id, createdAt: '2026-10-21T01:00:00Z', kind: 'retest', variantId: variant!.id, questionIds: variantIds, responses: {}, outcomes: Object.fromEntries(variantIds.map(id => [id, true])) })
+    expect(isMastered(progress, guidedCase)).toBe(true)
   })
 })

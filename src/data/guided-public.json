@@ -318,7 +318,88 @@
           "label": "Reboot để chắc chắn"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "ssh-alt-1",
+        "scenario": "Một VPS CentOS Stream 9 vừa cập nhật cấu hình. Console hoạt động, nhưng SSH từ laptop tới 203.0.113.31 bị Connection refused.",
+        "evidence": [
+          {
+            "label": "Guest console · systemctl status sshd",
+            "output": "Active: inactive (dead)"
+          },
+          {
+            "label": "Guest console · ss -ltnp",
+            "output": "LISTEN 0 128 0.0.0.0:80 users:((\"nginx\",pid=801,fd=6))"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-symptom",
+            "stage": "triage",
+            "kind": "single_choice",
+            "prompt": "Connection refused trong tình huống mới xảy ra trước bước nào?",
+            "options": [
+              {
+                "id": "auth",
+                "label": "Trước xác thực tài khoản"
+              },
+              {
+                "id": "key",
+                "label": "Sau khi khóa SSH được xác nhận"
+              },
+              {
+                "id": "shell",
+                "label": "Sau khi shell đăng nhập mở"
+              }
+            ],
+            "skill": "triage"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Hai output hiện chứng minh những điều nào?",
+            "options": [
+              {
+                "id": "off",
+                "label": "sshd hiện không chạy"
+              },
+              {
+                "id": "no22",
+                "label": "Không thấy listener TCP/22 trong output đã cho"
+              },
+              {
+                "id": "why",
+                "label": "Đã xác định nguyên nhân daemon dừng"
+              }
+            ],
+            "skill": "interpret"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Sau khi xác nhận quyền thao tác, bước nào an toàn nhất?",
+            "options": [
+              {
+                "id": "logs",
+                "label": "Đọc journal/config trước; nếu phù hợp start sshd và kiểm tra lại từ client"
+              },
+              {
+                "id": "reboot",
+                "label": "Reboot VPS ngay"
+              },
+              {
+                "id": "close",
+                "label": "Báo resolved khi thấy nginx chạy"
+              }
+            ],
+            "skill": "decide"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-01-002",
@@ -820,7 +901,88 @@
           "label": "Xóa route và đoán gateway khác"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "route-alt-1",
+        "scenario": "Một VPS Ubuntu dùng console được nhưng không kết nối tới IP ngoài subnet sau khi thay đổi mạng. Bạn có console dự phòng.",
+        "evidence": [
+          {
+            "label": "Guest · ip route",
+            "output": "172.16.4.0/24 dev ens3 proto kernel scope link src 172.16.4.21"
+          },
+          {
+            "label": "Panel · cấu hình cấp phát",
+            "output": "Assigned gateway: 172.16.4.1; interface: ens3"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-symptom",
+            "stage": "triage",
+            "kind": "single_choice",
+            "prompt": "Phạm vi ảnh hưởng phù hợp nhất với dữ liệu hiện có?",
+            "options": [
+              {
+                "id": "outside",
+                "label": "Kết nối ngoài subnet cần được điều tra"
+              },
+              {
+                "id": "all",
+                "label": "Mọi giao tiếp mạng của VPS đều hỏng"
+              },
+              {
+                "id": "dns",
+                "label": "Chỉ DNS bị lỗi"
+              }
+            ],
+            "skill": "triage"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Chọn hai nhận định được dữ liệu hỗ trợ.",
+            "options": [
+              {
+                "id": "missing",
+                "label": "Không có default route trong snapshot"
+              },
+              {
+                "id": "assigned",
+                "label": "Panel cấp gateway 172.16.4.1 cho ens3"
+              },
+              {
+                "id": "upstream",
+                "label": "Upstream chắc chắn cho phép traffic"
+              }
+            ],
+            "skill": "interpret"
+          },
+          {
+            "id": "r-next",
+            "stage": "verify",
+            "kind": "single_choice",
+            "prompt": "Nếu route được khôi phục có kiểm soát, kiểm tra nào đủ thận trọng?",
+            "options": [
+              {
+                "id": "both",
+                "label": "ip route get tới IP ngoài và thử kết nối thực từ guest/client"
+              },
+              {
+                "id": "table",
+                "label": "Chỉ thấy default trong ip route là đóng ticket"
+              },
+              {
+                "id": "guess",
+                "label": "Đổi sang gateway .254 để chắc chắn"
+              }
+            ],
+            "skill": "verify"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-03-001",
@@ -1110,7 +1272,88 @@
           "label": "Chỉ đổi DNS"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "nginx-alt-1",
+        "scenario": "Một trang trên VPS Ubuntu báo 502. Khách nghi Nginx bị dừng sau deploy; bạn kiểm tra từ guest trước khi đề xuất restart.",
+        "evidence": [
+          {
+            "label": "Guest · systemctl status nginx",
+            "output": "Active: active (running)"
+          },
+          {
+            "label": "Guest · curl -I http://127.0.0.1",
+            "output": "HTTP/1.1 502 Bad Gateway\nServer: nginx"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-symptom",
+            "stage": "triage",
+            "kind": "single_choice",
+            "prompt": "HTTP 502 ở đây biểu thị điều gì?",
+            "options": [
+              {
+                "id": "gateway",
+                "label": "Nginx trả lời nhưng phía upstream có vấn đề cần kiểm tra"
+              },
+              {
+                "id": "off",
+                "label": "Nginx chắc chắn đã dừng"
+              },
+              {
+                "id": "dns",
+                "label": "Tên miền chắc chắn sai DNS"
+              }
+            ],
+            "skill": "triage"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Điều nào được hai output xác nhận?",
+            "options": [
+              {
+                "id": "nginx",
+                "label": "Nginx đang active"
+              },
+              {
+                "id": "http",
+                "label": "HTTP local trả 502"
+              },
+              {
+                "id": "app",
+                "label": "Ứng dụng upstream đã hoạt động bình thường"
+              }
+            ],
+            "skill": "interpret"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bước điều tra tiếp phù hợp nhất?",
+            "options": [
+              {
+                "id": "upstream",
+                "label": "Kiểm tra error log và trạng thái/endpoint upstream theo cấu hình"
+              },
+              {
+                "id": "restart",
+                "label": "Restart Nginx liên tục cho tới khi hết 502"
+              },
+              {
+                "id": "close",
+                "label": "Đóng ticket vì service active"
+              }
+            ],
+            "skill": "decide"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-05-001",
@@ -1410,7 +1653,88 @@
           "label": "Xóa tiếp mọi log để dự phòng"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "disk-alt-1",
+        "scenario": "Một VPS ghi log ứng dụng thất bại với ENOSPC. Dung lượng inode chưa rõ; khách yêu cầu xóa toàn bộ log ngay.",
+        "evidence": [
+          {
+            "label": "Guest · df -h /",
+            "output": "/dev/vda1 40G 40G 0 100% /"
+          },
+          {
+            "label": "Guest · du -sh /var/log",
+            "output": "6.2G /var/log"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-symptom",
+            "stage": "triage",
+            "kind": "single_choice",
+            "prompt": "Dấu hiệu ban đầu phù hợp nhất?",
+            "options": [
+              {
+                "id": "blocks",
+                "label": "Root filesystem hết block khả dụng"
+              },
+              {
+                "id": "inode",
+                "label": "Chắc chắn chỉ hết inode"
+              },
+              {
+                "id": "ram",
+                "label": "RAM đã cạn"
+              }
+            ],
+            "skill": "triage"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Bằng chứng hiện tại hỗ trợ điều nào?",
+            "options": [
+              {
+                "id": "full",
+                "label": "/ đang 100% theo df"
+              },
+              {
+                "id": "logs",
+                "label": "/var/log chiếm 6.2G"
+              },
+              {
+                "id": "all",
+                "label": "Mọi file trong /var/log đều xóa an toàn"
+              }
+            ],
+            "skill": "interpret"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Hướng xử lý an toàn nhất cho yêu cầu của khách?",
+            "options": [
+              {
+                "id": "scope",
+                "label": "Xác nhận retention/backup, tìm file hoặc journal tăng và dọn phạm vi được duyệt rồi đo lại"
+              },
+              {
+                "id": "rm",
+                "label": "rm -rf /var/log"
+              },
+              {
+                "id": "ignore",
+                "label": "Bỏ qua vì /var/log chỉ 6.2G"
+              }
+            ],
+            "skill": "decide"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-05-002",
@@ -2551,7 +2875,88 @@
           "label": "Tự remount rw để khách tiếp tục ghi"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "storage-alt-1",
+        "scenario": "Khách không ghi được vào /srv/data của VPS. Mount chuyển sang read-only và kernel xuất hiện lỗi I/O lặp lại ở volume dữ liệu.",
+        "evidence": [
+          {
+            "label": "Guest · findmnt -no SOURCE,OPTIONS /srv/data",
+            "output": "/dev/vdc1 ro,relatime"
+          },
+          {
+            "label": "Guest · dmesg | tail",
+            "output": "blk_update_request: I/O error, dev vdc, sector 2048"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-symptom",
+            "stage": "triage",
+            "kind": "single_choice",
+            "prompt": "Tình trạng nào cần ưu tiên ở L1?",
+            "options": [
+              {
+                "id": "risk",
+                "label": "Rủi ro integrity dữ liệu trên volume cần giữ nguyên trạng và chuyển cấp"
+              },
+              {
+                "id": "quota",
+                "label": "Chắc chắn khách hết quota"
+              },
+              {
+                "id": "dns",
+                "label": "DNS domain lỗi"
+              }
+            ],
+            "skill": "triage"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Chọn quan sát thật sự có trong output.",
+            "options": [
+              {
+                "id": "ro",
+                "label": "Volume vdc1 đang ro"
+              },
+              {
+                "id": "io",
+                "label": "Kernel có lỗi I/O trên vdc"
+              },
+              {
+                "id": "hardware",
+                "label": "Đã xác định đĩa vật lý nào hỏng"
+              }
+            ],
+            "skill": "interpret"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Quyết định đúng phạm vi L1?",
+            "options": [
+              {
+                "id": "escalate",
+                "label": "Dừng thao tác ghi, kiểm tra backup và mở incident cho đội storage"
+              },
+              {
+                "id": "remount",
+                "label": "Remount rw rồi tiếp tục ghi"
+              },
+              {
+                "id": "fsck",
+                "label": "Chạy fsck trên volume đang dùng ngay"
+              }
+            ],
+            "skill": "decide"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-08-003",
@@ -2834,6 +3239,87 @@
           "label": "Xóa old-dns ngay"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "dns-alt-1",
+        "scenario": "Khách sửa A record tại DNS panel của nhà cung cấp mới nhưng website vẫn trỏ IP cũ sau khi chuyển nameserver.",
+        "evidence": [
+          {
+            "label": "Client · dig store.example.test NS",
+            "output": "store.example.test. 3600 IN NS ns-old.example.test."
+          },
+          {
+            "label": "Panel mới · zone",
+            "output": "store.example.test A 203.0.113.44; NS ns-new.example.test"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-symptom",
+            "stage": "triage",
+            "kind": "single_choice",
+            "prompt": "Điều gì cần xác định trước khi kết luận propagation?",
+            "options": [
+              {
+                "id": "authority",
+                "label": "Domain thực sự delegate tới nameserver nào"
+              },
+              {
+                "id": "ssh",
+                "label": "sshd có chạy không"
+              },
+              {
+                "id": "disk",
+                "label": "Disk còn bao nhiêu chỗ"
+              }
+            ],
+            "skill": "triage"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Hai output này hỗ trợ kết luận nào?",
+            "options": [
+              {
+                "id": "old",
+                "label": "Điểm truy vấn hiện thấy NS cũ"
+              },
+              {
+                "id": "new",
+                "label": "Panel mới chứa A record 203.0.113.44"
+              },
+              {
+                "id": "registrar",
+                "label": "Registrar chắc chắn đã đổi delegation"
+              }
+            ],
+            "skill": "interpret"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bước tiếp theo phù hợp nhất?",
+            "options": [
+              {
+                "id": "compare",
+                "label": "Kiểm tra delegation ở registrar và hỏi authoritative NS trực tiếp trước khi thay đổi"
+              },
+              {
+                "id": "delete",
+                "label": "Xóa zone cũ ngay"
+              },
+              {
+                "id": "wait",
+                "label": "Chỉ chờ mà không kiểm tra thêm"
+              }
+            ],
+            "skill": "decide"
+          }
+        ]
+      }
+    ]
   }
 ]

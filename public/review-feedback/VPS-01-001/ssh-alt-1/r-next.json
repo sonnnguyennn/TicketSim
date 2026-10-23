@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "logs"
+  ],
+  "explanation": "Sau start vẫn phải xác minh kết nối và xác thực từ client.",
+  "optionFeedback": {
+    "logs": "Đúng: điều tra rồi thay đổi có kiểm soát.",
+    "reboot": "Tác động rộng và chưa cần thiết.",
+    "close": "Nginx không chứng minh SSH hoạt động."
+  }
+}

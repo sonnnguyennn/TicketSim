@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "ro",
+    "io"
+  ],
+  "explanation": "Guest cho thấy lỗi, chưa định vị phần cứng vật lý.",
+  "optionFeedback": {
+    "ro": "Đúng theo findmnt.",
+    "io": "Đúng theo dmesg.",
+    "hardware": "Không có dữ liệu hypervisor hoặc provider."
+  }
+}

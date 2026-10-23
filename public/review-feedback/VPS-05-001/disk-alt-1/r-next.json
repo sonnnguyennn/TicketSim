@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "scope"
+  ],
+  "explanation": "Sau dọn phải đo lại dung lượng và thử thao tác ứng dụng.",
+  "optionFeedback": {
+    "scope": "Đúng: kiểm soát phạm vi và xác minh.",
+    "rm": "Mất bằng chứng và có thể làm hỏng service.",
+    "ignore": "Filesystem đã đầy."
+  }
+}

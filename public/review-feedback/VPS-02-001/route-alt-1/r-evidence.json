@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "missing",
+    "assigned"
+  ],
+  "explanation": "Gateway được cấp là bằng chứng cần thiết trước khi sửa route.",
+  "optionFeedback": {
+    "missing": "Đúng theo ip route.",
+    "assigned": "Đúng theo panel.",
+    "upstream": "Chưa kiểm tra upstream."
+  }
+}

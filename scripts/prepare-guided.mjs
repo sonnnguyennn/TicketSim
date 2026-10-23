@@ -63,7 +63,19 @@ const publicCases = guidedContent.map(content => {
     fs.writeFileSync(feedbackPath, JSON.stringify({ correctIds: question.correctIds, explanation: question.explanation, optionFeedback: Object.fromEntries(question.options.map(option => [option.id, option.feedback])) }, null, 2))
     objectiveExam = { id: question.id, stage: question.stage, kind: question.kind, prompt: question.prompt, options: question.options.map(({ id, label }) => ({ id, label })) }
   }
-  return { id: content.id, objective: content.objective, customerFollowup: content.customerFollowup, probes, questions, verificationPrompt: content.verificationPrompt, branches: content.branches, simulation: content.simulation, objectiveExam }
+  const reviewVariants = content.reviewVariants?.map(variant => {
+    if (new Set(variant.questions.map(question => question.id)).size !== variant.questions.length) throw new Error(`Duplicate review question in ${content.id}/${variant.id}`)
+    return { id: variant.id, scenario: variant.scenario, evidence: variant.evidence, questions: variant.questions.map(question => {
+      if (question.kind === 'short_answer' || question.requiredProbeIds?.length || question.correctIds.length < 1 || question.correctIds.some(id => !question.options.some(option => option.id === id))) throw new Error(`Invalid review question ${content.id}/${variant.id}/${question.id}`)
+      if (question.prompt === content.questions.find(item => item.id === question.id)?.prompt || content.questions.some(item => item.prompt === question.prompt)) throw new Error(`Review question repeats original ${content.id}/${variant.id}/${question.id}`)
+      const feedbackPath = path.join(root, 'public/review-feedback', content.id, variant.id, `${question.id}.json`)
+      fs.mkdirSync(path.dirname(feedbackPath), { recursive: true })
+      fs.writeFileSync(feedbackPath, JSON.stringify({ correctIds: question.correctIds, explanation: question.explanation, optionFeedback: Object.fromEntries(question.options.map(option => [option.id, option.feedback])) }, null, 2))
+      return { id: question.id, stage: question.stage, kind: question.kind, prompt: question.prompt, options: question.options.map(({ id, label }) => ({ id, label })), skill: question.skill ?? question.stage }
+    }) }
+  })
+  if (reviewVariants && new Set(reviewVariants.map(variant => variant.id)).size !== reviewVariants.length) throw new Error(`Duplicate review variant in ${content.id}`)
+  return { id: content.id, objective: content.objective, customerFollowup: content.customerFollowup, probes, questions, verificationPrompt: content.verificationPrompt, branches: content.branches, simulation: content.simulation, objectiveExam, reviewVariants }
 })
 
 const outputPath = path.join(root, 'src/data/guided-public.json')

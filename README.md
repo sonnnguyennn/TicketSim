@@ -42,3 +42,9 @@ Tiến độ lưu ở `localStorage` phiên bản 5 và có thể xuất/nhập 
 
 Guided mới được biên soạn cho 12/112 ticket; Stateful/Objective Exam mới phủ 6/112. Một số output gốc rất ngắn và vẫn được giữ nguyên. State transitions là tình huống cố định, không dự đoán trạng thái Linux thật, không mô phỏng đầy đủ network propagation, ứng dụng phía sau hay integrity storage. Không có bài biến thể để cấp Mastered; 100 Guided case còn lại cần tác giả và kiểm định kỹ thuật. Xem [kiểm tra nội dung Guided](Milestone_2_Content_Audit.md) và [roadmap](ROADMAP.md).
 
+# Milestone 5B update
+
+Six Stateful cases now include an independently authored review scenario. `Mastered` is granted only when every question in that new scenario is correct at least 24 hours after the latest Guided completion. Other Guided cases remain `Completed` until they have a reviewed alternate scenario. Review feedback is stored separately from prompts; free text is still self-reviewed.
+
+Run `npm run test:browser` for desktop/mobile Chromium smoke tests. On a machine with an older installed Chromium, set `PLAYWRIGHT_CHROMIUM_PATH` to its executable. See [Milestone 5B QA](Milestone_5B_QA.md) for coverage and limits.
+

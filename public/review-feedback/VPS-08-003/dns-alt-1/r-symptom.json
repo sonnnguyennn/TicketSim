@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "authority"
+  ],
+  "explanation": "Phân biệt panel vừa sửa với nguồn DNS đang có thẩm quyền.",
+  "optionFeedback": {
+    "authority": "Đúng: sửa sai zone sẽ không có hiệu lực.",
+    "ssh": "Không liên quan DNS delegation.",
+    "disk": "Không giải thích nameserver."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "off",
+    "no22"
+  ],
+  "explanation": "Trạng thái và listener là bằng chứng hiện tượng, chưa phải root cause.",
+  "optionFeedback": {
+    "off": "Đúng theo trạng thái service.",
+    "no22": "Đúng trong snapshot này.",
+    "why": "Cần journal hoặc cấu hình để kết luận nguyên nhân."
+  }
+}

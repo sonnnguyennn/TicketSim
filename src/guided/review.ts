@@ -8,7 +8,7 @@ export function mistakeStats(progress: Progress, cases: GuidedCase[]): { byQuest
   const byQuestion: Record<string, number> = {}
   const bySkill: Record<string, number> = {}
   for (const guidedCase of cases) {
-    const questions = new Map(objectiveQuestions(guidedCase).map(question => [question.id, question]))
+    const questions = new Map([...objectiveQuestions(guidedCase), ...(guidedCase.reviewVariants ?? []).flatMap(variant => variant.questions)].map(question => [question.id, question]))
     const outcomes = [...progress.guidedAttempts.filter(item => item.ticketId === guidedCase.id).map(item => item.outcomes), ...progress.reviewAttempts.filter(item => item.ticketId === guidedCase.id).map(item => item.outcomes)]
     for (const recorded of outcomes) for (const [id, correct] of Object.entries(recorded ?? {})) {
       const question = questions.get(id)
@@ -29,12 +29,17 @@ export function mistakeIds(progress: Progress, guidedCase: GuidedCase): string[]
 
 export function isRetestDue(progress: Progress, guidedCase: GuidedCase, now = Date.now()): boolean {
   const source = latestGuidedAttempt(progress, guidedCase.id)
-  return !!source && Number.isFinite(Date.parse(source.createdAt)) && now - Date.parse(source.createdAt) >= 24 * 60 * 60 * 1000 && !isMastered(progress, guidedCase)
+  return !!source && !!guidedCase.reviewVariants?.length && Number.isFinite(Date.parse(source.createdAt)) && now - Date.parse(source.createdAt) >= 24 * 60 * 60 * 1000 && !isMastered(progress, guidedCase)
 }
 
 export function isMastered(progress: Progress, guidedCase: GuidedCase): boolean {
   const source = latestGuidedAttempt(progress, guidedCase.id)
   if (!source) return false
-  const ids = objectiveQuestions(guidedCase).map(question => question.id)
-  return progress.reviewAttempts.some(review => review.kind === 'retest' && !!review.variantId && guidedCase.reviewVariants?.includes(review.variantId) && review.ticketId === guidedCase.id && review.sourceAttemptId === source.id && Date.parse(review.createdAt) - Date.parse(source.createdAt) >= 24 * 60 * 60 * 1000 && ids.length === review.questionIds.length && ids.every(id => review.questionIds.includes(id) && review.outcomes[id] === true))
+  return progress.reviewAttempts.some(review => {
+    const variant = guidedCase.reviewVariants?.find(item => item.id === review.variantId)
+    const elapsed = Date.parse(review.createdAt) - Date.parse(source.createdAt)
+    if (review.kind !== 'retest' || !variant || review.ticketId !== guidedCase.id || review.sourceAttemptId !== source.id || !Number.isFinite(elapsed) || elapsed < 24 * 60 * 60 * 1000) return false
+    const ids = variant.questions.map(question => question.id)
+    return ids.length === review.questionIds.length && ids.every(id => review.questionIds.includes(id) && review.outcomes[id] === true)
+  })
 }

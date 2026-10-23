@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "full",
+    "logs"
+  ],
+  "explanation": "Dung lượng thư mục không phải giấy phép xóa toàn bộ.",
+  "optionFeedback": {
+    "full": "Đúng.",
+    "logs": "Đúng theo du.",
+    "all": "Không có phân loại retention hay file đang mở."
+  }
+}

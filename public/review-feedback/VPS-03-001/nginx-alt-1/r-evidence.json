@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "nginx",
+    "http"
+  ],
+  "explanation": "Phân biệt web server sống với ứng dụng đằng sau hoạt động.",
+  "optionFeedback": {
+    "nginx": "Đúng theo systemctl.",
+    "http": "Đúng theo curl.",
+    "app": "502 không chứng minh upstream khỏe."
+  }
+}

@@ -15,6 +15,7 @@
       "extras": { "type": "array", "items": { "$ref": "#/$defs/extra" } },
       "verificationPrompt": { "type": "string", "minLength": 10 },
       "objectiveExam": { "$ref": "#/$defs/question" },
+      "reviewVariants": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["id", "scenario", "evidence", "questions"], "properties": { "id": { "type": "string", "minLength": 3 }, "scenario": { "type": "string", "minLength": 30 }, "evidence": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["label", "output"], "properties": { "label": { "type": "string" }, "output": { "type": "string", "minLength": 5 } }, "additionalProperties": false } }, "questions": { "type": "array", "minItems": 3, "items": { "$ref": "#/$defs/question" } }, "additionalProperties": false } } },
       "simulation": {
         "type": "object",
         "required": ["states", "transitions", "verificationProbeIds"],

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "risk"
+  ],
+  "explanation": "Đừng ép một sửa chữa tại guest khi storage đang báo I/O error.",
+  "optionFeedback": {
+    "risk": "Đúng: lỗi I/O và ro có rủi ro.",
+    "quota": "Không có bằng chứng quota.",
+    "dns": "Không liên quan."
+  }
+}

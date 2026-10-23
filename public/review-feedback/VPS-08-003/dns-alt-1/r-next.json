@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "compare"
+  ],
+  "explanation": "Chỉ đổi delegation khi chủ domain cho phép; xác minh resolver sau đó.",
+  "optionFeedback": {
+    "compare": "Đúng: xác định authority và record thực.",
+    "delete": "Có thể cắt dịch vụ khi còn truy vấn NS cũ.",
+    "wait": "Có thể đã sửa nhầm nơi."
+  }
+}

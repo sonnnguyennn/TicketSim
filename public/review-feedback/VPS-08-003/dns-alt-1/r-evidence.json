@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "old",
+    "new"
+  ],
+  "explanation": "Resolver snapshot và panel là hai nguồn khác nhau.",
+  "optionFeedback": {
+    "old": "Đúng theo dig.",
+    "new": "Đúng theo panel.",
+    "registrar": "Chưa đọc registrar."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "outside"
+  ],
+  "explanation": "Định phạm vi theo đích không tới được và route thực tế.",
+  "optionFeedback": {
+    "outside": "Đúng: local route vẫn còn.",
+    "all": "Route cùng subnet vẫn có.",
+    "dns": "Chưa có phép kiểm tra DNS."
+  }
+}

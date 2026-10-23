@@ -286,6 +286,66 @@ export const guidedContent = [
   },
 ]
 
+// Independent review uses a different customer situation and fresh evidence.
+// These fixtures are never passed to the terminal; they are authored assessment data.
+const reviewAuthoring = {
+  'VPS-01-001': {
+    id: 'ssh-alt-1', scenario: 'Một VPS CentOS Stream 9 vừa cập nhật cấu hình. Console hoạt động, nhưng SSH từ laptop tới 203.0.113.31 bị Connection refused.',
+    evidence: [{ label: 'Guest console · systemctl status sshd', output: 'Active: inactive (dead)' }, { label: 'Guest console · ss -ltnp', output: 'LISTEN 0 128 0.0.0.0:80 users:(("nginx",pid=801,fd=6))' }],
+    questions: [
+      q('r-symptom', 'triage', 'single_choice', 'Connection refused trong tình huống mới xảy ra trước bước nào?', [['auth', 'Trước xác thực tài khoản', 'Đúng: TCP không được chấp nhận.'], ['key', 'Sau khi khóa SSH được xác nhận', 'Chưa có phiên xác thực.'], ['shell', 'Sau khi shell đăng nhập mở', 'Chưa tới shell.']], ['auth'], 'Lỗi TCP cần tách khỏi lỗi mật khẩu hoặc khóa.'),
+      q('r-evidence', 'interpret', 'multi_select', 'Hai output hiện chứng minh những điều nào?', [['off', 'sshd hiện không chạy', 'Đúng theo trạng thái service.'], ['no22', 'Không thấy listener TCP/22 trong output đã cho', 'Đúng trong snapshot này.'], ['why', 'Đã xác định nguyên nhân daemon dừng', 'Cần journal hoặc cấu hình để kết luận nguyên nhân.']], ['off', 'no22'], 'Trạng thái và listener là bằng chứng hiện tượng, chưa phải root cause.'),
+      q('r-next', 'decide', 'single_choice', 'Sau khi xác nhận quyền thao tác, bước nào an toàn nhất?', [['logs', 'Đọc journal/config trước; nếu phù hợp start sshd và kiểm tra lại từ client', 'Đúng: điều tra rồi thay đổi có kiểm soát.'], ['reboot', 'Reboot VPS ngay', 'Tác động rộng và chưa cần thiết.'], ['close', 'Báo resolved khi thấy nginx chạy', 'Nginx không chứng minh SSH hoạt động.']], ['logs'], 'Sau start vẫn phải xác minh kết nối và xác thực từ client.'),
+    ],
+  },
+  'VPS-02-001': {
+    id: 'route-alt-1', scenario: 'Một VPS Ubuntu dùng console được nhưng không kết nối tới IP ngoài subnet sau khi thay đổi mạng. Bạn có console dự phòng.',
+    evidence: [{ label: 'Guest · ip route', output: '172.16.4.0/24 dev ens3 proto kernel scope link src 172.16.4.21' }, { label: 'Panel · cấu hình cấp phát', output: 'Assigned gateway: 172.16.4.1; interface: ens3' }],
+    questions: [
+      q('r-symptom', 'triage', 'single_choice', 'Phạm vi ảnh hưởng phù hợp nhất với dữ liệu hiện có?', [['outside', 'Kết nối ngoài subnet cần được điều tra', 'Đúng: local route vẫn còn.'], ['all', 'Mọi giao tiếp mạng của VPS đều hỏng', 'Route cùng subnet vẫn có.'], ['dns', 'Chỉ DNS bị lỗi', 'Chưa có phép kiểm tra DNS.']], ['outside'], 'Định phạm vi theo đích không tới được và route thực tế.'),
+      q('r-evidence', 'interpret', 'multi_select', 'Chọn hai nhận định được dữ liệu hỗ trợ.', [['missing', 'Không có default route trong snapshot', 'Đúng theo ip route.'], ['assigned', 'Panel cấp gateway 172.16.4.1 cho ens3', 'Đúng theo panel.'], ['upstream', 'Upstream chắc chắn cho phép traffic', 'Chưa kiểm tra upstream.']], ['missing', 'assigned'], 'Gateway được cấp là bằng chứng cần thiết trước khi sửa route.'),
+      q('r-next', 'verify', 'single_choice', 'Nếu route được khôi phục có kiểm soát, kiểm tra nào đủ thận trọng?', [['both', 'ip route get tới IP ngoài và thử kết nối thực từ guest/client', 'Đúng: route lookup không chứng minh reachability.'], ['table', 'Chỉ thấy default trong ip route là đóng ticket', 'Bảng route chưa chứng minh đường đi thực.'], ['guess', 'Đổi sang gateway .254 để chắc chắn', 'Không tự đoán gateway.']], ['both'], 'Giữ console/rollback và kiểm tra traffic sau thay đổi.'),
+    ],
+  },
+  'VPS-03-001': {
+    id: 'nginx-alt-1', scenario: 'Một trang trên VPS Ubuntu báo 502. Khách nghi Nginx bị dừng sau deploy; bạn kiểm tra từ guest trước khi đề xuất restart.',
+    evidence: [{ label: 'Guest · systemctl status nginx', output: 'Active: active (running)' }, { label: 'Guest · curl -I http://127.0.0.1', output: 'HTTP/1.1 502 Bad Gateway\nServer: nginx' }],
+    questions: [
+      q('r-symptom', 'triage', 'single_choice', 'HTTP 502 ở đây biểu thị điều gì?', [['gateway', 'Nginx trả lời nhưng phía upstream có vấn đề cần kiểm tra', 'Đúng: Nginx đã phản hồi HTTP.'], ['off', 'Nginx chắc chắn đã dừng', 'Service đang active.'], ['dns', 'Tên miền chắc chắn sai DNS', 'Curl localhost không dùng DNS domain.']], ['gateway'], 'Đừng gán lỗi 502 cho service đã dừng khi output nói ngược lại.'),
+      q('r-evidence', 'interpret', 'multi_select', 'Điều nào được hai output xác nhận?', [['nginx', 'Nginx đang active', 'Đúng theo systemctl.'], ['http', 'HTTP local trả 502', 'Đúng theo curl.'], ['app', 'Ứng dụng upstream đã hoạt động bình thường', '502 không chứng minh upstream khỏe.']], ['nginx', 'http'], 'Phân biệt web server sống với ứng dụng đằng sau hoạt động.'),
+      q('r-next', 'decide', 'single_choice', 'Bước điều tra tiếp phù hợp nhất?', [['upstream', 'Kiểm tra error log và trạng thái/endpoint upstream theo cấu hình', 'Đúng: bám vào 502.'], ['restart', 'Restart Nginx liên tục cho tới khi hết 502', 'Không có bằng chứng restart xử lý upstream.'], ['close', 'Đóng ticket vì service active', 'HTTP vẫn lỗi.']], ['upstream'], 'Chọn phép kiểm tra bổ sung trước khi thay đổi dịch vụ.'),
+    ],
+  },
+  'VPS-05-001': {
+    id: 'disk-alt-1', scenario: 'Một VPS ghi log ứng dụng thất bại với ENOSPC. Dung lượng inode chưa rõ; khách yêu cầu xóa toàn bộ log ngay.',
+    evidence: [{ label: 'Guest · df -h /', output: '/dev/vda1 40G 40G 0 100% /' }, { label: 'Guest · du -sh /var/log', output: '6.2G /var/log' }],
+    questions: [
+      q('r-symptom', 'triage', 'single_choice', 'Dấu hiệu ban đầu phù hợp nhất?', [['blocks', 'Root filesystem hết block khả dụng', 'Đúng theo df -h.'], ['inode', 'Chắc chắn chỉ hết inode', 'Chưa chạy df -i.'], ['ram', 'RAM đã cạn', 'Không có dữ liệu RAM.']], ['blocks'], 'ENOSPC và df cho thấy thiếu chỗ; vẫn cần tìm nguồn sử dụng.'),
+      q('r-evidence', 'interpret', 'multi_select', 'Bằng chứng hiện tại hỗ trợ điều nào?', [['full', '/ đang 100% theo df', 'Đúng.'], ['logs', '/var/log chiếm 6.2G', 'Đúng theo du.'], ['all', 'Mọi file trong /var/log đều xóa an toàn', 'Không có phân loại retention hay file đang mở.']], ['full', 'logs'], 'Dung lượng thư mục không phải giấy phép xóa toàn bộ.'),
+      q('r-next', 'decide', 'single_choice', 'Hướng xử lý an toàn nhất cho yêu cầu của khách?', [['scope', 'Xác nhận retention/backup, tìm file hoặc journal tăng và dọn phạm vi được duyệt rồi đo lại', 'Đúng: kiểm soát phạm vi và xác minh.'], ['rm', 'rm -rf /var/log', 'Mất bằng chứng và có thể làm hỏng service.'], ['ignore', 'Bỏ qua vì /var/log chỉ 6.2G', 'Filesystem đã đầy.']], ['scope'], 'Sau dọn phải đo lại dung lượng và thử thao tác ứng dụng.'),
+    ],
+  },
+  'VPS-05-004': {
+    id: 'storage-alt-1', scenario: 'Khách không ghi được vào /srv/data của VPS. Mount chuyển sang read-only và kernel xuất hiện lỗi I/O lặp lại ở volume dữ liệu.',
+    evidence: [{ label: 'Guest · findmnt -no SOURCE,OPTIONS /srv/data', output: '/dev/vdc1 ro,relatime' }, { label: 'Guest · dmesg | tail', output: 'blk_update_request: I/O error, dev vdc, sector 2048' }],
+    questions: [
+      q('r-symptom', 'triage', 'single_choice', 'Tình trạng nào cần ưu tiên ở L1?', [['risk', 'Rủi ro integrity dữ liệu trên volume cần giữ nguyên trạng và chuyển cấp', 'Đúng: lỗi I/O và ro có rủi ro.'], ['quota', 'Chắc chắn khách hết quota', 'Không có bằng chứng quota.'], ['dns', 'DNS domain lỗi', 'Không liên quan.']], ['risk'], 'Đừng ép một sửa chữa tại guest khi storage đang báo I/O error.'),
+      q('r-evidence', 'interpret', 'multi_select', 'Chọn quan sát thật sự có trong output.', [['ro', 'Volume vdc1 đang ro', 'Đúng theo findmnt.'], ['io', 'Kernel có lỗi I/O trên vdc', 'Đúng theo dmesg.'], ['hardware', 'Đã xác định đĩa vật lý nào hỏng', 'Không có dữ liệu hypervisor hoặc provider.']], ['ro', 'io'], 'Guest cho thấy lỗi, chưa định vị phần cứng vật lý.'),
+      q('r-next', 'decide', 'single_choice', 'Quyết định đúng phạm vi L1?', [['escalate', 'Dừng thao tác ghi, kiểm tra backup và mở incident cho đội storage', 'Đúng: bảo vệ dữ liệu và chuyển cấp.'], ['remount', 'Remount rw rồi tiếp tục ghi', 'Có thể tăng rủi ro mất dữ liệu.'], ['fsck', 'Chạy fsck trên volume đang dùng ngay', 'Cần quy trình và đội có thẩm quyền.']], ['escalate'], 'Escalation là kết quả hợp lệ; chỉ xác minh incident được tiếp nhận.'),
+    ],
+  },
+  'VPS-08-003': {
+    id: 'dns-alt-1', scenario: 'Khách sửa A record tại DNS panel của nhà cung cấp mới nhưng website vẫn trỏ IP cũ sau khi chuyển nameserver.',
+    evidence: [{ label: 'Client · dig store.example.test NS', output: 'store.example.test. 3600 IN NS ns-old.example.test.' }, { label: 'Panel mới · zone', output: 'store.example.test A 203.0.113.44; NS ns-new.example.test' }],
+    questions: [
+      q('r-symptom', 'triage', 'single_choice', 'Điều gì cần xác định trước khi kết luận propagation?', [['authority', 'Domain thực sự delegate tới nameserver nào', 'Đúng: sửa sai zone sẽ không có hiệu lực.'], ['ssh', 'sshd có chạy không', 'Không liên quan DNS delegation.'], ['disk', 'Disk còn bao nhiêu chỗ', 'Không giải thích nameserver.']], ['authority'], 'Phân biệt panel vừa sửa với nguồn DNS đang có thẩm quyền.'),
+      q('r-evidence', 'interpret', 'multi_select', 'Hai output này hỗ trợ kết luận nào?', [['old', 'Điểm truy vấn hiện thấy NS cũ', 'Đúng theo dig.'], ['new', 'Panel mới chứa A record 203.0.113.44', 'Đúng theo panel.'], ['registrar', 'Registrar chắc chắn đã đổi delegation', 'Chưa đọc registrar.']], ['old', 'new'], 'Resolver snapshot và panel là hai nguồn khác nhau.'),
+      q('r-next', 'decide', 'single_choice', 'Bước tiếp theo phù hợp nhất?', [['compare', 'Kiểm tra delegation ở registrar và hỏi authoritative NS trực tiếp trước khi thay đổi', 'Đúng: xác định authority và record thực.'], ['delete', 'Xóa zone cũ ngay', 'Có thể cắt dịch vụ khi còn truy vấn NS cũ.'], ['wait', 'Chỉ chờ mà không kiểm tra thêm', 'Có thể đã sửa nhầm nơi.']], ['compare'], 'Chỉ đổi delegation khi chủ domain cho phép; xác minh resolver sau đó.'),
+    ],
+  },
+}
+for (const content of guidedContent) if (reviewAuthoring[content.id]) content.reviewVariants = [reviewAuthoring[content.id]]
+
 // Stateful fixtures are authored here, alongside Guided content. P1/P2 remain the
 // immutable source-ticket observations; these additional probes describe later states.
 const statefulAuthoring = {

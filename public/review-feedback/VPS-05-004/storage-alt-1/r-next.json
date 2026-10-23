@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "escalate"
+  ],
+  "explanation": "Escalation là kết quả hợp lệ; chỉ xác minh incident được tiếp nhận.",
+  "optionFeedback": {
+    "escalate": "Đúng: bảo vệ dữ liệu và chuyển cấp.",
+    "remount": "Có thể tăng rủi ro mất dữ liệu.",
+    "fsck": "Cần quy trình và đội có thẩm quyền."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "both"
+  ],
+  "explanation": "Giữ console/rollback và kiểm tra traffic sau thay đổi.",
+  "optionFeedback": {
+    "both": "Đúng: route lookup không chứng minh reachability.",
+    "table": "Bảng route chưa chứng minh đường đi thực.",
+    "guess": "Không tự đoán gateway."
+  }
+}

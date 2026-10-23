@@ -30,3 +30,7 @@ Stateful + Objective Exam: **6/112** (`VPS-01-001`, `VPS-02-001`, `VPS-03-001`, 
 5. Kiểm tra trình duyệt toàn bộ luồng Stateful/Objective/Guided, import/export, bàn phím và mobile. Mở rộng state/action chỉ bằng fixture đã biên soạn, không kết nối VPS thật.
 
 Quyết định phạm vi và hướng dẫn tác giả nội dung nằm trong [living spec](TicketSim_UX_Learning_Redesign_Spec.md). Không có repository Git trong thư mục này ở lần kiểm tra ngày 23/10/2026.
+# Milestone 5B status — 2026-10-23
+
+Completed: alternate-scenario review and delayed independent Mastered for six Stateful pilots; 1440px/390px browser QA, keyboard path, import/export/refresh and v1 migration smoke tests. See [Milestone 5B QA](Milestone_5B_QA.md). Guided coverage remains 12/112 at this checkpoint; the next phase adds at least 30 reviewed Guided cases across the seven priority topics.
+

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "blocks"
+  ],
+  "explanation": "ENOSPC và df cho thấy thiếu chỗ; vẫn cần tìm nguồn sử dụng.",
+  "optionFeedback": {
+    "blocks": "Đúng theo df -h.",
+    "inode": "Chưa chạy df -i.",
+    "ram": "Không có dữ liệu RAM."
+  }
+}

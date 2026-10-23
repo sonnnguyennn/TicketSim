@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "auth"
+  ],
+  "explanation": "Lỗi TCP cần tách khỏi lỗi mật khẩu hoặc khóa.",
+  "optionFeedback": {
+    "auth": "Đúng: TCP không được chấp nhận.",
+    "key": "Chưa có phiên xác thực.",
+    "shell": "Chưa tới shell."
+  }
+}

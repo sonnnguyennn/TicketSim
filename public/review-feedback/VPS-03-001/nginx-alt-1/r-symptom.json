@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "gateway"
+  ],
+  "explanation": "Đừng gán lỗi 502 cho service đã dừng khi output nói ngược lại.",
+  "optionFeedback": {
+    "gateway": "Đúng: Nginx đã phản hồi HTTP.",
+    "off": "Service đang active.",
+    "dns": "Curl localhost không dùng DNS domain."
+  }
+}

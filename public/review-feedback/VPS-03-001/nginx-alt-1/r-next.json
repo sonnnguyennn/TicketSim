@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "upstream"
+  ],
+  "explanation": "Chọn phép kiểm tra bổ sung trước khi thay đổi dịch vụ.",
+  "optionFeedback": {
+    "upstream": "Đúng: bám vào 502.",
+    "restart": "Không có bằng chứng restart xử lý upstream.",
+    "close": "HTTP vẫn lỗi."
+  }
+}
