@@ -1,5 +1,11 @@
 # Roadmap tổng thể
 
+## Ưu tiên hiện tại — Guided trước
+
+Phase A đưa Guided thành luồng học mặc định: Kho ticket → Học ticket/Tiếp tục → năm bước học → Tổng kết. Một terminal giữ lịch sử kiểm tra; navigation chỉ giữ Kho ticket, Thư viện lệnh, Lịch sử và Cài đặt. Practice, Stateful, Objective/Legacy Exam và Review tạm ẩn, giữ engine và toàn bộ tiến độ. Xem [QA Phase A](Phase_A_Guided_First_QA.md).
+
+## Các mốc đã triển khai
+
 | Giai đoạn | Trạng thái | Phạm vi |
 |---|---|---|
 | Milestone 1 — Guided foundation | Hoàn thành | Giữ 112 ticket; 8 pilot Guided; fixture terminal; 25 command đầu tiên; migration v1→v2. |
@@ -24,15 +30,14 @@
 
 Stateful **6/112** (`VPS-01-001`, `VPS-02-001`, `VPS-03-001`, `VPS-05-001`, `VPS-05-004`, `VPS-08-003`); Objective Exam **20/112**; bài ôn biến thể **20/112**. Thư viện hiện có 122 thẻ command/tác vụ. Practice/Legacy Exam vẫn là 112/112.
 
-## Việc tiếp theo để làm mới đủ 112 ticket
+## Phase B — Kiểm duyệt nội dung Guided
 
 Đã hoàn thành Batch 3–7 theo [kế hoạch phủ 112](Guided_112_Batch_Plan.md). Mỗi batch có QA, test/build và commit riêng; [QA Batch 7](Phase_5C_Batch_7_QA.md) ghi kết quả mới nhất.
 
-1. Rà kỹ thuật và browser end-to-end sâu hơn cho toàn bộ 112 Guided, nhất là fixture gốc ngắn và L3 nhiều nhánh.
-2. Làm giàu output ngắn bằng fixture được biên soạn và kiểm định riêng, giữ nguyên 224 source probe của bộ gốc. Thêm nhánh điều tra và phân biệt mức độ khó thật sự, nhất là L2/L3.
-3. Mở Objective Exam tiếp từ 20 case chỉ khi có đáp án, bằng chứng và câu hỏi xác minh độc lập đủ tin cậy; giữ Legacy Exam tự đánh giá cho mọi ticket. Không chấm prose bằng keyword.
-4. Biên soạn bài ôn biến thể cho 92 Guided case còn lại; giữ kiểm tra sau độ trễ và không mở đáp án trước nộp.
-5. Kiểm tra trình duyệt toàn bộ luồng Stateful/Objective/Guided, import/export, bàn phím và mobile. Mở rộng state/action chỉ bằng fixture đã biên soạn, không kết nối VPS thật.
+1. Rà 112 Guided theo chuẩn ngắn, tự nhiên và sát ticket VPS Support; kiểm định câu hỏi, feedback, mục đích lệnh và cách đọc output.
+2. Rà kỹ thuật sâu các output gốc ngắn, trường hợp chưa đủ bằng chứng và tình huống L2/L3; biên soạn bản Guided thay thế khi cần, giữ nguyên 224 source probe.
+3. Kiểm tra end-to-end thêm từng ticket, gồm câu sai, gợi ý, refresh, điều hướng và mobile. QA Phase A hiện chỉ bao phủ các đường đi đại diện.
+4. Giữ phân biệt Completed/Mastered. Mở rộng Stateful/Exam/Review cần quyết định sản phẩm riêng sau Guided; không nằm trong Phase A/B hiện tại.
 
 Quyết định phạm vi và hướng dẫn tác giả nội dung nằm trong [living spec](TicketSim_UX_Learning_Redesign_Spec.md). Repository Git đã được khởi tạo; mỗi phase có commit riêng. Xem [QA 5B](Milestone_5B_QA.md) và [QA batch 30](Phase_2_Guided_QA.md).
 

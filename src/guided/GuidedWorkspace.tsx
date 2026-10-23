@@ -14,7 +14,8 @@ const contextLabel = (context: GuidedCase['probes'][number]['context']) => ({ gu
 
 export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onBack, onOpenLibrary }: Props) {
   const draft = progress.guidedDrafts[ticket.id] ?? emptyGuidedDraft()
-  const [input, setInput] = useState('')
+  const input = draft.commandInput ?? ''
+  const setInput = (commandInput: string) => update({ commandInput })
   const [hints, setHints] = useState<string[] | null>(null)
   const [answer, setAnswer] = useState<Answer | null>(null)
   const [error, setError] = useState('')
@@ -33,7 +34,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
 
   useEffect(() => {
     draftGeneration.current += 1
-    setInput(''); setHints(null); setAnswer(null); setError('')
+    setHints(null); setAnswer(null); setError('')
     return () => { draftGeneration.current += 1 }
   }, [ticket.id])
   useEffect(() => {
@@ -71,8 +72,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
       probeId: result.kind === 'available' ? result.probe.id : undefined,
       output: result.kind === 'available' ? result.probe.output : result.message,
     }
-    update(current => ({ commands: [...current.commands, entry] }))
-    setInput('')
+    update(current => ({ commands: [...current.commands, entry], commandInput: '' }))
   }
   async function checkQuestion(question: GuidedQuestion) {
     const selected = draft.responses[question.id] ?? (question.kind === 'step_order' ? question.options.map(option => option.id).reverse() : [])
@@ -124,7 +124,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
     if (!window.confirm('Bắt đầu lại bài học? Lượt đã nộp vẫn được giữ trong lịch sử.')) return
     draftGeneration.current += 1
     update(emptyGuidedDraft())
-    setAnswer(null); setHints(null); setInput('')
+    setAnswer(null); setHints(null)
   }
 
   return <div className="guided-page guided-focused">

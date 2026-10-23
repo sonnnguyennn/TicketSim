@@ -2,6 +2,10 @@
 
 ## Current state and pickup guide — 2026-10-23
 
+### Phase A pickup update — Guided-first
+
+The default product flow is now Guided: ticket list → Học ticket/Tiếp tục → Nhận diện, Kiểm tra, Đọc bằng chứng, Quyết định, Tổng kết. Navigation keeps the ticket list, Command Library, Guided history and data settings. Practice, Stateful, Objective/Legacy Exam, Review and advanced history are hidden from the default UI; their engines and all v5 progress remain. Guided has one scrollable terminal history with explicit context labels, compact suggestions and authored explanations. The support selector is hidden; beginner-friendly presentation does not overwrite the saved support preference. Library return retains the current step and typed input. Counts remain 112 Guided, 122 command cards, 20 Objective, 6 Stateful, 20 variants. See `Phase_A_Guided_First_QA.md`. Phase B content review is next; older milestone and expansion notes below are historical.
+
 ### Phase 5E pickup update
 
 Guided **112/112**, Objective Exam **20/112**, Stateful **6/112**, independent review variants **20/112**. Fourteen new variants use different scenarios, evidence and questions from the source Guided case. Mastered still requires a complete first attempt on the variant at least 24 hours after Guided; Objective Exam never grants it. Source tickets and v5 progress shape are unchanged. See `Phase_5E_QA.md`. Older counts below are historical checkpoints.

@@ -1,6 +1,6 @@
 # VPS Support Ticket Simulator
 
-Ứng dụng React + TypeScript chạy local để học xử lý ticket VPS Support. Bộ dữ liệu gốc vẫn có **112 ticket, 14 chủ đề, L0–L3**. Cả 112 ticket có Practice, Guided và Legacy Exam tự đánh giá; **20 ticket** có Objective Exam, **6 ticket** có Stateful Simulator và **20 ticket** có bài ôn biến thể. Xem [roadmap](ROADMAP.md) và [living spec](TicketSim_UX_Learning_Redesign_Spec.md).
+Ứng dụng React + TypeScript chạy local để học xử lý ticket VPS Support. Bộ dữ liệu gốc vẫn có **112 ticket, 14 chủ đề, L0–L3**. Luồng học mặc định tập trung vào **112/112 Guided**. Dữ liệu và logic của **20 Objective Exam**, **6 Stateful** và **20 bài ôn biến thể** được bảo toàn, tạm ẩn khỏi navigation. Xem [roadmap](ROADMAP.md) và [living spec](TicketSim_UX_Learning_Redesign_Spec.md).
 
 ## Chạy và kiểm tra
 
@@ -17,20 +17,20 @@ npm run test:browser
 
 Mở URL local do Vite hiển thị. Sau khi cài dependency, app không cần internet hay API key. `dist/` là bản build tĩnh, cần phục vụ qua HTTP local.
 
-## Học và ôn tập
+## Luồng học hiện tại — Phase A
 
-- **Guided (112 case):** Nhận diện → Kiểm tra → Đọc bằng chứng → Quyết định → Ghi ticket. Câu khách quan gồm chọn một, chọn nhiều, chọn command, đọc output và sắp xếp bước. Cuối bài là short answer tự đối chiếu với đáp án mẫu. Mỗi lựa chọn có giải thích; đáp án toàn ticket chỉ hiện sau khi nộp. Batch 7 bổ sung 8 case Billing/Lifecycle; L2/L3 có fixture bổ sung bắt buộc và câu sắp xếp quy trình.
-- **Practice và Legacy Exam (112 ticket):** Practice có gợi ý, tra command và rubric tự chấm. Legacy Exam giấu gợi ý, command suggestion và đáp án trong bài; yêu cầu xem hai fixture, viết nhận định và tự đối chiếu rubric sau nộp. Điểm này luôn gắn nhãn **tự đánh giá**; văn bản tự do không bị chấm bằng keyword.
-- **Stateful Simulator (6 ticket):** điều tra bằng các output ban đầu; lựa chọn hành động chỉ hiện sau P1/P2. Engine đòi đúng bằng chứng và quyền trước hành động được phép, sau đó nạp output trạng thái mới. Hành động không an toàn bị chặn; chưa có fixture thì chỉ báo chưa hỗ trợ. Hoàn tất cần chạy các probe hậu hành động và viết ticket note. Phục hồi một phần hoặc escalation không bị trình bày như resolved.
-- **Objective Exam (20 ticket):** sáu câu chọn đáp án cho triệu chứng, command, output, bằng chứng, quyết định và xác minh/escalation. 14 case mới yêu cầu đọc đủ fixture điều tra ban đầu, kể cả probe bổ sung, trước khi diễn giải. Điểm khách quan riêng với Legacy Exam; ghi chú tự do vẫn tự đối chiếu, đáp án và giải thích mở sau nộp. Lỗi theo concept được lưu vào Review Mistakes; điểm Exam không tự cấp Mastered.
-- **Review Mistakes:** gom lỗi chưa khắc phục theo topic/concept, mở bài ôn ngắn đúng nhóm, và ghi thêm lỗi Stateful/Objective Exam theo nhóm sai kiến thức, thiếu bằng chứng, hành động không an toàn. Hai mươi case có bài kiểm tra biến thể khác tình huống; Mastered đòi đúng toàn bộ ở **lượt đầu** của biến thể sau ít nhất 24 giờ từ lượt Guided gần nhất. Lặp lại cùng câu hỏi/biến thể sau khi xem feedback không cấp Mastered; 92 case Guided còn lại chưa có bài biến thể.
-- **Mức hỗ trợ:** Beginner hiện command gợi ý và rút gọn form Practice; Normal gợi ý theo độ khó; Independent yêu cầu tự nhập phép kiểm tra và ẩn hint. Command Library vẫn mở được ngay trong ticket ở cả ba mức. Lựa chọn được lưu trong tiến độ v5, không xóa ghi chú cũ.
-- **Thư viện command:** 122 thẻ tài liệu, mở được ngay trong Practice/Guided hoặc ở trang riêng. Mỗi thẻ có công dụng, cú pháp CentOS Stream 9/Ubuntu hoặc ngữ cảnh panel, tham số, ví dụ output, cách đọc, khi dùng, kiểm tra tiếp, quyền và mức an toàn. Thư viện là tài liệu; xem thẻ không chạy lệnh hoặc tự tạo output.
-- **Toàn bộ 112 ticket:** command lookup tại terminal, typeahead từ fixture của ticket, chữ và bố cục dễ đọc hơn, nút quay lại ticket đang học. Ở L0, form hiện bốn ô chính; ba ô bổ sung nằm trong phần tùy chọn. Lịch sử luyện tự do và rubric tự đánh giá được giữ nguyên.
+Mở Kho ticket, tìm hoặc lọc theo chủ đề/cấp độ/trạng thái, chọn ticket rồi bấm **Học ticket / Tiếp tục**. Bài học đi qua **Nhận diện → Kiểm tra → Đọc bằng chứng → Quyết định → Tổng kết**. Lịch sử chỉ hiển thị các lượt Guided đã hoàn thành; Cài đặt giữ xuất/nhập và đặt lại dữ liệu.
 
-Tám pilot L0: `VPS-01-001`, `VPS-01-002`, `VPS-02-001`, `VPS-03-001`, `VPS-05-001`, `VPS-05-002`, `VPS-07-001`, `VPS-08-002`. Bốn case Guided L1 mới: `VPS-01-003`, `VPS-03-003`, `VPS-05-004`, `VPS-08-003`.
+- **Guided (112/112):** một cột nội dung theo bước, lời khách hàng thu gọn sau Nhận diện, gợi ý mở khi cần. Giữ nguyên câu hỏi, feedback, điểm và yêu cầu bằng chứng đã biên soạn. Bộ chọn Beginner/Normal/Independent được ẩn; giao diện mặc định có gợi ý lệnh và giải thích cho người mới, không ghi đè lựa chọn hỗ trợ cũ.
+- **Một terminal ở bước Kiểm tra:** nhập lệnh/tác vụ hoặc chọn gợi ý để điền vào ô nhập, rồi bấm Chạy kiểm tra. Lịch sử hiển thị tuần tự command, output đã lưu, mục đích và cách đọc. Giữ nhãn Guest/Client/Panel/Hypervisor cùng tên PANEL/BILLING/BACKUP LOG; kết quả rỗng được phân biệt với lệnh chưa được hỗ trợ.
+- **Thư viện lệnh (122 thẻ):** tra nhanh ngay dưới terminal hoặc mở thư viện đầy đủ. Quay về giữ đúng bước, lịch sử và lệnh đang nhập. Khác biệt CentOS Stream 9/Ubuntu vẫn có trong thẻ lệnh khi cần troubleshooting.
+- **Tổng kết:** ghi nhận định, bằng chứng, hướng xử lý và xác minh; nộp bài để xem đáp án tham khảo. Câu viết vẫn tự đối chiếu. Hoàn thành Guided không tự cấp Mastered.
 
-Sáu case **Stateful + Objective Exam**: `VPS-01-001` (SSH service stopped), `VPS-03-001` (Nginx stopped), `VPS-05-001` (disk full), `VPS-02-001` (missing default route), `VPS-08-003` (DNS delegation/configuration), `VPS-05-004` (storage I/O error, escalation). Case DNS là delegation ở registrar và zone trong panel, không phải lỗi guest resolver. Các trạng thái sau xử lý được biên soạn riêng; P1/P2 gốc không bị sửa. Xem [bảng nghiệm thu và giới hạn mô phỏng](Milestone_5A_QA.md).
+## Tính năng nâng cao được bảo toàn, tạm ẩn
+
+Practice, Stateful (6 case), Objective Exam (20 case), Legacy Exam, Review Mistakes (20 biến thể) và lịch sử nâng cao được giữ trong code và tiến độ v5. Chúng không có lối vào ở navigation mặc định trong Phase A. Nút Tiếp tục luôn mở Guided.
+
+Engine chấm điểm, quyền thao tác, escalation và quy tắc Mastered không đổi: Mastered đòi đúng toàn bộ lượt đầu của biến thể độc lập sau ít nhất 24 giờ; điểm Exam tự chấm hoặc Objective Exam không cấp Mastered. Không mở rộng các chế độ này trong Phase A. Tài liệu lịch sử: [QA 5A](Milestone_5A_QA.md), [QA 5D](Phase_5D_QA.md), [QA 5E](Phase_5E_QA.md).
 
 ## Dữ liệu và an toàn
 
@@ -40,9 +40,11 @@ VPS-07-007 có một output `nginx -T` gốc mang câu chú thích “missing”
 
 Terminal **chỉ trả đúng output JSON đã biên soạn cho command/alias và trạng thái của ticket**. Command chưa có fixture không tạo output và không tính sai; thao tác thay đổi hệ thống chỉ đi qua action mô phỏng có điều kiện. Không có shell, SSH, VirtualBox hay kết nối VPS thật. Các thẻ command và ví dụ output chỉ là tài liệu tham khảo. Đối với một sự cố thực, service active/route xuất hiện/incident được mở chưa đủ để kết luận yêu cầu khách hàng đã được giải quyết.
 
-Tiến độ lưu ở `localStorage` phiên bản 5 và có thể xuất/nhập JSON. App chuyển dữ liệu hợp lệ từ v1–v4 sang v5, giữ key cũ làm bản dự phòng; lịch sử cũ không bị xóa. Stateful, Objective Exam, Legacy Exam, Guided và Practice có bản nháp/lượt làm riêng. Dữ liệu trình duyệt phụ thuộc origin, nên `localhost` và `127.0.0.1` có tiến độ riêng.
+Tiến độ lưu ở `localStorage` phiên bản 5 và có thể xuất/nhập JSON. App chuyển dữ liệu hợp lệ từ v1–v4 sang v5, giữ key cũ làm bản dự phòng; lịch sử cũ không bị xóa. Guided lưu cả lệnh đang nhập dở qua trường tùy chọn `commandInput`; draft cũ không cần có trường này. Stateful, Objective Exam, Legacy Exam, Guided và Practice có bản nháp/lượt làm riêng. Dữ liệu trình duyệt phụ thuộc origin, nên `localhost` và `127.0.0.1` có tiến độ riêng.
 
-## Giới hạn nội dung
+## QA và giới hạn hiện tại
+
+Xem [QA Phase A](Phase_A_Guided_First_QA.md) cho các luồng đã kiểm tra, ảnh desktop/mobile và giới hạn. Phase B sẽ kiểm duyệt nội dung của 112 Guided; Phase A chỉ đổi cách sử dụng, không viết lại hàng loạt câu hỏi/feedback.
 
 Guided phủ 112/112; Objective Exam và bài biến thể 20/112; Stateful 6/112. Một số output gốc rất ngắn và vẫn được giữ nguyên. State transitions là tình huống cố định, không dự đoán trạng thái Linux thật, không mô phỏng đầy đủ network propagation, ứng dụng phía sau hay integrity storage. Xem [QA Phase 5E](Phase_5E_QA.md), [QA Phase 5D](Phase_5D_QA.md), [QA Batch 7](Phase_5C_Batch_7_QA.md) và [roadmap](ROADMAP.md).
 
@@ -50,7 +52,7 @@ Batch 3–7 đã hoàn thành đủ 112 Guided theo [kế hoạch Guided 112](Gu
 
 Xem [QA Phase 4](Phase_4_QA.md) về mức hỗ trợ, hàng đợi kiến thức, Mastered và kiểm thử dữ liệu cũ.
 
-## Milestone 5B update
+## Mốc lịch sử — Milestone 5B
 
 Sáu Stateful case có tình huống ôn độc lập được biên soạn riêng. `Mastered` chỉ được cấp khi đúng toàn bộ câu hỏi ở lượt đầu của tình huống mới sau ít nhất 24 giờ từ lượt Guided gần nhất. Case chưa có biến thể vẫn ở `Completed`. Đáp án ôn tách khỏi prompt; ghi chú tự do vẫn do người học tự đối chiếu.
 

@@ -120,6 +120,17 @@ describe('self scoring and persistence', () => {
     expect(loadProgress(storage).supportLevel).toBe('independent')
     expect(validProgress({ ...oldV5, supportLevel: 'expert' })).toBe(false)
   })
+  it('preserves an unfinished Guided command while accepting drafts without that optional field', () => {
+    const progress = emptyProgress()
+    progress.guidedDrafts['VPS-01-001'] = { stage: 1, responses: {}, feedback: {}, commands: [], hintLevel: 0, note: '', submitted: false }
+    expect(validProgress(progress)).toBe(true)
+    progress.guidedDrafts['VPS-01-001'].commandInput = 'sudo systemctl status sshd'
+    const values = new Map<string, string>()
+    const storage = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value) } }
+    expect(saveProgress(progress, storage)).toBe(true)
+    expect(loadProgress(storage)).toEqual(progress)
+    expect(validProgress({ ...progress, guidedDrafts: { 'VPS-01-001': { ...progress.guidedDrafts['VPS-01-001'], commandInput: { command: 'uname -a' } } } })).toBe(false)
+  })
 })
 
 describe('Exam for all tickets', () => {

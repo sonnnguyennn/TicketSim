@@ -1,323 +1,351 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
+import type { GuidedAnswerKey, GuidedCase, GuidedQuestion } from '../src/guided/types'
+import type { Progress } from '../src/types'
+
+const STORAGE_KEY = 'vps-ticket-simulator-progress-v5'
+const guidedCases = JSON.parse(await readFile('src/data/guided-public.json', 'utf8')) as GuidedCase[]
+const caseFor = (id: string) => guidedCases.find(item => item.id === id)!
+const initialProbes = (item: GuidedCase) => item.probes.filter(probe => !probe.requiredState || probe.requiredState.includes('initial'))
+const next = (page: Page) => page.locator('.guided-footer').getByRole('button', { name: 'Tiếp tục', exact: true })
+const stored = (page: Page) => page.evaluate(key => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY) as Promise<Progress>
+
+async function openTicket(page: Page, id: string) {
+  await page.getByRole('textbox', { name: 'Tìm ticket', exact: true }).fill(id)
+  await page.locator(`[data-ticket-id="${id}"]`).click()
+  await page.locator('.guided-entry').getByRole('button', { name: /Học ticket|Tiếp tục/ }).click()
+  await expect(page.getByRole('navigation', { name: 'Các bước bài học' })).toBeVisible()
+}
+
+async function answerQuestion(page: Page, item: GuidedCase, question: GuidedQuestion, wrong = false) {
+  const key = JSON.parse(await readFile(`public/guided-feedback/${item.id}/${question.id}.json`, 'utf8')) as GuidedAnswerKey
+  const card = page.locator('.guided-question').filter({ has: page.getByRole('heading', { name: question.prompt, exact: true }) })
+  if (question.kind === 'step_order') {
+    for (let target = 0; target < key.correctIds.length; target++) {
+      const label = question.options.find(option => option.id === key.correctIds[target])!.label
+      let index = (await card.locator('.guided-order li').allTextContents()).findIndex(text => text.includes(label))
+      while (index > target) {
+        await card.getByRole('button', { name: `Đưa bước ${index + 1} lên`, exact: true }).click()
+        index--
+      }
+    }
+  } else {
+    const ids = wrong ? [question.options.find(option => !key.correctIds.includes(option.id))!.id] : key.correctIds
+    for (const id of ids) await card.getByLabel(question.options.find(option => option.id === id)!.label, { exact: true }).check()
+  }
+  await card.getByRole('button', { name: 'Kiểm tra câu trả lời', exact: true }).click()
+  await expect(card.locator('.guided-feedback')).toBeVisible()
+  await expect(card.locator('.guided-feedback')).toContainText(key.explanation)
+}
+
+async function enterInvestigation(page: Page, id: string) {
+  const item = caseFor(id)
+  await openTicket(page, id)
+  for (const question of item.questions.filter(question => question.stage === 'triage' && question.kind !== 'short_answer')) await answerQuestion(page, item, question)
+  await next(page).click()
+  await expect(page.locator('.guided-terminal')).toHaveCount(1)
+  return item
+}
+
+async function run(page: Page, command: string) {
+  const previous = await page.locator('.terminal-history .terminal-entry').count()
+  await page.getByLabel('Nhập lệnh hoặc tác vụ', { exact: true }).fill(command)
+  await page.getByRole('button', { name: 'Chạy kiểm tra', exact: true }).click()
+  await expect(page.locator('.terminal-history .terminal-entry')).toHaveCount(previous + 1)
+}
 
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
-  test(`navigation and layout ${viewport.width}px`, async ({ page }) => {
+  test(`Guided-first navigation, filters and terminal layout at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport)
     await page.goto('/')
-    await expect(page.getByRole('heading', { name: 'Kho ticket' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Kho ticket', exact: true })).toBeVisible()
     await expect(page.locator('[data-ticket-id]')).toHaveCount(112)
+    await expect(page.locator('.guided-entry .primary-button')).toHaveCount(1)
+    await expect(page.getByRole('button', { name: /^(Guided|Stateful|Objective Exam|Legacy Exam|Review Mistakes)$/ })).toHaveCount(0)
+    await expect(page.getByRole('group', { name: 'Mức hỗ trợ khi học' })).toHaveCount(0)
+    await expect(page.getByText(/VirtualBox|VM-snapshot mode|CentOS Stream 9 lab/)).toHaveCount(0)
+    await page.getByRole('combobox', { name: 'Cấp độ', exact: true }).selectOption('3')
+    await expect(page.locator('[data-ticket-id]')).toHaveCount(28)
+    await page.getByRole('combobox', { name: 'Chủ đề', exact: true }).selectOption({ index: 1 })
+    await expect(page.locator('[data-ticket-id]')).toHaveCount(2)
+    await page.getByRole('combobox', { name: 'Trạng thái', exact: true }).selectOption('completed')
+    await expect(page.locator('[data-ticket-id]')).toHaveCount(0)
+    await page.getByRole('combobox', { name: 'Trạng thái', exact: true }).selectOption('all')
+    await page.getByRole('combobox', { name: 'Chủ đề', exact: true }).selectOption('all')
+    await page.getByRole('combobox', { name: 'Cấp độ', exact: true }).selectOption('all')
+    await page.screenshot({ path: `screenshots/phase-a-list-${viewport.width}.png`, fullPage: true })
     await page.keyboard.press('Tab')
     expect(await page.locator(':focus').count()).toBe(1)
-    await page.keyboard.press('Tab')
-    await expect(page.getByTitle('Thư viện lệnh')).toBeFocused()
+    await page.getByTitle('Thư viện lệnh', { exact: true }).focus()
     await page.keyboard.press('Enter')
-    await expect(page.getByRole('heading', { name: /Thư viện lệnh/i })).toBeVisible()
-    await page.getByTitle('Kho ticket').click()
-    await page.getByTitle('Thư viện lệnh').click()
-    await expect(page.getByRole('heading', { name: /Thư viện lệnh/i })).toBeVisible()
-    await page.getByTitle('Kho ticket').click()
-    await page.getByRole('button', { name: /Guided/i }).first().click()
-    await expect(page.getByRole('navigation', { name: 'Các bước bài học' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Thư viện lệnh (122)' })).toBeVisible()
+    await page.getByTitle('Kho ticket', { exact: true }).click()
+    const item = await enterInvestigation(page, 'VPS-01-001')
+    await run(page, initialProbes(item)[0].command)
+    await run(page, initialProbes(item)[1].command)
+    await expect(page.locator('.guided-terminal')).toHaveCount(1)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true)
-    await page.screenshot({ path: `screenshots/guided-${viewport.width}.png`, fullPage: true })
+    await page.screenshot({ path: `screenshots/phase-a-${viewport.width === 390 ? 'mobile' : 'desktop'}.png`, fullPage: true })
   })
 }
 
-test('refresh and export/import preserve v5 progress', async ({ page }) => {
+test('SSH Guided keeps exact outputs, neutral errors, library return and grading through completion', async ({ page }) => {
+  const item = caseFor('VPS-01-001')
+  const answerRequests: string[] = []
+  page.on('request', request => { if (request.url().includes('/answers/VPS-01-001.json')) answerRequests.push(request.url()) })
   await page.goto('/')
-  await page.getByRole('button', { name: /Guided/i }).first().click()
-  await page.locator('input[type="radio"]').first().check()
-  await page.getByRole('button', { name: /Kho ticket/i }).first().click()
-  await page.getByTitle('Cài đặt').click()
+  await openTicket(page, item.id)
+  await answerQuestion(page, item, item.questions.find(question => question.stage === 'triage')!, true)
+  await next(page).click()
+  for (const question of item.questions.filter(question => question.stage === 'investigate')) await answerQuestion(page, item, question)
+  await expect(next(page)).toBeDisabled()
+  await run(page, 'sudo   systemctl status sshd')
+  await expect(page.locator('.terminal-entry[data-probe-id="P1"] pre')).toHaveText(initialProbes(item)[0].output)
+  await expect(page.locator('.terminal-entry[data-probe-id="P1"]')).toContainText(initialProbes(item)[0].meaning)
+  await run(page, 'uname -a')
+  await run(page, 'free -h')
+  await run(page, 'sudo systemctl restart sshd')
+  const entries = page.locator('.terminal-history .terminal-entry')
+  for (const index of [1, 2, 3]) {
+    await expect(entries.nth(index).locator('pre')).toHaveCount(0)
+    await expect(entries.nth(index)).toContainText(/chưa|không|thay đổi/i)
+  }
+  await expect(next(page)).toBeDisabled()
+  await run(page, 'ss -ltnp')
+  await expect(next(page)).toBeEnabled()
+  await page.getByLabel('Nhập lệnh hoặc tác vụ', { exact: true }).fill('journalctl -u sshd')
+  const beforeLibrary = await stored(page)
+  await page.locator('.guided-heading').getByRole('button', { name: 'Thư viện lệnh', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Thư viện lệnh (122)' })).toBeVisible()
+  await page.locator('.library-heading').getByRole('button', { name: /Quay lại/ }).click()
+  await expect(page.getByLabel('Nhập lệnh hoặc tác vụ', { exact: true })).toHaveValue('journalctl -u sshd')
+  expect((await stored(page)).guidedDrafts[item.id]).toEqual(beforeLibrary.guidedDrafts[item.id])
+  await expect(entries).toHaveCount(5)
+  expect(await page.locator('.terminal-history').evaluate(element => element.scrollHeight > element.clientHeight)).toBe(true)
+  await entries.first().scrollIntoViewIfNeeded()
+  await expect(entries.first()).toBeInViewport()
+  expect(answerRequests).toHaveLength(0)
+  await next(page).click()
+  await expect(page.locator('.guided-terminal')).toHaveCount(0)
+  await expect(page.locator('.guided-reference pre:visible')).toHaveCount(0)
+  for (const question of item.questions.filter(question => question.stage === 'interpret')) await answerQuestion(page, item, question)
+  await next(page).click()
+  for (const question of item.questions.filter(question => question.stage === 'decide')) await answerQuestion(page, item, question)
+  await next(page).click()
+  await expect(page.getByRole('textbox', { name: 'Ghi chú cuối ticket', exact: true })).toBeVisible()
+  for (const question of item.questions.filter(question => question.stage === 'verify' && question.kind !== 'short_answer')) await answerQuestion(page, item, question)
+  await page.getByRole('textbox', { name: 'Ghi chú cuối ticket', exact: true }).fill('SSH chưa chạy và chưa có listener cổng 22. Cần kiểm tra log, xin phép xử lý và xác minh kết nối từ client.')
+  expect(answerRequests).toHaveLength(0)
+  await page.getByRole('button', { name: 'Hoàn thành và xem đáp án', exact: true }).click()
+  await expect(page.getByText('Đáp án tham khảo', { exact: true })).toBeVisible()
+  const result = await stored(page)
+  expect(result.guidedAttempts).toHaveLength(1)
+  expect(result.guidedAttempts[0].score).toBe(result.guidedAttempts[0].total - 1)
+  expect(result.guidedAttempts[0].commands).toEqual(beforeLibrary.guidedDrafts[item.id].commands)
+  expect(result.guidedAttempts[0].independent).toBe(false)
+  expect(result.reviewAttempts).toHaveLength(0)
+  expect(answerRequests.length).toBeGreaterThan(0)
+  await page.reload()
+  await openTicket(page, item.id)
+  await expect(page.getByText('Đáp án tham khảo', { exact: true })).toBeVisible()
+  await page.getByTitle('Lịch sử', { exact: true }).click()
+  await expect(page.locator('.history-card')).toHaveCount(1)
+  await expect(page.locator('.history-card')).toContainText(item.id)
+})
+
+test('stored command history and independent setting survive Guided continuation, ticket changes and refresh', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(key => {
+    const progress = JSON.parse(localStorage.getItem(key)!)
+    progress.supportLevel = 'independent'
+    progress.guidedDrafts['VPS-01-001'] = { stage: 1, responses: {}, feedback: {}, commands: [{ id: 'old-command', command: 'old investigation', output: 'output preserved from saved session', supported: true, kind: 'terminal', at: '2026-10-20T00:00:00Z' }], hintLevel: 0, note: 'Ghi chú đang soạn cần giữ lại.', submitted: false }
+    progress.statefulDrafts['VPS-01-001'] = { state: 'initial', commands: [], approval: false, note: 'Stateful draft retained', completed: false, errors: [] }
+    progress.objectiveExamDrafts['VPS-01-001'] = { commands: [], responses: { triage: ['refused'] } }
+    progress.examDrafts['VPS-01-001'] = { form: { symptom: 'Legacy Exam draft retained', hypothesis: '', evidence: '', action: '', verification: '' }, commands: [] }
+    localStorage.setItem(key, JSON.stringify(progress))
+  }, STORAGE_KEY)
+  await page.reload()
+  const before = await stored(page)
+  await openTicket(page, 'VPS-01-001')
+  await expect(page.locator('.guided-terminal')).toBeVisible()
+  await expect(page.getByRole('group', { name: 'Mức hỗ trợ khi học' })).toHaveCount(0)
+  await expect(page.getByText('Lệnh và tác vụ gợi ý', { exact: true })).toBeVisible()
+  await expect(page.locator('.terminal-entry pre')).toHaveText('output preserved from saved session')
+  await run(page, 'systemctl status sshd')
+  await page.getByLabel('Nhập lệnh hoặc tác vụ', { exact: true }).fill('journalctl -u sshd -n 50 --no-pager')
+  await page.getByRole('button', { name: 'Kho ticket', exact: true }).click()
+  await openTicket(page, 'VPS-02-001')
+  await page.getByRole('button', { name: 'Kho ticket', exact: true }).click()
+  await openTicket(page, 'VPS-01-001')
+  await expect(page.locator('.terminal-history .terminal-entry')).toHaveCount(2)
+  await expect(page.getByLabel('Nhập lệnh hoặc tác vụ', { exact: true })).toHaveValue('journalctl -u sshd -n 50 --no-pager')
+  await page.reload()
+  await openTicket(page, 'VPS-01-001')
+  await expect(page.locator('.terminal-history .terminal-entry')).toHaveCount(2)
+  await expect(page.getByLabel('Nhập lệnh hoặc tác vụ', { exact: true })).toHaveValue('journalctl -u sshd -n 50 --no-pager')
+  const after = await stored(page)
+  expect(after.supportLevel).toBe('independent')
+  expect(after.guidedDrafts['VPS-01-001'].stage).toBe(1)
+  expect(after.guidedDrafts['VPS-01-001'].commands[0]).toEqual(before.guidedDrafts['VPS-01-001'].commands[0])
+  expect(after.guidedDrafts['VPS-01-001'].note).toBe(before.guidedDrafts['VPS-01-001'].note)
+  for (const field of ['statefulDrafts', 'objectiveExamDrafts', 'examDrafts'] as const) expect(after[field]).toEqual(before[field])
+})
+
+test('late question feedback cannot repopulate a restarted Guided draft', async ({ page }) => {
+  let release!: () => void
+  let arrived!: () => void
+  const held = new Promise<void>(resolve => { release = resolve })
+  const pendingRequest = new Promise<void>(resolve => { arrived = resolve })
+  await page.route('**/guided-feedback/VPS-01-001/triage.json', async route => {
+    arrived()
+    await held
+    await route.continue()
+  })
+  await page.goto('/')
+  await openTicket(page, 'VPS-01-001')
+  const question = caseFor('VPS-01-001').questions.find(question => question.stage === 'triage')!
+  await page.getByLabel(question.options[0].label, { exact: true }).check()
+  await page.getByRole('button', { name: 'Kiểm tra câu trả lời', exact: true }).click()
+  await pendingRequest
+  await page.getByText('Tùy chọn bài học', { exact: true }).click()
+  page.once('dialog', dialog => dialog.accept())
+  await page.getByRole('button', { name: 'Làm lại bài này', exact: true }).click()
+  const responsePromise = page.waitForResponse(response => response.url().includes('/guided-feedback/VPS-01-001/triage.json'))
+  release()
+  await (await responsePromise).finished()
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))))
+  const draft = (await stored(page)).guidedDrafts['VPS-01-001']
+  expect(draft.responses).toEqual({})
+  expect(draft.feedback).toEqual({})
+  expect(draft.hintLevel).toBe(0)
+  await expect(page.locator('.guided-feedback')).toHaveCount(0)
+})
+
+test('v5 export and import preserve all hidden mode data and Guided history exactly', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(key => {
+    const p = JSON.parse(localStorage.getItem(key)!)
+    const id = 'VPS-01-001', at = '2026-10-20T00:00:00Z'
+    const command = { id: 'saved-command', command: 'systemctl status sshd', output: 'Active: inactive (dead)', supported: true, kind: 'terminal', probeId: 'P1', at }
+    const form = { issue: 'SSH refused', hypothesis: 'Check service', evidence: 'inactive', nextCheck: 'ss -ltnp', action: 'Ask approval', verification: 'Client connection', escalation: 'If unresolved' }
+    const checks = { symptom_identification: true, evidence_reasoning: true, additional_checks: false, safe_resolution: true, verification_or_escalation: false }
+    const examForm = { symptom: 'SSH refused', hypothesis: 'Service', evidence: 'inactive', action: 'Ask approval', verification: 'Client connection' }
+    const error = { category: 'missing_evidence', detail: 'Need listener evidence', at }
+    p.supportLevel = 'independent'
+    p.drafts[id] = { form, commands: [command], hintViewed: true, answerRevealed: true, checks }
+    p.attempts = [{ id: 'practice', ticketId: id, createdAt: at, form, commands: [command], hintViewed: true, selfScore: 7, checks }]
+    p.guidedDrafts[id] = { stage: 1, responses: { triage: ['refused'] }, feedback: { triage: { correct: true, correctIds: ['refused'], explanation: 'TCP refused', optionFeedback: { refused: 'No listener' } } }, commands: [command], commandInput: 'ss -ltnp', hintLevel: 1, note: 'A saved Guided note.', submitted: false }
+    p.guidedAttempts = [{ id: 'guided', ticketId: id, createdAt: at, responses: {}, commands: [command], hintLevel: 1, note: 'Completed Guided note.', score: 5, total: 6, independent: false, outcomes: { output: false } }]
+    p.reviewAttempts = [{ id: 'review', ticketId: id, createdAt: at, sourceAttemptId: 'guided', questionIds: ['output'], responses: { output: ['stopped'] }, outcomes: { output: true }, kind: 'mistakes' }]
+    p.examDrafts[id] = { form: examForm, commands: [command], submittedAttemptId: 'exam' }
+    p.examAttempts = [{ id: 'exam', ticketId: id, createdAt: at, form: examForm, commands: [command], checks, selfScore: 7 }]
+    p.statefulDrafts[id] = { state: 'initial', commands: [command], approval: false, note: 'Saved Stateful note', completed: false, errors: [error] }
+    p.statefulAttempts = [{ id: 'stateful', ticketId: id, createdAt: at, state: 'initial', commands: [command], note: 'Saved Stateful attempt', errors: [error] }]
+    p.objectiveExamDrafts[id] = { responses: { triage: ['refused'] }, commands: [command], submittedAttemptId: 'objective' }
+    p.objectiveExamAttempts = [{ id: 'objective', ticketId: id, createdAt: at, responses: { triage: ['refused'] }, commands: [command], outcomes: { triage: true }, score: 1, total: 6, errors: [error] }]
+    localStorage.setItem(key, JSON.stringify(p))
+  }, STORAGE_KEY)
+  await page.reload()
+  const before = await stored(page)
+  await page.getByTitle('Lịch sử', { exact: true }).click()
+  await expect(page.locator('.history-card')).toHaveCount(1)
+  await page.getByTitle('Cài đặt', { exact: true }).click()
   const downloadPromise = page.waitForEvent('download')
-  await page.getByRole('button', { name: 'Xuất tiến độ' }).click()
+  await page.getByRole('button', { name: 'Xuất tiến độ', exact: true }).click()
   const download = await downloadPromise
   const path = await download.path()
   expect(path).toBeTruthy()
-  const saved = JSON.parse(await readFile(path!, 'utf8'))
-  expect(saved.version).toBe(5)
-  expect(Object.keys(saved.guidedDrafts).length).toBeGreaterThan(0)
-  await page.evaluate(() => localStorage.removeItem('vps-ticket-simulator-progress-v5'))
+  expect(JSON.parse(await readFile(path!, 'utf8'))).toEqual(before)
+  await page.evaluate(key => localStorage.removeItem(key), STORAGE_KEY)
   await page.reload()
-  await page.getByTitle('Cài đặt').click()
+  await page.getByTitle('Cài đặt', { exact: true }).click()
   await page.locator('input[type="file"]').setInputFiles(path!)
-  await expect(page.getByRole('status')).toContainText('Đã nhập tiến độ thành công')
+  await expect(page.getByRole('status')).toContainText(/Đã nhập/)
   await page.reload()
-  expect(await page.evaluate(() => Object.keys(JSON.parse(localStorage.getItem('vps-ticket-simulator-progress-v5')!).guidedDrafts).length)).toBeGreaterThan(0)
+  expect(await stored(page)).toEqual(before)
 })
 
-test('v1 snapshot migrates without erasing its original key', async ({ page }) => {
-  await page.goto('/')
-  await page.evaluate(() => { localStorage.setItem('vps-ticket-simulator-progress-v1', JSON.stringify({ version: 1, drafts: {}, attempts: [] })); localStorage.removeItem('vps-ticket-simulator-progress-v5') })
-  await page.reload()
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('vps-ticket-simulator-progress-v5')!).version)).toBe(5)
-  expect(await page.evaluate(() => localStorage.getItem('vps-ticket-simulator-progress-v1'))).not.toBeNull()
-})
-
-test('delayed alternate scenario grants Mastered only after independent answers', async ({ page }) => {
-  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
-  const variant = guided.find((item: { id: string }) => item.id === 'VPS-01-001').reviewVariants[0]
-  await page.goto('/')
-  await page.evaluate(() => {
-    const key = 'vps-ticket-simulator-progress-v5'
-    const progress = JSON.parse(localStorage.getItem(key)!)
-    progress.guidedAttempts.push({ id: 'browser-guided', ticketId: 'VPS-01-001', createdAt: new Date(Date.now() - 25 * 60 * 60 * 1000).toISOString(), responses: {}, commands: [], hintLevel: 0, note: 'Đã đối chiếu bằng chứng và xác minh.', score: 5, total: 6, independent: false, outcomes: {} })
-    localStorage.setItem(key, JSON.stringify(progress))
+for (const version of [1, 2, 3, 4]) {
+  test(`v${version} migration retains the original snapshot`, async ({ page }) => {
+    await page.goto('/')
+    const snapshot = { version, drafts: {}, attempts: [], ...(version >= 2 ? { guidedDrafts: { 'VPS-01-001': { stage: 1, responses: {}, feedback: {}, commands: [], hintLevel: 0, note: 'Saved migration note', submitted: false } }, guidedAttempts: [] } : {}), ...(version >= 3 ? { reviewAttempts: [] } : {}), ...(version >= 4 ? { examDrafts: {}, examAttempts: [] } : {}) }
+    await page.evaluate(({ version, snapshot, key }) => { localStorage.setItem(`vps-ticket-simulator-progress-v${version}`, JSON.stringify(snapshot)); localStorage.removeItem(key) }, { version, snapshot, key: STORAGE_KEY })
+    await page.reload()
+    expect((await stored(page)).version).toBe(5)
+    if (version >= 2) expect((await stored(page)).guidedDrafts['VPS-01-001'].note).toBe('Saved migration note')
+    expect(await page.evaluate(version => JSON.parse(localStorage.getItem(`vps-ticket-simulator-progress-v${version}`)!), version)).toEqual(snapshot)
   })
-  await page.reload()
-  await page.getByTitle('Review Mistakes').click()
-  await page.getByRole('button', { name: 'Đánh giá biến thể' }).first().click()
-  await expect(page.getByText(variant.scenario)).toBeVisible()
-  for (const question of variant.questions) {
-    const key = JSON.parse(await readFile(`public/review-feedback/VPS-01-001/${variant.id}/${question.id}.json`, 'utf8'))
-    for (const id of key.correctIds) await page.getByLabel(question.options.find((option: { id: string }) => option.id === id).label, { exact: true }).check()
-  }
-  await page.getByRole('button', { name: 'Nộp bài ôn' }).click()
-  await expect(page.getByText(`Đúng ${variant.questions.length}/${variant.questions.length}.`, { exact: false })).toBeVisible()
-  await page.reload()
-  await page.getByTitle('Review Mistakes').click()
-  await expect(page.getByRole('article').filter({ hasText: 'VPS-01-001' })).toContainText('Mastered')
-})
+}
 
-test('new API access review variant awards Mastered after delayed independent answers', async ({ page }) => {
-  const ticketId = 'VPS-12-007'
-  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
-  const variant = guided.find((item: { id: string }) => item.id === ticketId).reviewVariants[0]
-  await page.goto('/')
-  await page.evaluate(id => {
-    const key = 'vps-ticket-simulator-progress-v5'
-    const progress = JSON.parse(localStorage.getItem(key)!)
-    progress.guidedAttempts.push({ id: 'browser-guided-api', ticketId: id, createdAt: new Date(Date.now() - 25 * 60 * 60 * 1000).toISOString(), responses: {}, commands: [], hintLevel: 0, note: 'Đã đối chiếu bằng chứng và xác minh.', score: 5, total: 6, independent: false, outcomes: {} })
-    localStorage.setItem(key, JSON.stringify(progress))
-  }, ticketId)
-  await page.reload()
-  await page.getByTitle('Review Mistakes').click()
-  await page.getByRole('button', { name: 'Đánh giá biến thể' }).first().click()
-  await expect(page.getByText(variant.scenario)).toBeVisible()
-  for (const question of variant.questions) {
-    const key = JSON.parse(await readFile(`public/review-feedback/${ticketId}/${variant.id}/${question.id}.json`, 'utf8'))
-    for (const id of key.correctIds) await page.getByLabel(question.options.find((option: { id: string }) => option.id === id).label, { exact: true }).check()
-  }
-  await page.getByRole('button', { name: 'Nộp bài ôn' }).click()
-  await expect(page.getByText(`Đúng ${variant.questions.length}/${variant.questions.length}.`, { exact: false })).toBeVisible()
-  await page.reload()
-  await page.getByTitle('Review Mistakes').click()
-  await expect(page.getByRole('article').filter({ hasText: ticketId })).toContainText('Mastered')
-})
+for (const id of ['VPS-05-007', 'VPS-09-007', 'VPS-11-008', 'VPS-14-008']) {
+  test(`${id} still requires every advanced investigation before interpretation`, async ({ page }) => {
+    await page.goto('/')
+    const item = await enterInvestigation(page, id)
+    const outputQuestion = item.questions.find(question => question.id === 'output')!
+    await expect(page.getByRole('heading', { name: outputQuestion.prompt, exact: true })).toHaveCount(0)
+    for (const question of item.questions.filter(question => question.stage === 'investigate')) await answerQuestion(page, item, question)
+    const probes = initialProbes(item)
+    expect(probes).toHaveLength(4)
+    for (const probe of probes.slice(0, -1)) {
+      await run(page, probe.command)
+      await expect(next(page)).toBeDisabled()
+    }
+    await run(page, probes.at(-1)!.command)
+    await expect(next(page)).toBeEnabled()
+    await next(page).click()
+    await expect(page.getByRole('heading', { name: outputQuestion.prompt, exact: true })).toBeVisible()
+    await expect(page.getByText('Đáp án tham khảo', { exact: true })).toHaveCount(0)
+  })
+}
 
-test('new L3 Guided case requires authored extra evidence before interpretation', async ({ page }) => {
-  await page.goto('/')
-  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-05-007')
-  await page.locator('[data-ticket-id="VPS-05-007"]').click()
-  await page.getByRole('button', { name: /Guided/i }).first().click()
-  await expect(page.getByText('EXT4-fs error on /dev/vda1')).toHaveCount(0)
-  const key = JSON.parse(await readFile('public/guided-feedback/VPS-05-007/triage.json', 'utf8'))
-  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
-  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-05-007')
-  await page.getByLabel(item.questions.find((question: { id: string }) => question.id === 'triage').options.find((option: { id: string }) => option.id === key.correctIds[0]).label).check()
-  await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
-  await page.getByRole('button', { name: /Tiếp tục/i }).click()
-  await page.getByRole('group', { name: 'Mức hỗ trợ khi học' }).getByRole('button', { name: 'Beginner' }).click()
-  await expect(page.getByText('unit fsck bị fail', { exact: false })).toHaveCount(0)
-  const checkKey = JSON.parse(await readFile('public/guided-feedback/VPS-05-007/check.json', 'utf8'))
-  await page.getByLabel(item.questions.find((question: { id: string }) => question.id === 'check').options.find((option: { id: string }) => option.id === checkKey.correctIds[0]).label).check()
-  await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(0).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(1).click()
-  await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeDisabled()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(2).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(3).click()
-  await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeEnabled()
-})
-
-test('Batch 3 Guided keeps editorial source annotations out of simulated stdout', async ({ page }) => {
+test('web override retains authored stdout without source editorial notes at 390px', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
-  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-07-003')
-  await page.locator('[data-ticket-id="VPS-07-003"]').click()
-  await page.getByRole('button', { name: /Guided/i }).first().click()
-  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
-  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-07-003')
-  const triageKey = JSON.parse(await readFile('public/guided-feedback/VPS-07-003/triage.json', 'utf8'))
-  const triageQuestion = item.questions.find((question: { id: string }) => question.id === 'triage')
-  await page.getByLabel(triageQuestion.options.find((option: { id: string }) => option.id === triageKey.correctIds[0]).label).check()
-  await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
-  await page.getByRole('button', { name: /Tiếp tục/i }).click()
-  const checkKey = JSON.parse(await readFile('public/guided-feedback/VPS-07-003/check.json', 'utf8'))
-  const checkQuestion = item.questions.find((question: { id: string }) => question.id === 'check')
-  await page.getByLabel(checkQuestion.options.find((option: { id: string }) => option.id === checkKey.correctIds[0]).label).check()
-  await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(1).click()
+  const item = await enterInvestigation(page, 'VPS-07-003')
+  const probe = initialProbes(item)[1]
+  await run(page, probe.command)
+  await expect(page.locator(`.terminal-entry[data-probe-id="${probe.id}"] pre`)).toHaveText(probe.output)
   await expect(page.locator('pre').filter({ hasText: 'root /var/www/html;' })).toBeVisible()
   await expect(page.getByText('intended deploy', { exact: false })).toHaveCount(0)
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true)
 })
 
-test('Batch 4 virtualization evidence is labeled Hypervisor and retains fixture output', async ({ page }) => {
+test('Hypervisor investigation stays distinct from Guest and preserves literal output', async ({ page }) => {
   await page.goto('/')
-  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-10-005')
-  await page.locator('[data-ticket-id="VPS-10-005"]').click()
-  await page.getByRole('button', { name: /Guided/i }).first().click()
-  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
-  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-10-005')
-  const triageKey = JSON.parse(await readFile('public/guided-feedback/VPS-10-005/triage.json', 'utf8'))
-  const triageQuestion = item.questions.find((question: { id: string }) => question.id === 'triage')
-  await page.getByLabel(triageQuestion.options.find((option: { id: string }) => option.id === triageKey.correctIds[0]).label).check()
-  await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
-  await page.getByRole('button', { name: /Tiếp tục/i }).click()
-  await expect(page.getByText('Hypervisor', { exact: true })).toBeVisible()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(1).click()
-  await expect(page.locator('pre').filter({ hasText: '/var/lib/libvirt/images/os.qcow2' })).toBeVisible()
-  await expect(page.locator('pre').filter({ hasText: '(no vdb)' })).toHaveCount(0)
+  const item = await enterInvestigation(page, 'VPS-10-005')
+  const probe = initialProbes(item)[1]
+  await run(page, probe.command)
+  const entry = page.locator(`.terminal-entry[data-probe-id="${probe.id}"]`)
+  await expect(entry).toContainText('Hypervisor')
+  await expect(entry.locator('pre')).toHaveText(probe.output)
+  await expect(entry.locator('pre')).not.toContainText('(no vdb)')
 })
 
-test('Batch 5 L3 security case requires extra evidence before interpretation', async ({ page }) => {
-  await page.goto('/')
-  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-09-007')
-  await page.locator('[data-ticket-id="VPS-09-007"]').click()
-  await page.getByRole('button', { name: /Guided/i }).first().click()
-  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
-  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-09-007')
-  for (const id of ['triage', 'check']) {
-    const key = JSON.parse(await readFile(`public/guided-feedback/VPS-09-007/${id}.json`, 'utf8'))
-    const question = item.questions.find((entry: { id: string }) => entry.id === id)
-    await page.getByLabel(question.options.find((option: { id: string }) => option.id === key.correctIds[0]).label).check()
-    await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
-    if (id === 'triage') await page.getByRole('button', { name: /Tiếp tục/i }).click()
-  }
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(0).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(1).click()
-  await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeDisabled()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(2).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(3).click()
-  await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeEnabled()
-})
-
-test('Batch 5 container no-stdout fixture stays empty and unsupported command is not executed', async ({ page }) => {
-  await page.goto('/')
-  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-13-002')
-  await page.locator('[data-ticket-id="VPS-13-002"]').click()
-  await page.getByRole('button', { name: /Guided/i }).first().click()
-  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
-  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-13-002')
-  const triageKey = JSON.parse(await readFile('public/guided-feedback/VPS-13-002/triage.json', 'utf8'))
-  const triageQuestion = item.questions.find((question: { id: string }) => question.id === 'triage')
-  await page.getByLabel(triageQuestion.options.find((option: { id: string }) => option.id === triageKey.correctIds[0]).label).check()
-  await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
-  await page.getByRole('button', { name: /Tiếp tục/i }).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(1).click()
-  await expect(page.locator('.guided-output pre').first()).toHaveText('')
-  await page.locator('input[aria-label="Nhập command Guided"]').fill('uname -a')
-  await page.getByRole('button', { name: 'Kiểm tra', exact: true }).click()
-  await expect(page.locator('.guided-output pre').last()).toContainText('không')
-})
-
-test('Batch 6 L3 restore conflict requires panel network evidence before interpretation', async ({ page }) => {
-  await page.goto('/')
-  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-11-008')
-  await page.locator('[data-ticket-id="VPS-11-008"]').click()
-  await page.getByRole('button', { name: /Guided/i }).first().click()
-  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
-  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-11-008')
-  for (const id of ['triage', 'check']) {
-    const key = JSON.parse(await readFile(`public/guided-feedback/VPS-11-008/${id}.json`, 'utf8'))
-    const question = item.questions.find((entry: { id: string }) => entry.id === id)
-    await page.getByLabel(question.options.find((option: { id: string }) => option.id === key.correctIds[0]).label).check()
-    await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
-    if (id === 'triage') await page.getByRole('button', { name: /Tiếp tục/i }).click()
-  }
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(0).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(1).click()
-  await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeDisabled()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(2).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(3).click()
-  await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeEnabled()
-  await expect(page.locator('.guided-output pre').filter({ hasText: 'duplicate IPv4' })).toBeVisible()
-})
-
-test('Batch 7 L3 abuse appeal requires policy evidence before interpretation', async ({ page }) => {
-  await page.goto('/')
-  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-14-008')
-  await page.locator('[data-ticket-id="VPS-14-008"]').click()
-  await page.getByRole('button', { name: /Guided/i }).first().click()
-  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
-  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-14-008')
-  for (const id of ['triage', 'check']) {
-    const key = JSON.parse(await readFile(`public/guided-feedback/VPS-14-008/${id}.json`, 'utf8'))
-    const question = item.questions.find((entry: { id: string }) => entry.id === id)
-    await page.getByLabel(question.options.find((option: { id: string }) => option.id === key.correctIds[0]).label).check()
-    await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
-    if (id === 'triage') await page.getByRole('button', { name: /Tiếp tục/i }).click()
-  }
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(0).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(1).click()
-  await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeDisabled()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(2).click()
-  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(3).click()
-  await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeEnabled()
-  await expect(page.locator('.guided-output pre').filter({ hasText: 'override permission=security-lead' })).toBeVisible()
-})
-
-test('expanded Objective Exam scores evidence and verification separately from Legacy Exam', async ({ page }) => {
-  await page.goto('/')
-  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-14-008')
-  await page.locator('[data-ticket-id="VPS-14-008"]').click()
-  await page.getByRole('button', { name: 'Objective Exam' }).click()
-  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
-  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-14-008')
-  const questions = [...['triage', 'check', 'output', 'evidence', 'decision'].map(id => item.questions.find((question: { id: string }) => question.id === id)), item.objectiveExam]
-  for (const id of ['triage', 'check']) {
-    const question = questions.find((entry: { id: string }) => entry.id === id)
-    const key = JSON.parse(await readFile(`public/guided-feedback/VPS-14-008/${id}.json`, 'utf8'))
-    await page.getByLabel(question.options.find((option: { id: string }) => option.id === key.correctIds[0]).label, { exact: true }).check()
-  }
-  await expect(page.getByText(questions.find((question: { id: string }) => question.id === 'output').prompt)).toHaveCount(0)
-  for (let index = 0; index < item.probes.length; index++) await page.locator('.stateful-actions button').nth(index).click()
-  for (const id of ['output', 'evidence', 'decision', 'exam-verify']) {
-    const question = questions.find((entry: { id: string }) => entry.id === id)
-    const path = id === 'exam-verify' ? 'public/objective-feedback/VPS-14-008/exam-verify.json' : `public/guided-feedback/VPS-14-008/${id}.json`
-    const key = JSON.parse(await readFile(path, 'utf8'))
-    for (const optionId of key.correctIds) await page.getByLabel(question.options.find((option: { id: string }) => option.id === optionId).label, { exact: true }).check()
-  }
-  await page.getByRole('button', { name: 'Nộp Objective Exam' }).click()
-  await expect(page.getByRole('heading', { name: 'Kết quả 6/6' })).toBeVisible()
-  const progress = await page.evaluate(() => JSON.parse(localStorage.getItem('vps-ticket-simulator-progress-v5')!))
-  expect(progress.objectiveExamAttempts).toHaveLength(1)
-  expect(progress.examAttempts).toHaveLength(0)
-  expect(progress.reviewAttempts).toHaveLength(0)
-})
-
-test('support level persists and Independent keeps inline command lookup', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/')
-  const levels = page.getByRole('group', { name: 'Mức hỗ trợ khi học' })
-  await levels.getByRole('button', { name: 'Independent' }).click()
-  await expect(levels.getByRole('button', { name: 'Independent' })).toHaveAttribute('aria-pressed', 'true')
-  await expect(page.locator('.probe-suggestions')).toHaveCount(0)
-  await expect(page.locator('.hint-row')).toHaveCount(0)
-  await expect(page.locator('.quick-lookup')).toBeVisible()
-  await page.getByRole('button', { name: /Guided/i }).first().click()
-  await expect(page.getByRole('button', { name: 'Thư viện lệnh' }).last()).toBeVisible()
-  await page.reload()
-  await expect(page.getByRole('group', { name: 'Mức hỗ trợ khi học' }).getByRole('button', { name: 'Independent' })).toHaveAttribute('aria-pressed', 'true')
-  await page.getByRole('group', { name: 'Mức hỗ trợ khi học' }).getByRole('button', { name: 'Beginner' }).click()
-  await expect(page.locator('.probe-suggestions')).toBeVisible()
-  await expect(page.locator('.optional-fields')).toBeVisible()
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true)
-})
-
-test('Review Mistakes opens a short quiz for the weak knowledge area', async ({ page }) => {
-  await page.goto('/')
-  await page.evaluate(() => {
-    const key = 'vps-ticket-simulator-progress-v5'
-    const progress = JSON.parse(localStorage.getItem(key)!)
-    progress.guidedAttempts.push({ id: 'weak-guided', ticketId: 'VPS-01-001', createdAt: new Date().toISOString(), responses: {}, commands: [], hintLevel: 0, note: 'Evidence and next check', score: 5, total: 6, independent: false, outcomes: { output: false } })
-    localStorage.setItem(key, JSON.stringify(progress))
+for (const [id, task] of [['VPS-11-001', 'BACKUP LOG:'], ['VPS-12-001', 'PANEL: provisioning task'], ['VPS-14-001', 'BILLING: service']]) {
+  test(`${task} uses the shared terminal history with Panel context`, async ({ page }) => {
+    await page.goto('/')
+    const item = await enterInvestigation(page, id)
+    const probe = initialProbes(item).find(probe => probe.command === task)!
+    await run(page, task)
+    const entry = page.locator(`.terminal-entry[data-probe-id="${probe.id}"]`)
+    await expect(entry).toContainText('Panel')
+    await expect(entry).toContainText(task)
+    await expect(entry.locator('pre')).toHaveText(probe.output)
+    await expect(page.locator('.guided-terminal')).toHaveCount(1)
   })
-  await page.reload()
-  await page.getByTitle('Review Mistakes').click()
-  await page.getByRole('button', { name: /Đọc bằng chứng · 1 lỗi/ }).click()
-  await expect(page.getByRole('heading', { name: /Ôn lỗi/ })).toBeVisible()
-  await expect(page.locator('.review-quiz .guided-question')).toHaveCount(1)
+}
+
+test('empty stdout stays empty and suggestions fill the single input before execution', async ({ page }) => {
+  await page.goto('/')
+  const item = await enterInvestigation(page, 'VPS-13-002')
+  const probe = initialProbes(item).find(probe => probe.output === '')!
+  if (await page.locator('.terminal-suggestions').getAttribute('open') === null) await page.getByText('Lệnh và tác vụ gợi ý', { exact: true }).click()
+  await page.getByRole('button', { name: `Chọn ${probe.command}`, exact: true }).click()
+  await expect(page.getByLabel('Nhập lệnh hoặc tác vụ', { exact: true })).toHaveValue(probe.command)
+  await expect(page.locator('.terminal-history .terminal-entry')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Chạy kiểm tra', exact: true }).click()
+  const entry = page.locator(`.terminal-entry[data-probe-id="${probe.id}"]`)
+  await expect(entry.locator('pre')).toHaveText('')
+  await expect(entry).toContainText(/không có output|không có nội dung|không trả nội dung/i)
+  expect((await stored(page)).guidedDrafts[item.id].commands[0].output).toBe('')
 })
