@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "integrity"
+  ],
+  "explanation": "Volume attachment là bước trung gian, không phải restore proof.",
+  "optionFeedback": {
+    "device": "Device hiện diện không chứng minh đúng volume hay dữ liệu.",
+    "integrity": "Đúng: kiểm tra identity và dữ liệu sau attachment.",
+    "task": "Task state có thể lệch guest và filesystem."
+  }
+}

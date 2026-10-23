@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "window"
+  ],
+  "explanation": "Giữ mức kết luận theo nhiều mẫu và đường kết nối của khách.",
+  "optionFeedback": {
+    "single": "Một snapshot RAM không đo SSH hoặc OOM trong toàn job.",
+    "window": "Đúng: kiểm tra cả áp lực bộ nhớ và triệu chứng qua thời gian.",
+    "reboot": "Boot thành công không chứng minh job hay SSH ổn."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "audit"
+  ],
+  "explanation": "Tránh dùng quyền rộng hơn yêu cầu hoặc reboot thử khi chưa có change.",
+  "optionFeedback": {
+    "admin": "Vượt quyền và có thể gián đoạn VPS.",
+    "audit": "Đúng: xác minh quyền và kết quả theo policy.",
+    "get": "read:vm đã có từ trước; không kiểm tra action scope."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "load"
+  ],
+  "explanation": "Một thay đổi limit chỉ là một phần của kiểm chứng.",
+  "optionFeedback": {
+    "limit": "Limit cao chưa chứng minh ứng dụng không leak hay hết FD.",
+    "load": "Đúng: đo tài nguyên và chức năng trong tải từng gây lỗi.",
+    "restart": "Ngay sau restart chưa đủ để đánh giá xu hướng."
+  }
+}

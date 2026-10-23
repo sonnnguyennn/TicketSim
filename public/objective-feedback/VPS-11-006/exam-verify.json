@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "orders"
+  ],
+  "explanation": "Tách RPO thời gian với dữ liệu mất thật.",
+  "optionFeedback": {
+    "boot": "OS boot không chứng minh order DB đầy đủ.",
+    "orders": "Đúng: lượng hóa phần có thể/không thể phục hồi.",
+    "guess": "Chưa kiểm tra nguồn log/backup khác."
+  }
+}

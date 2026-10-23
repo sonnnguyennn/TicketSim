@@ -4,12 +4,15 @@ import type { GuidedAnswerKey, GuidedCase, GuidedQuestion } from './types'
 
 export const emptyObjectiveExamDraft = (): ObjectiveExamDraft => ({ responses: {}, commands: [] })
 export function objectiveExamQuestions(guidedCase: GuidedCase): GuidedQuestion[] {
-  if (!guidedCase.simulation || !guidedCase.objectiveExam) return []
+  if (!guidedCase.objectiveExam) return []
   return [...['triage', 'check', 'output', 'evidence', 'decision'].map(id => guidedCase.questions.find(question => question.id === id)).filter((question): question is GuidedQuestion => !!question), guidedCase.objectiveExam]
+}
+export function objectiveExamRequiredProbeIds(guidedCase: GuidedCase): string[] {
+  return guidedCase.simulation ? ['P1', 'P2'] : guidedCase.probes.filter(probe => !probe.requiredState || probe.requiredState.includes('initial')).map(probe => probe.id)
 }
 export function objectiveExamReady(guidedCase: GuidedCase, draft: ObjectiveExamDraft): boolean {
   const questions = objectiveExamQuestions(guidedCase)
-  return questions.length === 6 && ['P1', 'P2'].every(id => draft.commands.some(entry => entry.supported && entry.probeId === id)) && questions.every(question => (draft.responses[question.id] ?? []).length > 0)
+  return questions.length === 6 && objectiveExamRequiredProbeIds(guidedCase).every(id => draft.commands.some(entry => entry.supported && entry.probeId === id)) && questions.every(question => (draft.responses[question.id] ?? []).length > 0)
 }
 export function gradeObjectiveExam(guidedCase: GuidedCase, draft: ObjectiveExamDraft, keys: Record<string, GuidedAnswerKey>, createdAt: string, id: string): ObjectiveExamAttempt {
   if (!objectiveExamReady(guidedCase, draft)) throw new Error('Cần đọc P1/P2 và trả lời đủ sáu câu.')

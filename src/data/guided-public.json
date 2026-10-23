@@ -8651,7 +8651,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Không còn OOM trong cửa sổ job, RAM đủ và phiên SSH ổn định qua nhiều lượt chạy."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Không còn OOM trong cửa sổ job, RAM đủ và phiên SSH ổn định qua nhiều lượt chạy.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau tối ưu nightly job được duyệt, tín hiệu nào đủ để nói triệu chứng SSH đã được kiểm tra lại?",
+      "options": [
+        {
+          "id": "single",
+          "label": "Một lần free -h có 200 MiB available"
+        },
+        {
+          "id": "window",
+          "label": "Qua cửa sổ job không còn OOM và phiên SSH từ nguồn khách ổn định"
+        },
+        {
+          "id": "reboot",
+          "label": "VM khởi động lại thành công"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-02-006",
@@ -8847,7 +8867,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: TCP/SSH và end-to-end loss bình thường từ nguồn bị ảnh hưởng trong giờ từng lỗi."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: TCP/SSH và end-to-end loss bình thường từ nguồn bị ảnh hưởng trong giờ từng lỗi.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau khi đội mạng báo đã xử lý, phép xác minh nào đúng phạm vi loss ban đầu?",
+      "options": [
+        {
+          "id": "source",
+          "label": "Đo TCP/SSH và loss nhiều lượt từ nguồn bị ảnh hưởng, cùng mốc thời gian"
+        },
+        {
+          "id": "one",
+          "label": "Một ping từ trong VPS tới localhost"
+        },
+        {
+          "id": "hop",
+          "label": "Một hop MTR trả ICMP đầy đủ"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-02-008",
@@ -9239,7 +9279,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Trong tải đại diện FD ổn định dưới limit, log không còn EMFILE và API thành công."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Trong tải đại diện FD ổn định dưới limit, log không còn EMFILE và API thành công.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau thay đổi limit có phê duyệt, điều gì chứng minh API không còn lỗi FD trong tải đại diện?",
+      "options": [
+        {
+          "id": "limit",
+          "label": "LimitNOFILE hiện cao hơn"
+        },
+        {
+          "id": "load",
+          "label": "FD count ổn định dưới limit, không EMFILE và request API thành công"
+        },
+        {
+          "id": "restart",
+          "label": "Process vừa restart nên FD count thấp"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-03-008",
@@ -9827,7 +9887,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Steal giảm và latency ứng dụng bình thường sau xử lý của hạ tầng."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Steal giảm và latency ứng dụng bình thường sau xử lý của hạ tầng.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Đội host đã xử lý contention; bằng chứng nào xác minh cải thiện cho khách?",
+      "options": [
+        {
+          "id": "guest",
+          "label": "Steal time nhiều mẫu giảm và latency ứng dụng trở lại mức kỳ vọng"
+        },
+        {
+          "id": "alert",
+          "label": "Incident host đã chuyển trạng thái Closed"
+        },
+        {
+          "id": "cpu",
+          "label": "Process user CPU vẫn thấp trong một mẫu"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-04-008",
@@ -10219,7 +10299,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: lvs và df -h /data phản ánh dung lượng dự kiến, mount và ứng dụng vẫn đọc/ghi được."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: lvs và df -h /data phản ánh dung lượng dự kiến, mount và ứng dụng vẫn đọc/ghi được.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau mở rộng LV/XFS theo change, chọn cách xác minh đủ lớp.",
+      "options": [
+        {
+          "id": "disk",
+          "label": "Chỉ lsblk cho thấy vdb 80G"
+        },
+        {
+          "id": "layers",
+          "label": "lvs và df -hT /data khớp mục tiêu, mount/đọc ghi app bình thường"
+        },
+        {
+          "id": "vg",
+          "label": "Chỉ vgs báo VFree giảm"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-07-003",
@@ -10588,7 +10688,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Client lấy đúng cert còn hạn theo SNI, chain hợp lệ và HTTPS trả nội dung mong đợi."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Client lấy đúng cert còn hạn theo SNI, chain hợp lệ và HTTPS trả nội dung mong đợi.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau renew cert, panel liệt kê cert mới. Kiểm tra nào chứng minh client nhận đúng TLS?",
+      "options": [
+        {
+          "id": "panel",
+          "label": "Chỉ nhìn inventory panel"
+        },
+        {
+          "id": "client",
+          "label": "Từ client hỏi endpoint với đúng SNI, kiểm tra SAN, notAfter, chain rồi HTTPS"
+        },
+        {
+          "id": "clock",
+          "label": "Chỉ xem date -u trên server"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-07-008",
@@ -11176,7 +11296,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Validating resolvers trả bản ghi đúng, DNSSEC chain hợp lệ sau TTL và client tải site."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Validating resolvers trả bản ghi đúng, DNSSEC chain hợp lệ sau TTL và client tải site.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau change DNSSEC được duyệt, kết quả nào đủ thận trọng?",
+      "options": [
+        {
+          "id": "cd",
+          "label": "Chỉ dig +cd trả NOERROR"
+        },
+        {
+          "id": "valid",
+          "label": "Nhiều validating resolver trả record đúng, DS/DNSKEY/RRSIG nhất quán sau TTL"
+        },
+        {
+          "id": "auth",
+          "label": "Authoritative trả A record"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-06-001",
@@ -12416,7 +12556,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Gateway websocket kết nối và console hiển thị; guest/service xác minh riêng."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Gateway websocket kết nối và console hiển thị; guest/service xác minh riêng.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Gateway console được sửa nhưng guest vẫn chưa kiểm tra. Trạng thái nào chính xác?",
+      "options": [
+        {
+          "id": "fixed",
+          "label": "Resolved toàn bộ VPS vì websocket đã kết nối"
+        },
+        {
+          "id": "partial",
+          "label": "Xác nhận console hiển thị rồi kiểm tra guest và dịch vụ khách riêng"
+        },
+        {
+          "id": "reset",
+          "label": "Hard reset VM để chắc chắn thấy màn hình"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-06-008",
@@ -13460,7 +13620,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đúng volume ID gắn lại, filesystem mount đúng và dữ liệu ứng dụng kiểm tra integrity."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đúng volume ID gắn lại, filesystem mount đúng và dữ liệu ứng dụng kiểm tra integrity.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau host team reattach volume, cần kiểm tra gì trước khi báo khách dữ liệu đã về?",
+      "options": [
+        {
+          "id": "device",
+          "label": "Chỉ thấy vdb trong lsblk"
+        },
+        {
+          "id": "integrity",
+          "label": "Đối chiếu volume ID, mount đúng path, đọc dữ liệu và app integrity"
+        },
+        {
+          "id": "task",
+          "label": "Panel task báo Completed"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-10-006",
@@ -15288,7 +15468,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security xác nhận phạm vi, access trái phép bị chặn theo change, key/audit được kiểm tra và monitoring sạch."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security xác nhận phạm vi, access trái phép bị chặn theo change, key/audit được kiểm tra và monitoring sạch.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Security đã nhận incident root login. Có thể ghi resolved ngay không?",
+      "options": [
+        {
+          "id": "yes",
+          "label": "Có, vì đã mở incident"
+        },
+        {
+          "id": "track",
+          "label": "Giữ escalated, theo dõi xác minh owner/key, containment và audit sau xử lý"
+        },
+        {
+          "id": "reboot",
+          "label": "Reboot VPS để xóa phiên rồi đóng ticket"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-09-008",
@@ -16332,7 +16532,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Container resolve domain qua resolver được cấp và app kết nối endpoint, host vẫn bình thường."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Container resolve domain qua resolver được cấp và app kết nối endpoint, host vẫn bình thường.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau sửa Docker DNS có duyệt, kiểm tra nào đủ cho lỗi container?",
+      "options": [
+        {
+          "id": "host",
+          "label": "Chỉ getent hosts trên host trả IP"
+        },
+        {
+          "id": "container",
+          "label": "Query trong container trả IP qua resolver đúng và app kết nối đích"
+        },
+        {
+          "id": "restart",
+          "label": "Container restart thành công"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-13-006",
@@ -17964,7 +18184,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Owner kiểm tra order set/integrity và ghi rõ RPO/data gap còn lại."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Owner kiểm tra order set/integrity và ghi rõ RPO/data gap còn lại.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Backup cũ 60 giờ đã boot. Điều gì cần làm trước khi nói đã phục hồi đơn hàng?",
+      "options": [
+        {
+          "id": "boot",
+          "label": "Đóng ticket vì OS boot được"
+        },
+        {
+          "id": "orders",
+          "label": "Đối chiếu order IDs với log/binlog, restore thử và báo RPO còn thiếu cho owner"
+        },
+        {
+          "id": "guess",
+          "label": "Cam kết toàn bộ đơn trong 60 giờ mất vĩnh viễn"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-11-007",
@@ -19596,7 +19836,27 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Token đúng scope được duyệt, API dry-run/authorized request thành công và audit ghi nhận."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Token đúng scope được duyệt, API dry-run/authorized request thành công và audit ghi nhận.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau cấp token scope tối thiểu được duyệt, phép xác minh nào đúng?",
+      "options": [
+        {
+          "id": "admin",
+          "label": "Dùng admin token thử reboot production"
+        },
+        {
+          "id": "audit",
+          "label": "Kiểm tra token thuộc owner, scope đúng endpoint, request được ủy quyền và audit ghi nhận"
+        },
+        {
+          "id": "get",
+          "label": "Chỉ GET /vm trả 200"
+        }
+      ]
+    }
   },
   {
     "id": "VPS-12-008",
@@ -21228,6 +21488,26 @@
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở."
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security ra quyết định có audit, panel state đúng quyết định và network/service được kiểm tra nếu được mở.",
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Appeal abuse đã được nhận nhưng review còn mở. Cách ghi trạng thái ticket nào đúng?",
+      "options": [
+        {
+          "id": "online",
+          "label": "Resolved vì khách đã nộp appeal"
+        },
+        {
+          "id": "pending",
+          "label": "Escalated/đang chờ security; chỉ xác minh panel và network sau quyết định có audit"
+        },
+        {
+          "id": "override",
+          "label": "Tự unsuspend để khách làm việc"
+        }
+      ]
+    }
   }
 ]

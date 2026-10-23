@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "guest"
+  ],
+  "explanation": "Xác minh qua nhiều mẫu khi workload đại diện.",
+  "optionFeedback": {
+    "guest": "Đúng: đo cả host symptom và trải nghiệm VM.",
+    "alert": "Trạng thái incident không tự đo hiệu năng guest.",
+    "cpu": "User CPU thấp là triệu chứng cũ, không đo steal."
+  }
+}

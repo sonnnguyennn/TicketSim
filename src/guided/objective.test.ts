@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import guidedPublic from '../data/guided-public.json'
 import { emptyProgress } from '../lib'
 import { loadProgress, migrateProgress, saveProgress, validProgress } from '../storage'
-import { emptyObjectiveExamDraft, gradeObjectiveExam, objectiveExamQuestions, objectiveExamReady } from './objective'
+import { emptyObjectiveExamDraft, gradeObjectiveExam, objectiveExamQuestions, objectiveExamReady, objectiveExamRequiredProbeIds } from './objective'
 import type { GuidedAnswerKey, GuidedCase } from './types'
 
 const pilots = (guidedPublic as GuidedCase[]).filter(item => item.simulation)
@@ -31,6 +31,35 @@ describe('Objective Exam and v5 progress', () => {
       expect(wrong.score).toBe(4)
       expect(wrong.errors.map(item => item.category).sort()).toEqual(['missing_evidence', 'unsafe_action'])
       expect(wrong.errors.every(item => !!item.questionId)).toBe(true)
+    }
+  })
+  it('grades fourteen additional evidence-rich cases without requiring a Stateful simulation', () => {
+    const expanded = (guidedPublic as GuidedCase[]).filter(item => item.objectiveExam && !item.simulation)
+    expect(expanded).toHaveLength(14)
+    for (const guidedCase of expanded) {
+      const required = objectiveExamRequiredProbeIds(guidedCase)
+      expect(required.length).toBeGreaterThanOrEqual(4)
+      const draft = emptyObjectiveExamDraft()
+      const questions = objectiveExamQuestions(guidedCase)
+      expect(questions).toHaveLength(6)
+      const keys: Record<string, GuidedAnswerKey> = {}
+      for (const question of questions) {
+        const path = question.id === 'exam-verify' ? `public/objective-feedback/${guidedCase.id}/exam-verify.json` : `public/guided-feedback/${guidedCase.id}/${question.id}.json`
+        keys[question.id] = JSON.parse(fs.readFileSync(path, 'utf8')) as GuidedAnswerKey
+        draft.responses[question.id] = keys[question.id].correctIds
+      }
+      draft.commands = guidedCase.probes.filter(probe => required.includes(probe.id) && probe.id !== required.at(-1)).map(probe => ({ id: probe.id, probeId: probe.id, command: probe.command, output: probe.output, supported: true, kind: probe.context === 'panel' ? 'investigation' : 'terminal', at: '' }))
+      expect(objectiveExamReady(guidedCase, draft), guidedCase.id).toBe(false)
+      const finalProbe = guidedCase.probes.find(probe => probe.id === required.at(-1))!
+      draft.commands.push({ id: finalProbe.id, probeId: finalProbe.id, command: finalProbe.command, output: finalProbe.output, supported: true, kind: finalProbe.context === 'panel' ? 'investigation' : 'terminal', at: '' })
+      expect(objectiveExamReady(guidedCase, draft), guidedCase.id).toBe(true)
+      expect(gradeObjectiveExam(guidedCase, draft, keys, '2026-10-23T00:00:00Z', 'full').score).toBe(6)
+      const wrongId = questions[4].options.find(option => !keys[questions[4].id].correctIds.includes(option.id))!.id
+      draft.responses[questions[4].id] = [wrongId]
+      const wrong = gradeObjectiveExam(guidedCase, draft, keys, '2026-10-23T00:00:00Z', 'wrong')
+      expect(wrong.score).toBe(5)
+      expect(wrong.errors).toHaveLength(1)
+      expect(wrong.errors[0].category).toBe('unsafe_action')
     }
   })
   it('migrates v4 without dropping history and round trips stateful/objective drafts', () => {

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "layers"
+  ],
+  "explanation": "Dung lượng cần đúng ở từng lớp trước khi đóng ticket.",
+  "optionFeedback": {
+    "disk": "Disk lớn không chứng minh LV/filesystem đã grow.",
+    "layers": "Đúng: kiểm tra LV, filesystem và ứng dụng.",
+    "vg": "Extents được cấp chưa chứng minh filesystem hay app khỏe."
+  }
+}

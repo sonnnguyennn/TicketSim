@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "pending"
+  ],
+  "explanation": "Xác minh escalation khác với xác minh dịch vụ đã khôi phục.",
+  "optionFeedback": {
+    "online": "Appeal nhận chưa có quyết định mở service.",
+    "pending": "Đúng: giữ ranh giới quyền và không hứa online sớm.",
+    "override": "Support không có quyền override abuse hold."
+  }
+}

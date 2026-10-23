@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import type { ObjectiveExamDraft, Progress, Ticket } from '../types'
 import { commandLibrary } from './commands'
 import { runStatefulFixture, emptyStatefulDraft } from './stateful'
-import { emptyObjectiveExamDraft, gradeObjectiveExam, objectiveExamQuestions, objectiveExamReady } from './objective'
+import { emptyObjectiveExamDraft, gradeObjectiveExam, objectiveExamQuestions, objectiveExamReady, objectiveExamRequiredProbeIds } from './objective'
 import type { GuidedAnswerKey, GuidedCase, GuidedQuestion } from './types'
 
 type Props = { ticket: Ticket; guidedCase: GuidedCase; progress: Progress; setProgress: React.Dispatch<React.SetStateAction<Progress>>; onBack: () => void }
@@ -13,7 +13,8 @@ export function ObjectiveExamWorkspace({ ticket, guidedCase, progress, setProgre
   const [keys, setKeys] = useState<Record<string, GuidedAnswerKey>>({})
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
-  const evidenceReady = ['P1', 'P2'].every(id => draft.commands.some(entry => entry.supported && entry.probeId === id))
+  const requiredProbeIds = objectiveExamRequiredProbeIds(guidedCase)
+  const evidenceReady = requiredProbeIds.every(id => draft.commands.some(entry => entry.supported && entry.probeId === id))
   useEffect(() => { setKeys({}); setError('') }, [ticket.id, attempt?.id])
   useEffect(() => {
     if (!attempt) return
@@ -51,7 +52,7 @@ export function ObjectiveExamWorkspace({ ticket, guidedCase, progress, setProgre
   return <section className="objective-page"><div className="page-heading"><div><button className="guided-back" onClick={onBack}>← Về ticket</button><h1>Objective Exam · {ticket.id}</h1><p>6 câu chấm bằng đáp án biên soạn; ghi chú tự do không được chấm bằng từ khóa. Đây là điểm hệ thống xác minh cho câu chọn đáp án.</p></div><div className="progress-summary">{attempt ? `${attempt.score}/${attempt.total} · khách quan` : 'Đang làm · tự động lưu'}</div></div>
     <div className="guided-layout"><div className="guided-main"><section className="guided-card guided-ticket"><span className="guided-kicker">LỜI KHÁCH HÀNG</span><p>{ticket.customer_message}</p></section>
       {questions.filter(question => ['triage', 'check'].includes(question.id)).map(question => <ExamQuestion key={question.id} question={question} draft={draft} attempt={attempt} answer={keys[question.id]} onSelect={selected => update(current => ({ responses: { ...current.responses, [question.id]: selected } }))} />)}
-      <section className="guided-card"><h2>Đọc bằng chứng fixture</h2><p>Chọn phép kiểm tra rồi đọc chính xác P1/P2. Output dưới đây là dữ liệu tác giả, không chạy lệnh trên VPS.</p><div className="stateful-actions">{guidedCase.probes.filter(probe => ['P1', 'P2'].includes(probe.id)).map(probe => <button key={probe.id} disabled={!!attempt} onClick={() => inspect(probe.id)}>{probe.id} · {probe.command} <small>{probe.context}</small></button>)}</div><div className="guided-output">{draft.commands.map(entry => <div key={entry.id}><code>{entry.probeId} · {entry.command}</code><pre>{entry.output}</pre></div>)}</div></section>
+      <section className="guided-card"><h2>Đọc bằng chứng fixture</h2><p>Chọn và đọc đủ {requiredProbeIds.length} phép kiểm tra trước khi diễn giải. Output dưới đây là dữ liệu tác giả, không chạy lệnh trên VPS.</p><div className="stateful-actions">{guidedCase.probes.filter(probe => requiredProbeIds.includes(probe.id)).map(probe => <button key={probe.id} disabled={!!attempt} onClick={() => inspect(probe.id)}>{probe.id} · {probe.command} <small>{probe.context}</small></button>)}</div><div className="guided-output">{draft.commands.map(entry => <div key={entry.id}><code>{entry.probeId} · {entry.command}</code><pre>{entry.output}</pre></div>)}</div></section>
       {evidenceReady && questions.filter(question => !['triage', 'check'].includes(question.id)).map(question => <ExamQuestion key={question.id} question={question} draft={draft} attempt={attempt} answer={keys[question.id]} onSelect={selected => update(current => ({ responses: { ...current.responses, [question.id]: selected } }))} />)}
       {error && <div className="notice error" role="alert">{error}</div>}{!attempt ? <button className="primary-button" disabled={busy || !objectiveExamReady(guidedCase, draft)} onClick={submit}>{busy ? 'Đang chấm...' : 'Nộp Objective Exam'}</button> : <div className="guided-card"><h2>Kết quả {attempt.score}/{attempt.total}</h2><p>Các câu sai và loại lỗi đã được đưa vào Review Mistakes. Điểm này chỉ áp dụng cho 6 câu chọn đáp án, không chứng minh năng lực xử lý VPS thực tế.</p><button className="guided-secondary" onClick={() => { update(emptyObjectiveExamDraft()); setKeys({}) }}>Lượt mới</button></div>}
     </div><aside className="guided-side"><div className="guided-card"><h3>Phạm vi chấm</h3><p>Triệu chứng · command · output · bằng chứng · quyết định · xác minh/escalation.</p><p>Legacy Exam tự đánh giá vẫn có cho toàn bộ 112 ticket.</p></div></aside></div>

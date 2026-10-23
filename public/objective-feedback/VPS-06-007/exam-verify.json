@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "partial"
+  ],
+  "explanation": "Sửa đường console là xác minh một lớp, không phải mọi dịch vụ.",
+  "optionFeedback": {
+    "fixed": "Web console khỏe không chứng minh guest/service khỏe.",
+    "partial": "Đúng: tách control-plane và guest health.",
+    "reset": "Tác động khách không được bằng chứng hỗ trợ."
+  }
+}

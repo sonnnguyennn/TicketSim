@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "source"
+  ],
+  "explanation": "Xác minh end-to-end từ nguồn khách, không chỉ nhìn hop trung gian.",
+  "optionFeedback": {
+    "source": "Đúng: lỗi theo nguồn và ngắt quãng cần đo từ chính đường cũ.",
+    "one": "Localhost không đi qua path lỗi.",
+    "hop": "Hop trung gian riêng không chứng minh đích không loss."
+  }
+}

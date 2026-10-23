@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "valid"
+  ],
+  "explanation": "SERVFAIL trước đó liên quan validation nên cần thử validator.",
+  "optionFeedback": {
+    "cd": "+cd bỏ validation nên chưa chứng minh chain hợp lệ.",
+    "valid": "Đúng: kiểm tra chain và resolver thực.",
+    "auth": "Authoritative answer đơn lẻ không chứng minh validator chấp nhận."
+  }
+}

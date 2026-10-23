@@ -2,6 +2,10 @@
 
 ## Current state and pickup guide — 2026-10-23
 
+### Phase 5D pickup update
+
+Objective Exam now covers **20/112** cases. Fourteen new cases require all authored initial probes before six-choice grading and add independent verification/escalation keys. Guided remains **112/112**, Stateful **6/112**, independent review variants **6/112**. Legacy Exam and free text are still self-reviewed; Objective scores never grant Mastered. See `Phase_5D_QA.md`.
+
 ### Phase 5C pickup update
 
 Batch 7 completes Guided coverage: **112/112** across 14 topics and all four difficulties. The original 112 tickets and v5 progress format remain unchanged. Stateful, Objective Exam and independent variants are still **6/112 each** at this checkpoint. See `Phase_5C_Batch_7_QA.md`. Phase 5D/5E independent assessment and broader case-by-case browser QA remain open.

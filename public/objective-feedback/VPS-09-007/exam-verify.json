@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "track"
+  ],
+  "explanation": "Escalation đúng không đồng nghĩa tài khoản đã an toàn.",
+  "optionFeedback": {
+    "yes": "Incident tiếp nhận chưa xác minh containment và phạm vi.",
+    "track": "Đúng: chỉ chốt khi security xác nhận access và tác động.",
+    "reboot": "Reboot có thể mất bằng chứng, không xác minh compromise."
+  }
+}

@@ -233,6 +233,35 @@ test('Batch 7 L3 abuse appeal requires policy evidence before interpretation', a
   await expect(page.locator('.guided-output pre').filter({ hasText: 'override permission=security-lead' })).toBeVisible()
 })
 
+test('expanded Objective Exam scores evidence and verification separately from Legacy Exam', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-14-008')
+  await page.locator('[data-ticket-id="VPS-14-008"]').click()
+  await page.getByRole('button', { name: 'Objective Exam' }).click()
+  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
+  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-14-008')
+  const questions = [...['triage', 'check', 'output', 'evidence', 'decision'].map(id => item.questions.find((question: { id: string }) => question.id === id)), item.objectiveExam]
+  for (const id of ['triage', 'check']) {
+    const question = questions.find((entry: { id: string }) => entry.id === id)
+    const key = JSON.parse(await readFile(`public/guided-feedback/VPS-14-008/${id}.json`, 'utf8'))
+    await page.getByLabel(question.options.find((option: { id: string }) => option.id === key.correctIds[0]).label, { exact: true }).check()
+  }
+  await expect(page.getByText(questions.find((question: { id: string }) => question.id === 'output').prompt)).toHaveCount(0)
+  for (let index = 0; index < item.probes.length; index++) await page.locator('.stateful-actions button').nth(index).click()
+  for (const id of ['output', 'evidence', 'decision', 'exam-verify']) {
+    const question = questions.find((entry: { id: string }) => entry.id === id)
+    const path = id === 'exam-verify' ? 'public/objective-feedback/VPS-14-008/exam-verify.json' : `public/guided-feedback/VPS-14-008/${id}.json`
+    const key = JSON.parse(await readFile(path, 'utf8'))
+    for (const optionId of key.correctIds) await page.getByLabel(question.options.find((option: { id: string }) => option.id === optionId).label, { exact: true }).check()
+  }
+  await page.getByRole('button', { name: 'Nộp Objective Exam' }).click()
+  await expect(page.getByRole('heading', { name: 'Kết quả 6/6' })).toBeVisible()
+  const progress = await page.evaluate(() => JSON.parse(localStorage.getItem('vps-ticket-simulator-progress-v5')!))
+  expect(progress.objectiveExamAttempts).toHaveLength(1)
+  expect(progress.examAttempts).toHaveLength(0)
+  expect(progress.reviewAttempts).toHaveLength(0)
+})
+
 test('support level persists and Independent keeps inline command lookup', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "client"
+  ],
+  "explanation": "Dùng cùng hostname/SNI mà khách gặp lỗi.",
+  "optionFeedback": {
+    "panel": "Panel có thể chưa deploy.",
+    "client": "Đúng: xác minh certificate được phục vụ và chức năng.",
+    "clock": "Giờ đúng không chứng minh endpoint dùng cert mới."
+  }
+}

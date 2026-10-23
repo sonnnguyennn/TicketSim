@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "container"
+  ],
+  "explanation": "Kiểm tra đúng network namespace của container.",
+  "optionFeedback": {
+    "host": "Host đã resolve được trước đó.",
+    "container": "Đúng: xác minh trong namespace từng lỗi và chức năng app.",
+    "restart": "Restart không chứng minh DNS hoạt động."
+  }
+}
