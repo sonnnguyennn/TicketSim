@@ -92,6 +92,8 @@ test('new L3 Guided case requires authored extra evidence before interpretation'
   await page.getByLabel(item.questions.find((question: { id: string }) => question.id === 'triage').options.find((option: { id: string }) => option.id === key.correctIds[0]).label).check()
   await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
   await page.getByRole('button', { name: /Tiếp tục/i }).click()
+  await page.getByRole('group', { name: 'Mức hỗ trợ khi học' }).getByRole('button', { name: 'Beginner' }).click()
+  await expect(page.getByText('unit fsck bị fail', { exact: false })).toHaveCount(0)
   const checkKey = JSON.parse(await readFile('public/guided-feedback/VPS-05-007/check.json', 'utf8'))
   await page.getByLabel(item.questions.find((question: { id: string }) => question.id === 'check').options.find((option: { id: string }) => option.id === checkKey.correctIds[0]).label).check()
   await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
