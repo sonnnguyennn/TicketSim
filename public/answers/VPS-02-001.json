@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Default route is missing in simulated guest network.",
+  "recommended_next_checks": "nmcli connection show; ip route get 1.1.1.1",
+  "resolution_guidance": "Confirm correct gateway and restore NetworkManager profile via console.",
+  "verification": "Default route exists; TCP external connectivity verified.",
+  "escalate_when": "Gateway unconfirmed, host network issue.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

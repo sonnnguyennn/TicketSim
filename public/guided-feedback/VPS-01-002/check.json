@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "getent"
+  ],
+  "explanation": "Kiểm tra account bằng phép đọc trước khi đề xuất thay đổi.",
+  "commandId": "getent-passwd",
+  "optionFeedback": {
+    "getent": "Đúng: tra nguồn danh tính của hệ thống.",
+    "route": "Route không kiểm tra account.",
+    "restart": "Restart là thay đổi không cần thiết và không kiểm tra username."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "confirm"
+  ],
+  "explanation": "Xác minh đúng FQDN phân giải và trang tải sau thay đổi được phép.",
+  "commandId": "dig-a",
+  "optionFeedback": {
+    "confirm": "Đúng: không tự thay đổi zone.",
+    "all": "Phá hủy cấu hình và không có cơ sở.",
+    "reboot": "NXDOMAIN không giải quyết bằng reboot guest."
+  }
+}

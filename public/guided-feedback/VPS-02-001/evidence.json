@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "ip",
+    "route"
+  ],
+  "explanation": "Cần xác nhận gateway trước mọi thay đổi.",
+  "commandId": "ip-route",
+  "optionFeedback": {
+    "ip": "Đúng từ P1.",
+    "route": "Đúng từ P2.",
+    "gateway": "Fixture chưa cung cấp gateway được cấp.",
+    "upstream": "Không thể kết luận upstream khi guest thiếu route."
+  }
+}

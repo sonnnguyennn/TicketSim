@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "ww",
+    "www"
+  ],
+  "explanation": "Tách kết quả DNS của từng tên.",
+  "commandId": "dig-a",
+  "optionFeedback": {
+    "ww": "Đúng từ P1.",
+    "www": "Đúng từ P2.",
+    "down": "Chưa có kiểm tra HTTP.",
+    "provider": "Không được chứng minh."
+  }
+}

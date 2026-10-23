@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "gb",
+    "inode"
+  ],
+  "explanation": "Tách quan sát khỏi quyết định dọn dữ liệu.",
+  "commandId": "df-i",
+  "optionFeedback": {
+    "gb": "Đúng từ P1.",
+    "inode": "Đúng từ P2.",
+    "which": "Chưa biết loại file nào được phép xóa.",
+    "hardware": "Không có bằng chứng phần cứng."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "stopped"
+  ],
+  "explanation": "Có thể giải thích triệu chứng mà chưa biết nguyên nhân ban đầu.",
+  "commandId": "ss-ltnp",
+  "optionFeedback": {
+    "stopped": "Đúng với P1/P2.",
+    "reason": "Vẫn cần log/ngữ cảnh.",
+    "disk": "Không có bằng chứng disk."
+  }
+}

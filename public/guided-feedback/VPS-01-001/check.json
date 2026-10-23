@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "service"
+  ],
+  "explanation": "Ưu tiên một phép đọc trạng thái service trước khi đề xuất thay đổi.",
+  "commandId": "systemctl-status",
+  "optionFeedback": {
+    "service": "Đúng: xem daemon có đang hoạt động.",
+    "disk": "Lệnh hợp lệ nhưng chưa trực tiếp với triệu chứng SSH.",
+    "dns": "DNS không phải dấu hiệu nổi bật ở ticket này."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Free VG extents exist but LV filesystem not extended.",
+  "recommended_next_checks": "lvs; vgs; findmnt /data; filesystem type",
+  "resolution_guidance": "Expand LV/filesystem using filesystem-specific safe procedure with backup.",
+  "verification": "lvs and df reflect intended capacity.",
+  "escalate_when": "Thin pool/LVM snapshot or encrypted layout.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

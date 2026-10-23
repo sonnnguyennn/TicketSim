@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Host CPU contention likely.",
+  "recommended_next_checks": "Compare host CPU usage and other VMs.",
+  "resolution_guidance": "Escalate node load balancing/capacity planning.",
+  "verification": "Steal time and latency normal.",
+  "escalate_when": "Host team only.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

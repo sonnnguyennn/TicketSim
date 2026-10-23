@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của journalctl -u sshd -n 20; xem thêm Inspect Accepted authentication and admin changes.."
+}

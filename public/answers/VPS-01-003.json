@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Client private key permissions are too open.",
+  "recommended_next_checks": "Inspect which key is being offered; check permissions.",
+  "resolution_guidance": "On own lab client, chmod 600 ~/.ssh/lab_key; retry.",
+  "verification": "ssh -i key succeeds without exposing private key.",
+  "escalate_when": "Still denied after client key check.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

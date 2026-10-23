@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của ip -br link; xem thêm virsh domiflist vm-102 (authorized host); migration task logs.."
+}

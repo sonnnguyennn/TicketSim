@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Nhìn kỹ từng ký tự trong hostname.",
+    "So sánh ww.example.com và www.example.com.",
+    "Một tên NXDOMAIN nhưng tên khác trả A record; xác nhận FQDN khách thực sự dùng."
+  ]
+}

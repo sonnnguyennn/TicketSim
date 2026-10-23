@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Duplicate provisioning for one order.",
+  "recommended_next_checks": "Compare billing/order mapping and VM resources; preserve state.",
+  "resolution_guidance": "Escalate reconciliation; avoid deleting any VM until identity confirmed.",
+  "verification": "One correct managed service and billing mapping.",
+  "escalate_when": "Provisioning/billing coordination.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

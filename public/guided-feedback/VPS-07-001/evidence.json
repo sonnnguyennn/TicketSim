@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "inactive",
+    "port"
+  ],
+  "explanation": "Chỉ nêu output đã thấy.",
+  "commandId": "systemctl-nginx",
+  "optionFeedback": {
+    "inactive": "Đúng từ P1.",
+    "port": "Đúng từ P2.",
+    "config": "P1/P2 không xác nhận lỗi cấu hình; cần nginx -t và log.",
+    "upstream": "Không có bằng chứng upstream."
+  }
+}

@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của vmstat 1 3; xem thêm iotop -o (if installed); df -h; host metrics.."
+}

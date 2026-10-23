@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của top -b -n1 | head; xem thêm Compare host CPU usage and other VMs.."
+}

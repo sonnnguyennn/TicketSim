@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "df -h đo block, nhưng còn một tài nguyên khác cho mỗi file.",
+    "So sánh df -h / với df -i /.",
+    "IUse% 100% cho thấy inode cạn; cần tìm nơi có nhiều file nhỏ."
+  ]
+}

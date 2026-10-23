@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của ps -o pid,rss,etime,comm -p 1200; xem thêm Compare historical RSS, app heap and traffic.."
+}

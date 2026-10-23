@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Root filesystem remounted read-only after filesystem error.",
+  "recommended_next_checks": "Check storage health and take snapshot/backup according to policy.",
+  "resolution_guidance": "Do not remount rw blindly; escalate controlled repair/offline recovery.",
+  "verification": "Filesystem healthy after authorized recovery and writes succeed.",
+  "escalate_when": "Immediately escalate storage/filesystem integrity risk.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

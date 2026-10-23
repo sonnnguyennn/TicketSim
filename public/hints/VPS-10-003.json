@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của virsh domiflist vm-102; xem thêm Compare VM XML/network intent and host bridge/VLAN mapping.."
+}

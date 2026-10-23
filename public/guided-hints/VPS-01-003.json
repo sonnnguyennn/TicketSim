@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Cảnh báo nhắc đến file nào và quyền octal bao nhiêu?",
+    "Đối chiếu ssh -i với ls -l của cùng private key trên client.",
+    "0644 cho phép người khác đọc file; kiểm tra quyền key trên client rồi thử SSH lại, không đổi sshd trong guest."
+  ]
+}

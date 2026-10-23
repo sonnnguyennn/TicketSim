@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của cat /sys/fs/cgroup/cpu.stat; xem thêm Inspect container CPU limits, traffic/load, application metrics.."
+}

@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Unknown successful privileged access needs incident review.",
+  "recommended_next_checks": "Confirm approved automation/bastion and key fingerprint; preserve logs.",
+  "resolution_guidance": "Escalate security incident, rotate credentials following IR steps.",
+  "verification": "Sessions accounted for; no persistence; controls revalidated.",
+  "escalate_when": "Urgent security escalation.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

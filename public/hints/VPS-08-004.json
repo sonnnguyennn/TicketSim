@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của curl -I http://198.51.100.20; xem thêm nmcli dev show | grep DNS; cat /etc/resolv.conf."
+}

@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "SELinux prohibits web service from connecting to backend port.",
+  "recommended_next_checks": "Check boolean policy and approved backend architecture.",
+  "resolution_guidance": "Enable only justified SELinux policy boolean/rule; keep enforcing.",
+  "verification": "Backend access works with SELinux enforcing.",
+  "escalate_when": "Custom policy/security reviewer needed.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

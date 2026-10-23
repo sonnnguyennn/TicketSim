@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "stopped"
+  ],
+  "explanation": "Trạng thái không thay cho phân tích nguyên nhân.",
+  "commandId": "systemctl-nginx",
+  "optionFeedback": {
+    "stopped": "Đúng theo P1.",
+    "why": "Cần log và ngữ cảnh để tìm nguyên nhân.",
+    "off": "Panel vẫn báo VM running."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "outside"
+  ],
+  "explanation": "Xác định phạm vi trước khi chọn lớp cần kiểm tra.",
+  "optionFeedback": {
+    "all": "Khách vẫn tới được cùng subnet.",
+    "outside": "Đúng với lời khách.",
+    "ssh": "Ticket không giới hạn ở SSH."
+  }
+}

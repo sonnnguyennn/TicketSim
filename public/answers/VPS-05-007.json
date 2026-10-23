@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Filesystem check failed; integrity may be compromised.",
+  "recommended_next_checks": "Check backups, snapshot and disk health from rescue console.",
+  "resolution_guidance": "Escalate offline repair/recovery; avoid in-place fsck on mounted filesystem.",
+  "verification": "Filesystem mounts cleanly; application data verified.",
+  "escalate_when": "Storage integrity incident.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

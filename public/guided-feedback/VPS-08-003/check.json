@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "dig"
+  ],
+  "explanation": "Sau đó cần kiểm tra registrar và authoritative NS trực tiếp.",
+  "commandId": "dig-ns",
+  "optionFeedback": {
+    "dig": "Đúng: xem bản ghi NS theo nguồn truy vấn này.",
+    "curl": "HTTP localhost không cho biết delegation.",
+    "route": "Route guest không cho biết NS domain."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Boot blocked by failed mount for /data, possibly stale UUID.",
+  "recommended_next_checks": "lsblk -f; journalctl -xb; compare fstab UUID.",
+  "resolution_guidance": "Back up settings and correct mount only after verifying disk.",
+  "verification": "Normal boot, mount successful, SSH restored.",
+  "escalate_when": "Data disk missing/corrupt.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

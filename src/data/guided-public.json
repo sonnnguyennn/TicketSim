@@ -1,0 +1,2839 @@
+[
+  {
+    "id": "VPS-01-001",
+    "objective": "Phân biệt lỗi kết nối TCP với lỗi xác thực SSH; dùng trạng thái service và cổng lắng nghe làm bằng chứng.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "systemctl status sshd",
+        "output": "Active: inactive (dead)",
+        "context": "guest",
+        "purpose": "Kiểm tra SSH daemon có đang chạy trong guest không.",
+        "meaning": "inactive (dead) chỉ nói sshd hiện không chạy; chưa cho biết nguyên nhân dừng.",
+        "commandId": "systemctl-status",
+        "aliases": [
+          "sudo systemctl status sshd"
+        ]
+      },
+      {
+        "id": "P2",
+        "command": "ss -ltnp",
+        "output": "No listener on :22",
+        "context": "guest",
+        "purpose": "Xem các cổng TCP đang lắng nghe.",
+        "meaning": "Không có listener ở :22 phù hợp với lỗi connection refused.",
+        "commandId": "ss-ltnp",
+        "aliases": [
+          "sudo ss -ltnp"
+        ]
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "journalctl -u sshd -n 50 --no-pager",
+        "output": "-- No entries --",
+        "purpose": "Tìm log gần đây của SSH service.",
+        "meaning": "Fixture không có log bổ sung; chưa thể kết luận vì sao service dừng.",
+        "commandId": "journalctl-unit",
+        "aliases": [
+          "sudo journalctl -u sshd -n 50 --no-pager"
+        ]
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "df -h /",
+        "output": "/dev/vda1 20G 8G 12G 40% /",
+        "purpose": "Loại trừ tình huống root filesystem đầy.",
+        "meaning": "Ổ đĩa còn chỗ; đây không phải bằng chứng trực tiếp cho nguyên nhân SSH dừng.",
+        "commandId": "df-h",
+        "aliases": []
+      },
+      {
+        "id": "G3",
+        "context": "guest",
+        "command": "systemctl status sshd",
+        "output": "Active: active (running)",
+        "purpose": "Xác minh SSH daemon sau hành động mô phỏng.",
+        "meaning": "Service active; vẫn cần kiểm tra listener và đường kết nối từ client.",
+        "commandId": "systemctl-status",
+        "aliases": [
+          "sudo systemctl status sshd"
+        ],
+        "requiredState": [
+          "changed"
+        ]
+      },
+      {
+        "id": "G4",
+        "context": "guest",
+        "command": "ss -ltnp",
+        "output": "LISTEN 0 128 0.0.0.0:22 users:((\"sshd\",pid=724,fd=3))",
+        "purpose": "Xác minh listener TCP/22 sau hành động.",
+        "meaning": "Guest đã lắng nghe ở :22; điều này chưa chứng minh client đăng nhập thành công.",
+        "commandId": "ss-ltnp",
+        "aliases": [
+          "sudo ss -ltnp"
+        ],
+        "requiredState": [
+          "changed"
+        ]
+      },
+      {
+        "id": "G5",
+        "context": "client",
+        "command": "ssh -o BatchMode=yes admin@192.0.2.25",
+        "output": "Permission denied (publickey,password).",
+        "purpose": "Kiểm tra SSH từ client sau hành động mà không nhập mật khẩu.",
+        "meaning": "Đường kết nối đã đi tới xác thực nhưng tài khoản/khóa vẫn cần kiểm tra; chưa thể báo khách đăng nhập được.",
+        "commandId": "ssh-vvv",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Khách hàng đang báo hiện tượng nào?",
+        "options": [
+          {
+            "id": "auth",
+            "label": "SSH từ chối mật khẩu"
+          },
+          {
+            "id": "refused",
+            "label": "Kết nối TCP tới SSH bị từ chối"
+          },
+          {
+            "id": "dns",
+            "label": "Tên miền không phân giải"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Trong guest console, phép kiểm tra nào trực tiếp nhất để bắt đầu?",
+        "options": [
+          {
+            "id": "service",
+            "label": "systemctl status sshd"
+          },
+          {
+            "id": "disk",
+            "label": "df -h /"
+          },
+          {
+            "id": "dns",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "systemctl-status",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Output “Active: inactive (dead)” chứng minh điều gì?",
+        "options": [
+          {
+            "id": "stopped",
+            "label": "sshd hiện không chạy"
+          },
+          {
+            "id": "cause",
+            "label": "Đã biết chính xác lý do sshd dừng"
+          },
+          {
+            "id": "host",
+            "label": "Máy chủ vật lý chắc chắn bị tắt"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1"
+        ],
+        "commandId": "systemctl-status",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn các kết luận được hai output hiện có hỗ trợ.",
+        "options": [
+          {
+            "id": "inactive",
+            "label": "sshd đang inactive"
+          },
+          {
+            "id": "noport",
+            "label": "Không có listener ở TCP/22"
+          },
+          {
+            "id": "why",
+            "label": "Cấu hình SSH sai là nguyên nhân đã xác nhận"
+          },
+          {
+            "id": "disk",
+            "label": "Root filesystem đã đầy"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "ss-ltnp",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Bước tiếp theo an toàn nhất là gì?",
+        "options": [
+          {
+            "id": "restart",
+            "label": "Restart sshd ngay trên VPS khách hàng"
+          },
+          {
+            "id": "logs",
+            "label": "Xem log, xác nhận quyền; chỉ đề xuất start nếu được phép, rồi kiểm tra lại SSH"
+          },
+          {
+            "id": "ignore",
+            "label": "Kết luận do khách nhập sai mật khẩu"
+          }
+        ],
+        "commandId": "journalctl-unit",
+        "skill": "decide"
+      },
+      {
+        "id": "sequence",
+        "stage": "decide",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình xử lý SSH an toàn.",
+        "options": [
+          {
+            "id": "status",
+            "label": "Ghi nhận service và listener hiện tại"
+          },
+          {
+            "id": "logs",
+            "label": "Xem log và kiểm tra cấu hình để tìm nguyên nhân"
+          },
+          {
+            "id": "approve",
+            "label": "Xác nhận quyền rồi mới đề xuất start nếu phù hợp"
+          },
+          {
+            "id": "verify",
+            "label": "Kiểm tra lại listener và SSH từ client"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "journalctl-unit",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Viết 2–3 dòng: hiện tượng, bằng chứng đã quan sát, bước kiểm tra hoặc xử lý an toàn tiếp theo và cách xác minh.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Viết 2–3 dòng: hiện tượng, bằng chứng đã quan sát, bước kiểm tra hoặc xử lý an toàn tiếp theo và cách xác minh.",
+    "simulation": {
+      "states": [
+        "initial",
+        "changed"
+      ],
+      "verificationProbeIds": [
+        "G3",
+        "G4",
+        "G5"
+      ],
+      "transitions": [
+        {
+          "actionId": "start",
+          "commandId": "systemctl-start",
+          "label": "Start sshd sau khi xác nhận quyền",
+          "from": "initial",
+          "to": "changed",
+          "requiredProbeIds": [
+            "P1",
+            "P2",
+            "G1"
+          ],
+          "context": "guest",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": true,
+          "output": "SIMULATED: systemctl start sshd accepted. State changed; outcome must be checked with fresh probes.",
+          "feedback": "Đã mô phỏng start sau bằng chứng và xác nhận quyền. Không coi ticket là giải quyết cho đến khi kiểm tra lại từ guest và client."
+        },
+        {
+          "actionId": "reboot",
+          "label": "Reboot VPS để thử vận may",
+          "from": "initial",
+          "to": "initial",
+          "requiredProbeIds": [],
+          "context": "panel",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": false,
+          "output": "SIMULATED: action blocked; VM state unchanged.",
+          "feedback": "Reboot ảnh hưởng toàn VPS và chưa có bằng chứng cần thiết. Ưu tiên service cụ thể.",
+          "category": "unsafe_action"
+        }
+      ]
+    },
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau start, guest báo sshd active, :22 LISTEN nhưng client nhận Permission denied. Kết luận nào đúng?",
+      "options": [
+        {
+          "id": "resolved",
+          "label": "Khách đã đăng nhập được, đóng ticket"
+        },
+        {
+          "id": "partial",
+          "label": "Kết nối tới xác thực đã phục hồi; cần xử lý account/khóa trước khi báo resolved"
+        },
+        {
+          "id": "reboot",
+          "label": "Reboot để chắc chắn"
+        }
+      ]
+    }
+  },
+  {
+    "id": "VPS-01-002",
+    "objective": "Phân biệt Permission denied với lỗi mạng và kiểm tra username trước khi đề xuất thay đổi account.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "ssh -vvv admin@192.0.2.25",
+        "output": "Authentications that can continue: publickey,password; Permission denied",
+        "context": "client",
+        "purpose": "Xem bước xác thực SSH từ client.",
+        "meaning": "Đã tới xác thực, nên đây không phải lỗi không kết nối tới port.",
+        "commandId": "ssh-vvv",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "getent passwd admin",
+        "output": "no entry",
+        "context": "guest",
+        "purpose": "Tra username admin trong account database.",
+        "meaning": "Không có entry cho admin trong fixture này.",
+        "commandId": "getent-passwd",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "id admin",
+        "output": "id: admin: no such user",
+        "purpose": "Kiểm chứng username admin có tồn tại không.",
+        "meaning": "Username được dùng hiện không tồn tại trong guest mô phỏng.",
+        "commandId": "getent-passwd",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "systemctl status sshd",
+        "output": "Active: active (running)",
+        "purpose": "Kiểm tra SSH daemon đang chạy.",
+        "meaning": "Service đang chạy; không chứng minh thông tin đăng nhập đúng.",
+        "commandId": "systemctl-status",
+        "aliases": [
+          "sudo systemctl status sshd"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Khách hàng gặp lỗi ở giai đoạn nào?",
+        "options": [
+          {
+            "id": "network",
+            "label": "Không tới được cổng SSH"
+          },
+          {
+            "id": "auth",
+            "label": "Xác thực SSH bị từ chối"
+          },
+          {
+            "id": "dns",
+            "label": "DNS phân giải sai"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Muốn xác minh username admin có tồn tại, nên chọn gì?",
+        "options": [
+          {
+            "id": "getent",
+            "label": "getent passwd admin"
+          },
+          {
+            "id": "route",
+            "label": "ip route"
+          },
+          {
+            "id": "restart",
+            "label": "systemctl restart sshd"
+          }
+        ],
+        "commandId": "getent-passwd",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Output “getent passwd admin → no entry” nghĩa là gì?",
+        "options": [
+          {
+            "id": "missing",
+            "label": "Không tìm thấy username admin"
+          },
+          {
+            "id": "password",
+            "label": "Mật khẩu admin chắc chắn sai"
+          },
+          {
+            "id": "port",
+            "label": "Port 22 bị chặn"
+          }
+        ],
+        "requiredProbeIds": [
+          "P2"
+        ],
+        "commandId": "getent-passwd",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Bằng chứng nào được output hỗ trợ?",
+        "options": [
+          {
+            "id": "reached",
+            "label": "SSH đã tới bước xác thực"
+          },
+          {
+            "id": "missing",
+            "label": "admin không có account entry"
+          },
+          {
+            "id": "firewall",
+            "label": "Firewall đang chặn port 22"
+          },
+          {
+            "id": "wrongpw",
+            "label": "Mật khẩu của account hợp lệ bị sai"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "ssh-vvv",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Hướng xử lý an toàn nhất là gì?",
+        "options": [
+          {
+            "id": "valid",
+            "label": "Xác nhận username được phép, thử lại bằng account hợp lệ"
+          },
+          {
+            "id": "create",
+            "label": "Tạo account admin ngay"
+          },
+          {
+            "id": "reboot",
+            "label": "Reboot VPS"
+          }
+        ],
+        "commandId": "getent-passwd",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi hiện tượng xác thực, bằng chứng về username, bước xác nhận với khách và cách kiểm tra đăng nhập sau đó.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi hiện tượng xác thực, bằng chứng về username, bước xác nhận với khách và cách kiểm tra đăng nhập sau đó."
+  },
+  {
+    "id": "VPS-02-001",
+    "objective": "Phân biệt IP, route và kết nối thực tế khi guest chỉ liên lạc được trong subnet.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "ip -4 addr show dev enp0s3",
+        "output": "inet 10.10.20.25/24",
+        "context": "guest",
+        "purpose": "Xem địa chỉ IPv4 trên interface guest.",
+        "meaning": "Guest có IP 10.10.20.25/24 trong subnet mô phỏng.",
+        "commandId": "ip-addr",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "ip route",
+        "output": "10.10.20.0/24 dev enp0s3",
+        "context": "guest",
+        "purpose": "Xem route IPv4 hiện có.",
+        "meaning": "Chỉ thấy route subnet; không thấy default route.",
+        "commandId": "ip-route",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "ip route get 1.1.1.1",
+        "output": "RTNETLINK answers: Network is unreachable",
+        "purpose": "Hỏi kernel route tới IP ngoài subnet.",
+        "meaning": "Kernel không có route phù hợp tới đích này.",
+        "commandId": "ip-route-get",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "ip -br link show dev enp0s3",
+        "output": "enp0s3 UP",
+        "purpose": "Xem link interface.",
+        "meaning": "Interface đang UP; vẫn cần route để đi ngoài subnet.",
+        "commandId": "ip-link",
+        "aliases": []
+      },
+      {
+        "id": "G3",
+        "context": "panel",
+        "command": "PANEL: assigned gateway for enp0s3",
+        "output": "Assigned guest gateway: 10.10.20.1/24; console access available.",
+        "purpose": "Xác nhận gateway được cấp từ panel trước khi đổi route.",
+        "meaning": "Dữ liệu cấp phát này cho phép kiểm tra route đề xuất; không nên đoán gateway từ subnet.",
+        "commandId": "nmcli-show",
+        "aliases": []
+      },
+      {
+        "id": "G4",
+        "context": "guest",
+        "command": "ip route",
+        "output": "default via 10.10.20.1 dev enp0s3\n10.10.20.0/24 dev enp0s3",
+        "purpose": "Đo lại bảng route sau thay đổi.",
+        "meaning": "Default route đã xuất hiện trong guest.",
+        "commandId": "ip-route",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      },
+      {
+        "id": "G5",
+        "context": "guest",
+        "command": "ip route get 1.1.1.1",
+        "output": "1.1.1.1 via 10.10.20.1 dev enp0s3 src 10.10.20.25",
+        "purpose": "Xem kernel chọn đường tới đích ngoài subnet.",
+        "meaning": "Kernel chọn gateway mới; chưa chứng minh upstream cho phép kết nối.",
+        "commandId": "ip-route-get",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      },
+      {
+        "id": "G6",
+        "context": "guest",
+        "command": "ping -c 2 1.1.1.1",
+        "output": "2 packets transmitted, 0 received, 100% packet loss",
+        "purpose": "Thử kết nối IP sau khi route xuất hiện.",
+        "meaning": "Đích vẫn không phản hồi ICMP; chưa thể báo sự cố đã hết và cần kiểm tra upstream/TCP.",
+        "commandId": "ping",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Phạm vi lỗi khách báo là gì?",
+        "options": [
+          {
+            "id": "all",
+            "label": "Mọi kết nối đều lỗi"
+          },
+          {
+            "id": "outside",
+            "label": "Tới subnet nội bộ nhưng không tới IP công cộng"
+          },
+          {
+            "id": "ssh",
+            "label": "Chỉ SSH lỗi xác thực"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Lệnh nào trực tiếp kiểm tra đường ra ngoài subnet?",
+        "options": [
+          {
+            "id": "route",
+            "label": "ip route"
+          },
+          {
+            "id": "memory",
+            "label": "free -h"
+          },
+          {
+            "id": "service",
+            "label": "systemctl status sshd"
+          }
+        ],
+        "commandId": "ip-route",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "ip route chỉ có “10.10.20.0/24 dev enp0s3”; thiếu gì?",
+        "options": [
+          {
+            "id": "default",
+            "label": "Default route"
+          },
+          {
+            "id": "address",
+            "label": "Địa chỉ IPv4 của guest"
+          },
+          {
+            "id": "dns",
+            "label": "A record DNS"
+          }
+        ],
+        "requiredProbeIds": [
+          "P2"
+        ],
+        "commandId": "ip-route",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn nhận định được fixture hỗ trợ.",
+        "options": [
+          {
+            "id": "ip",
+            "label": "Guest có IP trong subnet"
+          },
+          {
+            "id": "route",
+            "label": "Không có default route trong bảng hiện tại"
+          },
+          {
+            "id": "gateway",
+            "label": "Đã biết gateway chính xác cần cấu hình"
+          },
+          {
+            "id": "upstream",
+            "label": "Upstream chắc chắn hỏng"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "ip-route",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Lựa chọn tiếp theo phù hợp nhất?",
+        "options": [
+          {
+            "id": "confirm",
+            "label": "Xác nhận gateway/profile qua console rồi đề xuất khôi phục route có phép"
+          },
+          {
+            "id": "guess",
+            "label": "Đoán gateway và đổi mạng từ phiên SSH"
+          },
+          {
+            "id": "dns",
+            "label": "Chỉ đổi DNS resolver"
+          }
+        ],
+        "commandId": "nmcli-show",
+        "skill": "decide"
+      },
+      {
+        "id": "sequence",
+        "stage": "decide",
+        "kind": "step_order",
+        "prompt": "Sắp xếp các bước kiểm tra và xử lý mạng.",
+        "options": [
+          {
+            "id": "ip",
+            "label": "Ghi nhận IP và subnet"
+          },
+          {
+            "id": "route",
+            "label": "Đọc route hiện tại và route tới IP đích"
+          },
+          {
+            "id": "gateway",
+            "label": "Xác nhận gateway/profile được cấp qua console"
+          },
+          {
+            "id": "verify",
+            "label": "Sau thay đổi có phép, thử IP ngoài và dịch vụ cần dùng"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "ip-route",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi IP/subnet, route còn thiếu, bước xác nhận gateway và cách kiểm tra kết nối ngoài sau xử lý.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi IP/subnet, route còn thiếu, bước xác nhận gateway và cách kiểm tra kết nối ngoài sau xử lý.",
+    "simulation": {
+      "states": [
+        "initial",
+        "changed"
+      ],
+      "verificationProbeIds": [
+        "G4",
+        "G5",
+        "G6"
+      ],
+      "transitions": [
+        {
+          "actionId": "restore-route",
+          "commandId": "ip-route-add",
+          "label": "Khôi phục default route theo gateway đã cấp",
+          "from": "initial",
+          "to": "changed",
+          "requiredProbeIds": [
+            "P1",
+            "P2",
+            "G1",
+            "G2",
+            "G3"
+          ],
+          "context": "guest",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": true,
+          "output": "SIMULATED: default route via 10.10.20.1 added; verify routing and reachability.",
+          "feedback": "Route đã đổi trong fixture. Kết nối ra ngoài vẫn cần kiểm tra; giữ console và phương án rollback."
+        },
+        {
+          "actionId": "guess-route",
+          "label": "Đoán gateway và sửa qua phiên SSH",
+          "from": "initial",
+          "to": "initial",
+          "requiredProbeIds": [],
+          "context": "guest",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": false,
+          "output": "SIMULATED: guessed route blocked; state unchanged.",
+          "feedback": "Không đoán gateway hoặc đổi mạng khi thiếu console và rollback.",
+          "category": "unsafe_action"
+        }
+      ]
+    },
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Default route đã xuất hiện nhưng ping IP công cộng vẫn 100% loss. Kết luận nào đúng?",
+      "options": [
+        {
+          "id": "fixed",
+          "label": "Internet chắc chắn đã hoạt động"
+        },
+        {
+          "id": "investigate",
+          "label": "Route guest đã có; kiểm tra upstream/TCP và chuyển cấp nếu cần"
+        },
+        {
+          "id": "remove",
+          "label": "Xóa route và đoán gateway khác"
+        }
+      ]
+    }
+  },
+  {
+    "id": "VPS-03-001",
+    "objective": "Phân biệt trạng thái VPS với web service, kiểm tra Nginx và cổng HTTP trước khi đề xuất start.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "systemctl status nginx",
+        "output": "Active: inactive (dead)",
+        "context": "guest",
+        "purpose": "Xem Nginx service hiện chạy hay không.",
+        "meaning": "inactive (dead) cho biết Nginx đang dừng.",
+        "commandId": "systemctl-nginx",
+        "aliases": [
+          "sudo systemctl status nginx"
+        ]
+      },
+      {
+        "id": "P2",
+        "command": "ss -ltnp",
+        "output": "no :80 listener",
+        "context": "guest",
+        "purpose": "Xem cổng TCP đang lắng nghe.",
+        "meaning": "Không có listener :80 theo fixture.",
+        "commandId": "ss-ltnp",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "journalctl -u nginx -n 50 --no-pager",
+        "output": "-- No entries --",
+        "purpose": "Tìm log Nginx gần đây.",
+        "meaning": "Fixture không có log giải thích nguyên nhân dừng.",
+        "commandId": "journalctl-nginx",
+        "aliases": [
+          "sudo journalctl -u nginx -n 50 --no-pager"
+        ]
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "nginx -t",
+        "output": "nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful",
+        "purpose": "Kiểm tra cú pháp Nginx.",
+        "meaning": "Cú pháp hợp lệ không chứng minh service đã chạy hay site đáp ứng.",
+        "commandId": "nginx-test",
+        "aliases": [
+          "sudo nginx -t"
+        ]
+      },
+      {
+        "id": "G3",
+        "context": "guest",
+        "command": "systemctl status nginx",
+        "output": "Active: active (running)",
+        "purpose": "Đọc trạng thái Nginx sau start mô phỏng.",
+        "meaning": "Service chạy; chưa chứng minh web app phía sau hoạt động.",
+        "commandId": "systemctl-nginx",
+        "aliases": [
+          "sudo systemctl status nginx"
+        ],
+        "requiredState": [
+          "changed"
+        ]
+      },
+      {
+        "id": "G4",
+        "context": "guest",
+        "command": "ss -ltnp",
+        "output": "LISTEN 0 511 0.0.0.0:80 users:((\"nginx\",pid=812,fd=6))",
+        "purpose": "Xác minh listener HTTP sau start.",
+        "meaning": "Nginx đã nhận TCP/80 trên guest.",
+        "commandId": "ss-ltnp",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      },
+      {
+        "id": "G5",
+        "context": "guest",
+        "command": "curl -I http://127.0.0.1",
+        "output": "HTTP/1.1 502 Bad Gateway\nServer: nginx",
+        "purpose": "Kiểm tra HTTP local sau start.",
+        "meaning": "Nginx trả lời nhưng upstream còn lỗi; không được đóng ticket là resolved.",
+        "commandId": "curl-head",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Thông tin “VPS running” từ panel cho biết gì?",
+        "options": [
+          {
+            "id": "vm",
+            "label": "Guest/VM được panel báo đang chạy"
+          },
+          {
+            "id": "nginx",
+            "label": "Nginx chắc chắn đang chạy"
+          },
+          {
+            "id": "http",
+            "label": "HTTP bên ngoài chắc chắn truy cập được"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Kiểm tra trực tiếp web service bằng lệnh nào?",
+        "options": [
+          {
+            "id": "nginx",
+            "label": "systemctl status nginx"
+          },
+          {
+            "id": "route",
+            "label": "ip route"
+          },
+          {
+            "id": "disk",
+            "label": "df -i /"
+          }
+        ],
+        "commandId": "systemctl-nginx",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "“Active: inactive (dead)” ở Nginx nghĩa là gì?",
+        "options": [
+          {
+            "id": "stopped",
+            "label": "Nginx đang dừng"
+          },
+          {
+            "id": "why",
+            "label": "Đã biết lý do Nginx dừng"
+          },
+          {
+            "id": "off",
+            "label": "Cả VPS đã tắt"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1"
+        ],
+        "commandId": "systemctl-nginx",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Bằng chứng nào có trong hai output?",
+        "options": [
+          {
+            "id": "stopped",
+            "label": "Nginx inactive"
+          },
+          {
+            "id": "port",
+            "label": "Không có listener :80"
+          },
+          {
+            "id": "badconfig",
+            "label": "Nginx config chắc chắn sai"
+          },
+          {
+            "id": "hostoff",
+            "label": "Host vật lý tắt"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "ss-ltnp",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Bước nào giữ an toàn vận hành?",
+        "options": [
+          {
+            "id": "logs",
+            "label": "Xem log/config, xác nhận quyền trước khi start; kiểm tra local và external HTTP"
+          },
+          {
+            "id": "start",
+            "label": "Start ngay rồi đóng ticket"
+          },
+          {
+            "id": "reboot",
+            "label": "Reboot VPS vì panel running"
+          }
+        ],
+        "commandId": "journalctl-nginx",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi trạng thái VM và service riêng biệt, bằng chứng :80, bước xử lý có phép và kiểm tra HTTP sau đó.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi trạng thái VM và service riêng biệt, bằng chứng :80, bước xử lý có phép và kiểm tra HTTP sau đó.",
+    "simulation": {
+      "states": [
+        "initial",
+        "changed"
+      ],
+      "verificationProbeIds": [
+        "G3",
+        "G4",
+        "G5"
+      ],
+      "transitions": [
+        {
+          "actionId": "start",
+          "commandId": "systemctl-start",
+          "label": "Start Nginx sau khi xác nhận quyền",
+          "from": "initial",
+          "to": "changed",
+          "requiredProbeIds": [
+            "P1",
+            "P2",
+            "G1",
+            "G2"
+          ],
+          "context": "guest",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": true,
+          "output": "SIMULATED: systemctl start nginx accepted; check service, listener and HTTP.",
+          "feedback": "Cú pháp hợp lệ và service đã được start trong mô phỏng; HTTP có thể vẫn lỗi nên phải kiểm tra."
+        },
+        {
+          "actionId": "reboot",
+          "label": "Reboot toàn VPS",
+          "from": "initial",
+          "to": "initial",
+          "requiredProbeIds": [],
+          "context": "panel",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": false,
+          "output": "SIMULATED: reboot blocked; state unchanged.",
+          "feedback": "Reboot rộng hơn phạm vi sự cố service và chưa có căn cứ.",
+          "category": "unsafe_action"
+        }
+      ]
+    },
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau start Nginx, local curl trả HTTP 502. Bước xác minh nào phù hợp?",
+      "options": [
+        {
+          "id": "done",
+          "label": "Đóng ticket vì port 80 đã LISTEN"
+        },
+        {
+          "id": "upstream",
+          "label": "Ghi phục hồi listener nhưng điều tra upstream và thử HTTP từ client"
+        },
+        {
+          "id": "dns",
+          "label": "Chỉ đổi DNS"
+        }
+      ]
+    }
+  },
+  {
+    "id": "VPS-05-001",
+    "objective": "Phân biệt block space với inode và khoanh vùng dữ liệu trước khi đề xuất dọn dẹp.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "df -h /",
+        "output": "/dev/vda1 20G 20G 0 100% /",
+        "context": "guest",
+        "purpose": "Xem block space trên root filesystem.",
+        "meaning": "Root filesystem 100% và còn 0 dung lượng theo fixture.",
+        "commandId": "df-h",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "du -xhd1 /var",
+        "output": "13G /var/log",
+        "context": "guest",
+        "purpose": "Khoanh vùng thư mục lớn trong /var.",
+        "meaning": "/var/log dùng 13G; cần tiếp tục kiểm tra nguồn tăng trưởng.",
+        "commandId": "du-var",
+        "aliases": [
+          "sudo du -xhd1 /var"
+        ]
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "df -i /",
+        "output": "IUse% 42%",
+        "purpose": "Kiểm tra inode để phân biệt loại tài nguyên cạn.",
+        "meaning": "Inode chưa đầy; khác với VPS-05-002.",
+        "commandId": "df-i",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "journalctl --disk-usage",
+        "output": "Archived and active journals take up 1.2G in the file system.",
+        "purpose": "Xem mức dùng dung lượng của systemd journal.",
+        "meaning": "Journal chiếm một phần nhưng không thể suy ra tất cả 13G /var/log là journal.",
+        "commandId": "journal-disk-usage",
+        "aliases": []
+      },
+      {
+        "id": "G3",
+        "context": "guest",
+        "command": "df -h /",
+        "output": "/dev/vda1 20G 19G 1G 95% /",
+        "purpose": "Đo lại block space sau dọn journal được duyệt.",
+        "meaning": "Đã có khoảng 1G trống trong fixture; vẫn cần tìm nguồn log tăng trưởng và xác minh app ghi được.",
+        "commandId": "df-h",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      },
+      {
+        "id": "G4",
+        "context": "guest",
+        "command": "journalctl --disk-usage",
+        "output": "Archived and active journals take up 200.0M in the file system.",
+        "purpose": "Đo journal sau giới hạn lưu trữ.",
+        "meaning": "Journal giảm; không chứng minh tất cả log/app đã an toàn.",
+        "commandId": "journal-disk-usage",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng chính là gì?",
+        "options": [
+          {
+            "id": "write",
+            "label": "Ứng dụng không ghi thêm dữ liệu được"
+          },
+          {
+            "id": "login",
+            "label": "SSH bị từ chối"
+          },
+          {
+            "id": "dns",
+            "label": "DNS NXDOMAIN"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Kiểm tra block space của / bằng lệnh nào?",
+        "options": [
+          {
+            "id": "df",
+            "label": "df -h /"
+          },
+          {
+            "id": "memory",
+            "label": "free -h"
+          },
+          {
+            "id": "route",
+            "label": "ip route"
+          }
+        ],
+        "commandId": "df-h",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "“/dev/vda1 20G 20G 0 100% /” cho thấy gì?",
+        "options": [
+          {
+            "id": "full",
+            "label": "Root filesystem hết block space"
+          },
+          {
+            "id": "inode",
+            "label": "Inode chắc chắn hết"
+          },
+          {
+            "id": "ram",
+            "label": "RAM đã đầy"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1"
+        ],
+        "commandId": "df-h",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn điều có bằng chứng trong fixture.",
+        "options": [
+          {
+            "id": "full",
+            "label": "/ đang 100% block"
+          },
+          {
+            "id": "logs",
+            "label": "/var/log chiếm 13G"
+          },
+          {
+            "id": "delete",
+            "label": "Mọi log đều có thể xóa ngay"
+          },
+          {
+            "id": "inode",
+            "label": "Inode / đang 100%"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "du-var",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Đề xuất nào an toàn nhất?",
+        "options": [
+          {
+            "id": "review",
+            "label": "Tìm nguồn log tăng trưởng, xác nhận backup/quyền rồi dùng rotation hoặc dọn phần được duyệt"
+          },
+          {
+            "id": "delete",
+            "label": "rm -rf /var/log ngay"
+          },
+          {
+            "id": "reboot",
+            "label": "Chỉ reboot VPS"
+          }
+        ],
+        "commandId": "du-var",
+        "skill": "decide"
+      },
+      {
+        "id": "sequence",
+        "stage": "decide",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình xử lý filesystem đầy.",
+        "options": [
+          {
+            "id": "measure",
+            "label": "Đo block và inode của đúng mount"
+          },
+          {
+            "id": "locate",
+            "label": "Khoanh vùng thư mục và nguồn tăng trưởng"
+          },
+          {
+            "id": "approve",
+            "label": "Xác nhận backup, quyền và biện pháp rotation/dọn an toàn"
+          },
+          {
+            "id": "verify",
+            "label": "Đo lại dung lượng và thử thao tác ghi của app"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "df-h",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi block space, vùng chiếm dung lượng, bước tìm nguồn tăng trưởng và cách xác minh app ghi lại được.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi block space, vùng chiếm dung lượng, bước tìm nguồn tăng trưởng và cách xác minh app ghi lại được.",
+    "simulation": {
+      "states": [
+        "initial",
+        "changed"
+      ],
+      "verificationProbeIds": [
+        "G3",
+        "G4"
+      ],
+      "transitions": [
+        {
+          "actionId": "vacuum",
+          "commandId": "journal-vacuum",
+          "label": "Giới hạn journal đã lưu theo chính sách được duyệt",
+          "from": "initial",
+          "to": "changed",
+          "requiredProbeIds": [
+            "P1",
+            "P2",
+            "G1",
+            "G2"
+          ],
+          "context": "guest",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": true,
+          "output": "SIMULATED: journal vacuum to 200M applied to archived entries; measure free space again.",
+          "feedback": "Chỉ mô phỏng giảm archived journal có phê duyệt. Dung lượng được giải phóng theo fixture, chưa chứng minh app ghi lại được hoặc nguồn log đã ngừng tăng."
+        },
+        {
+          "actionId": "delete",
+          "label": "Xóa toàn bộ /var/log",
+          "from": "initial",
+          "to": "initial",
+          "requiredProbeIds": [],
+          "context": "guest",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": false,
+          "output": "SIMULATED: destructive deletion blocked; state unchanged.",
+          "feedback": "Xóa toàn bộ log có thể mất bằng chứng và file đang mở; không có phạm vi hay phê duyệt phù hợp.",
+          "category": "unsafe_action"
+        }
+      ]
+    },
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Sau vacuum được duyệt, df còn 1G và journal còn 200M. Có thể kết luận gì?",
+      "options": [
+        {
+          "id": "all",
+          "label": "Ứng dụng đã ghi dữ liệu thành công"
+        },
+        {
+          "id": "space",
+          "label": "Block space đã có lại; cần thử ghi app và tìm nguồn log tăng trưởng"
+        },
+        {
+          "id": "delete",
+          "label": "Xóa tiếp mọi log để dự phòng"
+        }
+      ]
+    }
+  },
+  {
+    "id": "VPS-05-002",
+    "objective": "Điều tra lỗi tạo file dù còn dung lượng GB bằng hai phép đo filesystem khác nhau.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "df -h /",
+        "output": "Use% 45%",
+        "context": "guest",
+        "purpose": "Xem block space trên /.",
+        "meaning": "Use% 45%; chưa hết dung lượng GB.",
+        "commandId": "df-h",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "df -i /",
+        "output": "IUse% 100%",
+        "context": "guest",
+        "purpose": "Xem inode trên /.",
+        "meaning": "IUse% 100%: filesystem không còn inode để tạo file mới.",
+        "commandId": "df-i",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "find /var -xdev -type f | wc -l",
+        "output": "850000",
+        "purpose": "Ước lượng số file dưới /var.",
+        "meaning": "Có nhiều file; cần thu hẹp thư mục và xác nhận loại file trước khi dọn.",
+        "commandId": "find-files",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "du -xhd1 /var",
+        "output": "1.1G /var",
+        "purpose": "So sánh dung lượng /var với số lượng file.",
+        "meaning": "Không lớn theo GB nhưng có thể chứa rất nhiều file nhỏ.",
+        "commandId": "du-var",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Điểm khác thường trong lời khách là gì?",
+        "options": [
+          {
+            "id": "files",
+            "label": "Không tạo được file dù còn GB"
+          },
+          {
+            "id": "ram",
+            "label": "RAM còn trống"
+          },
+          {
+            "id": "ssh",
+            "label": "SSH không hoạt động"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Lệnh nào kiểm tra số inode còn dùng được?",
+        "options": [
+          {
+            "id": "inode",
+            "label": "df -i /"
+          },
+          {
+            "id": "blocks",
+            "label": "df -h /"
+          },
+          {
+            "id": "route",
+            "label": "ip route"
+          }
+        ],
+        "commandId": "df-i",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "“IUse% 100%” nghĩa là gì?",
+        "options": [
+          {
+            "id": "full",
+            "label": "Inode đã được sử dụng hết"
+          },
+          {
+            "id": "blocks",
+            "label": "Disk block đã dùng 100%"
+          },
+          {
+            "id": "ram",
+            "label": "Bộ nhớ RAM đã dùng hết"
+          }
+        ],
+        "requiredProbeIds": [
+          "P2"
+        ],
+        "commandId": "df-i",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn hai nhận định đúng theo fixture.",
+        "options": [
+          {
+            "id": "gb",
+            "label": "Block space vẫn còn"
+          },
+          {
+            "id": "inode",
+            "label": "Inode đã hết"
+          },
+          {
+            "id": "which",
+            "label": "Đã biết chính xác thư mục cần xóa"
+          },
+          {
+            "id": "hardware",
+            "label": "Ổ cứng vật lý chắc chắn hỏng"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "df-i",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Bước tiếp theo an toàn?",
+        "options": [
+          {
+            "id": "locate",
+            "label": "Tìm thư mục có nhiều file nhỏ, xác nhận dữ liệu tạm và quyền dọn/archiving"
+          },
+          {
+            "id": "delete",
+            "label": "Xóa ngẫu nhiên file dưới /var"
+          },
+          {
+            "id": "resize",
+            "label": "Chỉ tăng GB của disk"
+          }
+        ],
+        "commandId": "find-files",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi sự khác nhau giữa block và inode, thư mục cần điều tra, cách giải phóng inode có phép và phép thử tạo file.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi sự khác nhau giữa block và inode, thư mục cần điều tra, cách giải phóng inode có phép và phép thử tạo file."
+  },
+  {
+    "id": "VPS-07-001",
+    "objective": "Điều tra HTTP connection refused bằng trạng thái Nginx, listener và phép kiểm tra local.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "systemctl status nginx",
+        "output": "inactive (dead)",
+        "context": "guest",
+        "purpose": "Xem Nginx đang chạy không.",
+        "meaning": "inactive (dead): service đang dừng.",
+        "commandId": "systemctl-nginx",
+        "aliases": [
+          "sudo systemctl status nginx"
+        ]
+      },
+      {
+        "id": "P2",
+        "command": "ss -ltnp",
+        "output": "no :80 listener",
+        "context": "guest",
+        "purpose": "Xem listener TCP.",
+        "meaning": "Không có listener :80 theo fixture.",
+        "commandId": "ss-ltnp",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "nginx -t",
+        "output": "nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful",
+        "purpose": "Kiểm tra cú pháp trước khi đề xuất start.",
+        "meaning": "Cú pháp hợp lệ không chứng minh Nginx đã chạy.",
+        "commandId": "nginx-test",
+        "aliases": [
+          "sudo nginx -t"
+        ]
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "curl -I http://127.0.0.1",
+        "output": "curl: (7) Failed to connect to 127.0.0.1 port 80: Connection refused",
+        "purpose": "Kiểm tra HTTP từ chính guest.",
+        "meaning": "Local HTTP cũng từ chối kết nối ở port 80.",
+        "commandId": "curl-head",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "“Connection refused” ở curl cho thấy gì trước mắt?",
+        "options": [
+          {
+            "id": "tcp",
+            "label": "Không thiết lập được TCP tới port đích"
+          },
+          {
+            "id": "403",
+            "label": "Server trả 403 Forbidden"
+          },
+          {
+            "id": "dns",
+            "label": "DNS NXDOMAIN"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra đầu tiên phù hợp trong guest?",
+        "options": [
+          {
+            "id": "nginx",
+            "label": "systemctl status nginx"
+          },
+          {
+            "id": "inode",
+            "label": "df -i /"
+          },
+          {
+            "id": "dig",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "systemctl-nginx",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Nginx inactive và không có listener :80 nghĩa là gì?",
+        "options": [
+          {
+            "id": "stopped",
+            "label": "Web service hiện dừng và port HTTP không lắng nghe"
+          },
+          {
+            "id": "reason",
+            "label": "Đã biết chính xác nguyên nhân dừng"
+          },
+          {
+            "id": "disk",
+            "label": "Ổ đĩa chắc chắn đầy"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "ss-ltnp",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn các quan sát hỗ trợ.",
+        "options": [
+          {
+            "id": "inactive",
+            "label": "Nginx inactive"
+          },
+          {
+            "id": "port",
+            "label": "Không có listener :80"
+          },
+          {
+            "id": "config",
+            "label": "Cấu hình chắc chắn sai"
+          },
+          {
+            "id": "upstream",
+            "label": "Upstream ISP chắc chắn lỗi"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "systemctl-nginx",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Đề xuất nào hợp lý?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xem log/config, start nếu có quyền, rồi curl local và bên ngoài"
+          },
+          {
+            "id": "instant",
+            "label": "Restart Nginx ngay và đóng ticket"
+          },
+          {
+            "id": "reinstall",
+            "label": "Reinstall VPS"
+          }
+        ],
+        "commandId": "curl-head",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi hiện tượng HTTP, bằng chứng service/listener, điều kiện start và phép kiểm tra local + external sau đó.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi hiện tượng HTTP, bằng chứng service/listener, điều kiện start và phép kiểm tra local + external sau đó."
+  },
+  {
+    "id": "VPS-08-002",
+    "objective": "Đối chiếu chính xác hostname khi điều tra NXDOMAIN và giới hạn kết luận theo bằng chứng DNS.",
+    "customerFollowup": "Customer follow-up: I copied the exact address from my browser: ww.example.com.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "dig ww.example.com A",
+        "output": "status: NXDOMAIN",
+        "context": "client",
+        "purpose": "Tra A record cho hostname khách gõ.",
+        "meaning": "ww.example.com trả NXDOMAIN trong fixture.",
+        "commandId": "dig-a",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "dig www.example.com A",
+        "output": "198.51.100.20",
+        "context": "client",
+        "purpose": "Tra A record cho hostname www.",
+        "meaning": "www.example.com trả IP; hai hostname khác nhau.",
+        "commandId": "dig-a",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "client",
+        "command": "dig example.com A",
+        "output": "status: NOERROR; ANSWER: 198.51.100.20",
+        "purpose": "Kiểm tra apex domain.",
+        "meaning": "Apex có bản ghi; không tự tạo alias ww.",
+        "commandId": "dig-a",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "client",
+        "command": "dig ww.example.com NS",
+        "output": "status: NXDOMAIN",
+        "purpose": "Kiểm tra lại exact hostname ww.",
+        "meaning": "Vẫn không chứng minh toàn bộ DNS zone hỏng.",
+        "commandId": "dig-ns",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng khách báo thuộc lớp nào?",
+        "options": [
+          {
+            "id": "dns",
+            "label": "Không phân giải được hostname đã nhập"
+          },
+          {
+            "id": "http",
+            "label": "HTTP 502"
+          },
+          {
+            "id": "ssh",
+            "label": "SSH Permission denied"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Cần tra chính xác tên khách gõ bằng gì?",
+        "options": [
+          {
+            "id": "ww",
+            "label": "dig ww.example.com A"
+          },
+          {
+            "id": "www",
+            "label": "Chỉ dig www.example.com A"
+          },
+          {
+            "id": "disk",
+            "label": "df -h /"
+          }
+        ],
+        "commandId": "dig-a",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "ww.example.com NXDOMAIN nhưng www.example.com có A record nghĩa là gì?",
+        "options": [
+          {
+            "id": "different",
+            "label": "Hai hostname khác nhau; tên ww chưa có record trong fixture"
+          },
+          {
+            "id": "zone",
+            "label": "Toàn bộ DNS zone hỏng"
+          },
+          {
+            "id": "http",
+            "label": "Web server chắc chắn đã dừng"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "dig-a",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn điều output hỗ trợ.",
+        "options": [
+          {
+            "id": "ww",
+            "label": "ww trả NXDOMAIN"
+          },
+          {
+            "id": "www",
+            "label": "www trả 198.51.100.20"
+          },
+          {
+            "id": "down",
+            "label": "Web server đã hỏng"
+          },
+          {
+            "id": "provider",
+            "label": "Mọi DNS provider đều lỗi"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "dig-a",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Bước tiếp theo an toàn?",
+        "options": [
+          {
+            "id": "confirm",
+            "label": "Xác nhận FQDN khách muốn dùng; sửa typo hoặc đề xuất alias nếu chủ sở hữu duyệt"
+          },
+          {
+            "id": "all",
+            "label": "Xóa toàn bộ DNS records"
+          },
+          {
+            "id": "reboot",
+            "label": "Reboot VPS"
+          }
+        ],
+        "commandId": "dig-a",
+        "skill": "decide"
+      },
+      {
+        "id": "sequence",
+        "stage": "decide",
+        "kind": "step_order",
+        "prompt": "Sắp xếp cách xử lý hostname được báo lỗi.",
+        "options": [
+          {
+            "id": "exact",
+            "label": "Ghi lại exact FQDN khách đã nhập"
+          },
+          {
+            "id": "compare",
+            "label": "Tra DNS cho tên đó và tên dự kiến"
+          },
+          {
+            "id": "confirm",
+            "label": "Xác nhận tên mong muốn với chủ sở hữu"
+          },
+          {
+            "id": "verify",
+            "label": "Sau sửa đổi được duyệt, kiểm tra DNS và HTTP theo tên đúng"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "dig-a",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi hostname khách đã dùng, kết quả DNS cho hai tên, bước xác nhận tên đúng và cách xác minh trang tải.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi hostname khách đã dùng, kết quả DNS cho hai tên, bước xác nhận tên đúng và cách xác minh trang tải."
+  },
+  {
+    "id": "VPS-01-003",
+    "objective": "Khoanh vùng vì sao xác thực SSH bằng private key không thành công từ client.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "ssh -i ~/.ssh/lab_key lab@192.0.2.25",
+        "output": "WARNING: UNPROTECTED PRIVATE KEY FILE! permissions 0644",
+        "context": "client",
+        "purpose": "Thử đăng nhập bằng private key từ client.",
+        "meaning": "Client SSH cảnh báo private key có quyền 0644 quá rộng; chưa có bằng chứng account ở guest sai.",
+        "commandId": "ssh-key-login",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "ls -l ~/.ssh/lab_key",
+        "output": "-rw-r--r-- lab lab",
+        "context": "client",
+        "purpose": "Đọc mode và chủ sở hữu private key trên client.",
+        "meaning": "-rw-r--r-- tương ứng 0644: group và others có quyền đọc.",
+        "commandId": "ls-key-mode",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Điều gì khách đã báo trước khi ta chạy lệnh?",
+        "options": [
+          {
+            "id": "key",
+            "label": "Đăng nhập bằng private key không thành công"
+          },
+          {
+            "id": "server",
+            "label": "sshd trong guest đã dừng"
+          },
+          {
+            "id": "dns",
+            "label": "DNS không phân giải"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Lệnh đọc nào xác nhận mode file key trên client?",
+        "options": [
+          {
+            "id": "ls",
+            "label": "ls -l ~/.ssh/lab_key"
+          },
+          {
+            "id": "status",
+            "label": "systemctl status sshd"
+          },
+          {
+            "id": "route",
+            "label": "ip route"
+          }
+        ],
+        "commandId": "ls-key-mode",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "“-rw-r--r-- lab lab” cho biết gì?",
+        "options": [
+          {
+            "id": "open",
+            "label": "Owner đọc/ghi, group và others còn đọc được"
+          },
+          {
+            "id": "safe",
+            "label": "Chỉ owner đọc được file"
+          },
+          {
+            "id": "remote",
+            "label": "Guest có file key quyền 0644"
+          }
+        ],
+        "requiredProbeIds": [
+          "P2"
+        ],
+        "commandId": "ls-key-mode",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn các nhận định được hai output hỗ trợ.",
+        "options": [
+          {
+            "id": "warning",
+            "label": "SSH client đã cảnh báo quyền key 0644"
+          },
+          {
+            "id": "mode",
+            "label": "File key hiện có mode -rw-r--r--"
+          },
+          {
+            "id": "password",
+            "label": "Mật khẩu của user lab chắc chắn sai"
+          },
+          {
+            "id": "daemon",
+            "label": "sshd ở guest chắc chắn hỏng"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "ssh-key-login",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Bước tiếp theo phù hợp nhất?",
+        "options": [
+          {
+            "id": "client",
+            "label": "Nếu có quyền với key của mình, giới hạn quyền đọc trên client rồi thử lại SSH"
+          },
+          {
+            "id": "guest",
+            "label": "Restart sshd trong guest ngay"
+          },
+          {
+            "id": "share",
+            "label": "Gửi private key cho support để kiểm tra"
+          }
+        ],
+        "commandId": "ssh-key-login",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi cảnh báo 0644, ý nghĩa của mode, bước chỉnh quyền trên client nếu được phép và cách thử lại SSH.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi cảnh báo 0644, ý nghĩa của mode, bước chỉnh quyền trên client nếu được phép và cách thử lại SSH."
+  },
+  {
+    "id": "VPS-03-003",
+    "objective": "Điều tra service dừng sau khi chỉnh config bằng trạng thái và phép kiểm tra cú pháp.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "systemctl status nginx",
+        "output": "Active: failed",
+        "context": "guest",
+        "purpose": "Xem trạng thái Nginx sau khi khách sửa config.",
+        "meaning": "Nginx đang failed, nhưng status rút gọn chưa nêu nguyên nhân.",
+        "commandId": "systemctl-nginx",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "nginx -t",
+        "output": "unexpected \"}\" in /etc/nginx/nginx.conf:45",
+        "context": "guest",
+        "purpose": "Kiểm tra cú pháp cấu hình Nginx mà không restart.",
+        "meaning": "Bộ kiểm tra cú pháp báo dấu } bất ngờ trong nginx.conf dòng 45.",
+        "commandId": "nginx-test",
+        "aliases": [
+          "sudo nginx -t"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Lời khách cho biết mốc thay đổi nào?",
+        "options": [
+          {
+            "id": "config",
+            "label": "Service dừng sau khi chỉnh config"
+          },
+          {
+            "id": "host",
+            "label": "VPS đã tắt nguồn"
+          },
+          {
+            "id": "dns",
+            "label": "DNS bị đổi"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Sau status, phép đọc nào kiểm tra cú pháp Nginx?",
+        "options": [
+          {
+            "id": "test",
+            "label": "nginx -t"
+          },
+          {
+            "id": "restart",
+            "label": "systemctl restart nginx"
+          },
+          {
+            "id": "disk",
+            "label": "df -h /"
+          }
+        ],
+        "commandId": "nginx-test",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Thông báo “unexpected } ... nginx.conf:45” hỗ trợ kết luận nào?",
+        "options": [
+          {
+            "id": "syntax",
+            "label": "Config có lỗi cú pháp liên quan dấu } tại dòng 45"
+          },
+          {
+            "id": "healthy",
+            "label": "Config hợp lệ nhưng mạng hỏng"
+          },
+          {
+            "id": "all",
+            "label": "Mọi file trên VPS bị hỏng"
+          }
+        ],
+        "requiredProbeIds": [
+          "P2"
+        ],
+        "commandId": "nginx-test",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Hai output chứng minh những gì?",
+        "options": [
+          {
+            "id": "failed",
+            "label": "Nginx hiện failed"
+          },
+          {
+            "id": "line",
+            "label": "nginx -t báo lỗi ở nginx.conf:45"
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định ai chỉnh file"
+          },
+          {
+            "id": "fixed",
+            "label": "HTTP đã hồi phục"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "systemctl-nginx",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quy trình xử lý an toàn?",
+        "options": [
+          {
+            "id": "review",
+            "label": "Đối chiếu diff/backup, sửa có quyền, chạy nginx -t rồi mới start/reload và thử HTTP"
+          },
+          {
+            "id": "delete",
+            "label": "Xóa nginx.conf để service tự tạo lại"
+          },
+          {
+            "id": "restart",
+            "label": "Restart lặp lại cho tới khi service chạy"
+          }
+        ],
+        "commandId": "nginx-test",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi status failed, vị trí lỗi cấu hình, bước đối chiếu/duyệt sửa và xác minh syntax cùng HTTP sau đó.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi status failed, vị trí lỗi cấu hình, bước đối chiếu/duyệt sửa và xác minh syntax cùng HTTP sau đó."
+  },
+  {
+    "id": "VPS-05-004",
+    "objective": "Điều tra lỗi ghi vào /data bằng mount options và thông báo kernel, rồi chọn bước an toàn.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "findmnt -no SOURCE,OPTIONS /data",
+        "output": "/dev/vdb1 ro,relatime",
+        "context": "guest",
+        "purpose": "Xem nguồn và mount option của /data.",
+        "meaning": "/data dùng /dev/vdb1 và hiện có option ro (read-only).",
+        "commandId": "findmnt",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "dmesg | tail",
+        "output": "Buffer I/O error on dev vdb",
+        "context": "guest",
+        "purpose": "Đọc thông báo kernel gần đây về storage.",
+        "meaning": "Có Buffer I/O error trên dev vdb; cần đối chiếu thời điểm và tình trạng storage/provider.",
+        "commandId": "dmesg-tail",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: storage incident status",
+        "output": "No storage incident opened for /dev/vdb.",
+        "purpose": "Xem đã chuyển cấp sự cố storage chưa.",
+        "meaning": "Chưa có đội hạ tầng tiếp nhận; không tự remount rw.",
+        "commandId": "panel-zone",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: storage incident status",
+        "output": "Storage incident opened; infrastructure team assigned; /dev/vdb still under investigation.",
+        "purpose": "Xác minh yêu cầu escalation đã được ghi nhận.",
+        "meaning": "Case đã chuyển cấp, chưa xác nhận volume an toàn để ghi.",
+        "commandId": "panel-zone",
+        "aliases": [],
+        "requiredState": [
+          "escalated"
+        ]
+      },
+      {
+        "id": "G3",
+        "context": "guest",
+        "command": "findmnt -no SOURCE,OPTIONS /data",
+        "output": "/dev/vdb1 ro,relatime",
+        "purpose": "Kiểm tra trạng thái mount khi chờ đội hạ tầng.",
+        "meaning": "Volume vẫn read-only; không báo khách đã sửa xong.",
+        "commandId": "findmnt",
+        "aliases": [],
+        "requiredState": [
+          "escalated"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng người dùng báo là gì?",
+        "options": [
+          {
+            "id": "write",
+            "label": "Không ghi được dữ liệu vì filesystem báo read-only"
+          },
+          {
+            "id": "memory",
+            "label": "RAM đầy"
+          },
+          {
+            "id": "dns",
+            "label": "Không phân giải tên miền"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Lệnh nào đọc mount option của đúng /data?",
+        "options": [
+          {
+            "id": "mount",
+            "label": "findmnt -no SOURCE,OPTIONS /data"
+          },
+          {
+            "id": "free",
+            "label": "free -h"
+          },
+          {
+            "id": "restart",
+            "label": "reboot"
+          }
+        ],
+        "commandId": "findmnt",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "“/dev/vdb1 ro,relatime” cho biết điều gì?",
+        "options": [
+          {
+            "id": "ro",
+            "label": "/data hiện được mount read-only từ /dev/vdb1"
+          },
+          {
+            "id": "safe",
+            "label": "Dữ liệu trên volume chắc chắn nguyên vẹn"
+          },
+          {
+            "id": "block",
+            "label": "Root filesystem / chắc chắn đầy"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1"
+        ],
+        "commandId": "findmnt",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Hai output hỗ trợ những nhận định nào?",
+        "options": [
+          {
+            "id": "ro",
+            "label": "/data có option ro"
+          },
+          {
+            "id": "io",
+            "label": "Kernel ghi nhận Buffer I/O error trên vdb"
+          },
+          {
+            "id": "drive",
+            "label": "Đã xác định ổ vật lý cụ thể bị hỏng"
+          },
+          {
+            "id": "repair",
+            "label": "Có thể remount rw ngay mà không kiểm tra"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "dmesg-tail",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Bước xử lý an toàn nhất?",
+        "options": [
+          {
+            "id": "escalate",
+            "label": "Ngừng thao tác ghi, kiểm tra backup/sức khỏe storage và chuyển đội hạ tầng để sửa có kiểm soát"
+          },
+          {
+            "id": "remount",
+            "label": "Remount rw và tiếp tục ghi ngay"
+          },
+          {
+            "id": "delete",
+            "label": "Xóa log để hết read-only"
+          }
+        ],
+        "commandId": "dmesg-tail",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi mount ro, lỗi I/O, cách giữ dữ liệu và chuyển cấp; nêu điều kiện xác minh sau sửa chữa được duyệt.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi mount ro, lỗi I/O, cách giữ dữ liệu và chuyển cấp; nêu điều kiện xác minh sau sửa chữa được duyệt.",
+    "simulation": {
+      "states": [
+        "initial",
+        "escalated"
+      ],
+      "verificationProbeIds": [
+        "G2",
+        "G3"
+      ],
+      "transitions": [
+        {
+          "actionId": "escalate",
+          "commandId": "storage-escalation",
+          "label": "Mở incident storage và bảo vệ dữ liệu",
+          "from": "initial",
+          "to": "escalated",
+          "requiredProbeIds": [
+            "P1",
+            "P2",
+            "G1"
+          ],
+          "context": "panel",
+          "safety": "escalate",
+          "requiresApproval": false,
+          "allowed": true,
+          "output": "SIMULATED: storage incident opened; no guest filesystem changes performed.",
+          "feedback": "Chuyển cấp là kết quả đúng ở L1 khi có Buffer I/O error. Cần theo dõi việc tiếp nhận và tình trạng dữ liệu; chưa giải quyết lỗi ghi."
+        },
+        {
+          "actionId": "remount",
+          "label": "Remount rw và tiếp tục ghi",
+          "from": "initial",
+          "to": "initial",
+          "requiredProbeIds": [],
+          "context": "guest",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": false,
+          "output": "SIMULATED: remount blocked; state unchanged.",
+          "feedback": "I/O error khiến remount rw có thể làm rủi ro dữ liệu cao hơn; cần đội storage điều tra.",
+          "category": "unsafe_action"
+        }
+      ]
+    },
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Đã mở storage incident, /data vẫn ro. Trạng thái ticket nên là gì?",
+      "options": [
+        {
+          "id": "resolved",
+          "label": "Resolved vì đã có incident"
+        },
+        {
+          "id": "escalated",
+          "label": "Escalated/đang theo dõi; tránh ghi, chờ đội hạ tầng xác minh storage"
+        },
+        {
+          "id": "remount",
+          "label": "Tự remount rw để khách tiếp tục ghi"
+        }
+      ]
+    }
+  },
+  {
+    "id": "VPS-08-003",
+    "objective": "Điều tra vì sao thay đổi DNS trong panel chưa xuất hiện với người dùng.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "dig example.test NS",
+        "output": "ns1.old-dns.example; ns2.old-dns.example",
+        "context": "client",
+        "purpose": "Tra NS của example.test từ điểm truy vấn hiện tại.",
+        "meaning": "Truy vấn hiện trả old-dns; một kết quả resolver chưa tự chứng minh trạng thái registrar hiện tại.",
+        "commandId": "dig-ns",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: edited zone",
+        "output": "ns1.new-dns.example",
+        "context": "panel",
+        "purpose": "Xem tên nameserver của zone vừa chỉnh trong panel mô phỏng.",
+        "meaning": "Panel ghi new-dns; đây là nơi được chỉnh, chưa chứng minh domain đã ủy quyền tới đó.",
+        "commandId": "panel-zone",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: registrar delegation",
+        "output": "Delegated NS: old-dns.example.test",
+        "purpose": "Đọc delegation đang được registrar ghi nhận.",
+        "meaning": "Registrar còn trỏ old-dns; panel zone new-dns chưa được ủy quyền.",
+        "commandId": "panel-zone",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "client",
+        "command": "dig @new-dns.example.test example.test A",
+        "output": "example.test. 300 IN A 198.51.100.20",
+        "purpose": "Hỏi A record trực tiếp từ new-dns.",
+        "meaning": "Zone mới có IP dự kiến, nhưng chưa chứng minh resolver của người dùng dùng NS này.",
+        "commandId": "dig-a",
+        "aliases": []
+      },
+      {
+        "id": "G3",
+        "context": "panel",
+        "command": "PANEL: registrar delegation",
+        "output": "Delegated NS: new-dns.example.test",
+        "purpose": "Kiểm tra delegation sau thay đổi được duyệt.",
+        "meaning": "Registrar đã ghi new-dns; recursive cache có thể còn dữ liệu cũ.",
+        "commandId": "panel-zone",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      },
+      {
+        "id": "G4",
+        "context": "client",
+        "command": "dig example.test NS",
+        "output": "example.test. 1800 IN NS old-dns.example.test.",
+        "purpose": "Kiểm tra resolver phía client sau thay đổi.",
+        "meaning": "Resolver này còn cache NS cũ; không được tuyên bố propagation hoàn tất.",
+        "commandId": "dig-ns",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      },
+      {
+        "id": "G5",
+        "context": "client",
+        "command": "dig @new-dns.example.test example.test A",
+        "output": "example.test. 300 IN A 198.51.100.20",
+        "purpose": "Xác minh authoritative zone mới.",
+        "meaning": "Authoritative new-dns trả IP mong đợi; người dùng vẫn có thể thấy cache cũ.",
+        "commandId": "dig-a",
+        "aliases": [],
+        "requiredState": [
+          "changed"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Khách báo hiện tượng nào sau khi sửa DNS?",
+        "options": [
+          {
+            "id": "old",
+            "label": "Người dùng chưa thấy IP mới"
+          },
+          {
+            "id": "ssh",
+            "label": "SSH Permission denied"
+          },
+          {
+            "id": "disk",
+            "label": "Filesystem hết chỗ"
+          }
+        ],
+        "skill": "triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Cần đọc thông tin NS hiện trả về bằng gì?",
+        "options": [
+          {
+            "id": "dig",
+            "label": "dig example.test NS"
+          },
+          {
+            "id": "curl",
+            "label": "curl -I http://localhost"
+          },
+          {
+            "id": "route",
+            "label": "ip route"
+          }
+        ],
+        "commandId": "dig-ns",
+        "skill": "investigate"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "P1 trả old-dns, còn panel P2 ghi new-dns. Kết luận nào vừa đủ?",
+        "options": [
+          {
+            "id": "different",
+            "label": "Hai nguồn hiện không khớp; phải kiểm tra delegation và authoritative answer"
+          },
+          {
+            "id": "changed",
+            "label": "Registrar chắc chắn đã đổi sang new-dns"
+          },
+          {
+            "id": "broken",
+            "label": "Mọi DNS resolver đều bị hỏng"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "dig-ns",
+        "skill": "interpret"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn điều hai fixture thực sự cho biết.",
+        "options": [
+          {
+            "id": "old",
+            "label": "Truy vấn NS hiện trả old-dns"
+          },
+          {
+            "id": "new",
+            "label": "Panel mô phỏng ghi zone new-dns đã được chỉnh"
+          },
+          {
+            "id": "registrar",
+            "label": "Registrar đã xác nhận delegation tới old-dns"
+          },
+          {
+            "id": "a",
+            "label": "A record ở old-dns và new-dns giống nhau"
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-zone",
+        "skill": "interpret"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Bước tiếp theo an toàn nhất?",
+        "options": [
+          {
+            "id": "verify",
+            "label": "Xác nhận NS ở registrar và hỏi trực tiếp authoritative NS; đổi delegation chỉ khi chủ domain duyệt"
+          },
+          {
+            "id": "delete",
+            "label": "Xóa zone cũ ngay"
+          },
+          {
+            "id": "wait",
+            "label": "Chỉ chờ propagation mà không kiểm tra gì"
+          }
+        ],
+        "commandId": "dig-ns",
+        "skill": "decide"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi NS thấy từ truy vấn và panel, điều chưa biết về registrar, bước xác nhận ủy quyền và kiểm tra authoritative A record.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi NS thấy từ truy vấn và panel, điều chưa biết về registrar, bước xác nhận ủy quyền và kiểm tra authoritative A record.",
+    "simulation": {
+      "states": [
+        "initial",
+        "changed"
+      ],
+      "verificationProbeIds": [
+        "G3",
+        "G4",
+        "G5"
+      ],
+      "transitions": [
+        {
+          "actionId": "delegate",
+          "commandId": "registrar-change",
+          "label": "Đổi delegation tại registrar theo chủ domain duyệt",
+          "from": "initial",
+          "to": "changed",
+          "requiredProbeIds": [
+            "P1",
+            "P2",
+            "G1",
+            "G2"
+          ],
+          "context": "panel",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": true,
+          "output": "SIMULATED: registrar delegation set to new-dns; recursive cache is not flushed.",
+          "feedback": "Đã mô phỏng đổi delegation ở nơi có thẩm quyền. Cần kiểm tra registrar, authoritative answer và cache từ client."
+        },
+        {
+          "actionId": "delete-zone",
+          "label": "Xóa zone cũ ngay",
+          "from": "initial",
+          "to": "initial",
+          "requiredProbeIds": [],
+          "context": "panel",
+          "safety": "change",
+          "requiresApproval": true,
+          "allowed": false,
+          "output": "SIMULATED: zone deletion blocked; state unchanged.",
+          "feedback": "Xóa zone khi resolver còn trỏ NS cũ có thể làm gián đoạn dịch vụ.",
+          "category": "unsafe_action"
+        }
+      ]
+    },
+    "objectiveExam": {
+      "id": "exam-verify",
+      "stage": "verify",
+      "kind": "single_choice",
+      "prompt": "Registrar đã ghi NS mới nhưng resolver client còn NS cũ. Cách trả lời nào chính xác?",
+      "options": [
+        {
+          "id": "done",
+          "label": "Mọi người dùng đã thấy IP mới"
+        },
+        {
+          "id": "pending",
+          "label": "Delegation đã đổi trong panel; authoritative đúng nhưng client cache còn cũ, cần theo dõi theo TTL"
+        },
+        {
+          "id": "delete",
+          "label": "Xóa old-dns ngay"
+        }
+      ]
+    }
+  }
+]

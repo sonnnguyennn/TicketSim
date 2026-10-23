@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "reached",
+    "missing"
+  ],
+  "explanation": "Không đồng nhất Permission denied với sai mật khẩu.",
+  "commandId": "ssh-vvv",
+  "optionFeedback": {
+    "reached": "Đúng từ debug SSH.",
+    "missing": "Đúng từ getent.",
+    "firewall": "Không phù hợp với việc đã tới xác thực.",
+    "wrongpw": "Chưa có bằng chứng về một account hợp lệ."
+  }
+}

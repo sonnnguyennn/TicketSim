@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "test"
+  ],
+  "explanation": "Kiểm tra cú pháp trước khi đề xuất reload/start.",
+  "commandId": "nginx-test",
+  "optionFeedback": {
+    "test": "Đúng: kiểm tra config mà không restart service.",
+    "restart": "Restart thay đổi trạng thái khi chưa biết lỗi.",
+    "disk": "Disk có thể cần điều tra trong case khác, nhưng chưa trực tiếp với chỉnh config."
+  }
+}

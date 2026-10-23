@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "VPS có IP nhưng có đường ra ngoài subnet không?",
+    "Tìm dòng default trong ip route.",
+    "Đối chiếu ip -4 addr với ip route; hỏi gateway được cấp trước khi sửa profile."
+  ]
+}

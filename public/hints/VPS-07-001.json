@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của systemctl status nginx; xem thêm journalctl -u nginx -n 50."
+}

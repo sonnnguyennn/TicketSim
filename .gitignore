@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vite/
+*.log
+tsconfig.tsbuildinfo
+screenshots/
+preview.png
+.env
+.env.*
+!.env.example
+*progress*.json
+!starter-data/**

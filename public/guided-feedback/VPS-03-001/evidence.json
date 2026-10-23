@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "stopped",
+    "port"
+  ],
+  "explanation": "Chỉ chọn điều thật sự quan sát.",
+  "commandId": "ss-ltnp",
+  "optionFeedback": {
+    "stopped": "Đúng từ P1.",
+    "port": "Đúng từ P2.",
+    "badconfig": "Fixture không chứng minh điều này.",
+    "hostoff": "Không có bằng chứng."
+  }
+}

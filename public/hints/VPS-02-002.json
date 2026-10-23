@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của ping -c 2 1.1.1.1; xem thêm cat /etc/resolv.conf; nmcli dev show | grep DNS."
+}

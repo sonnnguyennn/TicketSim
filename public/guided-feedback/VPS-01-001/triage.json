@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "refused"
+  ],
+  "explanation": "Trước khi tìm nguyên nhân, hãy phân biệt connection refused với permission denied.",
+  "optionFeedback": {
+    "auth": "Khách hàng chưa đi tới bước xác thực.",
+    "refused": "Đúng: “Connection refused” là lỗi ở bước thiết lập kết nối.",
+    "dns": "Ticket không nhắc tới lỗi DNS."
+  }
+}

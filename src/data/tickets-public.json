@@ -1,0 +1,4146 @@
+[
+  {
+    "id": "VPS-01-001",
+    "topic": "SSH",
+    "topic_vi": "Lỗi kết nối SSH",
+    "topic_code": "T01",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nI cannot access my VPS over SSH. It says Connection refused.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "systemctl status sshd",
+        "stdout": "Active: inactive (dead)",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ss -ltnp",
+        "stdout": "No listener on :22",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "SSH",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-01-002",
+    "topic": "SSH",
+    "topic_vi": "Lỗi kết nối SSH",
+    "topic_code": "T01",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nI enter my password but SSH says Permission denied.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ssh -vvv admin@192.0.2.25",
+        "stdout": "Authentications that can continue: publickey,password; Permission denied",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "getent passwd admin",
+        "stdout": "no entry",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "SSH",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-01-003",
+    "topic": "SSH",
+    "topic_vi": "Lỗi kết nối SSH",
+    "topic_code": "T01",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nSSH rejects my private key and password login is disabled.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ssh -i ~/.ssh/lab_key lab@192.0.2.25",
+        "stdout": "WARNING: UNPROTECTED PRIVATE KEY FILE! permissions 0644",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ls -l ~/.ssh/lab_key",
+        "stdout": "-rw-r--r-- lab lab",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "SSH",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-01-004",
+    "topic": "SSH",
+    "topic_vi": "Lỗi kết nối SSH",
+    "topic_code": "T01",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nMy VPS responds to ping but SSH always times out.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "systemctl is-active sshd",
+        "stdout": "active",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "firewall-cmd --list-all",
+        "stdout": "services: cockpit dhcpv6-client; ports:",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "SSH",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-01-005",
+    "topic": "SSH",
+    "topic_vi": "Lỗi kết nối SSH",
+    "topic_code": "T01",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nAfter reinstall, I see REMOTE HOST IDENTIFICATION HAS CHANGED.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ssh root@192.0.2.25",
+        "stdout": "Host key verification failed",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: rebuild history",
+        "stdout": "OS reinstalled 15 minutes ago",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "SSH",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-01-006",
+    "topic": "SSH",
+    "topic_vi": "Lỗi kết nối SSH",
+    "topic_code": "T01",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nSSH worked yesterday; now only my office IP times out.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "fail2ban-client status sshd",
+        "stdout": "Banned IP list: 198.51.100.14",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "journalctl -u fail2ban -n 20",
+        "stdout": "Ban 198.51.100.14",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "SSH",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-01-007",
+    "topic": "SSH",
+    "topic_vi": "Lỗi kết nối SSH",
+    "topic_code": "T01",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nSSH to port 22 is refused, but VPS console works.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ss -ltnp",
+        "stdout": "LISTEN 0 128 0.0.0.0:2222",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "grep -E \"^Port\" /etc/ssh/sshd_config",
+        "stdout": "Port 2222",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "SSH",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-01-008",
+    "topic": "SSH",
+    "topic_vi": "Lỗi kết nối SSH",
+    "topic_code": "T01",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nSSH disconnects every few minutes when the nightly job runs.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "journalctl -k -b | tail -n 30",
+        "stdout": "Out of memory: Killed process 2481 (python3)",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "free -h",
+        "stdout": "Mem: 1.0Gi total, 64Mi available; Swap: 0B",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "SSH",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-02-001",
+    "topic": "Network",
+    "topic_vi": "Lỗi kết nối mạng",
+    "topic_code": "T02",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy VPS can reach the same subnet but cannot access public IPs.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ip -4 addr show dev enp0s3",
+        "stdout": "inet 10.10.20.25/24",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ip route",
+        "stdout": "10.10.20.0/24 dev enp0s3",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Network",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-02-002",
+    "topic": "Network",
+    "topic_vi": "Lỗi kết nối mạng",
+    "topic_code": "T02",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nI can open a site by IP but the domain fails to load.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ping -c 2 1.1.1.1",
+        "stdout": "2 received",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "dig example.com A",
+        "stdout": "connection timed out; no servers could be reached",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Network",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-02-003",
+    "topic": "Network",
+    "topic_vi": "Lỗi kết nối mạng",
+    "topic_code": "T02",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nThe server is running after migration, but it has no IPv4 address.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ip -br addr",
+        "stdout": "lo UNKNOWN 127.0.0.1/8; enp0s3 UP",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "nmcli device status",
+        "stdout": "enp0s3 ethernet disconnected --",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Network",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-02-004",
+    "topic": "Network",
+    "topic_vi": "Lỗi kết nối mạng",
+    "topic_code": "T02",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nTCP/443 cannot be reached from outside, although local curl works.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ss -ltnp",
+        "stdout": "LISTEN 0 511 0.0.0.0:443",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "firewall-cmd --list-all",
+        "stdout": "services: ssh; ports:",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Network",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-02-005",
+    "topic": "Network",
+    "topic_vi": "Lỗi kết nối mạng",
+    "topic_code": "T02",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nMy IPv6 works, but IPv4 SSH fails for all clients.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ip -6 addr show dev enp0s3",
+        "stdout": "inet6 2001:db8:100::25/64",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ip -4 addr show dev enp0s3",
+        "stdout": "no inet lines",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Network",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-02-006",
+    "topic": "Network",
+    "topic_vi": "Lỗi kết nối mạng",
+    "topic_code": "T02",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nSSH to my Singapore VPS has random delays.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "mtr -rw -c 20 203.0.113.20",
+        "stdout": "Destination 203.0.113.20 Loss% 25.0 Avg 190ms",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ping -c 20 203.0.113.20",
+        "stdout": "5 packets lost, 25% packet loss",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Network",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-02-007",
+    "topic": "Network",
+    "topic_vi": "Lỗi kết nối mạng",
+    "topic_code": "T02",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nThe VPS is reachable from Japan but times out from two domestic ISPs.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: probes",
+        "stdout": "Tokyo TCP/22 success; ISP-A timeout; ISP-B timeout",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "sshd -T | grep port",
+        "stdout": "port 22",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Network",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-02-008",
+    "topic": "Network",
+    "topic_vi": "Lỗi kết nối mạng",
+    "topic_code": "T02",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nSmall requests work but large HTTPS uploads hang over my VPN.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ping -M do -s 1472 198.51.100.20",
+        "stdout": "Frag needed and DF set",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ping -M do -s 1200 198.51.100.20",
+        "stdout": "2 packets received",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Network",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-03-001",
+    "topic": "Linux System & Services",
+    "topic_vi": "Lỗi hệ thống và service",
+    "topic_code": "T03",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy web server is not responding and the panel says the VPS is running.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "systemctl status nginx",
+        "stdout": "Active: inactive (dead)",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ss -ltnp",
+        "stdout": "no :80 listener",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Linux System & Services",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-03-002",
+    "topic": "Linux System & Services",
+    "topic_vi": "Lỗi hệ thống và service",
+    "topic_code": "T03",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy application fails to write a file: Permission denied.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ls -ld /srv/app/uploads",
+        "stdout": "drwxr-xr-x root root",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "id webapp",
+        "stdout": "uid=1001(webapp) gid=1001(webapp)",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Linux System & Services",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-03-003",
+    "topic": "Linux System & Services",
+    "topic_vi": "Lỗi hệ thống và service",
+    "topic_code": "T03",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nMy service stopped after editing its config.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "systemctl status nginx",
+        "stdout": "Active: failed",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "nginx -t",
+        "stdout": "unexpected \"}\" in /etc/nginx/nginx.conf:45",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Linux System & Services",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-03-004",
+    "topic": "Linux System & Services",
+    "topic_vi": "Lỗi hệ thống và service",
+    "topic_code": "T03",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nApp works after setenforce 0 but fails in enforcing mode.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "getenforce",
+        "stdout": "Enforcing",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ausearch -m AVC -ts recent",
+        "stdout": "avc: denied { write } for comm=\"httpd\" name=\"uploads\"",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Linux System & Services",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-03-005",
+    "topic": "Linux System & Services",
+    "topic_vi": "Lỗi hệ thống và service",
+    "topic_code": "T03",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nMy database application refuses to start after reboot.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "systemctl status myapp",
+        "stdout": "Dependency failed for myapp.service",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "systemctl status mariadb",
+        "stdout": "Active: failed",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Linux System & Services",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-03-006",
+    "topic": "Linux System & Services",
+    "topic_vi": "Lỗi hệ thống và service",
+    "topic_code": "T03",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nMy custom daemon restarts continuously.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "systemctl status custom-app",
+        "stdout": "activating (auto-restart), Result: exit-code",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "journalctl -u custom-app -n 30",
+        "stdout": "ModuleNotFoundError: No module named requests",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Linux System & Services",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-03-007",
+    "topic": "Linux System & Services",
+    "topic_vi": "Lỗi hệ thống và service",
+    "topic_code": "T03",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nAPI fails randomly with Too many open files.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "journalctl -u myapp -n 20",
+        "stdout": "OSError: [Errno 24] Too many open files",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "cat /proc/1234/limits",
+        "stdout": "Max open files 1024 1024 files",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Linux System & Services",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-03-008",
+    "topic": "Linux System & Services",
+    "topic_vi": "Lỗi hệ thống và service",
+    "topic_code": "T03",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nNew files cannot be created; server shows Read-only file system.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "findmnt -no OPTIONS /",
+        "stdout": "ro,relatime",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "journalctl -k -b -p err",
+        "stdout": "EXT4-fs error detected",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Linux System & Services",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-04-001",
+    "topic": "CPU, RAM & Performance",
+    "topic_vi": "Hiệu năng VPS",
+    "topic_code": "T04",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nEverything is slow when a scheduled script runs.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "top -b -n1 | head -n 8",
+        "stdout": "%Cpu(s): 98.5 us, 1.0 sy",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ps -eo pid,comm,%cpu --sort=-%cpu | head",
+        "stdout": "2601 python3 97.4",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "CPU, RAM & Performance",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-04-002",
+    "topic": "CPU, RAM & Performance",
+    "topic_vi": "Hiệu năng VPS",
+    "topic_code": "T04",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy VPS is sluggish but CPU does not look busy.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "free -h",
+        "stdout": "Mem 1.0Gi total 40Mi available; Swap 512Mi 490Mi used",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "vmstat 1 3",
+        "stdout": "si 280 so 310",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "CPU, RAM & Performance",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-04-003",
+    "topic": "CPU, RAM & Performance",
+    "topic_vi": "Hiệu năng VPS",
+    "topic_code": "T04",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nMy application randomly terminates without an error.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "journalctl -k -b | grep -i \"killed process\"",
+        "stdout": "Out of memory: Killed process 2525 (java)",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "systemctl status app",
+        "stdout": "Result: oom-kill",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "CPU, RAM & Performance",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-04-004",
+    "topic": "CPU, RAM & Performance",
+    "topic_vi": "Hiệu năng VPS",
+    "topic_code": "T04",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nThe VPS is slow while CPU user usage stays low.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "vmstat 1 3",
+        "stdout": "us 5 sy 4 id 15 wa 76",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "iostat -xz 1 2",
+        "stdout": "vda %util 99.0 await 180.0",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "CPU, RAM & Performance",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-04-005",
+    "topic": "CPU, RAM & Performance",
+    "topic_vi": "Hiệu năng VPS",
+    "topic_code": "T04",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nA containerized app slows at peak traffic despite host CPU headroom.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "cat /sys/fs/cgroup/cpu.stat",
+        "stdout": "nr_periods 1400; nr_throttled 760",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "docker stats --no-stream",
+        "stdout": "api CPU 99.8%",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "CPU, RAM & Performance",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-04-006",
+    "topic": "CPU, RAM & Performance",
+    "topic_vi": "Hiệu năng VPS",
+    "topic_code": "T04",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nMy daemon steadily grows in memory until it crashes.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ps -o pid,rss,etime,comm -p 1200",
+        "stdout": "1200 850000 09:00:00 myapp",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "journalctl -k -b",
+        "stdout": "Out of memory: Killed process 1200 (myapp)",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "CPU, RAM & Performance",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-04-007",
+    "topic": "CPU, RAM & Performance",
+    "topic_vi": "Hiệu năng VPS",
+    "topic_code": "T04",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nCPU slowdowns occur even when VM processes use little CPU.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "top -b -n1 | head -n 5",
+        "stdout": "%Cpu(s): 5 us, 4 sy, 41 id, 50 st",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: node metrics",
+        "stdout": "CPU contention alert on node-4",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "CPU, RAM & Performance",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-04-008",
+    "topic": "CPU, RAM & Performance",
+    "topic_vi": "Hiệu năng VPS",
+    "topic_code": "T04",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nMy app is fast by day but slow at 02:00 UTC.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "journalctl -u backup-agent --since \"02:00\" --until \"02:30\"",
+        "stdout": "backup started 02:00; finished 02:20",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "iostat -xz 1 2",
+        "stdout": "vda await 95.0 during backup",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "CPU, RAM & Performance",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-05-001",
+    "topic": "Disk & Filesystem",
+    "topic_vi": "Ổ đĩa và filesystem",
+    "topic_code": "T05",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy app cannot save new data: No space left on device.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "df -h /",
+        "stdout": "/dev/vda1 20G 20G 0 100% /",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "du -xhd1 /var",
+        "stdout": "13G /var/log",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Disk & Filesystem",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-05-002",
+    "topic": "Disk & Filesystem",
+    "topic_vi": "Ổ đĩa và filesystem",
+    "topic_code": "T05",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nDisk has free GB but I cannot create another file.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "df -h /",
+        "stdout": "Use% 45%",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "df -i /",
+        "stdout": "IUse% 100%",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Disk & Filesystem",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-05-003",
+    "topic": "Disk & Filesystem",
+    "topic_vi": "Ổ đĩa và filesystem",
+    "topic_code": "T05",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nSystem logs take up almost all the disk.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "journalctl --disk-usage",
+        "stdout": "Archived and active journals take up 8.0G",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "df -h /",
+        "stdout": "Use% 94%",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Disk & Filesystem",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-05-004",
+    "topic": "Disk & Filesystem",
+    "topic_vi": "Ổ đĩa và filesystem",
+    "topic_code": "T05",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nMy server says Read-only file system when writing.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "findmnt -no SOURCE,OPTIONS /data",
+        "stdout": "/dev/vdb1 ro,relatime",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "dmesg | tail",
+        "stdout": "Buffer I/O error on dev vdb",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Disk & Filesystem",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-05-005",
+    "topic": "Disk & Filesystem",
+    "topic_vi": "Ổ đĩa và filesystem",
+    "topic_code": "T05",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nI upgraded disk from 20 to 40 GB but Linux still shows 20 GB.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "lsblk",
+        "stdout": "vda 40G; vda1 20G",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "df -h /",
+        "stdout": "/dev/vda1 20G 12G 8G",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Disk & Filesystem",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-05-006",
+    "topic": "Disk & Filesystem",
+    "topic_vi": "Ổ đĩa và filesystem",
+    "topic_code": "T05",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nI removed giant logs but disk usage did not drop.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "df -h /",
+        "stdout": "Use% 95%",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "lsof +L1",
+        "stdout": "java 2300 /var/log/app.log (deleted) 5G",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Disk & Filesystem",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-05-007",
+    "topic": "Disk & Filesystem",
+    "topic_vi": "Ổ đĩa và filesystem",
+    "topic_code": "T05",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nThe VPS boots into rescue after storage issues.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "journalctl -k -b -p err",
+        "stdout": "EXT4-fs error on /dev/vda1",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "systemctl --failed",
+        "stdout": "systemd-fsck@dev-vda1.service failed",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Disk & Filesystem",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-05-008",
+    "topic": "Disk & Filesystem",
+    "topic_vi": "Ổ đĩa và filesystem",
+    "topic_code": "T05",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nThe customer resized disk but the logical volume reports no space.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "lsblk",
+        "stdout": "vdb 80G, vdb1 80G, vgdata-lvdata 30G",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "vgs",
+        "stdout": "vgdata VFree 50.00g",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Disk & Filesystem",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-06-001",
+    "topic": "VPS Management",
+    "topic_vi": "Quản lý VPS",
+    "topic_code": "T06",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy VPS does not reply at all.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: VM state",
+        "stdout": "Powered Off",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: event log",
+        "stdout": "User requested shutdown 12:30",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "VPS Management",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-06-002",
+    "topic": "VPS Management",
+    "topic_vi": "Quản lý VPS",
+    "topic_code": "T06",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy VPS is slow. Please reboot it immediately.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: VM state",
+        "stdout": "Running",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "top -b -n1 | head",
+        "stdout": "CPU 100% from database backup process",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "VPS Management",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-06-003",
+    "topic": "VPS Management",
+    "topic_vi": "Quản lý VPS",
+    "topic_code": "T06",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nI no longer know the root password of my VPS.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: console",
+        "stdout": "Accessible",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: OS template",
+        "stdout": "CentOS Stream 9",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "VPS Management",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-06-004",
+    "topic": "VPS Management",
+    "topic_vi": "Quản lý VPS",
+    "topic_code": "T06",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nPlease reinstall my VPS with Ubuntu; it has important data.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: OS reinstall confirmation",
+        "stdout": "All contents of main disk will be overwritten",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: backup list",
+        "stdout": "No recent backup found",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "VPS Management",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-06-005",
+    "topic": "VPS Management",
+    "topic_vi": "Quản lý VPS",
+    "topic_code": "T06",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nVPS shows running but I only see emergency mode in console.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: VNC",
+        "stdout": "Failed to mount /data; emergency mode",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "cat /etc/fstab",
+        "stdout": "UUID=deadbeef /data ext4 defaults 0 2",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "VPS Management",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-06-006",
+    "topic": "VPS Management",
+    "topic_vi": "Quản lý VPS",
+    "topic_code": "T06",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nMy server always starts into rescue mode, not installed OS.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: boot source",
+        "stdout": "Rescue ISO mounted",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: boot order",
+        "stdout": "Optical before disk",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "VPS Management",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-06-007",
+    "topic": "VPS Management",
+    "topic_vi": "Quản lý VPS",
+    "topic_code": "T06",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nThe VM is Running but web console stays black.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: VM state",
+        "stdout": "Running",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: console gateway",
+        "stdout": "Websocket handshake failed (502)",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "VPS Management",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-06-008",
+    "topic": "VPS Management",
+    "topic_vi": "Quản lý VPS",
+    "topic_code": "T06",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nCustomer issued shutdown but VM stays Stopping for 20 minutes.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: lifecycle",
+        "stdout": "Stopping 20m",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: QEMU event",
+        "stdout": "ACPI shutdown sent; no guest response",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "VPS Management",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-07-001",
+    "topic": "Web Server & HTTP",
+    "topic_vi": "Website/HTTP",
+    "topic_code": "T07",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy website does not load and curl says connection refused.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "systemctl status nginx",
+        "stdout": "inactive (dead)",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ss -ltnp",
+        "stdout": "no :80 listener",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Web Server & HTTP",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-07-002",
+    "topic": "Web Server & HTTP",
+    "topic_vi": "Website/HTTP",
+    "topic_code": "T07",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nI can open the site, but it says 403 Forbidden.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "curl -I http://127.0.0.1",
+        "stdout": "HTTP/1.1 403 Forbidden",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "tail /var/log/nginx/error.log",
+        "stdout": "directory index of /srv/site/ is forbidden",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Web Server & HTTP",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-07-003",
+    "topic": "Web Server & HTTP",
+    "topic_vi": "Website/HTTP",
+    "topic_code": "T07",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nAfter deploying new content all pages show 404.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "curl -I http://localhost/start",
+        "stdout": "HTTP/1.1 404 Not Found",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "nginx -T",
+        "stdout": "root /var/www/html; intended deploy /srv/myapp/public",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Web Server & HTTP",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-07-004",
+    "topic": "Web Server & HTTP",
+    "topic_vi": "Website/HTTP",
+    "topic_code": "T07",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nMy domain returns 502 Bad Gateway.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "systemctl is-active nginx",
+        "stdout": "active",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "tail /var/log/nginx/error.log",
+        "stdout": "connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Web Server & HTTP",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-07-005",
+    "topic": "Web Server & HTTP",
+    "topic_vi": "Website/HTTP",
+    "topic_code": "T07",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nBrowser reports that the certificate is expired.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null | openssl x509 -noout -dates",
+        "stdout": "notAfter=Sep 01 00:00:00 2026 GMT",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "date -u",
+        "stdout": "Thu Oct 22 07:00:00 UTC 2026",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Web Server & HTTP",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-07-006",
+    "topic": "Web Server & HTTP",
+    "topic_vi": "Website/HTTP",
+    "topic_code": "T07",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nWebsite returns 503 just after app deploy.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "curl -I http://127.0.0.1",
+        "stdout": "HTTP/1.1 503 Service Unavailable",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "systemctl status app",
+        "stdout": "Active: activating (auto-restart)",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Web Server & HTTP",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-07-007",
+    "topic": "Web Server & HTTP",
+    "topic_vi": "Website/HTTP",
+    "topic_code": "T07",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nOnly one domain on the VPS shows a certificate warning.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "openssl s_client -connect 198.51.100.20:443 -servername shop.example.com",
+        "stdout": "subject=CN=api.example.com",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "nginx -T",
+        "stdout": "server_name shop.example.com missing",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Web Server & HTTP",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-07-008",
+    "topic": "Web Server & HTTP",
+    "topic_vi": "Website/HTTP",
+    "topic_code": "T07",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nMy API often returns 504 at peak hours.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "tail /var/log/nginx/error.log",
+        "stdout": "upstream timed out while reading response header from upstream",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "curl -s -o /dev/null -w \"%{time_total}\" http://127.0.0.1:3000/health",
+        "stdout": "31.4",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Web Server & HTTP",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-08-001",
+    "topic": "DNS & Domain",
+    "topic_vi": "Tên miền/DNS",
+    "topic_code": "T08",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nDomain still opens my old web server after migration.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "dig +short shop.example.test A",
+        "stdout": "203.0.113.10",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: current assigned IP",
+        "stdout": "198.51.100.20",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "DNS & Domain",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-08-002",
+    "topic": "DNS & Domain",
+    "topic_vi": "Tên miền/DNS",
+    "topic_code": "T08",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nI cannot resolve my domain after typing it into my browser.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "dig ww.example.com A",
+        "stdout": "status: NXDOMAIN",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "dig www.example.com A",
+        "stdout": "198.51.100.20",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "DNS & Domain",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-08-003",
+    "topic": "DNS & Domain",
+    "topic_vi": "Tên miền/DNS",
+    "topic_code": "T08",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nI updated DNS in a panel, but nobody sees the new IP.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "dig example.test NS",
+        "stdout": "ns1.old-dns.example; ns2.old-dns.example",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: edited zone",
+        "stdout": "ns1.new-dns.example",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "DNS & Domain",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-08-004",
+    "topic": "DNS & Domain",
+    "topic_vi": "Tên miền/DNS",
+    "topic_code": "T08",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nMy VPS cannot resolve any domain names, but public IP connections work.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "curl -I http://198.51.100.20",
+        "stdout": "HTTP/1.1 200 OK",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "dig example.com A",
+        "stdout": "connection timed out; no servers could be reached",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "DNS & Domain",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-08-005",
+    "topic": "DNS & Domain",
+    "topic_vi": "Tên miền/DNS",
+    "topic_code": "T08",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nSome users still reach the previous server after DNS change.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "dig @authoritative.example shop.example.com A",
+        "stdout": "198.51.100.20",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "dig @1.1.1.1 shop.example.com A",
+        "stdout": "203.0.113.10 TTL 120",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "DNS & Domain",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-08-006",
+    "topic": "DNS & Domain",
+    "topic_vi": "Tên miền/DNS",
+    "topic_code": "T08",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nThe website works over IPv4 but fails for IPv6 users.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "dig +short example.com A",
+        "stdout": "198.51.100.20",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "dig +short example.com AAAA",
+        "stdout": "2001:db8:bad::20; PANEL: IPv6 assigned => none",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "DNS & Domain",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-08-007",
+    "topic": "DNS & Domain",
+    "topic_vi": "Tên miền/DNS",
+    "topic_code": "T08",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nMail provider rejects our outbound SMTP connection for missing reverse DNS.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "dig -x 198.51.100.20",
+        "stdout": "status: NXDOMAIN",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: reverse DNS",
+        "stdout": "Not set",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "DNS & Domain",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-08-008",
+    "topic": "DNS & Domain",
+    "topic_vi": "Tên miền/DNS",
+    "topic_code": "T08",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nSome resolvers say SERVFAIL, others give an IP.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "dig @1.1.1.1 signed.example.test A",
+        "stdout": "status: SERVFAIL",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "dig @1.1.1.1 signed.example.test A +cd",
+        "stdout": "status: NOERROR",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "DNS & Domain",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-09-001",
+    "topic": "Security & Abuse",
+    "topic_vi": "Bảo mật/abuse",
+    "topic_code": "T09",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy logs show hundreds of Failed password events; am I hacked?\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "journalctl -u sshd -n 20",
+        "stdout": "Failed password for invalid user admin from 198.51.100.55",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "last -n 5",
+        "stdout": "valid known logins only",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Security & Abuse",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-09-002",
+    "topic": "Security & Abuse",
+    "topic_vi": "Bảo mật/abuse",
+    "topic_code": "T09",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy trusted office cannot SSH, but mobile works.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "fail2ban-client status sshd",
+        "stdout": "Banned IP list: 198.51.100.60",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "journalctl -u fail2ban -n 10",
+        "stdout": "Ban 198.51.100.60",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Security & Abuse",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-09-003",
+    "topic": "Security & Abuse",
+    "topic_vi": "Bảo mật/abuse",
+    "topic_code": "T09",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nThe application only works if SELinux is disabled.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "getenforce",
+        "stdout": "Enforcing",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ausearch -m AVC -ts recent",
+        "stdout": "denied { name_connect } for comm=httpd dest=9000",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Security & Abuse",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-09-004",
+    "topic": "Security & Abuse",
+    "topic_vi": "Bảo mật/abuse",
+    "topic_code": "T09",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nI see an admin account that I did not create.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "getent passwd supportadmin",
+        "stdout": "supportadmin:x:1002:1002::/home/supportadmin:/bin/bash",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "grep -R supportadmin /etc/sudoers.d",
+        "stdout": "supportadmin ALL=(ALL) ALL",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Security & Abuse",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-09-005",
+    "topic": "Security & Abuse",
+    "topic_vi": "Bảo mật/abuse",
+    "topic_code": "T09",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nA provider reported spam traffic from my VPS public IP.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: abuse notice",
+        "stdout": "Outbound SMTP spike from 198.51.100.20",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ss -tunap",
+        "stdout": "ESTAB 198.51.100.20:45000 203.0.113.25:25 users:(\"python\",pid=1802)",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Security & Abuse",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-09-006",
+    "topic": "Security & Abuse",
+    "topic_vi": "Bảo mật/abuse",
+    "topic_code": "T09",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nMy VPS IP suddenly stopped responding during a traffic spike.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: mitigation",
+        "stdout": "Triggered 14:05; target 198.51.100.20",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: upstream",
+        "stdout": "Null-route active 14:06",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Security & Abuse",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-09-007",
+    "topic": "Security & Abuse",
+    "topic_vi": "Bảo mật/abuse",
+    "topic_code": "T09",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nI see successful root SSH login from an IP I do not recognize.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "journalctl -u sshd --since today",
+        "stdout": "Accepted publickey for root from 203.0.113.77",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "last -n 10",
+        "stdout": "root pts/0 203.0.113.77",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Security & Abuse",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-09-008",
+    "topic": "Security & Abuse",
+    "topic_vi": "Bảo mật/abuse",
+    "topic_code": "T09",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nA process reappears each time I terminate it.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "crontab -l -u root",
+        "stdout": "*/5 * * * * /usr/local/bin/agent-update",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "sha256sum /usr/local/bin/agent-update",
+        "stdout": "unexpected hash vs baseline",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Security & Abuse",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-10-001",
+    "topic": "Virtualization",
+    "topic_vi": "Ảo hóa/hạ tầng",
+    "topic_code": "T10",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nThe panel shows VPS not running after an outage.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: VM status",
+        "stdout": "Stopped",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "virsh domstate vm-102",
+        "stdout": "shut off",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Virtualization",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-10-002",
+    "topic": "Virtualization",
+    "topic_vi": "Ảo hóa/hạ tầng",
+    "topic_code": "T10",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy VM boots after migration but has only loopback network.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "ip -br link",
+        "stdout": "lo UNKNOWN",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: vNIC list",
+        "stdout": "no virtual NIC attached",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Virtualization",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-10-003",
+    "topic": "Virtualization",
+    "topic_vi": "Ảo hóa/hạ tầng",
+    "topic_code": "T10",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nMy VPS receives an address but cannot reach its assigned gateway.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "virsh domiflist vm-102",
+        "stdout": "vnet4 bridge br-storage",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: expected bridge",
+        "stdout": "br-public",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Virtualization",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-10-004",
+    "topic": "Virtualization",
+    "topic_vi": "Ảo hóa/hạ tầng",
+    "topic_code": "T10",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nMy server has high steal time but processes are idle.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "top -b -n1 | head",
+        "stdout": "%Cpu(s): 60.0 st",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: host metrics",
+        "stdout": "node hypervisor saturation",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Virtualization",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-10-005",
+    "topic": "Virtualization",
+    "topic_vi": "Ảo hóa/hạ tầng",
+    "topic_code": "T10",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nMy application volume disappeared after migration.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "lsblk",
+        "stdout": "vda 25G only",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "virsh domblklist vm-102",
+        "stdout": "vda /var/lib/libvirt/images/os.qcow2 (no vdb)",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Virtualization",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-10-006",
+    "topic": "Virtualization",
+    "topic_vi": "Ảo hóa/hạ tầng",
+    "topic_code": "T10",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nData looks older after an administrator restored a VM snapshot.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: activity",
+        "stdout": "Snapshot restore completed 10:14",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "stat /srv/app/data.db",
+        "stdout": "Modify 2026-10-18, expected 2026-10-22",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Virtualization",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-10-007",
+    "topic": "Virtualization",
+    "topic_vi": "Ảo hóa/hạ tầng",
+    "topic_code": "T10",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nConnections drop for 30 seconds whenever VM is migrated.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: migration task",
+        "stdout": "Start 08:00:00, finish 08:00:36",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: network monitor",
+        "stdout": "packet loss 08:00:04-08:00:35",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Virtualization",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-10-008",
+    "topic": "Virtualization",
+    "topic_vi": "Ảo hóa/hạ tầng",
+    "topic_code": "T10",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nCertificates fail inside VM despite correct system time on host.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "timedatectl",
+        "stdout": "System clock synchronized: no; NTP service: inactive",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "date -u",
+        "stdout": "Wed Oct 21 01:00:00 UTC 2026 (host is Oct 22)",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Virtualization",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-11-001",
+    "topic": "Backup & Recovery",
+    "topic_vi": "Sao lưu/khôi phục",
+    "topic_code": "T11",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy nightly backup did not complete.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: backup task",
+        "stdout": "failed",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "BACKUP LOG:",
+        "stdout": "target quota exceeded",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Backup & Recovery",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-11-002",
+    "topic": "Backup & Recovery",
+    "topic_vi": "Sao lưu/khôi phục",
+    "topic_code": "T11",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nCan you restore my VPS to this morning?\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: restore points",
+        "stdout": "Last completed: 2026-10-20 00:00 UTC",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: requested time",
+        "stdout": "2026-10-22 08:00 UTC",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Backup & Recovery",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-11-003",
+    "topic": "Backup & Recovery",
+    "topic_vi": "Sao lưu/khôi phục",
+    "topic_code": "T11",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nThe backup exists but extraction reports errors.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "tar -tf /backup/app.tar",
+        "stdout": "Unexpected EOF in archive",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "sha256sum /backup/app.tar",
+        "stdout": "differs from stored checksum",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Backup & Recovery",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-11-004",
+    "topic": "Backup & Recovery",
+    "topic_vi": "Sao lưu/khôi phục",
+    "topic_code": "T11",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nVM snapshot creation is failing.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: snapshot task",
+        "stdout": "failed: no space left on datastore",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: datastore",
+        "stdout": "99.9% used",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Backup & Recovery",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-11-005",
+    "topic": "Backup & Recovery",
+    "topic_vi": "Sao lưu/khôi phục",
+    "topic_code": "T11",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nAfter restore my data disk is missing but OS boots.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: restore job",
+        "stdout": "Included disks: vda only",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "lsblk",
+        "stdout": "vda 30G, no vdb",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Backup & Recovery",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-11-006",
+    "topic": "Backup & Recovery",
+    "topic_vi": "Sao lưu/khôi phục",
+    "topic_code": "T11",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nWe lost yesterday’s orders after a backup restore.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: restored backup",
+        "stdout": "Created 2026-10-20 00:00 UTC",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: incident time",
+        "stdout": "2026-10-22 12:00 UTC",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Backup & Recovery",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-11-007",
+    "topic": "Backup & Recovery",
+    "topic_vi": "Sao lưu/khôi phục",
+    "topic_code": "T11",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nScheduled backup fails after key rotation.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "journalctl -u backup-agent -n 30",
+        "stdout": "Authentication failed: key rejected",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: credentials",
+        "stdout": "key rotated recently",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Backup & Recovery",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-11-008",
+    "topic": "Backup & Recovery",
+    "topic_vi": "Sao lưu/khôi phục",
+    "topic_code": "T11",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nRestored VM causes conflicts with live production VPS.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: restored VM NIC",
+        "stdout": "198.51.100.20",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: live VM NIC",
+        "stdout": "198.51.100.20",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Backup & Recovery",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-12-001",
+    "topic": "Control Panel",
+    "topic_vi": "Panel/provisioning",
+    "topic_code": "T12",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nI paid for a VPS but it stays in provisioning.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: provisioning task",
+        "stdout": "failed",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: IPAM",
+        "stdout": "No free IPv4 in pool sg-02",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Control Panel",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-12-002",
+    "topic": "Control Panel",
+    "topic_vi": "Panel/provisioning",
+    "topic_code": "T12",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nThe panel says Stopped, but my VPS works over SSH.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: VM state",
+        "stdout": "Stopped (last sync 50min ago)",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "virsh domstate vm-110",
+        "stdout": "running",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Control Panel",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-12-003",
+    "topic": "Control Panel",
+    "topic_vi": "Panel/provisioning",
+    "topic_code": "T12",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nI ordered AlmaLinux but server boots Ubuntu.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: ordered OS",
+        "stdout": "AlmaLinux 9",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "cat /etc/os-release",
+        "stdout": "ID=ubuntu VERSION_ID=24.04",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Control Panel",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-12-004",
+    "topic": "Control Panel",
+    "topic_vi": "Panel/provisioning",
+    "topic_code": "T12",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nPanel shows 4 vCPU but inside VM I see 2.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: plan",
+        "stdout": "4 vCPU",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "nproc",
+        "stdout": "2",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Control Panel",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-12-005",
+    "topic": "Control Panel",
+    "topic_vi": "Panel/provisioning",
+    "topic_code": "T12",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nI requested reinstall but nothing changes after 40 minutes.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: task",
+        "stdout": "reinstall waiting lock",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: task queue",
+        "stdout": "snapshot job currently running",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Control Panel",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-12-006",
+    "topic": "Control Panel",
+    "topic_vi": "Panel/provisioning",
+    "topic_code": "T12",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nMy VPS received a different IP from my order.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: order allocation",
+        "stdout": "198.51.100.20",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "ip -4 addr",
+        "stdout": "203.0.113.40/24",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Control Panel",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-12-007",
+    "topic": "Control Panel",
+    "topic_vi": "Panel/provisioning",
+    "topic_code": "T12",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nI cannot reboot my own VM through API.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: API",
+        "stdout": "HTTP 403 Forbidden",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: audit",
+        "stdout": "token scope: read:vm",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Control Panel",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-12-008",
+    "topic": "Control Panel",
+    "topic_vi": "Panel/provisioning",
+    "topic_code": "T12",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nThe VPS appears twice after I retried purchase.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "PANEL: tasks",
+        "stdout": "provision order-771 completed twice",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: VM list",
+        "stdout": "vm-771a and vm-771b",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Control Panel",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-13-001",
+    "topic": "Docker & Containers",
+    "topic_vi": "Docker (bổ sung)",
+    "topic_code": "T13",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nMy Docker app is offline.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "docker ps -a",
+        "stdout": "api Exited (1) 2 minutes ago",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "docker logs api --tail 20",
+        "stdout": "ModuleNotFoundError: appconfig",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Docker & Containers",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-13-002",
+    "topic": "Docker & Containers",
+    "topic_vi": "Docker (bổ sung)",
+    "topic_code": "T13",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nApp works inside container but cannot be accessed on VPS IP.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "docker ps --format \"{{.Names}} {{.Ports}}\"",
+        "stdout": "web 8080/tcp",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "docker port web",
+        "stdout": "(no mappings)",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Docker & Containers",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-13-003",
+    "topic": "Docker & Containers",
+    "topic_vi": "Docker (bổ sung)",
+    "topic_code": "T13",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nThe published app works on 127.0.0.1, not from outside.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "docker port web",
+        "stdout": "8080/tcp -> 127.0.0.1:8080",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "curl -I http://127.0.0.1:8080",
+        "stdout": "200 OK",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Docker & Containers",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-13-004",
+    "topic": "Docker & Containers",
+    "topic_vi": "Docker (bổ sung)",
+    "topic_code": "T13",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nMy container restarts during peak traffic.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "docker inspect api --format \"{{.State.OOMKilled}}\"",
+        "stdout": "true",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "docker stats --no-stream",
+        "stdout": "api MEM USAGE / LIMIT 498MiB / 512MiB",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Docker & Containers",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-13-005",
+    "topic": "Docker & Containers",
+    "topic_vi": "Docker (bổ sung)",
+    "topic_code": "T13",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nContainers cannot resolve domains but host DNS works.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "docker exec api getent hosts example.com",
+        "stdout": "no result",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "getent hosts example.com",
+        "stdout": "93.184.215.14",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-safe",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Docker & Containers",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-13-006",
+    "topic": "Docker & Containers",
+    "topic_vi": "Docker (bổ sung)",
+    "topic_code": "T13",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nContainer can reach host but not public Internet.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "VirtualBox CentOS Stream 9 lab",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "docker exec api ip route",
+        "stdout": "default via 172.17.0.1 dev eth0",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "sysctl net.ipv4.ip_forward",
+        "stdout": "net.ipv4.ip_forward = 0",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "VM-snapshot",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Docker & Containers",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-13-007",
+    "topic": "Docker & Containers",
+    "topic_vi": "Docker (bổ sung)",
+    "topic_code": "T13",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nApp container healthy but database queries fail.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "docker compose ps",
+        "stdout": "api Up; db Exited (1)",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "docker compose logs db --tail 10",
+        "stdout": "InnoDB: Cannot allocate memory",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Docker & Containers",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-13-008",
+    "topic": "Docker & Containers",
+    "topic_vi": "Docker (bổ sung)",
+    "topic_code": "T13",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nNew deployment breaks API immediately.\n\nPlease help me check.\nThank you.",
+    "guest_os": "CentOS Stream 9",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "docker logs api --tail 20",
+        "stdout": "Error: unknown config option legacyMode",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: deployments",
+        "stdout": "image tag changed from v1.8 to v2.0",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Docker & Containers",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-14-001",
+    "topic": "Billing & Lifecycle",
+    "topic_vi": "Billing (bổ sung)",
+    "topic_code": "T14",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nVPS suddenly shows Suspended in dashboard.\n\nPlease help me check.\nThank you.",
+    "guest_os": "N/A",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "BILLING: service",
+        "stdout": "Suspended: invoice overdue",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: invoices",
+        "stdout": "INV-2026-101 overdue",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Billing & Lifecycle",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-14-002",
+    "topic": "Billing & Lifecycle",
+    "topic_vi": "Billing (bổ sung)",
+    "topic_code": "T14",
+    "difficulty": 0,
+    "level_label": "L0 - Nhận diện",
+    "customer_message": "Hello Support Team,\n\nI paid, but VPS is still pending.\n\nPlease help me check.\nThank you.",
+    "guest_os": "N/A",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "BILLING: invoice",
+        "stdout": "Paid",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: provision status",
+        "stdout": "Waiting on payment event",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Billing & Lifecycle",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-14-003",
+    "topic": "Billing & Lifecycle",
+    "topic_vi": "Billing (bổ sung)",
+    "topic_code": "T14",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nPlease cancel my VPS at the end of the cycle.\n\nPlease help me check.\nThank you.",
+    "guest_os": "N/A",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "BILLING: service",
+        "stdout": "Active until 2026-11-15",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: cancellation policy",
+        "stdout": "end-of-term cancellation supported",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Billing & Lifecycle",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-14-004",
+    "topic": "Billing & Lifecycle",
+    "topic_vi": "Billing (bổ sung)",
+    "topic_code": "T14",
+    "difficulty": 1,
+    "level_label": "L1 - Cơ bản",
+    "customer_message": "Hello Support Team,\n\nI want a refund for this VPS after seven days.\n\nPlease help me check.\nThank you.",
+    "guest_os": "N/A",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "Normal",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "BILLING: purchased",
+        "stdout": "2026-10-15",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: refund policy",
+        "stdout": "Eligibility requires review; no automatic approval",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Billing & Lifecycle",
+      "L1 triage",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-14-005",
+    "topic": "Billing & Lifecycle",
+    "topic_vi": "Billing (bổ sung)",
+    "topic_code": "T14",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nI paid for an extra IPv4 but still only have one.\n\nPlease help me check.\nThank you.",
+    "guest_os": "N/A",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "BILLING: addon",
+        "stdout": "Additional IPv4 active",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: IP allocation",
+        "stdout": "pending manual review",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Billing & Lifecycle",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-14-006",
+    "topic": "Billing & Lifecycle",
+    "topic_vi": "Billing (bổ sung)",
+    "topic_code": "T14",
+    "difficulty": 2,
+    "level_label": "L2 - Trung bình",
+    "customer_message": "Hello Support Team,\n\nI received an expiration notice, can you extend the retention?\n\nPlease help me check.\nThank you.",
+    "guest_os": "N/A",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "BILLING: expired",
+        "stdout": "2026-10-20",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: retention",
+        "stdout": "Scheduled deletion 2026-10-25",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Billing & Lifecycle",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-14-007",
+    "topic": "Billing & Lifecycle",
+    "topic_vi": "Billing (bổ sung)",
+    "topic_code": "T14",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nMy invoice charges for two VPS but I only ordered one.\n\nPlease help me check.\nThank you.",
+    "guest_os": "N/A",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "BILLING: invoice lines",
+        "stdout": "VPS-100; VPS-100 duplicate",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: service records",
+        "stdout": "VPS-100 exists once",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Billing & Lifecycle",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  },
+  {
+    "id": "VPS-14-008",
+    "topic": "Billing & Lifecycle",
+    "topic_vi": "Billing (bổ sung)",
+    "topic_code": "T14",
+    "difficulty": 3,
+    "level_label": "L3 - Khó",
+    "customer_message": "Hello Support Team,\n\nMy VPS was suspended and I need it online immediately.\n\nPlease help me check.\nThank you.",
+    "guest_os": "N/A",
+    "environment": "Simulated provider/VPS fixture",
+    "status": "Open",
+    "priority": "High (training example)",
+    "probe_outputs": [
+      {
+        "probe_id": "P1",
+        "command": "BILLING: service",
+        "stdout": "Suspended: abuse case AB-2026-14",
+        "available": true,
+        "mutates_guest": false
+      },
+      {
+        "probe_id": "P2",
+        "command": "PANEL: security",
+        "stdout": "Investigation open",
+        "available": true,
+        "mutates_guest": false
+      }
+    ],
+    "hands_on_mode": "Simulated",
+    "safe_to_execute_as_written": false,
+    "resolution_confidence": "simulated diagnosis from provided evidence",
+    "skill_tags": [
+      "Billing & Lifecycle",
+      "escalation",
+      "CentOS Stream 9"
+    ]
+  }
+]

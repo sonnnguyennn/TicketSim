@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "syntax"
+  ],
+  "explanation": "Đối chiếu dòng và diff để sửa đúng chỗ; không đoán toàn bộ hệ thống.",
+  "commandId": "nginx-test",
+  "optionFeedback": {
+    "syntax": "Đúng: nginx -t xác định file/dòng/token.",
+    "healthy": "P2 báo lỗi cú pháp.",
+    "all": "Output chỉ nói về config Nginx."
+  }
+}

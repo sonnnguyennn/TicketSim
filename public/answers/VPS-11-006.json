@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Restored point predates recent transactions; expected data gap.",
+  "recommended_next_checks": "Confirm backup schedule, DB WAL/binlogs, business RPO.",
+  "resolution_guidance": "Seek point-in-time DB recovery if available; communicate risk.",
+  "verification": "Orders restored to agreed point; consistency checks pass.",
+  "escalate_when": "Database/backup incident team.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

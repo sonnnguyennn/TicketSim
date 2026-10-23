@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "inactive",
+    "noport"
+  ],
+  "explanation": "Nêu đúng điều output chứng minh, không suy diễn nguyên nhân.",
+  "commandId": "ss-ltnp",
+  "optionFeedback": {
+    "inactive": "Đúng: P1 ghi rõ inactive.",
+    "noport": "Đúng: P2 không thấy listener.",
+    "why": "Chưa có log hoặc kiểm tra cấu hình để xác nhận.",
+    "disk": "Hai probe chính không đo dung lượng; cần df -h để đánh giá."
+  }
+}

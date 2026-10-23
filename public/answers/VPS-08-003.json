@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Domain delegation still points to old authoritative nameservers.",
+  "recommended_next_checks": "Check registrar delegation and authoritative answers.",
+  "resolution_guidance": "Change delegation after owner approval; avoid duplicating conflicting zones.",
+  "verification": "Registrar delegation and authoritative responses match.",
+  "escalate_when": "Registrar/domain account access required.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

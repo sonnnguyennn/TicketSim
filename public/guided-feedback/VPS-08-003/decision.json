@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "verify"
+  ],
+  "explanation": "Sau thay đổi được phép, kiểm tra delegation và A record từ nhiều điểm.",
+  "commandId": "dig-ns",
+  "optionFeedback": {
+    "verify": "Đúng: tránh sửa sai zone hoặc đổi ủy quyền khi chưa có quyền.",
+    "delete": "Có thể làm gián đoạn domain khi chưa rõ delegation.",
+    "wait": "Có thể chờ nhầm khi zone được sửa không có thẩm quyền."
+  }
+}

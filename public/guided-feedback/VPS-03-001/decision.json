@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "logs"
+  ],
+  "explanation": "Mô phỏng không thực hiện start service thật.",
+  "commandId": "journalctl-nginx",
+  "optionFeedback": {
+    "logs": "Đúng: có điều tra và xác minh.",
+    "start": "Thiếu điều tra nguyên nhân và xác minh.",
+    "reboot": "Không có bằng chứng cần reboot."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "full"
+  ],
+  "explanation": "df -h đo block space; df -i đo inode.",
+  "commandId": "df-h",
+  "optionFeedback": {
+    "full": "Đúng: Available = 0 và Use% = 100%.",
+    "inode": "Cần df -i để kiểm tra inode.",
+    "ram": "Đây là output filesystem, không phải RAM."
+  }
+}

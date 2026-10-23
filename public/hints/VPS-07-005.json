@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null | openssl x509 -noout -dates; xem thêm Check certificate automation, SNI, chain and domain ownership.."
+}

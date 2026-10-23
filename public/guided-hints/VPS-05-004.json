@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Đọc option ro/rw của đúng mount /data.",
+    "Kết hợp findmnt với thông báo kernel về device vdb.",
+    "Mount ro và Buffer I/O error là dấu hiệu cần bảo vệ dữ liệu; chưa tự kết luận ổ vật lý nào hỏng."
+  ]
+}

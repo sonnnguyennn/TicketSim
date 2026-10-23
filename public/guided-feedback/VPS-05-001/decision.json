@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "review"
+  ],
+  "explanation": "Kiểm tra Available và thao tác ghi của app sau xử lý.",
+  "commandId": "du-var",
+  "optionFeedback": {
+    "review": "Đúng: tránh mất bằng chứng và dữ liệu.",
+    "delete": "Có thể mất dữ liệu/bằng chứng; thao tác phá hủy không được mô phỏng.",
+    "reboot": "Reboot không giải quyết nguyên nhân đầy disk."
+  }
+}

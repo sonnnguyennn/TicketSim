@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của docker exec api getent hosts example.com; xem thêm docker inspect network settings; /etc/resolv.conf in container.."
+}

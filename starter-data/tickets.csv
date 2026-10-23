@@ -1,0 +1,673 @@
+﻿id,topic,topic_vi,difficulty,level_label,title,customer_message,guest_os,priority,command_1,output_1,command_2,output_2,expected_diagnosis,recommended_next_checks,resolution_guidance,verification,escalate_when,hands_on_mode,hint,probe_outputs_json,safety_note
+VPS-01-001,SSH,Lỗi kết nối SSH,0,L0 - Nhận diện,sshd stopped,"Hello Support Team,
+
+I cannot access my VPS over SSH. It says Connection refused.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,systemctl status sshd,Active: inactive (dead),ss -ltnp,No listener on :22,SSH daemon is inactive; port 22 has no listener.,journalctl -u sshd -n 50,Investigate stop reason; start sshd if authorized.,"SSH service active, port listening, login from client succeeds.",Service fails to start or policy forbids guest changes.,VM-safe,Đọc output của systemctl status sshd; xem thêm journalctl -u sshd -n 50.,"[{""probe_id"": ""P1"", ""command"": ""systemctl status sshd"", ""stdout"": ""Active: inactive (dead)"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ss -ltnp"", ""stdout"": ""No listener on :22"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-01-002,SSH,Lỗi kết nối SSH,0,L0 - Nhận diện,Wrong username,"Hello Support Team,
+
+I enter my password but SSH says Permission denied.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,ssh -vvv admin@192.0.2.25,"Authentications that can continue: publickey,password; Permission denied",getent passwd admin,no entry,Requested Linux username does not exist.,id admin; getent passwd; verify authorized account,Use a valid authorized username; do not create/reset accounts without approval.,Authorized user can log in successfully.,Account ownership cannot be verified.,VM-safe,Đọc output của ssh -vvv admin@192.0.2.25; xem thêm id admin; getent passwd; verify authorized account.,"[{""probe_id"": ""P1"", ""command"": ""ssh -vvv admin@192.0.2.25"", ""stdout"": ""Authentications that can continue: publickey,password; Permission denied"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""getent passwd admin"", ""stdout"": ""no entry"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-01-003,SSH,Lỗi kết nối SSH,1,L1 - Cơ bản,SSH key file permissions,"Hello Support Team,
+
+SSH rejects my private key and password login is disabled.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,ssh -i ~/.ssh/lab_key lab@192.0.2.25,WARNING: UNPROTECTED PRIVATE KEY FILE! permissions 0644,ls -l ~/.ssh/lab_key,-rw-r--r-- lab lab,Client private key permissions are too open.,Inspect which key is being offered; check permissions.,"On own lab client, chmod 600 ~/.ssh/lab_key; retry.",ssh -i key succeeds without exposing private key.,Still denied after client key check.,VM-safe,Đọc output của ssh -i ~/.ssh/lab_key lab@192.0.2.25; xem thêm Inspect which key is being offered; check permissions..,"[{""probe_id"": ""P1"", ""command"": ""ssh -i ~/.ssh/lab_key lab@192.0.2.25"", ""stdout"": ""WARNING: UNPROTECTED PRIVATE KEY FILE! permissions 0644"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ls -l ~/.ssh/lab_key"", ""stdout"": ""-rw-r--r-- lab lab"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-01-004,SSH,Lỗi kết nối SSH,1,L1 - Cơ bản,Firewall drops SSH,"Hello Support Team,
+
+My VPS responds to ping but SSH always times out.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,systemctl is-active sshd,active,firewall-cmd --list-all,services: cockpit dhcpv6-client; ports:,SSH daemon runs; guest firewall zone does not allow SSH in this fixture.,firewall-cmd --get-active-zones; ss -ltnp; test TCP from client,"After confirming correct zone and approval, add SSH service rule using documented firewalld policy.","External TCP/22 succeeds, login succeeds, rule persistence verified.","Unclear firewall owner, source-specific restrictions, host firewall.",VM-snapshot,Đọc output của systemctl is-active sshd; xem thêm firewall-cmd --get-active-zones; ss -ltnp; test TCP from client.,"[{""probe_id"": ""P1"", ""command"": ""systemctl is-active sshd"", ""stdout"": ""active"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""firewall-cmd --list-all"", ""stdout"": ""services: cockpit dhcpv6-client; ports:"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-01-005,SSH,Lỗi kết nối SSH,2,L2 - Trung bình,Host key mismatch after reinstall,"Hello Support Team,
+
+After reinstall, I see REMOTE HOST IDENTIFICATION HAS CHANGED.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),ssh root@192.0.2.25,Host key verification failed,PANEL: rebuild history,OS reinstalled 15 minutes ago,Saved host key differs from newly installed server host key.,Verify ED25519 fingerprint using trusted VM console.,"After fingerprint validation, remove stale known_hosts entry and reconnect.","Received key matches console fingerprint, SSH login succeeds.",Fingerprint differs or unexpected reinstall.,VM-safe,Đọc output của ssh root@192.0.2.25; xem thêm Verify ED25519 fingerprint using trusted VM console..,"[{""probe_id"": ""P1"", ""command"": ""ssh root@192.0.2.25"", ""stdout"": ""Host key verification failed"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: rebuild history"", ""stdout"": ""OS reinstalled 15 minutes ago"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-01-006,SSH,Lỗi kết nối SSH,2,L2 - Trung bình,Fail2ban IP ban,"Hello Support Team,
+
+SSH worked yesterday; now only my office IP times out.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),fail2ban-client status sshd,Banned IP list: 198.51.100.14,journalctl -u fail2ban -n 20,Ban 198.51.100.14,Source IP is on Fail2ban ban list.,"Check auth failures, source IP ownership, firewall state.","After identity/policy verification, apply approved unban or safe remediation.",SSH works from authorized source; abusive attempts investigated.,Suspected attack or ban policy ownership unclear.,Simulated,"Đọc output của fail2ban-client status sshd; xem thêm Check auth failures, source IP ownership, firewall state..","[{""probe_id"": ""P1"", ""command"": ""fail2ban-client status sshd"", ""stdout"": ""Banned IP list: 198.51.100.14"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""journalctl -u fail2ban -n 20"", ""stdout"": ""Ban 198.51.100.14"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-01-007,SSH,Lỗi kết nối SSH,3,L3 - Khó,Port changed without notice,"Hello Support Team,
+
+SSH to port 22 is refused, but VPS console works.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),ss -ltnp,LISTEN 0 128 0.0.0.0:2222,"grep -E ""^Port"" /etc/ssh/sshd_config",Port 2222,"SSH server listens on custom TCP/2222, not default 22.",sshd -t; firewall-cmd --list-ports,Confirm intended port and instruct client ssh -p 2222 if allowed.,Successful SSH login on intended port from permitted source.,Provider network ACL blocks custom SSH port.,VM-safe,Đọc output của ss -ltnp; xem thêm sshd -t; firewall-cmd --list-ports.,"[{""probe_id"": ""P1"", ""command"": ""ss -ltnp"", ""stdout"": ""LISTEN 0 128 0.0.0.0:2222"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""grep -E \""^Port\"" /etc/ssh/sshd_config"", ""stdout"": ""Port 2222"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-01-008,SSH,Lỗi kết nối SSH,3,L3 - Khó,SSH session drops under load,"Hello Support Team,
+
+SSH disconnects every few minutes when the nightly job runs.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),journalctl -k -b | tail -n 30,Out of memory: Killed process 2481 (python3),free -h,"Mem: 1.0Gi total, 64Mi available; Swap: 0B",Severe memory pressure coincides with disconnections; exact SSH impact needs validation.,vmstat 1 5; uptime; journalctl -u sshd,"Investigate job memory, set resource limits or capacity plan with owner.","No OOM events during job, sessions remain stable.","Production outage, repeated OOM, infrastructure resource cap.",Simulated,Đọc output của journalctl -k -b | tail -n 30; xem thêm vmstat 1 5; uptime; journalctl -u sshd.,"[{""probe_id"": ""P1"", ""command"": ""journalctl -k -b | tail -n 30"", ""stdout"": ""Out of memory: Killed process 2481 (python3)"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""free -h"", ""stdout"": ""Mem: 1.0Gi total, 64Mi available; Swap: 0B"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-02-001,Network,Lỗi kết nối mạng,0,L0 - Nhận diện,No default route,"Hello Support Team,
+
+My VPS can reach the same subnet but cannot access public IPs.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,ip -4 addr show dev enp0s3,inet 10.10.20.25/24,ip route,10.10.20.0/24 dev enp0s3,Default route is missing in simulated guest network.,nmcli connection show; ip route get 1.1.1.1,Confirm correct gateway and restore NetworkManager profile via console.,Default route exists; TCP external connectivity verified.,"Gateway unconfirmed, host network issue.",VM-snapshot,Đọc output của ip -4 addr show dev enp0s3; xem thêm nmcli connection show; ip route get 1.1.1.1.,"[{""probe_id"": ""P1"", ""command"": ""ip -4 addr show dev enp0s3"", ""stdout"": ""inet 10.10.20.25/24"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ip route"", ""stdout"": ""10.10.20.0/24 dev enp0s3"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-02-002,Network,Lỗi kết nối mạng,0,L0 - Nhận diện,DNS works poorly but IP connects,"Hello Support Team,
+
+I can open a site by IP but the domain fails to load.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,ping -c 2 1.1.1.1,2 received,dig example.com A,connection timed out; no servers could be reached,Configured DNS resolver unavailable; IP connectivity appears available.,cat /etc/resolv.conf; nmcli dev show | grep DNS,Repair valid DNS resolver settings after checking network policy.,dig resolves using configured resolver; domain request works.,Managed DNS outage or policy-owned resolver.,VM-safe,Đọc output của ping -c 2 1.1.1.1; xem thêm cat /etc/resolv.conf; nmcli dev show | grep DNS.,"[{""probe_id"": ""P1"", ""command"": ""ping -c 2 1.1.1.1"", ""stdout"": ""2 received"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""dig example.com A"", ""stdout"": ""connection timed out; no servers could be reached"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-02-003,Network,Lỗi kết nối mạng,1,L1 - Cơ bản,Interface has no IPv4,"Hello Support Team,
+
+The server is running after migration, but it has no IPv4 address.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,ip -br addr,lo UNKNOWN 127.0.0.1/8; enp0s3 UP,nmcli device status,enp0s3 ethernet disconnected --,Ethernet device exists but is not connected to an active IPv4 profile.,nmcli connection show; journalctl -u NetworkManager -b,"Verify intended NIC/profile, bring up correct connection only with console and approval.","IPv4 and route restored, external TCP test passes.","vNIC mapping/MAC changed, missing provider DHCP.",VM-snapshot,Đọc output của ip -br addr; xem thêm nmcli connection show; journalctl -u NetworkManager -b.,"[{""probe_id"": ""P1"", ""command"": ""ip -br addr"", ""stdout"": ""lo UNKNOWN 127.0.0.1/8; enp0s3 UP"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""nmcli device status"", ""stdout"": ""enp0s3 ethernet disconnected --"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-02-004,Network,Lỗi kết nối mạng,1,L1 - Cơ bản,Firewall port mismatch,"Hello Support Team,
+
+TCP/443 cannot be reached from outside, although local curl works.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,ss -ltnp,LISTEN 0 511 0.0.0.0:443,firewall-cmd --list-all,services: ssh; ports:,443 listener exists but current firewalld zone does not allow HTTPS.,firewall-cmd --get-active-zones; curl -kI https://127.0.0.1,Validate zone and permit required HTTPS service according to policy.,External curl to HTTPS works.,Network edge filtering even after guest fix.,VM-snapshot,Đọc output của ss -ltnp; xem thêm firewall-cmd --get-active-zones; curl -kI https://127.0.0.1.,"[{""probe_id"": ""P1"", ""command"": ""ss -ltnp"", ""stdout"": ""LISTEN 0 511 0.0.0.0:443"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""firewall-cmd --list-all"", ""stdout"": ""services: ssh; ports:"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-02-005,Network,Lỗi kết nối mạng,2,L2 - Trung bình,IPv6 only connectivity,"Hello Support Team,
+
+My IPv6 works, but IPv4 SSH fails for all clients.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),ip -6 addr show dev enp0s3,inet6 2001:db8:100::25/64,ip -4 addr show dev enp0s3,no inet lines,Guest has IPv6 but lacks IPv4 on target interface.,"nmcli -f IP4,IP6 dev show enp0s3; check provisioning panel",Verify IPv4 allocation and NetworkManager profile; restore using validated settings.,"IPv4 assigned, IPv4 route and TCP/22 work.",IPv4 address not provisioned to node.,VM-snapshot,"Đọc output của ip -6 addr show dev enp0s3; xem thêm nmcli -f IP4,IP6 dev show enp0s3; check provisioning panel.","[{""probe_id"": ""P1"", ""command"": ""ip -6 addr show dev enp0s3"", ""stdout"": ""inet6 2001:db8:100::25/64"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ip -4 addr show dev enp0s3"", ""stdout"": ""no inet lines"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-02-006,Network,Lỗi kết nối mạng,2,L2 - Trung bình,Packet loss to destination,"Hello Support Team,
+
+SSH to my Singapore VPS has random delays.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),mtr -rw -c 20 203.0.113.20,Destination 203.0.113.20 Loss% 25.0 Avg 190ms,ping -c 20 203.0.113.20,"5 packets lost, 25% packet loss",End-to-end loss observed on this test path; location of loss unknown.,"Repeat at other times, from other sources, reverse path if permitted.",Record timestamps/source/target and escalate route/path evidence.,End-to-end tests normal from affected source.,"Sustained loss, multiple users affected.",Simulated,"Đọc output của mtr -rw -c 20 203.0.113.20; xem thêm Repeat at other times, from other sources, reverse path if permitted..","[{""probe_id"": ""P1"", ""command"": ""mtr -rw -c 20 203.0.113.20"", ""stdout"": ""Destination 203.0.113.20 Loss% 25.0 Avg 190ms"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ping -c 20 203.0.113.20"", ""stdout"": ""5 packets lost, 25% packet loss"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-02-007,Network,Lỗi kết nối mạng,3,L3 - Khó,SSH works from Tokyo only,"Hello Support Team,
+
+The VPS is reachable from Japan but times out from two domestic ISPs.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: probes,Tokyo TCP/22 success; ISP-A timeout; ISP-B timeout,sshd -T | grep port,port 22,Source-dependent IPv4 TCP reachability; no root cause yet.,Probe same port from sources; tcpdump with timestamps.,"Gather source IPs, paths, captures and escalate filtering/routing.",Same TCP test works from formerly affected ISPs.,Upstream/source ACL/BGP diagnosis needed.,Simulated,Đọc output của PANEL: probes; xem thêm Probe same port from sources; tcpdump with timestamps..,"[{""probe_id"": ""P1"", ""command"": ""PANEL: probes"", ""stdout"": ""Tokyo TCP/22 success; ISP-A timeout; ISP-B timeout"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""sshd -T | grep port"", ""stdout"": ""port 22"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-02-008,Network,Lỗi kết nối mạng,3,L3 - Khó,MTU blackhole suspected,"Hello Support Team,
+
+Small requests work but large HTTPS uploads hang over my VPN.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),ping -M do -s 1472 198.51.100.20,Frag needed and DF set,ping -M do -s 1200 198.51.100.20,2 packets received,Path MTU/PMTUD issue suspected; probe alone is not final proof.,"Check tunnel MTU, tcpdump ICMP frag-needed, tracepath.",Correct MTU/MSS with network owner; avoid blind global changes.,Large transfers complete through VPN without stalls.,Provider tunnel or upstream PMTUD blocked.,Simulated,"Đọc output của ping -M do -s 1472 198.51.100.20; xem thêm Check tunnel MTU, tcpdump ICMP frag-needed, tracepath..","[{""probe_id"": ""P1"", ""command"": ""ping -M do -s 1472 198.51.100.20"", ""stdout"": ""Frag needed and DF set"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ping -M do -s 1200 198.51.100.20"", ""stdout"": ""2 packets received"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-03-001,Linux System & Services,Lỗi hệ thống và service,0,L0 - Nhận diện,Nginx stopped,"Hello Support Team,
+
+My web server is not responding and the panel says the VPS is running.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,systemctl status nginx,Active: inactive (dead),ss -ltnp,no :80 listener,Nginx daemon is stopped.,journalctl -u nginx -n 50; nginx -t,Start Nginx if permitted after checking stop cause.,Nginx active and localhost/external HTTP works.,Service repeatedly stops.,VM-safe,Đọc output của systemctl status nginx; xem thêm journalctl -u nginx -n 50; nginx -t.,"[{""probe_id"": ""P1"", ""command"": ""systemctl status nginx"", ""stdout"": ""Active: inactive (dead)"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ss -ltnp"", ""stdout"": ""no :80 listener"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-03-002,Linux System & Services,Lỗi hệ thống và service,0,L0 - Nhận diện,Wrong file ownership,"Hello Support Team,
+
+My application fails to write a file: Permission denied.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,ls -ld /srv/app/uploads,drwxr-xr-x root root,id webapp,uid=1001(webapp) gid=1001(webapp),Webapp user lacks write permission on upload directory.,namei -l /srv/app/uploads; getfacl /srv/app/uploads,Correct narrowly scoped ownership/ACL with owner approval.,Webapp writes test file; permissions remain least-privilege.,Shared mount ownership or policy unclear.,VM-snapshot,Đọc output của ls -ld /srv/app/uploads; xem thêm namei -l /srv/app/uploads; getfacl /srv/app/uploads.,"[{""probe_id"": ""P1"", ""command"": ""ls -ld /srv/app/uploads"", ""stdout"": ""drwxr-xr-x root root"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""id webapp"", ""stdout"": ""uid=1001(webapp) gid=1001(webapp)"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-03-003,Linux System & Services,Lỗi hệ thống và service,1,L1 - Cơ bản,Config syntax error,"Hello Support Team,
+
+My service stopped after editing its config.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,systemctl status nginx,Active: failed,nginx -t,"unexpected ""}"" in /etc/nginx/nginx.conf:45",Nginx configuration contains syntax error.,"Review recent diff, backup current config.",Fix unmatched brace; nginx -t; reload/start after approval.,Syntax test passes and expected HTTP response returns.,Unknown config source or automated deploy overwrites.,VM-safe,"Đọc output của systemctl status nginx; xem thêm Review recent diff, backup current config..","[{""probe_id"": ""P1"", ""command"": ""systemctl status nginx"", ""stdout"": ""Active: failed"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""nginx -t"", ""stdout"": ""unexpected \""}\"" in /etc/nginx/nginx.conf:45"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-03-004,Linux System & Services,Lỗi hệ thống và service,1,L1 - Cơ bản,SELinux denial,"Hello Support Team,
+
+App works after setenforce 0 but fails in enforcing mode.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,getenforce,Enforcing,ausearch -m AVC -ts recent,"avc: denied { write } for comm=""httpd"" name=""uploads""",SELinux policy/context denies intended write operation.,ls -Z /srv/app/uploads; audit2why (if installed),"Restore correct security context or approved policy, do not disable SELinux globally.",Works in enforcing mode; no new related AVC denial.,Custom SELinux policy required.,VM-snapshot,Đọc output của getenforce; xem thêm ls -Z /srv/app/uploads; audit2why (if installed).,"[{""probe_id"": ""P1"", ""command"": ""getenforce"", ""stdout"": ""Enforcing"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ausearch -m AVC -ts recent"", ""stdout"": ""avc: denied { write } for comm=\""httpd\"" name=\""uploads\"""", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-03-005,Linux System & Services,Lỗi hệ thống và service,2,L2 - Trung bình,Service dependency failure,"Hello Support Team,
+
+My database application refuses to start after reboot.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),systemctl status myapp,Dependency failed for myapp.service,systemctl status mariadb,Active: failed,Application startup depends on failed database service.,journalctl -u mariadb -b -n 80; systemctl list-dependencies myapp,Fix database root cause first; then application startup.,"Database healthy, application active, endpoint passes.",DB corruption or data restoration required.,Simulated,Đọc output của systemctl status myapp; xem thêm journalctl -u mariadb -b -n 80; systemctl list-dependencies myapp.,"[{""probe_id"": ""P1"", ""command"": ""systemctl status myapp"", ""stdout"": ""Dependency failed for myapp.service"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""systemctl status mariadb"", ""stdout"": ""Active: failed"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-03-006,Linux System & Services,Lỗi hệ thống và service,2,L2 - Trung bình,Crash loop,"Hello Support Team,
+
+My custom daemon restarts continuously.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),systemctl status custom-app,"activating (auto-restart), Result: exit-code",journalctl -u custom-app -n 30,ModuleNotFoundError: No module named requests,Application exits due to missing Python dependency.,Confirm runtime/virtualenv and deployment package manifest.,Restore dependency in correct environment or rollback release.,App remains active and healthcheck passes.,Third-party app managed by customer.,VM-safe,Đọc output của systemctl status custom-app; xem thêm Confirm runtime/virtualenv and deployment package manifest..,"[{""probe_id"": ""P1"", ""command"": ""systemctl status custom-app"", ""stdout"": ""activating (auto-restart), Result: exit-code"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""journalctl -u custom-app -n 30"", ""stdout"": ""ModuleNotFoundError: No module named requests"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-03-007,Linux System & Services,Lỗi hệ thống và service,3,L3 - Khó,File descriptor exhaustion,"Hello Support Team,
+
+API fails randomly with Too many open files.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),journalctl -u myapp -n 20,OSError: [Errno 24] Too many open files,cat /proc/1234/limits,Max open files 1024 1024 files,App process reached file descriptor limit.,ls /proc/1234/fd | wc -l; systemctl show myapp -p LimitNOFILE,Find leak; adjust limit only after root cause/resource assessment.,No file descriptor errors during representative load.,Application bug or host-wide limit.,Simulated,Đọc output của journalctl -u myapp -n 20; xem thêm ls /proc/1234/fd | wc -l; systemctl show myapp -p LimitNOFILE.,"[{""probe_id"": ""P1"", ""command"": ""journalctl -u myapp -n 20"", ""stdout"": ""OSError: [Errno 24] Too many open files"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""cat /proc/1234/limits"", ""stdout"": ""Max open files 1024 1024 files"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-03-008,Linux System & Services,Lỗi hệ thống và service,3,L3 - Khó,Read-only root filesystem,"Hello Support Team,
+
+New files cannot be created; server shows Read-only file system.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),findmnt -no OPTIONS /,"ro,relatime",journalctl -k -b -p err,EXT4-fs error detected,Root filesystem remounted read-only after filesystem error.,Check storage health and take snapshot/backup according to policy.,Do not remount rw blindly; escalate controlled repair/offline recovery.,Filesystem healthy after authorized recovery and writes succeed.,Immediately escalate storage/filesystem integrity risk.,Simulated,Đọc output của findmnt -no OPTIONS /; xem thêm Check storage health and take snapshot/backup according to policy..,"[{""probe_id"": ""P1"", ""command"": ""findmnt -no OPTIONS /"", ""stdout"": ""ro,relatime"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""journalctl -k -b -p err"", ""stdout"": ""EXT4-fs error detected"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-04-001,"CPU, RAM & Performance",Hiệu năng VPS,0,L0 - Nhận diện,Busy CPU process,"Hello Support Team,
+
+Everything is slow when a scheduled script runs.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,top -b -n1 | head -n 8,"%Cpu(s): 98.5 us, 1.0 sy","ps -eo pid,comm,%cpu --sort=-%cpu | head",2601 python3 97.4,One user process is consuming almost a CPU.,"Identify workload, duration, expected task behavior.","Coordinate with owner; optimize or reschedule task, avoid blind kill.",User-facing latency recovers and usage normalizes.,Repeated production degradation / unclear owner.,VM-safe,"Đọc output của top -b -n1 | head -n 8; xem thêm Identify workload, duration, expected task behavior..","[{""probe_id"": ""P1"", ""command"": ""top -b -n1 | head -n 8"", ""stdout"": ""%Cpu(s): 98.5 us, 1.0 sy"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ps -eo pid,comm,%cpu --sort=-%cpu | head"", ""stdout"": ""2601 python3 97.4"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-04-002,"CPU, RAM & Performance",Hiệu năng VPS,0,L0 - Nhận diện,RAM pressure,"Hello Support Team,
+
+My VPS is sluggish but CPU does not look busy.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,free -h,Mem 1.0Gi total 40Mi available; Swap 512Mi 490Mi used,vmstat 1 3,si 280 so 310,Memory pressure with active swapping likely causes slowness.,"ps -eo pid,comm,rss --sort=-rss | head; journalctl -k",Identify RAM-heavy process; tune or resize with approval.,Swap activity drops; application stable.,"Memory leak, repeated OOM.",VM-safe,"Đọc output của free -h; xem thêm ps -eo pid,comm,rss --sort=-rss | head; journalctl -k.","[{""probe_id"": ""P1"", ""command"": ""free -h"", ""stdout"": ""Mem 1.0Gi total 40Mi available; Swap 512Mi 490Mi used"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""vmstat 1 3"", ""stdout"": ""si 280 so 310"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-04-003,"CPU, RAM & Performance",Hiệu năng VPS,1,L1 - Cơ bản,OOM killed process,"Hello Support Team,
+
+My application randomly terminates without an error.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,"journalctl -k -b | grep -i ""killed process""",Out of memory: Killed process 2525 (java),systemctl status app,Result: oom-kill,Kernel OOM killer terminated app process.,free -h; memory peak / cgroup limits / logs,Tune heap/process count or resource allocation with owner.,No OOM kills under equivalent workload.,Requires capacity changes or code fix.,VM-safe,"Đọc output của journalctl -k -b | grep -i ""killed process""; xem thêm free -h; memory peak / cgroup limits / logs.","[{""probe_id"": ""P1"", ""command"": ""journalctl -k -b | grep -i \""killed process\"""", ""stdout"": ""Out of memory: Killed process 2525 (java)"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""systemctl status app"", ""stdout"": ""Result: oom-kill"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-04-004,"CPU, RAM & Performance",Hiệu năng VPS,1,L1 - Cơ bản,Disk I/O wait,"Hello Support Team,
+
+The VPS is slow while CPU user usage stays low.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,vmstat 1 3,us 5 sy 4 id 15 wa 76,iostat -xz 1 2,vda %util 99.0 await 180.0,Disk I/O saturation suspected.,iotop -o (if installed); df -h; host metrics.,Investigate IO-heavy tasks and storage health.,I/O latency normal and application responsive.,Node storage contention or disk health issue.,Simulated,Đọc output của vmstat 1 3; xem thêm iotop -o (if installed); df -h; host metrics..,"[{""probe_id"": ""P1"", ""command"": ""vmstat 1 3"", ""stdout"": ""us 5 sy 4 id 15 wa 76"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""iostat -xz 1 2"", ""stdout"": ""vda %util 99.0 await 180.0"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-04-005,"CPU, RAM & Performance",Hiệu năng VPS,2,L2 - Trung bình,CPU throttling,"Hello Support Team,
+
+A containerized app slows at peak traffic despite host CPU headroom.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),cat /sys/fs/cgroup/cpu.stat,nr_periods 1400; nr_throttled 760,docker stats --no-stream,api CPU 99.8%,Container CPU quota throttling likely limits workload.,"Inspect container CPU limits, traffic/load, application metrics.",Tune quota/capacity if authorized and validated.,Reduced throttling and request latency.,Managed orchestration quota policy.,Simulated,"Đọc output của cat /sys/fs/cgroup/cpu.stat; xem thêm Inspect container CPU limits, traffic/load, application metrics..","[{""probe_id"": ""P1"", ""command"": ""cat /sys/fs/cgroup/cpu.stat"", ""stdout"": ""nr_periods 1400; nr_throttled 760"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""docker stats --no-stream"", ""stdout"": ""api CPU 99.8%"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-04-006,"CPU, RAM & Performance",Hiệu năng VPS,2,L2 - Trung bình,Memory leak trend,"Hello Support Team,
+
+My daemon steadily grows in memory until it crashes.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),"ps -o pid,rss,etime,comm -p 1200",1200 850000 09:00:00 myapp,journalctl -k -b,Out of memory: Killed process 1200 (myapp),Gradual memory growth suggests leak/retention; not proven yet.,"Compare historical RSS, app heap and traffic.","Escalate application diagnosis, temporary mitigation only with approval.",Stable memory profile across expected uptime.,App vendor/developer intervention.,Simulated,"Đọc output của ps -o pid,rss,etime,comm -p 1200; xem thêm Compare historical RSS, app heap and traffic..","[{""probe_id"": ""P1"", ""command"": ""ps -o pid,rss,etime,comm -p 1200"", ""stdout"": ""1200 850000 09:00:00 myapp"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""journalctl -k -b"", ""stdout"": ""Out of memory: Killed process 1200 (myapp)"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-04-007,"CPU, RAM & Performance",Hiệu năng VPS,3,L3 - Khó,Host noisy neighbor,"Hello Support Team,
+
+CPU slowdowns occur even when VM processes use little CPU.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),top -b -n1 | head -n 5,"%Cpu(s): 5 us, 4 sy, 41 id, 50 st",PANEL: node metrics,CPU contention alert on node-4,High CPU steal time suggests contention at hypervisor level.,Correlate host telemetry and other VPS incidents.,Escalate to node team for workload redistribution/capacity.,Steal time and user latency normalize.,Host node resource management required.,Simulated,Đọc output của top -b -n1 | head -n 5; xem thêm Correlate host telemetry and other VPS incidents..,"[{""probe_id"": ""P1"", ""command"": ""top -b -n1 | head -n 5"", ""stdout"": ""%Cpu(s): 5 us, 4 sy, 41 id, 50 st"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: node metrics"", ""stdout"": ""CPU contention alert on node-4"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-04-008,"CPU, RAM & Performance",Hiệu năng VPS,3,L3 - Khó,Intermittent performance,"Hello Support Team,
+
+My app is fast by day but slow at 02:00 UTC.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),"journalctl -u backup-agent --since ""02:00"" --until ""02:30""",backup started 02:00; finished 02:20,iostat -xz 1 2,vda await 95.0 during backup,Backup-related I/O contention coincides with slowness.,"Compare multiple days, job schedule, app response metrics.",Coordinate scheduling/throttling with backup team; no blind disable.,During backup window performance stays within expected range.,Host storage bandwidth or backup policy.,Simulated,"Đọc output của journalctl -u backup-agent --since ""02:00"" --until ""02:30""; xem thêm Compare multiple days, job schedule, app response metrics..","[{""probe_id"": ""P1"", ""command"": ""journalctl -u backup-agent --since \""02:00\"" --until \""02:30\"""", ""stdout"": ""backup started 02:00; finished 02:20"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""iostat -xz 1 2"", ""stdout"": ""vda await 95.0 during backup"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-05-001,Disk & Filesystem,Ổ đĩa và filesystem,0,L0 - Nhận diện,Filesystem 100% used,"Hello Support Team,
+
+My app cannot save new data: No space left on device.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,df -h /,/dev/vda1 20G 20G 0 100% /,du -xhd1 /var,13G /var/log,Root filesystem has no space available; logs occupy large part.,Find largest safe-to-review files and log growth source.,Use approved rotation/cleanup or disk upgrade after backup.,Available disk restored and app writes.,Unknown high-growth logs or data criticality.,VM-snapshot,Đọc output của df -h /; xem thêm Find largest safe-to-review files and log growth source..,"[{""probe_id"": ""P1"", ""command"": ""df -h /"", ""stdout"": ""/dev/vda1 20G 20G 0 100% /"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""du -xhd1 /var"", ""stdout"": ""13G /var/log"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-05-002,Disk & Filesystem,Ổ đĩa và filesystem,0,L0 - Nhận diện,Inodes exhausted,"Hello Support Team,
+
+Disk has free GB but I cannot create another file.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,df -h /,Use% 45%,df -i /,IUse% 100%,All inodes used despite available disk blocks.,Find directories with many small files (cache/temp) safely.,Coordinate deletion/archiving of known temporary files.,Inodes available and file creation works.,Unknown data owner or inode leak.,VM-snapshot,Đọc output của df -h /; xem thêm Find directories with many small files (cache/temp) safely..,"[{""probe_id"": ""P1"", ""command"": ""df -h /"", ""stdout"": ""Use% 45%"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""df -i /"", ""stdout"": ""IUse% 100%"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-05-003,Disk & Filesystem,Ổ đĩa và filesystem,1,L1 - Cơ bản,Large journal logs,"Hello Support Team,
+
+System logs take up almost all the disk.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,journalctl --disk-usage,Archived and active journals take up 8.0G,df -h /,Use% 94%,Persistent journal consumes significant space.,"Review log volume source, retention and journald config.",Adjust approved journal retention/vacuum in lab with backup policy.,Space recovered and log generation normal.,Evidence retention/security requirements.,VM-snapshot,"Đọc output của journalctl --disk-usage; xem thêm Review log volume source, retention and journald config..","[{""probe_id"": ""P1"", ""command"": ""journalctl --disk-usage"", ""stdout"": ""Archived and active journals take up 8.0G"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""df -h /"", ""stdout"": ""Use% 94%"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-05-004,Disk & Filesystem,Ổ đĩa và filesystem,1,L1 - Cơ bản,Filesystem mounted read-only,"Hello Support Team,
+
+My server says Read-only file system when writing.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,"findmnt -no SOURCE,OPTIONS /data","/dev/vdb1 ro,relatime",dmesg | tail,Buffer I/O error on dev vdb,Volume remounted read-only after I/O errors.,"Check dmesg, SMART/provider disk health, backup status.",Stop writes and escalate storage integrity; controlled repair offline.,"Volume mounted normally after verified repair, data checked.",Always escalate suspected physical/storage I/O errors.,Simulated,"Đọc output của findmnt -no SOURCE,OPTIONS /data; xem thêm Check dmesg, SMART/provider disk health, backup status..","[{""probe_id"": ""P1"", ""command"": ""findmnt -no SOURCE,OPTIONS /data"", ""stdout"": ""/dev/vdb1 ro,relatime"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""dmesg | tail"", ""stdout"": ""Buffer I/O error on dev vdb"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-05-005,Disk & Filesystem,Ổ đĩa và filesystem,2,L2 - Trung bình,Disk expanded but FS not,"Hello Support Team,
+
+I upgraded disk from 20 to 40 GB but Linux still shows 20 GB.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),lsblk,vda 40G; vda1 20G,df -h /,/dev/vda1 20G 12G 8G,"Virtual disk grew, partition/filesystem remain smaller.",lsblk -f; findmnt /; partition layout and free extents.,"With backup/approval, use correct partition+filesystem grow procedure.",lsblk and df show expected size and filesystem healthy.,"LVM, encryption, nonstandard partition layout.",Simulated,Đọc output của lsblk; xem thêm lsblk -f; findmnt /; partition layout and free extents..,"[{""probe_id"": ""P1"", ""command"": ""lsblk"", ""stdout"": ""vda 40G; vda1 20G"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""df -h /"", ""stdout"": ""/dev/vda1 20G 12G 8G"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-05-006,Disk & Filesystem,Ổ đĩa và filesystem,2,L2 - Trung bình,Deleted files still consume space,"Hello Support Team,
+
+I removed giant logs but disk usage did not drop.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),df -h /,Use% 95%,lsof +L1,java 2300 /var/log/app.log (deleted) 5G,Process holds unlinked file open so disk blocks not yet freed.,Confirm PID/service owner; retention and log rotation approach.,Coordinate graceful reopen/restart of affected service if authorized.,lsof shows no deleted large handle; df free space rises.,Critical service cannot be restarted.,Simulated,Đọc output của df -h /; xem thêm Confirm PID/service owner; retention and log rotation approach..,"[{""probe_id"": ""P1"", ""command"": ""df -h /"", ""stdout"": ""Use% 95%"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""lsof +L1"", ""stdout"": ""java 2300 /var/log/app.log (deleted) 5G"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-05-007,Disk & Filesystem,Ổ đĩa và filesystem,3,L3 - Khó,Disk errors during boot,"Hello Support Team,
+
+The VPS boots into rescue after storage issues.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),journalctl -k -b -p err,EXT4-fs error on /dev/vda1,systemctl --failed,systemd-fsck@dev-vda1.service failed,Filesystem check failed; integrity may be compromised.,"Check backups, snapshot and disk health from rescue console.",Escalate offline repair/recovery; avoid in-place fsck on mounted filesystem.,Filesystem mounts cleanly; application data verified.,Storage integrity incident.,Simulated,"Đọc output của journalctl -k -b -p err; xem thêm Check backups, snapshot and disk health from rescue console..","[{""probe_id"": ""P1"", ""command"": ""journalctl -k -b -p err"", ""stdout"": ""EXT4-fs error on /dev/vda1"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""systemctl --failed"", ""stdout"": ""systemd-fsck@dev-vda1.service failed"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-05-008,Disk & Filesystem,Ổ đĩa và filesystem,3,L3 - Khó,LVM volume nearly full,"Hello Support Team,
+
+The customer resized disk but the logical volume reports no space.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),lsblk,"vdb 80G, vdb1 80G, vgdata-lvdata 30G",vgs,vgdata VFree 50.00g,Free VG extents exist but LV filesystem not extended.,lvs; vgs; findmnt /data; filesystem type,Expand LV/filesystem using filesystem-specific safe procedure with backup.,lvs and df reflect intended capacity.,Thin pool/LVM snapshot or encrypted layout.,Simulated,Đọc output của lsblk; xem thêm lvs; vgs; findmnt /data; filesystem type.,"[{""probe_id"": ""P1"", ""command"": ""lsblk"", ""stdout"": ""vdb 80G, vdb1 80G, vgdata-lvdata 30G"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""vgs"", ""stdout"": ""vgdata VFree 50.00g"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-06-001,VPS Management,Quản lý VPS,0,L0 - Nhận diện,VM powered off,"Hello Support Team,
+
+My VPS does not reply at all.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: VM state,Powered Off,PANEL: event log,User requested shutdown 12:30,VM is powered off.,Verify authorized shutdown and whether service should start.,Start VM only after ownership/permission and policy check.,Panel shows Running; console boot and connectivity confirmed.,Unexplained shutdown or recurring poweroff.,Simulated,Đọc output của PANEL: VM state; xem thêm Verify authorized shutdown and whether service should start..,"[{""probe_id"": ""P1"", ""command"": ""PANEL: VM state"", ""stdout"": ""Powered Off"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: event log"", ""stdout"": ""User requested shutdown 12:30"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-06-002,VPS Management,Quản lý VPS,0,L0 - Nhận diện,Reboot needed?,"Hello Support Team,
+
+My VPS is slow. Please reboot it immediately.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: VM state,Running,top -b -n1 | head,CPU 100% from database backup process,VPS running; slowness may be related to active workload.,"Inspect running jobs, users, service impact before reboot.",Explain findings and seek authorization/maintenance window if reboot truly needed.,Reboot only if approved; service recovers.,"Data-critical workloads, unclear reboot permission.",Simulated,"Đọc output của PANEL: VM state; xem thêm Inspect running jobs, users, service impact before reboot..","[{""probe_id"": ""P1"", ""command"": ""PANEL: VM state"", ""stdout"": ""Running"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""top -b -n1 | head"", ""stdout"": ""CPU 100% from database backup process"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-06-003,VPS Management,Quản lý VPS,1,L1 - Cơ bản,Lost root password,"Hello Support Team,
+
+I no longer know the root password of my VPS.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: console,Accessible,PANEL: OS template,CentOS Stream 9,Admin credential lost; VM console access is available.,"Verify identity, recovery policy, distro-specific rescue method.",Use approved offline reset procedure; prefer temporary access and rotate.,Customer confirms authorized login works.,Ownership verification fails.,Simulated,"Đọc output của PANEL: console; xem thêm Verify identity, recovery policy, distro-specific rescue method..","[{""probe_id"": ""P1"", ""command"": ""PANEL: console"", ""stdout"": ""Accessible"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: OS template"", ""stdout"": ""CentOS Stream 9"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-06-004,VPS Management,Quản lý VPS,1,L1 - Cơ bản,Reinstall OS requested,"Hello Support Team,
+
+Please reinstall my VPS with Ubuntu; it has important data.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: OS reinstall confirmation,All contents of main disk will be overwritten,PANEL: backup list,No recent backup found,Reinstall is destructive and no recent backup visible.,"Verify desired OS, service ID, data retention and backup.",Do not reinstall before informed approval and backup plan.,"After authorized reinstall verify OS, access and network.","Unclear data backup, ownership or reinstatement policy.",Simulated,"Đọc output của PANEL: OS reinstall confirmation; xem thêm Verify desired OS, service ID, data retention and backup..","[{""probe_id"": ""P1"", ""command"": ""PANEL: OS reinstall confirmation"", ""stdout"": ""All contents of main disk will be overwritten"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: backup list"", ""stdout"": ""No recent backup found"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-06-005,VPS Management,Quản lý VPS,2,L2 - Trung bình,Boot into emergency mode,"Hello Support Team,
+
+VPS shows running but I only see emergency mode in console.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: VNC,Failed to mount /data; emergency mode,cat /etc/fstab,UUID=deadbeef /data ext4 defaults 0 2,"Boot blocked by failed mount for /data, possibly stale UUID.",lsblk -f; journalctl -xb; compare fstab UUID.,Back up settings and correct mount only after verifying disk.,"Normal boot, mount successful, SSH restored.",Data disk missing/corrupt.,VM-snapshot,Đọc output của PANEL: VNC; xem thêm lsblk -f; journalctl -xb; compare fstab UUID..,"[{""probe_id"": ""P1"", ""command"": ""PANEL: VNC"", ""stdout"": ""Failed to mount /data; emergency mode"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""cat /etc/fstab"", ""stdout"": ""UUID=deadbeef /data ext4 defaults 0 2"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-06-006,VPS Management,Quản lý VPS,2,L2 - Trung bình,Rescue boot loop,"Hello Support Team,
+
+My server always starts into rescue mode, not installed OS.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: boot source,Rescue ISO mounted,PANEL: boot order,Optical before disk,Recovery ISO remains selected as primary boot source.,Verify rescue work completed and disk bootability.,Unmount rescue ISO/update boot device with permission.,VM boots expected installed OS and services work.,Installed disk itself cannot boot.,Simulated,Đọc output của PANEL: boot source; xem thêm Verify rescue work completed and disk bootability..,"[{""probe_id"": ""P1"", ""command"": ""PANEL: boot source"", ""stdout"": ""Rescue ISO mounted"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: boot order"", ""stdout"": ""Optical before disk"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-06-007,VPS Management,Quản lý VPS,3,L3 - Khó,Console is black,"Hello Support Team,
+
+The VM is Running but web console stays black.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: VM state,Running,PANEL: console gateway,Websocket handshake failed (502),Console proxy/access path failed; guest status not established by black screen.,"Try alternative panel console, check console service logs.",Escalate panel/console gateway; avoid guest reboot without evidence.,Console session opens and VM condition verified.,Console infrastructure team.,Simulated,"Đọc output của PANEL: VM state; xem thêm Try alternative panel console, check console service logs..","[{""probe_id"": ""P1"", ""command"": ""PANEL: VM state"", ""stdout"": ""Running"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: console gateway"", ""stdout"": ""Websocket handshake failed (502)"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-06-008,VPS Management,Quản lý VPS,3,L3 - Khó,VM stuck in stopping,"Hello Support Team,
+
+Customer issued shutdown but VM stays Stopping for 20 minutes.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: lifecycle,Stopping 20m,PANEL: QEMU event,ACPI shutdown sent; no guest response,Guest did not complete graceful ACPI shutdown.,"Check guest console, system logs, active writes, backup jobs.",Escalate for controlled shutdown; do not force power-off without approval.,VM transitions cleanly without data corruption.,"Host hypervisor, storage operations in-flight.",Simulated,"Đọc output của PANEL: lifecycle; xem thêm Check guest console, system logs, active writes, backup jobs..","[{""probe_id"": ""P1"", ""command"": ""PANEL: lifecycle"", ""stdout"": ""Stopping 20m"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: QEMU event"", ""stdout"": ""ACPI shutdown sent; no guest response"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-07-001,Web Server & HTTP,Website/HTTP,0,L0 - Nhận diện,Nginx inactive,"Hello Support Team,
+
+My website does not load and curl says connection refused.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,systemctl status nginx,inactive (dead),ss -ltnp,no :80 listener,Web server stopped and HTTP port unbound.,journalctl -u nginx -n 50,Start web server after finding reason and verifying config.,curl -I localhost and external URL succeed.,Service crashes after restart.,VM-safe,Đọc output của systemctl status nginx; xem thêm journalctl -u nginx -n 50.,"[{""probe_id"": ""P1"", ""command"": ""systemctl status nginx"", ""stdout"": ""inactive (dead)"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ss -ltnp"", ""stdout"": ""no :80 listener"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-07-002,Web Server & HTTP,Website/HTTP,0,L0 - Nhận diện,403 Forbidden,"Hello Support Team,
+
+I can open the site, but it says 403 Forbidden.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,curl -I http://127.0.0.1,HTTP/1.1 403 Forbidden,tail /var/log/nginx/error.log,directory index of /srv/site/ is forbidden,Nginx denies directory listing with no index file.,Review nginx root/index config and document root content.,Deploy proper index or adjust app route after owner approval.,Expected page loads without opening unnecessary directory listing.,Access control is intentional.,VM-safe,Đọc output của curl -I http://127.0.0.1; xem thêm Review nginx root/index config and document root content..,"[{""probe_id"": ""P1"", ""command"": ""curl -I http://127.0.0.1"", ""stdout"": ""HTTP/1.1 403 Forbidden"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""tail /var/log/nginx/error.log"", ""stdout"": ""directory index of /srv/site/ is forbidden"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-07-003,Web Server & HTTP,Website/HTTP,1,L1 - Cơ bản,404 due to document root,"Hello Support Team,
+
+After deploying new content all pages show 404.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,curl -I http://localhost/start,HTTP/1.1 404 Not Found,nginx -T,root /var/www/html; intended deploy /srv/myapp/public,Document root does not point to deployed content.,Check site-specific Nginx server block and file existence.,"Correct vhost root/rewrite after config review, test and reload.",Expected URL returns correct content.,App router or reverse proxy configuration ambiguous.,VM-snapshot,Đọc output của curl -I http://localhost/start; xem thêm Check site-specific Nginx server block and file existence..,"[{""probe_id"": ""P1"", ""command"": ""curl -I http://localhost/start"", ""stdout"": ""HTTP/1.1 404 Not Found"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""nginx -T"", ""stdout"": ""root /var/www/html; intended deploy /srv/myapp/public"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-07-004,Web Server & HTTP,Website/HTTP,1,L1 - Cơ bản,502 upstream refused,"Hello Support Team,
+
+My domain returns 502 Bad Gateway.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,systemctl is-active nginx,active,tail /var/log/nginx/error.log,connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000,Proxy cannot connect to backend TCP/3000.,ss -ltnp | grep :3000; systemctl status backend,Investigate/start backend or correct upstream address with approval.,Backend health and public HTTP work.,Backend is third-party managed.,VM-safe,Đọc output của systemctl is-active nginx; xem thêm ss -ltnp | grep :3000; systemctl status backend.,"[{""probe_id"": ""P1"", ""command"": ""systemctl is-active nginx"", ""stdout"": ""active"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""tail /var/log/nginx/error.log"", ""stdout"": ""connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-07-005,Web Server & HTTP,Website/HTTP,2,L2 - Trung bình,SSL certificate expired,"Hello Support Team,
+
+Browser reports that the certificate is expired.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null | openssl x509 -noout -dates,notAfter=Sep 01 00:00:00 2026 GMT,date -u,Thu Oct 22 07:00:00 UTC 2026,Certificate served by endpoint expired.,"Check certificate automation, SNI, chain and domain ownership.",Renew and deploy valid certificate via approved ACME/provider workflow.,Certificate chain validates and correct site cert served.,Certificate private keys/CA access restricted.,Simulated,"Đọc output của echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null | openssl x509 -noout -dates; xem thêm Check certificate automation, SNI, chain and domain ownership..","[{""probe_id"": ""P1"", ""command"": ""echo | openssl s_client -connect example.com:443 -servername example.com 2>/dev/null | openssl x509 -noout -dates"", ""stdout"": ""notAfter=Sep 01 00:00:00 2026 GMT"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""date -u"", ""stdout"": ""Thu Oct 22 07:00:00 UTC 2026"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-07-006,Web Server & HTTP,Website/HTTP,2,L2 - Trung bình,503 after deployment,"Hello Support Team,
+
+Website returns 503 just after app deploy.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),curl -I http://127.0.0.1,HTTP/1.1 503 Service Unavailable,systemctl status app,Active: activating (auto-restart),"App not healthy after deploy, proxy returns 503.","Read app logs and deployment diff, healthcheck.",Rollback/fix app deployment after change approval.,App healthcheck and public endpoints stable.,Software owner/deployment pipeline.,Simulated,"Đọc output của curl -I http://127.0.0.1; xem thêm Read app logs and deployment diff, healthcheck..","[{""probe_id"": ""P1"", ""command"": ""curl -I http://127.0.0.1"", ""stdout"": ""HTTP/1.1 503 Service Unavailable"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""systemctl status app"", ""stdout"": ""Active: activating (auto-restart)"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-07-007,Web Server & HTTP,Website/HTTP,3,L3 - Khó,Wrong TLS SNI cert,"Hello Support Team,
+
+Only one domain on the VPS shows a certificate warning.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),openssl s_client -connect 198.51.100.20:443 -servername shop.example.com,subject=CN=api.example.com,nginx -T,server_name shop.example.com missing,Incorrect SNI virtual host/certificate mapping for domain.,"Check server_name, cert paths, DNS A/AAAA, cert coverage.",Correct vhost and deploy matching valid cert safely.,SNI endpoint serves certificate covering requested domain.,Customer-managed TLS configuration.,Simulated,"Đọc output của openssl s_client -connect 198.51.100.20:443 -servername shop.example.com; xem thêm Check server_name, cert paths, DNS A/AAAA, cert coverage..","[{""probe_id"": ""P1"", ""command"": ""openssl s_client -connect 198.51.100.20:443 -servername shop.example.com"", ""stdout"": ""subject=CN=api.example.com"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""nginx -T"", ""stdout"": ""server_name shop.example.com missing"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-07-008,Web Server & HTTP,Website/HTTP,3,L3 - Khó,Intermittent upstream 504,"Hello Support Team,
+
+My API often returns 504 at peak hours.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),tail /var/log/nginx/error.log,upstream timed out while reading response header from upstream,"curl -s -o /dev/null -w ""%{time_total}"" http://127.0.0.1:3000/health",31.4,Backend response is slow enough to exceed proxy timeout.,"Check backend metrics, DB dependencies and slow requests.",Address backend bottleneck; do not just increase timeouts blindly.,Normal peak traffic yields healthy latency and no 504.,App/database capacity or performance team.,Simulated,"Đọc output của tail /var/log/nginx/error.log; xem thêm Check backend metrics, DB dependencies and slow requests..","[{""probe_id"": ""P1"", ""command"": ""tail /var/log/nginx/error.log"", ""stdout"": ""upstream timed out while reading response header from upstream"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""curl -s -o /dev/null -w \""%{time_total}\"" http://127.0.0.1:3000/health"", ""stdout"": ""31.4"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-08-001,DNS & Domain,Tên miền/DNS,0,L0 - Nhận diện,Old A record,"Hello Support Team,
+
+Domain still opens my old web server after migration.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,dig +short shop.example.test A,203.0.113.10,PANEL: current assigned IP,198.51.100.20,DNS points to old IP instead of approved new server.,Check authoritative zone and planned cutover.,Update A record with domain-owner authorization.,Authoritative answers and customer website correct.,Domain outside customer control.,Simulated,Đọc output của dig +short shop.example.test A; xem thêm Check authoritative zone and planned cutover..,"[{""probe_id"": ""P1"", ""command"": ""dig +short shop.example.test A"", ""stdout"": ""203.0.113.10"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: current assigned IP"", ""stdout"": ""198.51.100.20"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-08-002,DNS & Domain,Tên miền/DNS,0,L0 - Nhận diện,NXDOMAIN typo,"Hello Support Team,
+
+I cannot resolve my domain after typing it into my browser.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,dig ww.example.com A,status: NXDOMAIN,dig www.example.com A,198.51.100.20,Incorrect hostname ww vs www in request.,Confirm exact FQDN; check DNS records.,Correct typo or create requested alias if owner approves.,Correct FQDN resolves and page loads.,Potential DNS zone corruption.,VM-safe,Đọc output của dig ww.example.com A; xem thêm Confirm exact FQDN; check DNS records..,"[{""probe_id"": ""P1"", ""command"": ""dig ww.example.com A"", ""stdout"": ""status: NXDOMAIN"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""dig www.example.com A"", ""stdout"": ""198.51.100.20"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-08-003,DNS & Domain,Tên miền/DNS,1,L1 - Cơ bản,Wrong nameserver delegation,"Hello Support Team,
+
+I updated DNS in a panel, but nobody sees the new IP.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,dig example.test NS,ns1.old-dns.example; ns2.old-dns.example,PANEL: edited zone,ns1.new-dns.example,Domain delegation still points to old authoritative nameservers.,Check registrar delegation and authoritative answers.,Change delegation after owner approval; avoid duplicating conflicting zones.,Registrar delegation and authoritative responses match.,Registrar/domain account access required.,Simulated,Đọc output của dig example.test NS; xem thêm Check registrar delegation and authoritative answers..,"[{""probe_id"": ""P1"", ""command"": ""dig example.test NS"", ""stdout"": ""ns1.old-dns.example; ns2.old-dns.example"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: edited zone"", ""stdout"": ""ns1.new-dns.example"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-08-004,DNS & Domain,Tên miền/DNS,1,L1 - Cơ bản,Resolver timeout,"Hello Support Team,
+
+My VPS cannot resolve any domain names, but public IP connections work.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,curl -I http://198.51.100.20,HTTP/1.1 200 OK,dig example.com A,connection timed out; no servers could be reached,Configured DNS resolver inaccessible or not functioning.,nmcli dev show | grep DNS; cat /etc/resolv.conf,Repair resolver or networking in approved profile.,dig succeeds and application DNS works.,Provider resolver outage.,VM-safe,Đọc output của curl -I http://198.51.100.20; xem thêm nmcli dev show | grep DNS; cat /etc/resolv.conf.,"[{""probe_id"": ""P1"", ""command"": ""curl -I http://198.51.100.20"", ""stdout"": ""HTTP/1.1 200 OK"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""dig example.com A"", ""stdout"": ""connection timed out; no servers could be reached"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-08-005,DNS & Domain,Tên miền/DNS,2,L2 - Trung bình,Stale DNS cache,"Hello Support Team,
+
+Some users still reach the previous server after DNS change.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),dig @authoritative.example shop.example.com A,198.51.100.20,dig @1.1.1.1 shop.example.com A,203.0.113.10 TTL 120,Recursive resolver appears to retain old cached answer.,Compare TTL and authoritative records across resolvers.,Allow TTL expiration; review client resolver caching.,Caches converge to current authoritative answer.,Authoritative inconsistency persisting.,Simulated,Đọc output của dig @authoritative.example shop.example.com A; xem thêm Compare TTL and authoritative records across resolvers..,"[{""probe_id"": ""P1"", ""command"": ""dig @authoritative.example shop.example.com A"", ""stdout"": ""198.51.100.20"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""dig @1.1.1.1 shop.example.com A"", ""stdout"": ""203.0.113.10 TTL 120"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-08-006,DNS & Domain,Tên miền/DNS,2,L2 - Trung bình,Wrong AAAA record,"Hello Support Team,
+
+The website works over IPv4 but fails for IPv6 users.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),dig +short example.com A,198.51.100.20,dig +short example.com AAAA,2001:db8:bad::20; PANEL: IPv6 assigned => none,AAAA points to unreachable/not-assigned IPv6 target.,curl -4I and curl -6I; authoritative records.,Correct/remove inappropriate AAAA after approval.,IPv6 clients use working endpoint or no broken AAAA.,IPv6 rollout/provider network required.,Simulated,Đọc output của dig +short example.com A; xem thêm curl -4I and curl -6I; authoritative records..,"[{""probe_id"": ""P1"", ""command"": ""dig +short example.com A"", ""stdout"": ""198.51.100.20"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""dig +short example.com AAAA"", ""stdout"": ""2001:db8:bad::20; PANEL: IPv6 assigned => none"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-08-007,DNS & Domain,Tên miền/DNS,3,L3 - Khó,PTR missing,"Hello Support Team,
+
+Mail provider rejects our outbound SMTP connection for missing reverse DNS.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),dig -x 198.51.100.20,status: NXDOMAIN,PANEL: reverse DNS,Not set,No PTR is published for outgoing IPv4.,Confirm outbound SMTP IP and forward DNS/HELO policy.,Request PTR at provider IP owner and ensure forward confirmation where applicable.,dig -x resolves expected hostname; mail provider retest.,IP block ownership/SMTP policy.,Simulated,Đọc output của dig -x 198.51.100.20; xem thêm Confirm outbound SMTP IP and forward DNS/HELO policy..,"[{""probe_id"": ""P1"", ""command"": ""dig -x 198.51.100.20"", ""stdout"": ""status: NXDOMAIN"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: reverse DNS"", ""stdout"": ""Not set"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-08-008,DNS & Domain,Tên miền/DNS,3,L3 - Khó,DNSSEC validation failed,"Hello Support Team,
+
+Some resolvers say SERVFAIL, others give an IP.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),dig @1.1.1.1 signed.example.test A,status: SERVFAIL,dig @1.1.1.1 signed.example.test A +cd,status: NOERROR,DNSSEC validation problem suspected; not yet pinpointed.,Check DS/DNSKEY/RRSIG chain and registrar changes.,Fix signed zone/DS mismatch with authoritative owner; avoid disabling validation.,Validating resolvers return correct answers.,DNS provider/registrar DNSSEC coordination.,Simulated,Đọc output của dig @1.1.1.1 signed.example.test A; xem thêm Check DS/DNSKEY/RRSIG chain and registrar changes..,"[{""probe_id"": ""P1"", ""command"": ""dig @1.1.1.1 signed.example.test A"", ""stdout"": ""status: SERVFAIL"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""dig @1.1.1.1 signed.example.test A +cd"", ""stdout"": ""status: NOERROR"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-09-001,Security & Abuse,Bảo mật/abuse,0,L0 - Nhận diện,Failed SSH login attempts,"Hello Support Team,
+
+My logs show hundreds of Failed password events; am I hacked?
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,journalctl -u sshd -n 20,Failed password for invalid user admin from 198.51.100.55,last -n 5,valid known logins only,Brute-force attempts seen; compromise not confirmed.,Inspect Accepted authentication and admin changes.,Recommend approved hardening and monitoring; no destructive action.,No unauthorized sessions; controls working.,Confirmed breach indicators.,VM-safe,Đọc output của journalctl -u sshd -n 20; xem thêm Inspect Accepted authentication and admin changes..,"[{""probe_id"": ""P1"", ""command"": ""journalctl -u sshd -n 20"", ""stdout"": ""Failed password for invalid user admin from 198.51.100.55"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""last -n 5"", ""stdout"": ""valid known logins only"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-09-002,Security & Abuse,Bảo mật/abuse,0,L0 - Nhận diện,IP banned by Fail2ban,"Hello Support Team,
+
+My trusted office cannot SSH, but mobile works.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,fail2ban-client status sshd,Banned IP list: 198.51.100.60,journalctl -u fail2ban -n 10,Ban 198.51.100.60,Office source IP temporarily blocked by Fail2ban.,Confirm office IP ownership and auth failure reason.,Follow policy for unblock/credentials correction.,Legitimate login succeeds and abuse policy remains in force.,Repeated attack from same shared address.,Simulated,Đọc output của fail2ban-client status sshd; xem thêm Confirm office IP ownership and auth failure reason..,"[{""probe_id"": ""P1"", ""command"": ""fail2ban-client status sshd"", ""stdout"": ""Banned IP list: 198.51.100.60"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""journalctl -u fail2ban -n 10"", ""stdout"": ""Ban 198.51.100.60"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-09-003,Security & Abuse,Bảo mật/abuse,1,L1 - Cơ bản,SELinux blocked httpd,"Hello Support Team,
+
+The application only works if SELinux is disabled.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,getenforce,Enforcing,ausearch -m AVC -ts recent,denied { name_connect } for comm=httpd dest=9000,SELinux prohibits web service from connecting to backend port.,Check boolean policy and approved backend architecture.,Enable only justified SELinux policy boolean/rule; keep enforcing.,Backend access works with SELinux enforcing.,Custom policy/security reviewer needed.,VM-snapshot,Đọc output của getenforce; xem thêm Check boolean policy and approved backend architecture..,"[{""probe_id"": ""P1"", ""command"": ""getenforce"", ""stdout"": ""Enforcing"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ausearch -m AVC -ts recent"", ""stdout"": ""denied { name_connect } for comm=httpd dest=9000"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-09-004,Security & Abuse,Bảo mật/abuse,1,L1 - Cơ bản,Unexpected new privileged user,"Hello Support Team,
+
+I see an admin account that I did not create.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,getent passwd supportadmin,supportadmin:x:1002:1002::/home/supportadmin:/bin/bash,grep -R supportadmin /etc/sudoers.d,supportadmin ALL=(ALL) ALL,"Unrecognized sudo-capable account; possible compromise, not proven.",Verify deployment/change records and login logs; preserve evidence.,"Escalate incident, restrict access according to IR runbook.",Account provenance resolved and authorized access restored.,Immediate security escalation.,Simulated,Đọc output của getent passwd supportadmin; xem thêm Verify deployment/change records and login logs; preserve evidence..,"[{""probe_id"": ""P1"", ""command"": ""getent passwd supportadmin"", ""stdout"": ""supportadmin:x:1002:1002::/home/supportadmin:/bin/bash"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""grep -R supportadmin /etc/sudoers.d"", ""stdout"": ""supportadmin ALL=(ALL) ALL"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-09-005,Security & Abuse,Bảo mật/abuse,2,L2 - Trung bình,Abuse spam complaint,"Hello Support Team,
+
+A provider reported spam traffic from my VPS public IP.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: abuse notice,Outbound SMTP spike from 198.51.100.20,ss -tunap,"ESTAB 198.51.100.20:45000 203.0.113.25:25 users:(""python"",pid=1802)",Possible outbound spam process; notice and socket insufficient to prove malice.,"Correlate mail logs, executable, cron, owner, timestamps.","Follow provider abuse/incident policy, preserve evidence, coordinate containment.",Outbound spam stops and abuse ticket formally resolved.,Security/abuse escalation required.,Simulated,"Đọc output của PANEL: abuse notice; xem thêm Correlate mail logs, executable, cron, owner, timestamps..","[{""probe_id"": ""P1"", ""command"": ""PANEL: abuse notice"", ""stdout"": ""Outbound SMTP spike from 198.51.100.20"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ss -tunap"", ""stdout"": ""ESTAB 198.51.100.20:45000 203.0.113.25:25 users:(\""python\"",pid=1802)"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-09-006,Security & Abuse,Bảo mật/abuse,2,L2 - Trung bình,DDoS mitigation active,"Hello Support Team,
+
+My VPS IP suddenly stopped responding during a traffic spike.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: mitigation,Triggered 14:05; target 198.51.100.20,PANEL: upstream,Null-route active 14:06,Provider protection currently filters/null-routes destination IP.,"Check attack alert, duration, mitigation policy and unaffected paths.",Coordinate with network/DDoS team; do not bypass policy.,"Mitigation clears, allowed traffic restored.",Network/security team.,Simulated,"Đọc output của PANEL: mitigation; xem thêm Check attack alert, duration, mitigation policy and unaffected paths..","[{""probe_id"": ""P1"", ""command"": ""PANEL: mitigation"", ""stdout"": ""Triggered 14:05; target 198.51.100.20"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: upstream"", ""stdout"": ""Null-route active 14:06"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-09-007,Security & Abuse,Bảo mật/abuse,3,L3 - Khó,Root SSH login from unknown IP,"Hello Support Team,
+
+I see successful root SSH login from an IP I do not recognize.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),journalctl -u sshd --since today,Accepted publickey for root from 203.0.113.77,last -n 10,root pts/0 203.0.113.77,Unknown successful privileged access needs incident review.,Confirm approved automation/bastion and key fingerprint; preserve logs.,"Escalate security incident, rotate credentials following IR steps.",Sessions accounted for; no persistence; controls revalidated.,Urgent security escalation.,Simulated,Đọc output của journalctl -u sshd --since today; xem thêm Confirm approved automation/bastion and key fingerprint; preserve logs..,"[{""probe_id"": ""P1"", ""command"": ""journalctl -u sshd --since today"", ""stdout"": ""Accepted publickey for root from 203.0.113.77"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""last -n 10"", ""stdout"": ""root pts/0 203.0.113.77"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-09-008,Security & Abuse,Bảo mật/abuse,3,L3 - Khó,Suspicious persistence,"Hello Support Team,
+
+A process reappears each time I terminate it.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),crontab -l -u root,*/5 * * * * /usr/local/bin/agent-update,sha256sum /usr/local/bin/agent-update,unexpected hash vs baseline,Unknown scheduled persistence mechanism; compromise suspected.,Check authorized automation inventory; preserve binary and cron evidence.,Do not delete immediately; security team forensic/containment procedure.,"Unexpected task removed via approved incident recovery, integrity verified.",Security incident response.,Simulated,Đọc output của crontab -l -u root; xem thêm Check authorized automation inventory; preserve binary and cron evidence..,"[{""probe_id"": ""P1"", ""command"": ""crontab -l -u root"", ""stdout"": ""*/5 * * * * /usr/local/bin/agent-update"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""sha256sum /usr/local/bin/agent-update"", ""stdout"": ""unexpected hash vs baseline"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-10-001,Virtualization,Ảo hóa/hạ tầng,0,L0 - Nhận diện,Hypervisor VM off,"Hello Support Team,
+
+The panel shows VPS not running after an outage.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: VM status,Stopped,virsh domstate vm-102,shut off,VM is shut off on hypervisor.,"Review event history, scheduled shutdown, storage state.",Start only after approval and node health verification.,Guest boots and service works.,Repeated unexpected stops or host issue.,Simulated,"Đọc output của PANEL: VM status; xem thêm Review event history, scheduled shutdown, storage state..","[{""probe_id"": ""P1"", ""command"": ""PANEL: VM status"", ""stdout"": ""Stopped"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""virsh domstate vm-102"", ""stdout"": ""shut off"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-10-002,Virtualization,Ảo hóa/hạ tầng,0,L0 - Nhận diện,Missing virtual NIC,"Hello Support Team,
+
+My VM boots after migration but has only loopback network.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,ip -br link,lo UNKNOWN,PANEL: vNIC list,no virtual NIC attached,"vNIC missing from VM config, not merely wrong default route.",virsh domiflist vm-102 (authorized host); migration task logs.,Escalate to hypervisor team to restore expected vNIC/bridge.,"Guest sees NIC, IP/route correct, connectivity restored.",Hypervisor access required.,Simulated,Đọc output của ip -br link; xem thêm virsh domiflist vm-102 (authorized host); migration task logs..,"[{""probe_id"": ""P1"", ""command"": ""ip -br link"", ""stdout"": ""lo UNKNOWN"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: vNIC list"", ""stdout"": ""no virtual NIC attached"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-10-003,Virtualization,Ảo hóa/hạ tầng,1,L1 - Cơ bản,Wrong VM bridge,"Hello Support Team,
+
+My VPS receives an address but cannot reach its assigned gateway.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,virsh domiflist vm-102,vnet4 bridge br-storage,PANEL: expected bridge,br-public,vNIC attached to wrong host bridge.,Compare VM XML/network intent and host bridge/VLAN mapping.,Network/virtualization team correct bridge under change control.,"Gateway reachable, correct isolation confirmed.",Host networking access required.,Simulated,Đọc output của virsh domiflist vm-102; xem thêm Compare VM XML/network intent and host bridge/VLAN mapping..,"[{""probe_id"": ""P1"", ""command"": ""virsh domiflist vm-102"", ""stdout"": ""vnet4 bridge br-storage"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: expected bridge"", ""stdout"": ""br-public"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-10-004,Virtualization,Ảo hóa/hạ tầng,1,L1 - Cơ bản,Host CPU contention,"Hello Support Team,
+
+My server has high steal time but processes are idle.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,top -b -n1 | head,%Cpu(s): 60.0 st,PANEL: host metrics,node hypervisor saturation,Host CPU contention likely.,Compare host CPU usage and other VMs.,Escalate node load balancing/capacity planning.,Steal time and latency normal.,Host team only.,Simulated,Đọc output của top -b -n1 | head; xem thêm Compare host CPU usage and other VMs..,"[{""probe_id"": ""P1"", ""command"": ""top -b -n1 | head"", ""stdout"": ""%Cpu(s): 60.0 st"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: host metrics"", ""stdout"": ""node hypervisor saturation"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-10-005,Virtualization,Ảo hóa/hạ tầng,2,L2 - Trung bình,VM disk detached,"Hello Support Team,
+
+My application volume disappeared after migration.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),lsblk,vda 25G only,virsh domblklist vm-102,vda /var/lib/libvirt/images/os.qcow2 (no vdb),Expected data disk no longer attached to VM.,Compare VM storage config and volume inventory.,Escalate disk attachment recovery with data safeguards.,"Volume visible, filesystem/mount/data verified.",Storage/virtualization team.,Simulated,Đọc output của lsblk; xem thêm Compare VM storage config and volume inventory..,"[{""probe_id"": ""P1"", ""command"": ""lsblk"", ""stdout"": ""vda 25G only"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""virsh domblklist vm-102"", ""stdout"": ""vda /var/lib/libvirt/images/os.qcow2 (no vdb)"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-10-006,Virtualization,Ảo hóa/hạ tầng,2,L2 - Trung bình,Snapshot rollback surprise,"Hello Support Team,
+
+Data looks older after an administrator restored a VM snapshot.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: activity,Snapshot restore completed 10:14,stat /srv/app/data.db,"Modify 2026-10-18, expected 2026-10-22",VM snapshot restore may have rolled data back.,"Confirm snapshot ID, restore authorization, backup/RPO history.",Preserve state and escalate data recovery planning.,Customer confirms expected restore point and data recovered if possible.,Data integrity/backup incident.,Simulated,"Đọc output của PANEL: activity; xem thêm Confirm snapshot ID, restore authorization, backup/RPO history..","[{""probe_id"": ""P1"", ""command"": ""PANEL: activity"", ""stdout"": ""Snapshot restore completed 10:14"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""stat /srv/app/data.db"", ""stdout"": ""Modify 2026-10-18, expected 2026-10-22"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-10-007,Virtualization,Ảo hóa/hạ tầng,3,L3 - Khó,Live migration network flap,"Hello Support Team,
+
+Connections drop for 30 seconds whenever VM is migrated.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: migration task,"Start 08:00:00, finish 08:00:36",PANEL: network monitor,packet loss 08:00:04-08:00:35,Network interruption correlates with migration event.,"Review migration mode, switching/ARP convergence, host bridge.",Escalate migration network path to virtualization team.,Planned migration meets service interruption targets.,Infra escalation.,Simulated,"Đọc output của PANEL: migration task; xem thêm Review migration mode, switching/ARP convergence, host bridge..","[{""probe_id"": ""P1"", ""command"": ""PANEL: migration task"", ""stdout"": ""Start 08:00:00, finish 08:00:36"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: network monitor"", ""stdout"": ""packet loss 08:00:04-08:00:35"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-10-008,Virtualization,Ảo hóa/hạ tầng,3,L3 - Khó,Clock drift in VM,"Hello Support Team,
+
+Certificates fail inside VM despite correct system time on host.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),timedatectl,System clock synchronized: no; NTP service: inactive,date -u,Wed Oct 21 01:00:00 UTC 2026 (host is Oct 22),Guest clock significantly out of sync; TLS and auth may fail.,timedatectl status; chronyc tracking if available,Correct guest time sync through approved chronyd/host config.,Clock synchronized and TLS validation passes.,Host time source or migration timer problem.,VM-snapshot,Đọc output của timedatectl; xem thêm timedatectl status; chronyc tracking if available.,"[{""probe_id"": ""P1"", ""command"": ""timedatectl"", ""stdout"": ""System clock synchronized: no; NTP service: inactive"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""date -u"", ""stdout"": ""Wed Oct 21 01:00:00 UTC 2026 (host is Oct 22)"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-11-001,Backup & Recovery,Sao lưu/khôi phục,0,L0 - Nhận diện,Target quota exceeded,"Hello Support Team,
+
+My nightly backup did not complete.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: backup task,failed,BACKUP LOG:,target quota exceeded,Backup destination quota exhausted.,"Check target free space, retention and active backup jobs.",Increase quota/retention cleanup with approval.,New backup succeeds and integrity checked.,Backup storage owner action needed.,Simulated,"Đọc output của PANEL: backup task; xem thêm Check target free space, retention and active backup jobs..","[{""probe_id"": ""P1"", ""command"": ""PANEL: backup task"", ""stdout"": ""failed"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""BACKUP LOG:"", ""stdout"": ""target quota exceeded"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-11-002,Backup & Recovery,Sao lưu/khôi phục,0,L0 - Nhận diện,No restore point,"Hello Support Team,
+
+Can you restore my VPS to this morning?
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: restore points,Last completed: 2026-10-20 00:00 UTC,PANEL: requested time,2026-10-22 08:00 UTC,Requested point-in-time restore is unavailable.,"Confirm RPO, snapshot schedule, external backups.",Explain feasible restore point before any restore.,Customer accepts selected point and data verification.,Business-critical data loss or recovery exceptions.,Simulated,"Đọc output của PANEL: restore points; xem thêm Confirm RPO, snapshot schedule, external backups..","[{""probe_id"": ""P1"", ""command"": ""PANEL: restore points"", ""stdout"": ""Last completed: 2026-10-20 00:00 UTC"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: requested time"", ""stdout"": ""2026-10-22 08:00 UTC"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-11-003,Backup & Recovery,Sao lưu/khôi phục,1,L1 - Cơ bản,Corrupt archive,"Hello Support Team,
+
+The backup exists but extraction reports errors.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,tar -tf /backup/app.tar,Unexpected EOF in archive,sha256sum /backup/app.tar,differs from stored checksum,Archive is truncated/corrupt relative to expected checksum.,Inspect alternate restore points and storage logs.,Do not overwrite originals; restore only validated backup.,Test extraction succeeds in isolated restore area.,Storage corruption across backups.,Simulated,Đọc output của tar -tf /backup/app.tar; xem thêm Inspect alternate restore points and storage logs..,"[{""probe_id"": ""P1"", ""command"": ""tar -tf /backup/app.tar"", ""stdout"": ""Unexpected EOF in archive"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""sha256sum /backup/app.tar"", ""stdout"": ""differs from stored checksum"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-11-004,Backup & Recovery,Sao lưu/khôi phục,1,L1 - Cơ bản,Snapshot storage full,"Hello Support Team,
+
+VM snapshot creation is failing.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: snapshot task,failed: no space left on datastore,PANEL: datastore,99.9% used,Hypervisor datastore has insufficient free capacity.,"Check storage pool health, snapshot chains and capacity.",Escalate datastore capacity; do not delete snapshots blindly.,Snapshot succeeds and datastore headroom restored.,Storage/virtualization team.,Simulated,"Đọc output của PANEL: snapshot task; xem thêm Check storage pool health, snapshot chains and capacity..","[{""probe_id"": ""P1"", ""command"": ""PANEL: snapshot task"", ""stdout"": ""failed: no space left on datastore"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: datastore"", ""stdout"": ""99.9% used"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-11-005,Backup & Recovery,Sao lưu/khôi phục,2,L2 - Trung bình,Wrong disk chosen for restore,"Hello Support Team,
+
+After restore my data disk is missing but OS boots.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: restore job,Included disks: vda only,lsblk,"vda 30G, no vdb",Restore job included OS disk but not separate data disk.,Review backup disk inclusion policy and backup manifest.,Identify correct data backup; plan separate restore without overwriting.,Data disk restored and checksums/data verified.,Storage backup operator.,Simulated,Đọc output của PANEL: restore job; xem thêm Review backup disk inclusion policy and backup manifest..,"[{""probe_id"": ""P1"", ""command"": ""PANEL: restore job"", ""stdout"": ""Included disks: vda only"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""lsblk"", ""stdout"": ""vda 30G, no vdb"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-11-006,Backup & Recovery,Sao lưu/khôi phục,2,L2 - Trung bình,RPO mismatch,"Hello Support Team,
+
+We lost yesterday’s orders after a backup restore.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: restored backup,Created 2026-10-20 00:00 UTC,PANEL: incident time,2026-10-22 12:00 UTC,Restored point predates recent transactions; expected data gap.,"Confirm backup schedule, DB WAL/binlogs, business RPO.",Seek point-in-time DB recovery if available; communicate risk.,Orders restored to agreed point; consistency checks pass.,Database/backup incident team.,Simulated,"Đọc output của PANEL: restored backup; xem thêm Confirm backup schedule, DB WAL/binlogs, business RPO..","[{""probe_id"": ""P1"", ""command"": ""PANEL: restored backup"", ""stdout"": ""Created 2026-10-20 00:00 UTC"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: incident time"", ""stdout"": ""2026-10-22 12:00 UTC"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-11-007,Backup & Recovery,Sao lưu/khôi phục,3,L3 - Khó,Backup agent authentication fails,"Hello Support Team,
+
+Scheduled backup fails after key rotation.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),journalctl -u backup-agent -n 30,Authentication failed: key rejected,PANEL: credentials,key rotated recently,Backup agent credential is no longer accepted.,Confirm secret rotation and agent service account.,Update agent credentials via secret manager according to policy.,New backup completes without exposing secret.,Backup/security credential ownership.,Simulated,Đọc output của journalctl -u backup-agent -n 30; xem thêm Confirm secret rotation and agent service account..,"[{""probe_id"": ""P1"", ""command"": ""journalctl -u backup-agent -n 30"", ""stdout"": ""Authentication failed: key rejected"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: credentials"", ""stdout"": ""key rotated recently"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-11-008,Backup & Recovery,Sao lưu/khôi phục,3,L3 - Khó,Restored server duplicate IP,"Hello Support Team,
+
+Restored VM causes conflicts with live production VPS.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: restored VM NIC,198.51.100.20,PANEL: live VM NIC,198.51.100.20,Restored clone duplicates production IP assignment.,Check isolated restore network and deployment plan.,Isolate clone and assign nonconflicting IP before connecting.,No IP conflict; intended services accessible.,Network virtualization incident.,Simulated,Đọc output của PANEL: restored VM NIC; xem thêm Check isolated restore network and deployment plan..,"[{""probe_id"": ""P1"", ""command"": ""PANEL: restored VM NIC"", ""stdout"": ""198.51.100.20"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: live VM NIC"", ""stdout"": ""198.51.100.20"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-12-001,Control Panel,Panel/provisioning,0,L0 - Nhận diện,Provisioning no IPv4,"Hello Support Team,
+
+I paid for a VPS but it stays in provisioning.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: provisioning task,failed,PANEL: IPAM,No free IPv4 in pool sg-02,Provisioner cannot allocate IPv4.,Check IP pool capacity and task identity.,"Escalate IPAM allocation, retry only idempotently.",VPS receives IP and customer can log in.,IPAM/provider allocation.,Simulated,Đọc output của PANEL: provisioning task; xem thêm Check IP pool capacity and task identity..,"[{""probe_id"": ""P1"", ""command"": ""PANEL: provisioning task"", ""stdout"": ""failed"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: IPAM"", ""stdout"": ""No free IPv4 in pool sg-02"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-12-002,Control Panel,Panel/provisioning,0,L0 - Nhận diện,Panel stale state,"Hello Support Team,
+
+The panel says Stopped, but my VPS works over SSH.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: VM state,Stopped (last sync 50min ago),virsh domstate vm-110,running,Panel sync/status appears stale compared with host.,"Check sync jobs/API errors, no assumption of actual power off.",Refresh/reconcile backend state via approved workflow.,Panel and hypervisor show consistent state.,Panel backend team.,Simulated,"Đọc output của PANEL: VM state; xem thêm Check sync jobs/API errors, no assumption of actual power off..","[{""probe_id"": ""P1"", ""command"": ""PANEL: VM state"", ""stdout"": ""Stopped (last sync 50min ago)"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""virsh domstate vm-110"", ""stdout"": ""running"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-12-003,Control Panel,Panel/provisioning,1,L1 - Cơ bản,Wrong template deployed,"Hello Support Team,
+
+I ordered AlmaLinux but server boots Ubuntu.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: ordered OS,AlmaLinux 9,cat /etc/os-release,ID=ubuntu VERSION_ID=24.04,Provisioning delivered wrong OS template.,"Validate service and deployment history, customer data state.",Plan authorized rebuild/replace and customer communication.,OS matches order and service functional.,Provisioning/template team.,Simulated,"Đọc output của PANEL: ordered OS; xem thêm Validate service and deployment history, customer data state..","[{""probe_id"": ""P1"", ""command"": ""PANEL: ordered OS"", ""stdout"": ""AlmaLinux 9"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""cat /etc/os-release"", ""stdout"": ""ID=ubuntu VERSION_ID=24.04"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-12-004,Control Panel,Panel/provisioning,1,L1 - Cơ bản,Upgrade CPU not applied,"Hello Support Team,
+
+Panel shows 4 vCPU but inside VM I see 2.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,PANEL: plan,4 vCPU,nproc,2,Allocated plan and guest-visible CPU count differ.,Compare hypervisor VM vCPU config and CPU hotplug state.,Coordinate authorized VM resource adjustment/reboot if required.,Guest sees approved vCPUs after change.,Hypervisor/panel team.,Simulated,Đọc output của PANEL: plan; xem thêm Compare hypervisor VM vCPU config and CPU hotplug state..,"[{""probe_id"": ""P1"", ""command"": ""PANEL: plan"", ""stdout"": ""4 vCPU"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""nproc"", ""stdout"": ""2"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-12-005,Control Panel,Panel/provisioning,2,L2 - Trung bình,Reinstall task pending,"Hello Support Team,
+
+I requested reinstall but nothing changes after 40 minutes.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: task,reinstall waiting lock,PANEL: task queue,snapshot job currently running,Reinstall blocked by existing lock/job.,"Verify snapshot task integrity, expected duration and owner.",Escalate task queue/lock management; do not force unlock blindly.,Reinstall completes with explicit authorization and verified OS.,Panel job orchestration.,Simulated,"Đọc output của PANEL: task; xem thêm Verify snapshot task integrity, expected duration and owner..","[{""probe_id"": ""P1"", ""command"": ""PANEL: task"", ""stdout"": ""reinstall waiting lock"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: task queue"", ""stdout"": ""snapshot job currently running"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-12-006,Control Panel,Panel/provisioning,2,L2 - Trung bình,Wrong IPv4 assigned,"Hello Support Team,
+
+My VPS received a different IP from my order.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: order allocation,198.51.100.20,ip -4 addr,203.0.113.40/24,Allocated address and guest configuration mismatch.,"Check IPAM assignment, cloud-init/network profile and host mapping.",Correct provisioning config via approved workflow.,Panel/guest/route match; client connects.,IPAM or edge routing team.,Simulated,"Đọc output của PANEL: order allocation; xem thêm Check IPAM assignment, cloud-init/network profile and host mapping..","[{""probe_id"": ""P1"", ""command"": ""PANEL: order allocation"", ""stdout"": ""198.51.100.20"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""ip -4 addr"", ""stdout"": ""203.0.113.40/24"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-12-007,Control Panel,Panel/provisioning,3,L3 - Khó,API permission denied,"Hello Support Team,
+
+I cannot reboot my own VM through API.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: API,HTTP 403 Forbidden,PANEL: audit,token scope: read:vm,API token lacks permission for requested mutation.,Check account role and documented token scopes.,"Issue least-privilege authorized token/scope, not admin token by default.",Reboot API works with appropriate owner authorization.,Identity/API authorization policy.,Simulated,Đọc output của PANEL: API; xem thêm Check account role and documented token scopes..,"[{""probe_id"": ""P1"", ""command"": ""PANEL: API"", ""stdout"": ""HTTP 403 Forbidden"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: audit"", ""stdout"": ""token scope: read:vm"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-12-008,Control Panel,Panel/provisioning,3,L3 - Khó,Duplicate VM provisioning,"Hello Support Team,
+
+The VPS appears twice after I retried purchase.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),PANEL: tasks,provision order-771 completed twice,PANEL: VM list,vm-771a and vm-771b,Duplicate provisioning for one order.,Compare billing/order mapping and VM resources; preserve state.,Escalate reconciliation; avoid deleting any VM until identity confirmed.,One correct managed service and billing mapping.,Provisioning/billing coordination.,Simulated,Đọc output của PANEL: tasks; xem thêm Compare billing/order mapping and VM resources; preserve state..,"[{""probe_id"": ""P1"", ""command"": ""PANEL: tasks"", ""stdout"": ""provision order-771 completed twice"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: VM list"", ""stdout"": ""vm-771a and vm-771b"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-13-001,Docker & Containers,Docker (bổ sung),0,L0 - Nhận diện,Container exited,"Hello Support Team,
+
+My Docker app is offline.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,docker ps -a,api Exited (1) 2 minutes ago,docker logs api --tail 20,ModuleNotFoundError: appconfig,Container exited due to application import error.,"Inspect image/tag, env, deployment change.",Fix deployment/image according to owner; avoid blind restart loop.,Container healthy and endpoint responds.,App code maintained by customer.,VM-safe,"Đọc output của docker ps -a; xem thêm Inspect image/tag, env, deployment change..","[{""probe_id"": ""P1"", ""command"": ""docker ps -a"", ""stdout"": ""api Exited (1) 2 minutes ago"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""docker logs api --tail 20"", ""stdout"": ""ModuleNotFoundError: appconfig"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-13-002,Docker & Containers,Docker (bổ sung),0,L0 - Nhận diện,Port not published,"Hello Support Team,
+
+App works inside container but cannot be accessed on VPS IP.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,"docker ps --format ""{{.Names}} {{.Ports}}""",web 8080/tcp,docker port web,(no mappings),Container port not published to host in bridge mode.,Inspect network_mode and required exposure.,"With approval, publish correct port/recreate deployment safely.",Host TCP port and external HTTP work.,Provider firewall still blocking.,VM-safe,"Đọc output của docker ps --format ""{{.Names}} {{.Ports}}""; xem thêm Inspect network_mode and required exposure..","[{""probe_id"": ""P1"", ""command"": ""docker ps --format \""{{.Names}} {{.Ports}}\"""", ""stdout"": ""web 8080/tcp"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""docker port web"", ""stdout"": ""(no mappings)"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-13-003,Docker & Containers,Docker (bổ sung),1,L1 - Cơ bản,Host binding localhost,"Hello Support Team,
+
+The published app works on 127.0.0.1, not from outside.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,docker port web,8080/tcp -> 127.0.0.1:8080,curl -I http://127.0.0.1:8080,200 OK,Published port is intentionally bound to host loopback.,"Check security expectations, reverse proxy pattern.",Expose through approved reverse proxy or deliberate bind change.,Public access only via intended endpoint.,Change would expose insecure service.,VM-snapshot,"Đọc output của docker port web; xem thêm Check security expectations, reverse proxy pattern..","[{""probe_id"": ""P1"", ""command"": ""docker port web"", ""stdout"": ""8080/tcp -> 127.0.0.1:8080"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""curl -I http://127.0.0.1:8080"", ""stdout"": ""200 OK"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-13-004,Docker & Containers,Docker (bổ sung),1,L1 - Cơ bản,Container OOM exit,"Hello Support Team,
+
+My container restarts during peak traffic.
+
+Please help me check.
+Thank you.",CentOS Stream 9,Normal,"docker inspect api --format ""{{.State.OOMKilled}}""",true,docker stats --no-stream,api MEM USAGE / LIMIT 498MiB / 512MiB,Container killed due to memory limit pressure.,"Review cgroup limit, app heap, peak telemetry.",Tune app or authorized resource limit change.,No OOMKilled under normal peak.,Host memory capacity constraints.,Simulated,"Đọc output của docker inspect api --format ""{{.State.OOMKilled}}""; xem thêm Review cgroup limit, app heap, peak telemetry..","[{""probe_id"": ""P1"", ""command"": ""docker inspect api --format \""{{.State.OOMKilled}}\"""", ""stdout"": ""true"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""docker stats --no-stream"", ""stdout"": ""api MEM USAGE / LIMIT 498MiB / 512MiB"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-13-005,Docker & Containers,Docker (bổ sung),2,L2 - Trung bình,Docker DNS failure,"Hello Support Team,
+
+Containers cannot resolve domains but host DNS works.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),docker exec api getent hosts example.com,no result,getent hosts example.com,93.184.215.14,Container DNS resolution fails while host resolver succeeds.,docker inspect network settings; /etc/resolv.conf in container.,Repair Docker resolver/network settings after cause verified.,Container resolves approved domain and app works.,Docker engine or upstream DNS issue.,VM-safe,Đọc output của docker exec api getent hosts example.com; xem thêm docker inspect network settings; /etc/resolv.conf in container..,"[{""probe_id"": ""P1"", ""command"": ""docker exec api getent hosts example.com"", ""stdout"": ""no result"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""getent hosts example.com"", ""stdout"": ""93.184.215.14"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-13-006,Docker & Containers,Docker (bổ sung),2,L2 - Trung bình,Bridge NAT misconfigured,"Hello Support Team,
+
+Container can reach host but not public Internet.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),docker exec api ip route,default via 172.17.0.1 dev eth0,sysctl net.ipv4.ip_forward,net.ipv4.ip_forward = 0,"Host IPv4 forwarding disabled, blocking bridge forwarding.",Inspect Docker network/forwarding/firewalld policy.,Restore approved forwarding/NAT configuration in isolated lab.,Container reaches external TCP service safely.,Shared host networking policy.,VM-snapshot,Đọc output của docker exec api ip route; xem thêm Inspect Docker network/forwarding/firewalld policy..,"[{""probe_id"": ""P1"", ""command"": ""docker exec api ip route"", ""stdout"": ""default via 172.17.0.1 dev eth0"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""sysctl net.ipv4.ip_forward"", ""stdout"": ""net.ipv4.ip_forward = 0"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-13-007,Docker & Containers,Docker (bổ sung),3,L3 - Khó,Compose dependency unavailable,"Hello Support Team,
+
+App container healthy but database queries fail.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),docker compose ps,api Up; db Exited (1),docker compose logs db --tail 10,InnoDB: Cannot allocate memory,DB container failed due to memory allocation issue.,"Check container resources, MariaDB settings, available RAM.",Resolve DB resource issue before app restart.,Database and app healthchecks pass.,Production database/data safety.,Simulated,"Đọc output của docker compose ps; xem thêm Check container resources, MariaDB settings, available RAM..","[{""probe_id"": ""P1"", ""command"": ""docker compose ps"", ""stdout"": ""api Up; db Exited (1)"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""docker compose logs db --tail 10"", ""stdout"": ""InnoDB: Cannot allocate memory"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-13-008,Docker & Containers,Docker (bổ sung),3,L3 - Khó,Container image tag regression,"Hello Support Team,
+
+New deployment breaks API immediately.
+
+Please help me check.
+Thank you.",CentOS Stream 9,High (training example),docker logs api --tail 20,Error: unknown config option legacyMode,PANEL: deployments,image tag changed from v1.8 to v2.0,Application image upgraded with incompatible config option.,"Compare release notes, configuration and last working image.",Rollback to validated tag or migrate config with approval.,Healthcheck/functional tests pass after fix.,App vendor/developer support.,Simulated,"Đọc output của docker logs api --tail 20; xem thêm Compare release notes, configuration and last working image..","[{""probe_id"": ""P1"", ""command"": ""docker logs api --tail 20"", ""stdout"": ""Error: unknown config option legacyMode"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: deployments"", ""stdout"": ""image tag changed from v1.8 to v2.0"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-14-001,Billing & Lifecycle,Billing (bổ sung),0,L0 - Nhận diện,Suspended for nonpayment,"Hello Support Team,
+
+VPS suddenly shows Suspended in dashboard.
+
+Please help me check.
+Thank you.",N/A,Normal,BILLING: service,Suspended: invoice overdue,PANEL: invoices,INV-2026-101 overdue,Service suspended by billing policy.,"Verify customer identity, invoice and grace period.",Refer payment/unsuspend workflow; no ad-hoc bypass.,Billing confirms active and VPS status restored.,Billing team.,Simulated,"Đọc output của BILLING: service; xem thêm Verify customer identity, invoice and grace period..","[{""probe_id"": ""P1"", ""command"": ""BILLING: service"", ""stdout"": ""Suspended: invoice overdue"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: invoices"", ""stdout"": ""INV-2026-101 overdue"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-14-002,Billing & Lifecycle,Billing (bổ sung),0,L0 - Nhận diện,Payment not reflected,"Hello Support Team,
+
+I paid, but VPS is still pending.
+
+Please help me check.
+Thank you.",N/A,Normal,BILLING: invoice,Paid,PANEL: provision status,Waiting on payment event,"Payment exists, event-to-provision synchronization incomplete.",Verify transaction and webhook/event log.,Escalate reconciliation then safe task resume.,Provisioning begins once and order status consistent.,Billing integration team.,Simulated,Đọc output của BILLING: invoice; xem thêm Verify transaction and webhook/event log..,"[{""probe_id"": ""P1"", ""command"": ""BILLING: invoice"", ""stdout"": ""Paid"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: provision status"", ""stdout"": ""Waiting on payment event"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-14-003,Billing & Lifecycle,Billing (bổ sung),1,L1 - Cơ bản,Cancellation request,"Hello Support Team,
+
+Please cancel my VPS at the end of the cycle.
+
+Please help me check.
+Thank you.",N/A,Normal,BILLING: service,Active until 2026-11-15,PANEL: cancellation policy,end-of-term cancellation supported,Valid future cancellation request subject to identity/policy.,Verify owner and cancellation scope/data retention.,Schedule cancellation per approved process; explain backup deadline.,Confirmed cancellation date; no unintended immediate deletion.,Billing identity dispute.,Simulated,Đọc output của BILLING: service; xem thêm Verify owner and cancellation scope/data retention..,"[{""probe_id"": ""P1"", ""command"": ""BILLING: service"", ""stdout"": ""Active until 2026-11-15"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: cancellation policy"", ""stdout"": ""end-of-term cancellation supported"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-14-004,Billing & Lifecycle,Billing (bổ sung),1,L1 - Cơ bản,Refund policy question,"Hello Support Team,
+
+I want a refund for this VPS after seven days.
+
+Please help me check.
+Thank you.",N/A,Normal,BILLING: purchased,2026-10-15,PANEL: refund policy,Eligibility requires review; no automatic approval,Refund eligibility cannot be determined automatically.,Gather order details and policy clauses.,"Refer Billing Team, avoid promising approval.",Written authorized billing decision.,Billing team.,Simulated,Đọc output của BILLING: purchased; xem thêm Gather order details and policy clauses..,"[{""probe_id"": ""P1"", ""command"": ""BILLING: purchased"", ""stdout"": ""2026-10-15"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: refund policy"", ""stdout"": ""Eligibility requires review; no automatic approval"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-14-005,Billing & Lifecycle,Billing (bổ sung),2,L2 - Trung bình,IP addon not provisioned,"Hello Support Team,
+
+I paid for an extra IPv4 but still only have one.
+
+Please help me check.
+Thank you.",N/A,High (training example),BILLING: addon,Additional IPv4 active,PANEL: IP allocation,pending manual review,Billing addon active but IP assignment pending.,"Check IP policy, justification/approval and IPAM capacity.","Escalate IPAM/operations, then configure via approved workflow.",Second IP appears in panel/guest and routes correctly.,IP allocation team.,Simulated,"Đọc output của BILLING: addon; xem thêm Check IP policy, justification/approval and IPAM capacity..","[{""probe_id"": ""P1"", ""command"": ""BILLING: addon"", ""stdout"": ""Additional IPv4 active"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: IP allocation"", ""stdout"": ""pending manual review"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-14-006,Billing & Lifecycle,Billing (bổ sung),2,L2 - Trung bình,Service termination risk,"Hello Support Team,
+
+I received an expiration notice, can you extend the retention?
+
+Please help me check.
+Thank you.",N/A,High (training example),BILLING: expired,2026-10-20,PANEL: retention,Scheduled deletion 2026-10-25,Data retention deadline approaching; policy-limited action.,"Confirm identity, renewal status and retention rules.",Escalate retention exception before deadline; advise authorized backup.,Approved retention/renewal recorded and data preserved.,Billing management / policy owner.,Simulated,"Đọc output của BILLING: expired; xem thêm Confirm identity, renewal status and retention rules..","[{""probe_id"": ""P1"", ""command"": ""BILLING: expired"", ""stdout"": ""2026-10-20"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: retention"", ""stdout"": ""Scheduled deletion 2026-10-25"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-14-007,Billing & Lifecycle,Billing (bổ sung),3,L3 - Khó,Wrong product billed,"Hello Support Team,
+
+My invoice charges for two VPS but I only ordered one.
+
+Please help me check.
+Thank you.",N/A,High (training example),BILLING: invoice lines,VPS-100; VPS-100 duplicate,PANEL: service records,VPS-100 exists once,Potential duplicate invoice item with one actual service.,"Check order/invoice IDs, adjustments and tax rules.",Refer Billing for credit/correction; do not edit invoice manually.,Correct invoice and customer confirmation.,Billing team.,Simulated,"Đọc output của BILLING: invoice lines; xem thêm Check order/invoice IDs, adjustments and tax rules..","[{""probe_id"": ""P1"", ""command"": ""BILLING: invoice lines"", ""stdout"": ""VPS-100; VPS-100 duplicate"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: service records"", ""stdout"": ""VPS-100 exists once"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."
+VPS-14-008,Billing & Lifecycle,Billing (bổ sung),3,L3 - Khó,Abuse suspension appeal,"Hello Support Team,
+
+My VPS was suspended and I need it online immediately.
+
+Please help me check.
+Thank you.",N/A,High (training example),BILLING: service,Suspended: abuse case AB-2026-14,PANEL: security,Investigation open,Suspension tied to active abuse investigation.,Verify case ownership and allowed appeal procedure.,"Route to Abuse/Security, do not unsuspend unilaterally.",Authorized disposition and service state updated.,Security/abuse escalation mandatory.,Simulated,Đọc output của BILLING: service; xem thêm Verify case ownership and allowed appeal procedure..,"[{""probe_id"": ""P1"", ""command"": ""BILLING: service"", ""stdout"": ""Suspended: abuse case AB-2026-14"", ""available"": true, ""mutates_guest"": false}, {""probe_id"": ""P2"", ""command"": ""PANEL: security"", ""stdout"": ""Investigation open"", ""available"": true, ""mutates_guest"": false}]","Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback."

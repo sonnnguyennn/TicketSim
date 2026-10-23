@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": ["id", "objective", "hints", "probeNotes", "extras", "verificationPrompt", "questions"],
+    "properties": {
+      "id": { "type": "string", "pattern": "^VPS-[0-9]{2}-[0-9]{3}$" },
+      "objective": { "type": "string", "minLength": 10 },
+      "customerFollowup": { "type": "string", "minLength": 10 },
+      "branches": { "type": "array", "items": { "type": "object", "required": ["id", "requiredProbeIds", "probeIds", "questionIds"], "properties": { "id": { "type": "string" }, "requiredProbeIds": { "type": "array", "items": { "type": "string" } }, "probeIds": { "type": "array", "items": { "type": "string" } }, "questionIds": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
+      "hints": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "type": "string", "minLength": 10 } },
+      "probeNotes": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/probeNote" } },
+      "extras": { "type": "array", "items": { "$ref": "#/$defs/extra" } },
+      "verificationPrompt": { "type": "string", "minLength": 10 },
+      "objectiveExam": { "$ref": "#/$defs/question" },
+      "simulation": {
+        "type": "object",
+        "required": ["states", "transitions", "verificationProbeIds"],
+        "properties": {
+          "states": { "type": "array", "items": { "type": "string" } },
+          "verificationProbeIds": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "transitions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["actionId", "label", "from", "to", "requiredProbeIds", "context", "safety", "requiresApproval", "allowed", "output", "feedback"],
+              "properties": {
+                "actionId": { "type": "string" },
+                "commandId": { "type": "string" },
+                "from": { "type": "string" },
+                "to": { "type": "string" },
+                "requiredProbeIds": { "type": "array", "items": { "type": "string" } },
+                "label": { "type": "string", "minLength": 5 },
+                "context": { "enum": ["guest", "client", "panel", "hypervisor", "hypervisor"] },
+                "safety": { "enum": ["change", "escalate"] },
+                "requiresApproval": { "type": "boolean" },
+                "allowed": { "type": "boolean" },
+                "output": { "type": "string", "minLength": 5 },
+                "feedback": { "type": "string", "minLength": 10 },
+                "category": { "enum": ["knowledge", "missing_evidence", "unsafe_action"] }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "questions": { "type": "array", "minItems": 5, "items": { "$ref": "#/$defs/question" } }
+    },
+    "additionalProperties": false
+  },
+  "$defs": {
+    "probeNote": {
+      "type": "object", "required": ["purpose", "meaning", "commandId", "aliases"],
+      "properties": {
+        "purpose": { "type": "string", "minLength": 5 }, "meaning": { "type": "string", "minLength": 5 },
+        "commandId": { "type": "string" }, "aliases": { "type": "array", "items": { "type": "string" } }, "context": { "enum": ["guest", "client", "panel", "hypervisor"] }, "requiredState": { "type": "array", "minItems": 1, "items": { "type": "string" } }, "branchId": { "type": "string" }
+      }, "additionalProperties": false
+    },
+    "extra": {
+      "type": "object", "required": ["command", "output", "purpose", "meaning", "commandId", "aliases"],
+      "properties": {
+        "command": { "type": "string", "minLength": 2 }, "output": { "type": "string" },
+        "purpose": { "type": "string", "minLength": 5 }, "meaning": { "type": "string", "minLength": 5 },
+        "commandId": { "type": "string" }, "aliases": { "type": "array", "items": { "type": "string" } }, "context": { "enum": ["guest", "client", "panel", "hypervisor"] }, "requiredState": { "type": "array", "minItems": 1, "items": { "type": "string" } }, "branchId": { "type": "string" }
+      }, "additionalProperties": false
+    },
+    "question": {
+      "type": "object", "required": ["id", "stage", "kind", "prompt", "options", "correctIds", "explanation"],
+      "properties": {
+        "id": { "type": "string" },
+        "stage": { "enum": ["triage", "investigate", "interpret", "decide", "verify"] },
+        "kind": { "enum": ["single_choice", "multi_select", "command_choice", "output_interpretation", "step_order", "short_answer"] },
+        "prompt": { "type": "string", "minLength": 10 },
+        "options": { "type": "array", "items": { "type": "object", "required": ["id", "label", "feedback"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "feedback": { "type": "string", "minLength": 5 } }, "additionalProperties": false } },
+        "correctIds": { "type": "array", "items": { "type": "string" } },
+        "explanation": { "type": "string", "minLength": 10 },
+        "commandId": { "type": "string" },
+        "skill": { "type": "string" },
+        "requiredProbeIds": { "type": "array", "items": { "type": "string" } }
+      }, "additionalProperties": false
+    }
+  }
+}
+

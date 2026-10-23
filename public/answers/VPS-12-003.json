@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Provisioning delivered wrong OS template.",
+  "recommended_next_checks": "Validate service and deployment history, customer data state.",
+  "resolution_guidance": "Plan authorized rebuild/replace and customer communication.",
+  "verification": "OS matches order and service functional.",
+  "escalate_when": "Provisioning/template team.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

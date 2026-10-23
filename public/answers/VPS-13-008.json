@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Application image upgraded with incompatible config option.",
+  "recommended_next_checks": "Compare release notes, configuration and last working image.",
+  "resolution_guidance": "Rollback to validated tag or migrate config with approval.",
+  "verification": "Healthcheck/functional tests pass after fix.",
+  "escalate_when": "App vendor/developer support.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/vps-ticket-lab.schema.json",
+  "title": "VPS Ticket Lab Dataset",
+  "type": "object",
+  "required": [
+    "meta",
+    "tickets"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object"
+    },
+    "tickets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "topic",
+          "difficulty",
+          "title",
+          "customer_message",
+          "probe_outputs",
+          "expected_diagnosis",
+          "resolution_guidance",
+          "verification",
+          "escalate_when"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^VPS-[0-9]{2}-[0-9]{3}$"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "difficulty": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "title": {
+            "type": "string"
+          },
+          "customer_message": {
+            "type": "string"
+          },
+          "expected_diagnosis": {
+            "type": "string"
+          },
+          "resolution_guidance": {
+            "type": "string"
+          },
+          "verification": {
+            "type": "string"
+          },
+          "escalate_when": {
+            "type": "string"
+          },
+          "probe_outputs": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "command",
+                "stdout",
+                "mutates_guest"
+              ],
+              "properties": {
+                "command": {
+                  "type": "string"
+                },
+                "stdout": {
+                  "type": "string"
+                },
+                "mutates_guest": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

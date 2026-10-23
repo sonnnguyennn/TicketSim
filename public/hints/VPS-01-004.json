@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của systemctl is-active sshd; xem thêm firewall-cmd --get-active-zones; ss -ltnp; test TCP from client."
+}

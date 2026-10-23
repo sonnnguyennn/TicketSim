@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "dns"
+  ],
+  "explanation": "Ghi đúng tên được hỏi là quan trọng nhất.",
+  "optionFeedback": {
+    "dns": "Đúng: cần xem exact FQDN.",
+    "http": "Chưa tới HTTP nếu tên không phân giải.",
+    "ssh": "Không liên quan."
+  }
+}

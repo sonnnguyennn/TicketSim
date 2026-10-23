@@ -1,0 +1,16 @@
+{
+  "correctIds": [
+    "ip",
+    "route",
+    "gateway",
+    "verify"
+  ],
+  "explanation": "Giữ đường console và rollback trước khi sửa network.",
+  "commandId": "ip-route",
+  "optionFeedback": {
+    "ip": "Đầu tiên biết guest đang có địa chỉ gì.",
+    "route": "Kiểm tra đường đi trước khi sửa.",
+    "gateway": "Không đoán gateway.",
+    "verify": "Xác minh từ guest và client."
+  }
+}

@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của journalctl -u myapp -n 20; xem thêm ls /proc/1234/fd | wc -l; systemctl show myapp -p LimitNOFILE."
+}

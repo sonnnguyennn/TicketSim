@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "write"
+  ],
+  "explanation": "Tóm đúng việc người dùng không làm được.",
+  "optionFeedback": {
+    "write": "Đúng: khách nhận No space left on device.",
+    "login": "Ticket không báo lỗi SSH.",
+    "dns": "Không có dấu hiệu DNS."
+  }
+}

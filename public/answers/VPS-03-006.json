@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Application exits due to missing Python dependency.",
+  "recommended_next_checks": "Confirm runtime/virtualenv and deployment package manifest.",
+  "resolution_guidance": "Restore dependency in correct environment or rollback release.",
+  "verification": "App remains active and healthcheck passes.",
+  "escalate_when": "Third-party app managed by customer.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

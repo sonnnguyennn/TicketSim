@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "logs"
+  ],
+  "explanation": "Chỉ mô phỏng start khi đã xem bằng chứng, kiểm tra log và xác nhận quyền; sau đó phải xác minh lại.",
+  "commandId": "journalctl-unit",
+  "optionFeedback": {
+    "restart": "Thay đổi service cần kiểm tra nguyên nhân và quyền hạn trước.",
+    "logs": "Đúng: điều tra nguyên nhân và xác minh sau hành động.",
+    "ignore": "Connection refused xảy ra trước xác thực."
+  }
+}

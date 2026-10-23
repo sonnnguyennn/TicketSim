@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "different"
+  ],
+  "explanation": "Không mở rộng kết luận từ một hostname sang toàn zone.",
+  "commandId": "dig-a",
+  "optionFeedback": {
+    "different": "Đúng theo P1/P2.",
+    "zone": "www vẫn trả A record.",
+    "http": "DNS output không đo trạng thái web service."
+  }
+}

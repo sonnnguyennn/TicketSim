@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "client"
+  ],
+  "explanation": "Sau khi bảo vệ key, nếu vẫn lỗi thì mới điều tra xác thực phía guest.",
+  "commandId": "ssh-key-login",
+  "optionFeedback": {
+    "client": "Đúng: sửa nơi có vấn đề và xác minh, không chạm guest.",
+    "guest": "Không có bằng chứng cần restart và đó là thay đổi service.",
+    "share": "Không chia sẻ secret; có thể kiểm tra mode mà không gửi key."
+  }
+}

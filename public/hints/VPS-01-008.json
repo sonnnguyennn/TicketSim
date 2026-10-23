@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của journalctl -k -b | tail -n 30; xem thêm vmstat 1 5; uptime; journalctl -u sshd."
+}

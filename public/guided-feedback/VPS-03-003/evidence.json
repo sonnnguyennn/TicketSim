@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "failed",
+    "line"
+  ],
+  "explanation": "Trạng thái và lỗi cú pháp là hai bằng chứng khác nhau.",
+  "commandId": "systemctl-nginx",
+  "optionFeedback": {
+    "failed": "Đúng từ P1.",
+    "line": "Đúng từ P2.",
+    "cause": "Không có audit về người chỉnh.",
+    "fixed": "Chưa có sửa hoặc thử HTTP."
+  }
+}

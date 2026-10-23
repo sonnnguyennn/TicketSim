@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "valid"
+  ],
+  "explanation": "Dùng account hợp lệ và xác minh login; chuyển cấp nếu cần thay đổi account.",
+  "commandId": "getent-passwd",
+  "optionFeedback": {
+    "valid": "Đúng: không tự tạo/reset account.",
+    "create": "Tạo account là thay đổi cần phê duyệt.",
+    "reboot": "Không có bằng chứng cần reboot."
+  }
+}

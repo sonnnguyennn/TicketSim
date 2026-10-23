@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "full"
+  ],
+  "explanation": "Nhiều file nhỏ có thể làm cạn inode.",
+  "commandId": "df-i",
+  "optionFeedback": {
+    "full": "Đúng: tạo file mới có thể thất bại.",
+    "blocks": "df -h lại cho thấy 45%.",
+    "ram": "Đây là chỉ số inode."
+  }
+}

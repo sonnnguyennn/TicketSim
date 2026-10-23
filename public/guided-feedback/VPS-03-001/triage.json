@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "vm"
+  ],
+  "explanation": "Phân biệt VM state và application state.",
+  "optionFeedback": {
+    "vm": "Đúng: chưa nói web service hoạt động.",
+    "nginx": "Panel VM state không kiểm tra service.",
+    "http": "Chưa có kiểm tra HTTP."
+  }
+}

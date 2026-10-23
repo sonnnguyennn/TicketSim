@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Process holds unlinked file open so disk blocks not yet freed.",
+  "recommended_next_checks": "Confirm PID/service owner; retention and log rotation approach.",
+  "resolution_guidance": "Coordinate graceful reopen/restart of affected service if authorized.",
+  "verification": "lsof shows no deleted large handle; df free space rises.",
+  "escalate_when": "Critical service cannot be restarted.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

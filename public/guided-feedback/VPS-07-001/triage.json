@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "tcp"
+  ],
+  "explanation": "Phân biệt kết nối TCP và status HTTP.",
+  "optionFeedback": {
+    "403": "403 là HTTP response, không phải connection refused.",
+    "tcp": "Đúng: chưa nhận HTTP status.",
+    "dns": "Ticket không mô tả NXDOMAIN."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Container killed due to memory limit pressure.",
+  "recommended_next_checks": "Review cgroup limit, app heap, peak telemetry.",
+  "resolution_guidance": "Tune app or authorized resource limit change.",
+  "verification": "No OOMKilled under normal peak.",
+  "escalate_when": "Host memory capacity constraints.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

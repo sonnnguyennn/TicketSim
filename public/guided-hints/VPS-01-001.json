@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Lỗi xảy ra trước hay sau khi nhập thông tin đăng nhập?",
+    "Trong guest, hãy kiểm tra trạng thái sshd và cổng TCP/22.",
+    "Dùng systemctl status sshd, rồi ss -ltnp; giải thích điều mỗi output thực sự chứng minh."
+  ]
+}

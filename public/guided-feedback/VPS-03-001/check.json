@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "nginx"
+  ],
+  "explanation": "Bắt đầu từ service liên quan.",
+  "commandId": "systemctl-nginx",
+  "optionFeedback": {
+    "nginx": "Đúng: phép đọc trạng thái Nginx.",
+    "route": "Route không kiểm tra Nginx.",
+    "disk": "Inode không trực tiếp trả lời service chạy hay dừng."
+  }
+}

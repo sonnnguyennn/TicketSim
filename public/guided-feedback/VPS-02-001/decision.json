@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "confirm"
+  ],
+  "explanation": "Thay đổi mạng cần console và phương án rollback.",
+  "commandId": "nmcli-show",
+  "optionFeedback": {
+    "confirm": "Đúng: vừa xác minh dữ liệu cấp phát vừa giữ đường quản trị.",
+    "guess": "Có thể mất đường quản trị; không được đoán.",
+    "dns": "DNS không giải quyết thiếu route tới IP công cộng."
+  }
+}

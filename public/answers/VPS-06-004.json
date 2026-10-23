@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Reinstall is destructive and no recent backup visible.",
+  "recommended_next_checks": "Verify desired OS, service ID, data retention and backup.",
+  "resolution_guidance": "Do not reinstall before informed approval and backup plan.",
+  "verification": "After authorized reinstall verify OS, access and network.",
+  "escalate_when": "Unclear data backup, ownership or reinstatement policy.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

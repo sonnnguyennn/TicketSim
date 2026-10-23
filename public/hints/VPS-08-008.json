@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của dig @1.1.1.1 signed.example.test A; xem thêm Check DS/DNSKEY/RRSIG chain and registrar changes.."
+}

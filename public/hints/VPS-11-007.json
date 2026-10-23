@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của journalctl -u backup-agent -n 30; xem thêm Confirm secret rotation and agent service account.."
+}

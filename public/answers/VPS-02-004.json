@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "443 listener exists but current firewalld zone does not allow HTTPS.",
+  "recommended_next_checks": "firewall-cmd --get-active-zones; curl -kI https://127.0.0.1",
+  "resolution_guidance": "Validate zone and permit required HTTPS service according to policy.",
+  "verification": "External curl to HTTPS works.",
+  "escalate_when": "Network edge filtering even after guest fix.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

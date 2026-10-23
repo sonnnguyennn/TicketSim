@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "investigate"
+  ],
+  "explanation": "Route là điều kiện cần, không bảo đảm upstream hoạt động.",
+  "optionFeedback": {
+    "fixed": "Route mới không chứng minh end-to-end reachability.",
+    "investigate": "Đúng: chưa thể báo resolved chỉ từ ip route.",
+    "remove": "Đã có gateway được cấp; không đoán hoặc thay đổi thiếu bằng chứng."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "inode"
+  ],
+  "explanation": "Đừng dừng lại ở df -h khi còn GB.",
+  "commandId": "df-i",
+  "optionFeedback": {
+    "inode": "Đúng: -i chuyển sang inode.",
+    "blocks": "df -h chỉ đo block space.",
+    "route": "Route không liên quan."
+  }
+}

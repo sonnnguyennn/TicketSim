@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của dig +short example.com A; xem thêm curl -4I and curl -6I; authoritative records.."
+}

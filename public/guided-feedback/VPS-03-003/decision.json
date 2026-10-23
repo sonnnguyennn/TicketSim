@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "review"
+  ],
+  "explanation": "Fixture không mô phỏng việc sửa file hay service.",
+  "commandId": "nginx-test",
+  "optionFeedback": {
+    "review": "Đúng: kiểm tra cấu hình và tác động trước khi đổi service.",
+    "delete": "Có nguy cơ mất cấu hình và không có cơ sở.",
+    "restart": "Lỗi cú pháp chưa được giải quyết."
+  }
+}

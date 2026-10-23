@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Panel báo VM running có chứng minh web service đang chạy không?",
+    "Kiểm tra systemctl status nginx và listener :80.",
+    "Sau đó xem log, kiểm tra config và xác minh HTTP từ localhost rồi bên ngoài."
+  ]
+}

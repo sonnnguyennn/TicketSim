@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "key"
+  ],
+  "explanation": "Ghi nhận triệu chứng xác thực trước khi tìm nguyên nhân.",
+  "optionFeedback": {
+    "key": "Đúng với lời khách; lý do cần kiểm tra thêm.",
+    "server": "Chưa có probe kiểm tra service guest.",
+    "dns": "Ticket dùng địa chỉ IP, không có bằng chứng DNS."
+  }
+}

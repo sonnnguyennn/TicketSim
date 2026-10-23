@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của lsblk; xem thêm lsblk -f; findmnt /; partition layout and free extents.."
+}

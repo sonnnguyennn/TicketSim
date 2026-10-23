@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của ss -ltnp; xem thêm sshd -t; firewall-cmd --list-ports."
+}

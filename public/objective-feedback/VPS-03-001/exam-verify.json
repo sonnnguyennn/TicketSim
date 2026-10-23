@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "upstream"
+  ],
+  "explanation": "HTTP 502 là bằng chứng web vẫn chưa đáp ứng đúng.",
+  "optionFeedback": {
+    "done": "502 vẫn là lỗi ứng dụng/upstream.",
+    "upstream": "Đúng: service chạy chưa đồng nghĩa web hoạt động.",
+    "dns": "Không có bằng chứng DNS gây local 502."
+  }
+}

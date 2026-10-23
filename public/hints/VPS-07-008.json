@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của tail /var/log/nginx/error.log; xem thêm Check backend metrics, DB dependencies and slow requests.."
+}

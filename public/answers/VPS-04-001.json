@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "One user process is consuming almost a CPU.",
+  "recommended_next_checks": "Identify workload, duration, expected task behavior.",
+  "resolution_guidance": "Coordinate with owner; optimize or reschedule task, avoid blind kill.",
+  "verification": "User-facing latency recovers and usage normalizes.",
+  "escalate_when": "Repeated production degradation / unclear owner.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

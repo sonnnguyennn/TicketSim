@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "space"
+  ],
+  "explanation": "Phân biệt dung lượng đã phục hồi và chức năng ứng dụng đã được kiểm chứng.",
+  "optionFeedback": {
+    "all": "Chưa có phép thử ghi ở tầng ứng dụng.",
+    "space": "Đúng: đo lại dung lượng chỉ xác minh một phần.",
+    "delete": "Xóa log không có phạm vi, quyền hoặc nhu cầu đã xác minh."
+  }
+}

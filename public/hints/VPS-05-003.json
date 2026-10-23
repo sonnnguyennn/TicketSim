@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của journalctl --disk-usage; xem thêm Review log volume source, retention and journald config.."
+}

@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "warning",
+    "mode"
+  ],
+  "explanation": "Giới hạn kết luận ở client key.",
+  "commandId": "ssh-key-login",
+  "optionFeedback": {
+    "warning": "Đúng từ P1.",
+    "mode": "Đúng từ P2.",
+    "password": "Chưa có phép thử mật khẩu.",
+    "daemon": "Không có output trạng thái guest."
+  }
+}

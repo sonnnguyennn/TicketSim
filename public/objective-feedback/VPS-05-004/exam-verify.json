@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "escalated"
+  ],
+  "explanation": "Xác minh chuyển cấp không được trình bày như xác minh đã sửa xong.",
+  "optionFeedback": {
+    "resolved": "Escalation chưa sửa volume.",
+    "escalated": "Đúng: escalation là quyết định đúng nhưng lỗi chưa được sửa.",
+    "remount": "I/O error làm hành động này có rủi ro dữ liệu."
+  }
+}

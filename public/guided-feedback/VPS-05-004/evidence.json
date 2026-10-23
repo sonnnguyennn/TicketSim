@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "ro",
+    "io"
+  ],
+  "explanation": "Có dấu hiệu rủi ro storage nhưng phạm vi và nguồn gốc cần xác minh.",
+  "commandId": "dmesg-tail",
+  "optionFeedback": {
+    "ro": "Đúng từ P1.",
+    "io": "Đúng từ P2.",
+    "drive": "Chưa có dữ liệu host/provider để kết luận phần cứng.",
+    "repair": "Lỗi I/O đòi hỏi bảo vệ dữ liệu và điều tra."
+  }
+}

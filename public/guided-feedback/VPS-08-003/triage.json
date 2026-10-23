@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "old"
+  ],
+  "explanation": "Ghi hiện tượng trước khi gán nguyên nhân propagation.",
+  "optionFeedback": {
+    "old": "Đúng: cần kiểm tra nơi có thẩm quyền và cache.",
+    "ssh": "Ticket không nói SSH.",
+    "disk": "Không có triệu chứng disk."
+  }
+}

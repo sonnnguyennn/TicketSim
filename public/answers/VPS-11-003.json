@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Archive is truncated/corrupt relative to expected checksum.",
+  "recommended_next_checks": "Inspect alternate restore points and storage logs.",
+  "resolution_guidance": "Do not overwrite originals; restore only validated backup.",
+  "verification": "Test extraction succeeds in isolated restore area.",
+  "escalate_when": "Storage corruption across backups.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

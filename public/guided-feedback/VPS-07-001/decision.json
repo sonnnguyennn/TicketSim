@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Mô phỏng không thực hiện thao tác start thật.",
+  "commandId": "curl-head",
+  "optionFeedback": {
+    "safe": "Đúng: xử lý kèm xác minh.",
+    "instant": "Không điều tra/kiểm chứng.",
+    "reinstall": "Quá rủi ro và không có cơ sở."
+  }
+}

@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của PANEL: VNC; xem thêm lsblk -f; journalctl -xb; compare fstab UUID.."
+}

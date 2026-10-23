@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của dig @authoritative.example shop.example.com A; xem thêm Compare TTL and authoritative records across resolvers.."
+}

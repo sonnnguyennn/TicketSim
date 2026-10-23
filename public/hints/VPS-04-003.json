@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của journalctl -k -b | grep -i \"killed process\"; xem thêm free -h; memory peak / cgroup limits / logs."
+}

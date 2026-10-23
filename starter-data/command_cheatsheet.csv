@@ -1,0 +1,61 @@
+﻿Topic,Command,Dùng để làm gì,Risk
+Base OS,cat /etc/os-release,Xác định distro/version,Read
+Base OS,hostnamectl,Thông tin host/kernel/OS,Read
+SSH,systemctl status sshd,Trạng thái SSH server CentOS,Read
+SSH,journalctl -u sshd -n 50 --no-pager,Log SSH service,Read
+SSH,ss -ltnp,Port TCP LISTEN,Read
+SSH,sshd -t,Kiểm tra SSH config syntax,Read
+SSH,ssh -vvv user@IP,Debug SSH client,Read
+SSH,ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub,Fingerprint host key qua console tin cậy,Read
+Network,ip -br addr,Interface và IP,Read
+Network,ip route,Bảng định tuyến IPv4,Read
+Network,ip route get 1.1.1.1,Route được chọn tới đích,Read
+Network,nmcli device status,Trạng thái thiết bị NetworkManager,Read
+Network,nmcli connection show,NetworkManager profile,Read
+Network,nmcli device show,IP/DNS của thiết bị,Read
+Network,ping -c 4 1.1.1.1,"ICMP connectivity, không chứng minh TCP",Read
+Network,nc -vz -w 5 IP 22,Thử kết nối TCP port 22,Read
+Network,mtr -rw -c 20 IP,Hop/latency/loss (cần diễn giải cẩn thận),Read
+Network,"sudo tcpdump -ni any ""tcp port 22""",Bắt gói; lưu ý quyền và dữ liệu nhạy cảm,Privileged-read
+Firewall,sudo firewall-cmd --state,FirewallD có đang chạy?,Read
+Firewall,sudo firewall-cmd --get-active-zones,Zone đang áp dụng,Read
+Firewall,sudo firewall-cmd --list-all,Quy tắc zone mặc định,Read
+Firewall,sudo nft list ruleset,Kiểm tra nftables rules,Privileged-read
+Linux,systemctl --failed,Danh sách unit lỗi,Read
+Linux,journalctl -b -p err -n 80 --no-pager,Lỗi trong boot hiện tại,Read
+Linux,ps aux --sort=-%cpu | head,Tiến trình CPU cao,Read
+Linux,ls -l PATH,Quyền file và owner,Read
+Linux,getenforce,SELinux enforcing/permissive,Read
+Linux,ausearch -m AVC -ts recent,SELinux AVC denial (tùy package),Privileged-read
+Performance,top,CPU/process theo thời gian,Read
+Performance,free -h,RAM và swap,Read
+Performance,uptime,Uptime/load average,Read
+Performance,vmstat 1 5,CPU/RAM swap và IO wait,Read
+Performance,iostat -xz 1 5,Độ trễ và tải disk IO (sysstat),Read
+Disk,df -hT,Dung lượng theo filesystem,Read
+Disk,df -i,Inode usage,Read
+Disk,sudo du -xhd1 /var,Dung lượng theo thư mục,Read
+Disk,lsblk -f,"Block devices, filesystem",Read
+Disk,findmnt /,Nguồn mount và option,Read
+Disk,lvs; vgs,LVM logical volume và free extents,Read
+Web,curl -I http://127.0.0.1,Kiểm tra HTTP cục bộ,Read
+Web,sudo nginx -t,Cú pháp Nginx,Read
+Web,sudo tail -n 50 /var/log/nginx/error.log,Log lỗi Nginx,Read
+DNS,dig example.com A,A record,Read
+DNS,dig example.com NS,NS records,Read
+DNS,dig -x IP,Reverse DNS PTR,Read
+DNS,resolvectl status,Resolver systemd nếu có,Read
+DNS,nmcli dev show | grep DNS,DNS từ NetworkManager,Read
+Virtualization,virsh list --all,VM inventory trên host libvirt,Host read
+Virtualization,virsh dominfo VM,Thông số VM libvirt,Host read
+Virtualization,virsh domiflist VM,Virtual NIC/bridge,Host read
+Backup,sha256sum FILE,Checksum backup file,Read
+Backup,tar -tf ARCHIVE,Liệt kê nội dung tar (không extract),Read
+Docker,docker ps -a,Container lifecycle status,Read
+Docker,docker logs --tail 50 CONTAINER,Log container,Read
+Docker,docker port CONTAINER,Port publishing,Read
+Docker,docker inspect CONTAINER,Container metadata/config (có thể chứa secrets),Privileged-read
+Safety,systemctl restart SERVICE,Gián đoạn service,Change - approval
+Safety,nmcli connection down PROFILE,Có thể cắt đường quản trị,Change - high risk
+Safety,rm -rf PATH,Có thể mất dữ liệu,Change - high risk
+Safety,virsh destroy VM,Hard stop guest không graceful,Change - high risk

@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "old",
+    "new"
+  ],
+  "explanation": "Hai quan sát khác nhau; cần thêm phép kiểm tra trước khi sửa.",
+  "commandId": "panel-zone",
+  "optionFeedback": {
+    "old": "Đúng từ P1.",
+    "new": "Đúng từ P2.",
+    "registrar": "Chưa có dữ liệu registrar.",
+    "a": "Chưa hỏi authoritative A record."
+  }
+}

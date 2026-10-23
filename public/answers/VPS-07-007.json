@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Incorrect SNI virtual host/certificate mapping for domain.",
+  "recommended_next_checks": "Check server_name, cert paths, DNS A/AAAA, cert coverage.",
+  "resolution_guidance": "Correct vhost and deploy matching valid cert safely.",
+  "verification": "SNI endpoint serves certificate covering requested domain.",
+  "escalate_when": "Customer-managed TLS configuration.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

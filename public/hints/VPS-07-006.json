@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của curl -I http://127.0.0.1; xem thêm Read app logs and deployment diff, healthcheck.."
+}

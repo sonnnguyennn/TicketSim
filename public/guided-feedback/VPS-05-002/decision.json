@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "locate"
+  ],
+  "explanation": "Sau xử lý cần thấy inode available và tạo file thành công.",
+  "commandId": "find-files",
+  "optionFeedback": {
+    "locate": "Đúng: điều tra rồi xin phép trước khi xóa.",
+    "delete": "Có nguy cơ mất dữ liệu hoặc log.",
+    "resize": "Tăng block chưa chắc giải quyết inode."
+  }
+}

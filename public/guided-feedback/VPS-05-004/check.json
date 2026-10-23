@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "mount"
+  ],
+  "explanation": "Kiểm tra mount trước khi đề xuất sửa.",
+  "commandId": "findmnt",
+  "optionFeedback": {
+    "mount": "Đúng: xem nguồn và tùy chọn mount.",
+    "free": "RAM không cho biết /data là ro hay rw.",
+    "restart": "Reboot thay đổi trạng thái và có rủi ro dữ liệu."
+  }
+}

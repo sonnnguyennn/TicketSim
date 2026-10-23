@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "partial"
+  ],
+  "explanation": "Xác minh phải bám triệu chứng người dùng, không chỉ service active.",
+  "optionFeedback": {
+    "resolved": "Permission denied cho thấy xác thực chưa thành công.",
+    "partial": "Đúng: transport phục hồi nhưng login chưa được xác minh.",
+    "reboot": "Không giải quyết lỗi xác thực và không có bằng chứng cần reboot."
+  }
+}

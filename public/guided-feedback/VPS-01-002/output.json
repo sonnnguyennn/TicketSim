@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "missing"
+  ],
+  "explanation": "Lệnh trả về tình trạng username, không phải mật khẩu.",
+  "commandId": "getent-passwd",
+  "optionFeedback": {
+    "missing": "Đúng với dữ liệu fixture.",
+    "password": "Chưa thể đánh giá mật khẩu của user không tồn tại.",
+    "port": "Output về account không kiểm tra port."
+  }
+}

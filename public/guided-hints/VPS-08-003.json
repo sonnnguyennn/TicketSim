@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Thay đổi ở panel nào? Resolver đang báo nameserver nào?",
+    "So sánh P1 về NS và P2 về zone được chỉnh.",
+    "Hai nguồn đang khác nhau; kiểm tra delegation ở registrar và trả lời trực tiếp từ authoritative NS trước khi kết luận."
+  ]
+}

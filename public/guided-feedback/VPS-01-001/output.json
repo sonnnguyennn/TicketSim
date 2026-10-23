@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "stopped"
+  ],
+  "explanation": "Quan sát “inactive” là bằng chứng; nguyên nhân dừng vẫn là điều chưa biết.",
+  "commandId": "systemctl-status",
+  "optionFeedback": {
+    "stopped": "Đúng: đây là trạng thái hiện tại.",
+    "cause": "Trạng thái service không nêu nguyên nhân; cần log.",
+    "host": "Guest vẫn có thể hoạt động khi một service dừng."
+  }
+}

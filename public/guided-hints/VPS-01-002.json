@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Connection đã tới bước xác thực hay chưa?",
+    "Kiểm tra tên user trong debug SSH và cơ sở dữ liệu account.",
+    "Đối chiếu ssh -vvv với getent passwd admin; xác nhận user hợp lệ với khách."
+  ]
+}

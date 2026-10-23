@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Certificate served by endpoint expired.",
+  "recommended_next_checks": "Check certificate automation, SNI, chain and domain ownership.",
+  "resolution_guidance": "Renew and deploy valid certificate via approved ACME/provider workflow.",
+  "verification": "Certificate chain validates and correct site cert served.",
+  "escalate_when": "Certificate private keys/CA access restricted.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

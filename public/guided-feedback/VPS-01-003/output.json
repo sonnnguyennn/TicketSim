@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "open"
+  ],
+  "explanation": "Private key cần được bảo vệ ở nơi lưu trên client.",
+  "commandId": "ls-key-mode",
+  "optionFeedback": {
+    "open": "Đúng: đó là mode 0644.",
+    "safe": "Group và others còn quyền đọc.",
+    "remote": "Probe chạy ở client; không suy ra file trong guest."
+  }
+}

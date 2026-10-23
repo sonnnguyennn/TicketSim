@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của docker ps --format \"{{.Names}} {{.Ports}}\"; xem thêm Inspect network_mode and required exposure.."
+}

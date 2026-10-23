@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "nginx"
+  ],
+  "explanation": "Kiểm tra service trước khi thay đổi.",
+  "commandId": "systemctl-nginx",
+  "optionFeedback": {
+    "nginx": "Đúng: xem web service.",
+    "inode": "Không trực tiếp kiểm tra web service.",
+    "dig": "Không giải thích local curl refused."
+  }
+}

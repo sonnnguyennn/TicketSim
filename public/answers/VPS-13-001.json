@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Container exited due to application import error.",
+  "recommended_next_checks": "Inspect image/tag, env, deployment change.",
+  "resolution_guidance": "Fix deployment/image according to owner; avoid blind restart loop.",
+  "verification": "Container healthy and endpoint responds.",
+  "escalate_when": "App code maintained by customer.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của free -h; xem thêm ps -eo pid,comm,rss --sort=-rss | head; journalctl -k."
+}

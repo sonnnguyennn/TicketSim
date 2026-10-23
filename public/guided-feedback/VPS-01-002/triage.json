@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "auth"
+  ],
+  "explanation": "Phân biệt lỗi kết nối với lỗi xác thực.",
+  "optionFeedback": {
+    "network": "Permission denied cho thấy đã tới bước xác thực.",
+    "auth": "Đúng: kết nối đã qua bước TCP.",
+    "dns": "Ticket không nêu lỗi DNS."
+  }
+}

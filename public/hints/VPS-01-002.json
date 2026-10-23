@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của ssh -vvv admin@192.0.2.25; xem thêm id admin; getent passwd; verify authorized account."
+}

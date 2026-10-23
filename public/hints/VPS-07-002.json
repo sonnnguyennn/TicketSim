@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của curl -I http://127.0.0.1; xem thêm Review nginx root/index config and document root content.."
+}

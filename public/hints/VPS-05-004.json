@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của findmnt -no SOURCE,OPTIONS /data; xem thêm Check dmesg, SMART/provider disk health, backup status.."
+}

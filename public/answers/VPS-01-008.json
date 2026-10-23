@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Severe memory pressure coincides with disconnections; exact SSH impact needs validation.",
+  "recommended_next_checks": "vmstat 1 5; uptime; journalctl -u sshd",
+  "resolution_guidance": "Investigate job memory, set resource limits or capacity plan with owner.",
+  "verification": "No OOM events during job, sessions remain stable.",
+  "escalate_when": "Production outage, repeated OOM, infrastructure resource cap.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

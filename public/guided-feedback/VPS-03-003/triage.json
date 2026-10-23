@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "config"
+  ],
+  "explanation": "Thời điểm thay đổi giúp chọn phép kiểm tra.",
+  "optionFeedback": {
+    "config": "Đúng: đây là mốc cần đối chiếu, chưa đủ làm bằng chứng lỗi cú pháp.",
+    "host": "Khách nói service dừng, chưa nói VM tắt.",
+    "dns": "Ticket không nhắc DNS."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Recovery ISO remains selected as primary boot source.",
+  "recommended_next_checks": "Verify rescue work completed and disk bootability.",
+  "resolution_guidance": "Unmount rescue ISO/update boot device with permission.",
+  "verification": "VM boots expected installed OS and services work.",
+  "escalate_when": "Installed disk itself cannot boot.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "write"
+  ],
+  "explanation": "Bắt đầu từ thao tác thất bại, chưa đoán nguyên nhân.",
+  "optionFeedback": {
+    "write": "Đúng với lời khách.",
+    "memory": "Không có thông tin RAM.",
+    "dns": "Không liên quan."
+  }
+}

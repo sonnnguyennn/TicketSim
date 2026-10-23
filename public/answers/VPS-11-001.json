@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Backup destination quota exhausted.",
+  "recommended_next_checks": "Check target free space, retention and active backup jobs.",
+  "resolution_guidance": "Increase quota/retention cleanup with approval.",
+  "verification": "New backup succeeds and integrity checked.",
+  "escalate_when": "Backup storage owner action needed.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

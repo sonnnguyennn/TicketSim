@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "Webapp user lacks write permission on upload directory.",
+  "recommended_next_checks": "namei -l /srv/app/uploads; getfacl /srv/app/uploads",
+  "resolution_guidance": "Correct narrowly scoped ownership/ACL with owner approval.",
+  "verification": "Webapp writes test file; permissions remain least-privilege.",
+  "escalate_when": "Shared mount ownership or policy unclear.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

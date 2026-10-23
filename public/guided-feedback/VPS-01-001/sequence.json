@@ -1,0 +1,16 @@
+{
+  "correctIds": [
+    "status",
+    "logs",
+    "approve",
+    "verify"
+  ],
+  "explanation": "Trình tự là quan sát → điều tra → xin phép hành động → xác minh.",
+  "commandId": "journalctl-unit",
+  "optionFeedback": {
+    "status": "Đầu tiên giữ bằng chứng trạng thái trước mọi thay đổi.",
+    "logs": "Điều tra nguyên nhân sau khi xác nhận triệu chứng.",
+    "approve": "Không thay đổi service trước khi có quyền.",
+    "verify": "Xác minh kết quả sau hành động được duyệt."
+  }
+}

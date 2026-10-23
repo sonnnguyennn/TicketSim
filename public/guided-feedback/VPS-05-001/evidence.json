@@ -1,0 +1,14 @@
+{
+  "correctIds": [
+    "full",
+    "logs"
+  ],
+  "explanation": "Quan sát dung lượng không đồng nghĩa được phép xóa.",
+  "commandId": "du-var",
+  "optionFeedback": {
+    "full": "Đúng từ P1.",
+    "logs": "Đúng từ P2.",
+    "delete": "Dung lượng lớn không phải quyền xóa.",
+    "inode": "P1/P2 không đo inode; cần df -i để đánh giá."
+  }
+}

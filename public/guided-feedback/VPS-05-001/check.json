@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "df"
+  ],
+  "explanation": "Bắt đầu bằng phép đọc tài nguyên liên quan.",
+  "commandId": "df-h",
+  "optionFeedback": {
+    "df": "Đúng: kiểm tra dung lượng filesystem.",
+    "memory": "RAM khác với disk block.",
+    "route": "Route không giải thích lỗi ghi file."
+  }
+}

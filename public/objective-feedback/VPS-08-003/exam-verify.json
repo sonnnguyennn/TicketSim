@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "pending"
+  ],
+  "explanation": "Xác minh delegation, authoritative answer và resolver client là ba phép kiểm tra khác nhau.",
+  "optionFeedback": {
+    "done": "Recursive cache còn cũ.",
+    "pending": "Đúng: chỉ xác nhận từng lớp đã kiểm tra.",
+    "delete": "Có thể làm lỗi các resolver còn cache delegation cũ."
+  }
+}

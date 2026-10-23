@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "DNSSEC validation problem suspected; not yet pinpointed.",
+  "recommended_next_checks": "Check DS/DNSKEY/RRSIG chain and registrar changes.",
+  "resolution_guidance": "Fix signed zone/DS mismatch with authoritative owner; avoid disabling validation.",
+  "verification": "Validating resolvers return correct answers.",
+  "escalate_when": "DNS provider/registrar DNSSEC coordination.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

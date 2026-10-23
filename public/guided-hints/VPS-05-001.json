@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Thông báo No space left on device có thể đến từ block hoặc inode.",
+    "Xem df -h / trước, rồi tìm vùng lớn với du.",
+    "P1 cho thấy 100% block; P2 cho thấy /var/log lớn, nhưng chưa chỉ ra file được phép xóa."
+  ]
+}

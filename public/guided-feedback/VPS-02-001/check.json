@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "route"
+  ],
+  "explanation": "Kiểm tra route bằng phép đọc.",
+  "commandId": "ip-route",
+  "optionFeedback": {
+    "route": "Đúng: xem bảng route, đặc biệt default.",
+    "memory": "RAM không cho biết đường ra mạng.",
+    "service": "SSH không giải thích mọi IP công cộng đều không tới."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "expected_diagnosis": "VM snapshot restore may have rolled data back.",
+  "recommended_next_checks": "Confirm snapshot ID, restore authorization, backup/RPO history.",
+  "resolution_guidance": "Preserve state and escalate data recovery planning.",
+  "verification": "Customer confirms expected restore point and data recovered if possible.",
+  "escalate_when": "Data integrity/backup incident.",
+  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "scoring_rubric": {
+    "symptom_identification": 2,
+    "evidence_reasoning": 3,
+    "additional_checks": 2,
+    "safe_resolution": 2,
+    "verification_or_escalation": 1
+  }
+}

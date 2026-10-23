@@ -1,0 +1,3 @@
+{
+  "hint": "Đọc output của curl -I http://localhost/start; xem thêm Check site-specific Nginx server block and file existence.."
+}

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "files"
+  ],
+  "explanation": "Một filesystem có thể hết inode trước khi hết block.",
+  "optionFeedback": {
+    "files": "Đúng: cần kiểm tra inode.",
+    "ram": "Khách không nói về RAM.",
+    "ssh": "Không có triệu chứng SSH."
+  }
+}

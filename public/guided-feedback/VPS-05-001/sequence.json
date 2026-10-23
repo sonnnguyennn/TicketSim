@@ -1,0 +1,16 @@
+{
+  "correctIds": [
+    "measure",
+    "locate",
+    "approve",
+    "verify"
+  ],
+  "explanation": "Kiểm tra → khoanh vùng → hành động được duyệt → xác minh.",
+  "commandId": "df-h",
+  "optionFeedback": {
+    "measure": "Tránh nhầm tài nguyên hoặc mount.",
+    "locate": "Chỉ xem kích thước chưa đủ để xóa.",
+    "approve": "Giữ dữ liệu và bằng chứng cần thiết.",
+    "verify": "Xác minh triệu chứng đã hết."
+  }
+}
