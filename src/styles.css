@@ -452,6 +452,87 @@ main { max-width: 1560px; margin: auto; padding: 25px 28px 70px; }
 .stateful-page .guided-output code, .objective-page .guided-output code { white-space: normal; overflow-wrap: anywhere; }
 @media (max-width: 430px) { .stateful-page .guided-card, .objective-page .guided-card { padding: 14px; } .stateful-page .guided-footer { flex-wrap: wrap; } .stateful-page .guided-footer button { width: 100%; } }
 @media (max-width: 760px) { .stateful-actions { grid-template-columns: 1fr; } .stateful-page .guided-layout, .objective-page .guided-layout { grid-template-columns: 1fr; } }
+
+/* Guided-first workspace: one learning column and one command history. */
+.guided-focused { max-width: 980px; margin: 0 auto; }
+.guided-focused .guided-heading { align-items: start; gap: 20px; }
+.guided-focused .guided-heading h1 { font-size: 25px; }
+.guided-focused .guided-heading p { max-width: 700px; }
+.guided-focused .guided-main { gap: 16px; }
+.guided-focused .guided-card { padding: 22px; }
+.guided-focused .guided-ticket h2 { font-size: 14px; color: #607186; margin-bottom: 10px; }
+.guided-customer, .guided-reference, .guided-hints { border: 1px solid #dfe5eb; border-radius: 7px; background: #fff; padding: 13px 17px; font-size: 14px; color: #40566e; }
+.guided-customer summary, .guided-reference summary, .guided-hints summary, .guided-options-menu summary, .guided-feedback summary { cursor: pointer; line-height: 1.5; }
+.guided-customer p { white-space: pre-wrap; line-height: 1.6; margin: 12px 0 0; }
+.guided-reference > details { border-top: 1px solid #e3e9ef; margin-top: 12px; padding-top: 12px; }
+.guided-reference > details summary { overflow-wrap: anywhere; }
+.guided-reference > details summary span { color: #607186; font-size: 12px; margin-right: 7px; }
+.guided-reference pre { padding: 12px; background: #172331; color: #e3edf6; border-radius: 5px; white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.6 Consolas, ui-monospace, monospace; }
+.guided-reference p { margin: 9px 0 0; line-height: 1.55; }
+.guided-focused .guided-feedback details { margin-top: 12px; }
+.guided-focused .guided-feedback details p { margin-top: 9px; }
+.guided-hints summary { display: flex; align-items: center; gap: 7px; width: 100%; }
+.guided-hints summary::after { content: '+'; margin-left: auto; }
+.guided-hints[open] summary::after { content: '−'; }
+.guided-hints button { margin-top: 12px; }
+.guided-hints p, .guided-hints li { font-size: 14px; line-height: 1.6; }
+.guided-hints p { margin: 10px 0 0; }
+.guided-hints ol { margin: 12px 0 0; padding-left: 22px; }
+.guided-hints li + li { margin-top: 10px; }
+.guided-options-menu { color: #647489; font-size: 13px; }
+.guided-options-menu button { margin-top: 10px; }
+.guided-focused .guided-footer { padding-top: 4px; }
+.guided-focused .guided-footer button { min-height: 42px; }
+.guided-terminal { border: 1px solid #ccd7e2; border-radius: 8px; overflow: hidden; background: #172331; min-width: 0; }
+.terminal-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 17px; background: #233448; color: #edf4fb; }
+.terminal-heading h2 { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 15px; }
+.terminal-heading > span { color: #bbcbdb; font-size: 12px; }
+.terminal-suggestions { padding: 12px 16px; background: #f4f7fa; color: #375675; font-size: 13px; border-bottom: 1px solid #d5dfe8; }
+.terminal-suggestions summary { cursor: pointer; font-weight: 650; }
+.terminal-suggestions > div { display: flex; flex-wrap: wrap; gap: 7px; padding-top: 11px; }
+.terminal-suggestions button { display: inline-flex; align-items: center; text-align: left; gap: 7px; padding: 7px 9px; border: 1px solid #c9d7e4; border-radius: 5px; background: #fff; color: #244e77; min-width: 0; max-width: 100%; }
+.terminal-suggestions button:hover { background: #eaf2fb; border-color: #9ab8d7; }
+.terminal-suggestions button span { font-size: 11px; color: #65788c; flex: none; }
+.terminal-suggestions code { overflow-wrap: anywhere; font-size: 12px; }
+.terminal-suggestions button svg { flex: none; color: #267159; }
+.terminal-history { padding: 2px 18px; min-height: 180px; max-height: 450px; overflow: auto; overscroll-behavior: contain; color: #e4edf5; scrollbar-color: #5e738a #172331; }
+.terminal-history:focus-visible { outline: 2px solid #8cbcff; outline-offset: -3px; }
+.terminal-history .terminal-empty { color: #bccbd9; margin: 20px 0; font-size: 14px; }
+.guided-focused .terminal-entry { padding: 17px 0; margin: 0; border-bottom: 1px solid #354456; }
+.guided-focused .terminal-entry:last-child { border-bottom: 0; }
+.guided-focused .terminal-command { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.guided-focused .terminal-command > span { color: #9be0bd; font: 650 11px "Segoe UI", sans-serif; }
+.guided-focused .terminal-command code { color: #c5e3ff; overflow-wrap: anywhere; font: 13px/1.6 Consolas, ui-monospace, monospace; }
+.guided-focused .terminal-entry pre { white-space: pre-wrap; overflow-wrap: anywhere; margin: 9px 0; color: #f0f5fa; font: 13px/1.6 Consolas, ui-monospace, monospace; }
+.terminal-explanation { margin: 12px 0 0; padding: 11px 12px; background: #213245; border-radius: 5px; color: #d3dfeb; font-size: 13px; line-height: 1.55; }
+.terminal-explanation > div { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 10px; }
+.terminal-explanation > div + div { margin-top: 7px; }
+.terminal-explanation dt { color: #a6bdd4; }
+.terminal-explanation dd { margin: 0; }
+.terminal-message, .terminal-empty-output { color: #d8c59d; margin: 8px 0 0; font-size: 13px; line-height: 1.55; }
+.guided-focused .terminal-input { height: auto; min-height: 54px; padding: 10px 12px; gap: 9px; }
+.guided-focused .terminal-input input { font-size: 13px; min-height: 34px; }
+.guided-focused .terminal-input button { width: auto; height: 34px; display: inline-flex; white-space: nowrap; padding: 0 11px; font-size: 12px; }
+.guided-terminal .quick-lookup { margin: 0; border: 0; border-top: 1px solid #dfe5eb; border-radius: 0; background: #fff; padding: 13px 16px; }
+.guided-terminal .quick-lookup summary { font-size: 13px; }
+.case-header + .section-heading { margin-top: 20px; }
+@media (max-width: 760px) {
+  .guided-focused .guided-heading { display: flex; flex-wrap: wrap; gap: 12px; }
+  .guided-focused .guided-heading > button { margin-top: 0; }
+  .guided-focused .guided-heading h1 { font-size: 22px; }
+  .guided-focused .guided-card { padding: 16px; }
+  .guided-focused .guided-steps button { font-size: 11px; }
+  .terminal-history { max-height: 360px; padding: 0 13px; }
+  .terminal-explanation > div { grid-template-columns: 1fr; gap: 2px; }
+  .terminal-suggestions { padding: 12px; }
+  .terminal-suggestions > div { display: grid; }
+  .terminal-suggestions button { width: 100%; }
+  .guided-focused .terminal-input { flex-wrap: wrap; }
+  .guided-focused .terminal-input input { width: calc(100% - 30px); }
+  .guided-focused .terminal-input button { margin-left: auto; min-height: 36px; }
+  .guided-focused .guided-footer { align-items: stretch; }
+  .guided-focused .guided-footer .primary-button { white-space: normal; justify-content: center; }
+}
 .support-level { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 16px; padding: 10px 12px; border: 1px solid #dce6f0; border-radius: 6px; background: #f8fbff; color: #40566d; font-size: 13px; }
 .support-level > span { font-weight: 700; }
 .support-level > div { display: flex; flex-wrap: wrap; gap: 5px; }

@@ -6,7 +6,7 @@ export const STAGES: { id: GuidedStage; label: string }[] = [
   { id: 'investigate', label: 'Kiểm tra' },
   { id: 'interpret', label: 'Đọc bằng chứng' },
   { id: 'decide', label: 'Quyết định' },
-  { id: 'verify', label: 'Ghi ticket' },
+  { id: 'verify', label: 'Tổng kết' },
 ]
 
 export const emptyGuidedDraft = (): GuidedDraft => ({ stage: 0, responses: {}, feedback: {}, commands: [], hintLevel: 0, note: '', submitted: false })
@@ -18,15 +18,15 @@ export type CommandMatch =
 
 export function classifyGuidedCommand(input: string, probes: GuidedProbe[], library: CommandDoc[], state = 'initial'): CommandMatch {
   const normalized = normalizeGuidedCommand(input)
-  if (!normalized) return { kind: 'unclear', message: 'Hãy nhập command hoặc chọn một phép kiểm tra.' }
+  if (!normalized) return { kind: 'unclear', message: 'Nhập lệnh hoặc chọn một phép kiểm tra.' }
   const probe = probes.find(item => (item.requiredState ? item.requiredState.includes(state) : state === 'initial') && [item.command, ...item.aliases].some(variant => normalizeGuidedCommand(variant) === normalized))
   if (probe) return { kind: 'available', probe }
   const known = library.find(item => [item.command, item.centos, item.ubuntu].some(variant => normalizeGuidedCommand(variant) === normalized || (item.safety !== 'change' && normalizeGuidedCommand(`sudo ${variant}`) === normalized)))
   if (known?.safety === 'change' || /^(?:sudo\s+)?(?:rm\b|reboot\b|shutdown\b|systemctl\s+(?:start|stop|restart|enable|disable|reload)\b|journalctl\s+--vacuum-\w+|mount\s+.*\bremount\b|virsh\s+(?:destroy|shutdown)\b|nmcli\s+(?:connection|con)\s+(?:down|delete|modify|up)\b|ip\s+route\s+(?:add|del|delete|replace)\b|firewall-cmd\s+--(?:add|remove)-|nft\s+(?:add|delete|flush)\b)/i.test(normalized)) {
-    return { kind: 'restricted', message: 'Đây là thao tác thay đổi hệ thống. Bài học chỉ mô phỏng bước kiểm tra; hãy đề xuất hành động và điều kiện cấp quyền ở phần Quyết định.' }
+    return { kind: 'restricted', message: 'Lệnh này thay đổi hệ thống nên không được thực hiện ở bước kiểm tra. Hãy nêu đề xuất và quyền cần có ở bước Quyết định.' }
   }
-  if (known) return { kind: 'known', message: 'Đây là command có trong thư viện, nhưng ticket này chưa có output mô phỏng cho nó. Không tính là trả lời sai.' }
-  return { kind: 'unclear', message: 'Chưa nhận diện được command hoặc chưa có dữ liệu mô phỏng. Kiểm tra cú pháp trong Thư viện lệnh; không có lệnh nào được chạy thật.' }
+  if (known) return { kind: 'known', message: 'Lệnh có trong thư viện nhưng chưa có kết quả cho ticket này. Không tính là trả lời sai.' }
+  return { kind: 'unclear', message: 'Chưa có kết quả cho lệnh này. Bạn có thể tra cú pháp trong Thư viện lệnh.' }
 }
 
 export function gradeSelection(selected: string[], key: GuidedAnswerKey, kind: 'step_order' | 'selection' = 'selection'): boolean {

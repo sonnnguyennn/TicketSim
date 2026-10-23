@@ -1,34 +1,45 @@
-import { useEffect, useState } from 'react'
-import { ArrowLeft, ArrowRight, BookOpen, Check, CircleHelp, Lightbulb, RotateCcw, Search, Terminal } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowLeft, ArrowRight, BookOpen, Check, Lightbulb, RotateCcw, Terminal } from 'lucide-react'
 import { answerUrl, isAnswer } from '../lib'
 import type { Answer, CommandEntry, GuidedDraft, Progress, Ticket } from '../types'
 import { classifyGuidedCommand, emptyGuidedDraft, gradeSelection, objectiveScore, stageComplete, STAGES } from './engine'
 import { commandLibrary } from './commands'
 import { CommandQuickLookup } from './CommandLibrary'
 import { mistakeIds } from './review'
-import { SupportLevelSelector } from '../SupportLevelSelector'
-import type { SupportLevel } from '../types'
 import type { GuidedAnswerKey, GuidedCase, GuidedQuestion } from './types'
 
-type Props = { ticket: Ticket; guidedCase: GuidedCase; progress: Progress; setProgress: React.Dispatch<React.SetStateAction<Progress>>; supportLevel: SupportLevel; onSupportLevelChange: (value: SupportLevel) => void; onBack: () => void; onOpenLibrary: (id?: string) => void }
+type Props = { ticket: Ticket; guidedCase: GuidedCase; progress: Progress; setProgress: React.Dispatch<React.SetStateAction<Progress>>; onBack: () => void; onOpenLibrary: (id?: string) => void }
 
 const contextLabel = (context: GuidedCase['probes'][number]['context']) => ({ guest: 'Guest', client: 'Client', panel: 'Panel', hypervisor: 'Hypervisor' })[context]
 
-export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, supportLevel, onSupportLevelChange, onBack, onOpenLibrary }: Props) {
+export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onBack, onOpenLibrary }: Props) {
   const draft = progress.guidedDrafts[ticket.id] ?? emptyGuidedDraft()
   const [input, setInput] = useState('')
   const [hints, setHints] = useState<string[] | null>(null)
   const [answer, setAnswer] = useState<Answer | null>(null)
   const [error, setError] = useState('')
+  const terminalRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const draftGeneration = useRef(0)
   const stage = STAGES[draft.stage]
   const questions = guidedCase.questions.filter(question => question.stage === stage.id && question.kind !== 'short_answer')
   const savedAttempt = draft.submitted ? progress.guidedAttempts.find(attempt => attempt.ticketId === ticket.id) : undefined
   const score = savedAttempt ? { score: savedAttempt.score, total: savedAttempt.total } : objectiveScore(guidedCase, draft)
   const hintReady = draft.hintLevel === 0 || (draft.hintLevel === 1 ? draft.commands.some(entry => entry.supported) : ['P1', 'P2'].every(id => draft.commands.some(entry => entry.supported && entry.probeId === id)))
+  const initialProbes = guidedCase.probes.filter(probe => !probe.requiredState || probe.requiredState.includes('initial'))
+  const requiredProbeIds = new Set(guidedCase.questions.filter(question => question.stage === 'interpret').flatMap(question => question.requiredProbeIds ?? []))
+  const remainingChecks = [...requiredProbeIds].filter(id => !draft.commands.some(entry => entry.supported && entry.probeId === id)).length
+  const evidence = [...new Map(draft.commands.filter(entry => entry.supported).map(entry => [entry.probeId ?? entry.command, entry])).values()]
 
   useEffect(() => {
+    draftGeneration.current += 1
     setInput(''); setHints(null); setAnswer(null); setError('')
+    return () => { draftGeneration.current += 1 }
   }, [ticket.id])
+  useEffect(() => {
+    const terminal = terminalRef.current
+    if (terminal) terminal.scrollTop = terminal.scrollHeight
+  }, [draft.commands.length, stage.id])
   useEffect(() => {
     if (!draft.hintLevel || hints) return
     let active = true
@@ -66,30 +77,34 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, sup
   async function checkQuestion(question: GuidedQuestion) {
     const selected = draft.responses[question.id] ?? (question.kind === 'step_order' ? question.options.map(option => option.id).reverse() : [])
     if (!selected.length || draft.feedback[question.id]) return
+    const generation = draftGeneration.current
     setError('')
     try {
       const response = await fetch(`${import.meta.env.BASE_URL}guided-feedback/${ticket.id}/${question.id}.json`)
-      if (!response.ok) throw new Error('Không tải được feedback')
+      if (!response.ok) throw new Error('Không tải được phần giải thích.')
       const key = await response.json() as GuidedAnswerKey
-      if (!Array.isArray(key.correctIds) || typeof key.explanation !== 'string' || !key.optionFeedback || key.correctIds.some(id => !question.options.some(option => option.id === id))) throw new Error('Feedback không hợp lệ')
+      if (generation !== draftGeneration.current) return
+      if (!Array.isArray(key.correctIds) || typeof key.explanation !== 'string' || !key.optionFeedback || key.correctIds.some(id => !question.options.some(option => option.id === id))) throw new Error('Phần giải thích chưa hợp lệ.')
       update(current => ({ responses: { ...current.responses, [question.id]: selected }, feedback: { ...current.feedback, [question.id]: { correct: gradeSelection(selected, key, question.kind === 'step_order' ? 'step_order' : 'selection'), correctIds: key.correctIds, explanation: key.explanation, optionFeedback: key.optionFeedback, commandId: key.commandId } } }))
-    } catch (cause) { setError(cause instanceof Error ? cause.message : 'Không tải được feedback') }
+    } catch (cause) { if (generation === draftGeneration.current) setError(cause instanceof Error ? cause.message : 'Không tải được phần giải thích.') }
   }
   async function revealHint() {
-    if (supportLevel === 'independent' || draft.hintLevel >= 3 || !hintReady) return
+    if (draft.hintLevel >= 3 || !hintReady) return
+    const generation = draftGeneration.current
     try {
       let available = hints
       if (!available) {
         const response = await fetch(`${import.meta.env.BASE_URL}guided-hints/${ticket.id}.json`)
         if (!response.ok) throw new Error('Không tải được gợi ý')
         const value: unknown = await response.json()
+        if (generation !== draftGeneration.current) return
         if (!value || typeof value !== 'object' || !('hints' in value) || !Array.isArray(value.hints) || value.hints.length !== 3 || value.hints.some(item => typeof item !== 'string')) throw new Error('Gợi ý không hợp lệ')
         available = value.hints as string[]
         setHints(available)
       }
       update({ hintLevel: draft.hintLevel + 1 })
       setError('')
-    } catch (cause) { setError(cause instanceof Error ? cause.message : 'Không tải được gợi ý') }
+    } catch (cause) { if (generation === draftGeneration.current) setError(cause instanceof Error ? cause.message : 'Không tải được gợi ý') }
   }
   function submit() {
     if (draft.submitted || !stageComplete(guidedCase, 'verify', draft)) return
@@ -106,28 +121,50 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, sup
     })
   }
   function restart() {
-    if (!window.confirm('Bắt đầu lại bài Guided? Lượt làm đã nộp vẫn nằm trong lịch sử.')) return
+    if (!window.confirm('Bắt đầu lại bài học? Lượt đã nộp vẫn được giữ trong lịch sử.')) return
+    draftGeneration.current += 1
     update(emptyGuidedDraft())
     setAnswer(null); setHints(null); setInput('')
   }
 
-  return <div className="guided-page">
-    <div className="guided-topline"><button className="guided-back" onClick={onBack}><ArrowLeft size={16} /> Kho ticket</button><span>Bài học có hướng dẫn · {ticket.id}</span></div>
-    <div className="guided-heading"><div><h1>{ticket.customer_message.split(/\n\s*\n/)[1] ?? ticket.id}</h1><p><strong>Mục tiêu:</strong> {guidedCase.objective}</p></div><button className="guided-secondary" onClick={() => onOpenLibrary()}><BookOpen size={16} /> Thư viện lệnh</button></div>
-    <SupportLevelSelector value={supportLevel} onChange={onSupportLevelChange} />
-    <nav className="guided-steps" aria-label="Các bước bài học">{STAGES.map((item, index) => <button key={item.id} className={index === draft.stage ? 'current' : index < draft.stage ? 'done' : ''} onClick={() => { if (index <= draft.stage) update({ stage: index }) }} disabled={index > draft.stage}><span>{index < draft.stage ? <Check size={13} /> : index + 1}</span>{item.label}</button>)}</nav>
-    <div className="guided-layout">
-      <div className="guided-main">
-        <section className="guided-card guided-ticket"><span className="guided-kicker">LỜI KHÁCH HÀNG</span><p>{ticket.customer_message}</p>{guidedCase.customerFollowup && <p className="customer-followup">{guidedCase.customerFollowup}</p>}</section>
-        {stage.id === 'investigate' && <section className="guided-card"><h2>Chọn phép kiểm tra</h2><p className="guided-muted">Chọn hoặc nhập lệnh để đọc bằng chứng. Mọi output chỉ lấy từ fixture của bài này.</p>{supportLevel !== 'independent' && <div className="guided-probe-grid">{guidedCase.probes.filter(probe => !probe.requiredState || probe.requiredState.includes('initial')).map(probe => <div className="guided-probe" key={probe.id}><div><code>{probe.command}</code><button title="Mở thẻ command" onClick={() => onOpenLibrary(probe.commandId)}><CircleHelp size={16} /></button></div><small>{contextLabel(probe.context)}</small>{supportLevel === 'beginner' && draft.commands.some(entry => entry.supported && entry.probeId === probe.id) && <p>{probe.purpose}</p>}<button onClick={() => runCommand(probe.command)}>Chạy mô phỏng <ArrowRight size={14} /></button></div>)}</div>}<form className="guided-command" onSubmit={event => { event.preventDefault(); runCommand(input) }}><Terminal size={17} /><input aria-label="Nhập command Guided" placeholder="Nhập command mô phỏng..." value={input} onChange={event => setInput(event.target.value)} list={supportLevel === 'independent' ? undefined : 'guided-command-options'} />{supportLevel !== 'independent' && <datalist id="guided-command-options">{guidedCase.probes.filter(probe => !probe.requiredState || probe.requiredState.includes('initial')).map(probe => <option key={probe.id} value={probe.command} />)}</datalist>}<button disabled={!input.trim()}>Kiểm tra</button></form><CommandQuickLookup /><div className="guided-output">{draft.commands.length ? draft.commands.map(entry => { const probe = guidedCase.probes.find(item => item.id === entry.probeId); return <div key={entry.id}><code>{entry.kind === 'investigation' && probe ? contextLabel(probe.context) : '$'} {entry.command}</code><pre>{entry.output}</pre>{probe && supportLevel !== 'independent' && <p><strong>{contextLabel(probe.context)} · Hiểu output:</strong> {probe.meaning}</p>}</div> }) : <p>Chưa chạy phép kiểm tra nào.</p>}</div></section>}
-        {(stage.id === 'interpret' || stage.id === 'decide') && <section className="guided-card"><h2>Bằng chứng đã thu thập</h2>{draft.commands.filter(entry => entry.supported).length ? draft.commands.filter(entry => entry.supported).map(entry => <div className="guided-evidence" key={entry.id}><code>{entry.probeId} · {entry.command}</code><pre>{entry.output}</pre></div>) : <p className="guided-muted">Chưa có output. Quay lại bước Kiểm tra để thu thập bằng chứng.</p>}</section>}
-        {questions.map(question => <QuestionCard key={question.id} question={question} draft={draft} onSelect={selected => update(current => ({ responses: { ...current.responses, [question.id]: selected } }))} onCheck={() => checkQuestion(question)} onOpenLibrary={onOpenLibrary} />)}
-        {stage.id === 'verify' && <section className="guided-card"><h2>Short answer · Ghi ticket ngắn</h2><p className="guided-muted">{guidedCase.verificationPrompt}</p><textarea aria-label="Ghi chú cuối ticket" rows={5} value={draft.note} onChange={event => update({ note: event.target.value })} placeholder="Hiện tượng...\nBằng chứng...\nBước tiếp theo và xác minh..." disabled={draft.submitted} />{!draft.submitted && draft.note.trim().length > 0 && draft.note.replace(/\s/g, '').length < 30 && <p className="guided-muted">Ghi ít nhất 30 ký tự không tính khoảng trắng để mô tả phát hiện và bước tiếp theo.</p>}{draft.submitted && <div className="guided-result"><h3>Completed · {score.score}/{score.total} câu khách quan</h3><p>Mastered cần một lượt ôn độc lập sau ít nhất 24 giờ. Ghi chú trên do bạn tự đối chiếu; ứng dụng không tự chấm câu viết.</p>{mistakeIds(progress, guidedCase).length > 0 && <div className="guided-mistakes"><strong>Cần ôn lại</strong><ul>{guidedCase.questions.filter(question => mistakeIds(progress, guidedCase).includes(question.id)).map(question => <li key={question.id}>{question.prompt}</li>)}</ul></div>}{answer && <div className="guided-model"><strong>Đáp án mẫu</strong><p>{answer.expected_diagnosis}</p><p><b>Kiểm tra tiếp:</b> {answer.recommended_next_checks}</p><p><b>Hướng xử lý:</b> {answer.resolution_guidance}</p><p><b>Xác minh:</b> {answer.verification}</p><p><b>Escalation:</b> {answer.escalate_when}</p></div>}</div>}</section>}
-        {stage.id === 'investigate' && !stageComplete(guidedCase, stage.id, draft) && <p className="guided-step-note">Trả lời câu hỏi chọn command và chạy đủ các probe được yêu cầu (P1, P2 và G nếu bài có) trước khi đọc bằng chứng.</p>}
-        {error && <div className="notice error" role="alert">{error}</div>}
-        <div className="guided-footer"><button className="guided-secondary" onClick={() => update({ stage: Math.max(0, draft.stage - 1) })} disabled={draft.stage === 0}><ArrowLeft size={15} /> Quay lại</button>{stage.id === 'verify' ? <button className="primary-button" onClick={submit} disabled={draft.submitted || !stageComplete(guidedCase, 'verify', draft)}>{draft.submitted ? 'Đã lưu lượt làm' : 'Nộp bài và xem đáp án'}</button> : <button className="primary-button" onClick={() => update({ stage: Math.min(4, draft.stage + 1) })} disabled={!stageComplete(guidedCase, stage.id, draft)}>Tiếp tục <ArrowRight size={15} /></button>}</div>
-      </div>
-      <aside className="guided-side">{supportLevel !== 'independent' && <div className="guided-card"><h3>Trợ giúp</h3><p>Cố gắng chọn bước kiểm tra và giải thích trước khi mở gợi ý.</p><button className="guided-secondary" onClick={revealHint} disabled={draft.hintLevel >= 3 || !hintReady}><Lightbulb size={15} /> {draft.hintLevel ? 'Gợi ý tiếp theo' : 'Cần gợi ý?'}</button>{!hintReady && <p>Gợi ý tiếp theo mở sau khi thu thập bằng chứng.</p>}{draft.hintLevel > 0 && hints && <ol>{hints.slice(0, draft.hintLevel).map(hint => <li key={hint}>{hint}</li>)}</ol>}</div>}<div className="guided-card"><h3>Tiến độ</h3><p>{Object.keys(draft.feedback).length}/{score.total} câu đã đối chiếu</p><p>{draft.commands.filter(entry => entry.supported).length} phép kiểm tra có output</p><p>{draft.hintLevel} gợi ý đã mở</p>{(draft.stage > 0 || draft.commands.length > 0 || Object.keys(draft.responses).length > 0 || draft.hintLevel > 0 || draft.note) && <button className="guided-secondary" onClick={restart}><RotateCcw size={15} /> Làm lại bài này</button>}</div><button className="guided-library-link" onClick={() => onOpenLibrary()}><Search size={15} /> Tra command và ý nghĩa</button></aside>
+  return <div className="guided-page guided-focused">
+    <div className="guided-topline"><button className="guided-back" onClick={onBack}><ArrowLeft size={16} /> Kho ticket</button><span>{ticket.id} · L{ticket.difficulty}</span></div>
+    <header className="guided-heading"><div><h1>{ticket.topic_vi}</h1><p>{guidedCase.objective}</p></div><button className="guided-secondary" onClick={() => onOpenLibrary()}><BookOpen size={16} /> Thư viện lệnh</button></header>
+    <nav className="guided-steps" aria-label="Các bước bài học">{STAGES.map((item, index) => <button key={item.id} className={index === draft.stage ? 'current' : index < draft.stage ? 'done' : ''} aria-current={index === draft.stage ? 'step' : undefined} onClick={() => { if (index <= draft.stage) update({ stage: index }) }} disabled={index > draft.stage}><span>{index < draft.stage ? <Check size={13} /> : index + 1}</span>{item.label}</button>)}</nav>
+    <div className="guided-main">
+      {stage.id === 'triage' ? <section className="guided-card guided-ticket"><h2>Lời khách hàng</h2><p>{ticket.customer_message}</p>{guidedCase.customerFollowup && <p className="customer-followup">{guidedCase.customerFollowup}</p>}</section> : <details className="guided-customer" key={stage.id}><summary>Xem lời khách hàng</summary><p>{ticket.customer_message}</p>{guidedCase.customerFollowup && <p>{guidedCase.customerFollowup}</p>}</details>}
+      {(stage.id === 'interpret' || stage.id === 'decide') && <details className="guided-reference"><summary>Bằng chứng đã thu thập · {evidence.length} kết quả</summary>{evidence.map(entry => {
+        const probe = guidedCase.probes.find(item => item.id === entry.probeId)
+        return <details key={entry.id}><summary><span>{probe ? contextLabel(probe.context) : 'Đã kiểm tra'}</span> <code>{entry.command}</code></summary><pre>{entry.output}</pre>{entry.output === '' && <p>Không có output.</p>}{probe && <p>{probe.meaning}</p>}</details>
+      })}</details>}
+      {questions.map(question => <QuestionCard key={question.id} question={question} draft={draft} onSelect={selected => update(current => ({ responses: { ...current.responses, [question.id]: selected } }))} onCheck={() => checkQuestion(question)} onOpenLibrary={onOpenLibrary} />)}
+      {stage.id === 'investigate' && <section className="guided-terminal" aria-label="Terminal mô phỏng">
+        <div className="terminal-heading"><h2><Terminal size={18} /> Kiểm tra</h2><span>{initialProbes.filter(probe => draft.commands.some(entry => entry.supported && entry.probeId === probe.id)).length}/{initialProbes.length} đã xem</span></div>
+        <details className="terminal-suggestions" open>
+          <summary>Lệnh và tác vụ gợi ý</summary>
+          <div>{initialProbes.map(probe => <button key={probe.id} type="button" aria-label={'Chọn ' + probe.command} onClick={() => { setInput(probe.command); inputRef.current?.focus() }}><span>{contextLabel(probe.context)}</span><code>{probe.command}</code>{draft.commands.some(entry => entry.supported && entry.probeId === probe.id) && <Check size={14} aria-label="Đã xem" />}</button>)}</div>
+        </details>
+        <div className="terminal-history" role="log" aria-label="Lịch sử kiểm tra" tabIndex={0} ref={terminalRef}>
+          {draft.commands.length ? draft.commands.map(entry => {
+            const probe = guidedCase.probes.find(item => item.id === entry.probeId)
+            return <div className="terminal-entry" key={entry.id} data-probe-id={entry.probeId}>
+              <div className="terminal-command"><span>{probe ? contextLabel(probe.context) : entry.kind === 'investigation' ? 'Tác vụ' : 'Lệnh đã nhập'}</span><code>{probe?.context !== 'panel' ? '$ ' : ''}{entry.command}</code></div>
+              {entry.supported ? <><pre>{entry.output}</pre>{entry.output === '' && <p className="terminal-empty-output">Không có output. Chưa đủ để kết luận nguyên nhân.</p>}</> : <p className="terminal-message">{entry.output}</p>}
+              {entry.supported && probe && <dl className="terminal-explanation"><div><dt>Kiểm tra gì?</dt><dd>{probe.purpose}</dd></div><div><dt>Cách đọc</dt><dd>{probe.meaning}</dd></div></dl>}
+            </div>
+          }) : <p className="terminal-empty">Chọn hoặc nhập lệnh để kiểm tra.</p>}
+        </div>
+        <form className="terminal-input" onSubmit={event => { event.preventDefault(); runCommand(input); inputRef.current?.focus() }}>
+          <label className="sr-only" htmlFor="guided-command-input">Nhập lệnh hoặc tác vụ</label><span aria-hidden="true">›</span><input id="guided-command-input" ref={inputRef} placeholder="Nhập lệnh hoặc tác vụ..." value={input} onChange={event => setInput(event.target.value)} list="guided-command-options" autoComplete="off" autoCapitalize="off" spellCheck={false} /><datalist id="guided-command-options">{initialProbes.map(probe => <option key={probe.id} value={probe.command} />)}</datalist><button type="submit" disabled={!input.trim()}>Chạy kiểm tra</button>
+        </form>
+        <CommandQuickLookup />
+      </section>}
+      {stage.id === 'verify' && <section className="guided-card"><h2>Tổng kết ticket</h2><p className="guided-muted">{guidedCase.verificationPrompt}</p><textarea aria-label="Ghi chú cuối ticket" rows={5} value={draft.note} onChange={event => update({ note: event.target.value })} placeholder={'Hiện tượng...\nBằng chứng...\nBước tiếp theo và xác minh...'} disabled={draft.submitted} />{!draft.submitted && draft.note.trim().length > 0 && draft.note.replace(/\s/g, '').length < 30 && <p className="guided-muted">Viết ít nhất 30 ký tự không tính khoảng trắng.</p>}{draft.submitted && <div className="guided-result"><h3>Đã hoàn thành · {score.score}/{score.total} câu đúng</h3><p>Đối chiếu ghi chú của bạn với đáp án bên dưới.</p>{mistakeIds(progress, guidedCase).length > 0 && <details className="guided-mistakes"><summary>Câu cần xem lại</summary><ul>{guidedCase.questions.filter(question => mistakeIds(progress, guidedCase).includes(question.id)).map(question => <li key={question.id}>{question.prompt}</li>)}</ul></details>}{answer && <div className="guided-model"><strong>Đáp án tham khảo</strong><p>{answer.expected_diagnosis}</p><p><b>Kiểm tra tiếp:</b> {answer.recommended_next_checks}</p><p><b>Hướng xử lý:</b> {answer.resolution_guidance}</p><p><b>Xác minh:</b> {answer.verification}</p><p><b>Khi cần chuyển cấp:</b> {answer.escalate_when}</p></div>}</div>}</section>}
+      <details className="guided-hints"><summary><Lightbulb size={15} /> Gợi ý{draft.hintLevel > 0 ? ' · ' + draft.hintLevel + '/3 đã mở' : ''}</summary><button className="guided-secondary" onClick={revealHint} disabled={draft.hintLevel >= 3 || !hintReady}>{draft.hintLevel >= 3 ? 'Đã mở hết gợi ý' : draft.hintLevel ? 'Mở gợi ý tiếp' : 'Mở gợi ý'}</button>{!hintReady && <p>Thu thập thêm bằng chứng để mở gợi ý tiếp.</p>}{draft.hintLevel > 0 && hints && <ol>{hints.slice(0, draft.hintLevel).map(hint => <li key={hint}>{hint}</li>)}</ol>}</details>
+      {stage.id === 'investigate' && remainingChecks > 0 && <p className="guided-step-note">Còn {remainingChecks} phép kiểm tra bắt buộc trước khi đọc bằng chứng.</p>}
+      {error && <div className="notice error" role="alert">{error}</div>}
+      <div className="guided-footer"><button className="guided-secondary" onClick={() => update({ stage: Math.max(0, draft.stage - 1) })} disabled={draft.stage === 0}><ArrowLeft size={15} /> Quay lại</button>{stage.id === 'verify' ? draft.submitted ? <button className="primary-button" onClick={onBack}>Về kho ticket <ArrowRight size={15} /></button> : <button className="primary-button" onClick={submit} disabled={!stageComplete(guidedCase, 'verify', draft)}>Hoàn thành và xem đáp án</button> : <button className="primary-button" onClick={() => update({ stage: Math.min(4, draft.stage + 1) })} disabled={!stageComplete(guidedCase, stage.id, draft)}>Tiếp tục <ArrowRight size={15} /></button>}</div>
+      {(draft.stage > 0 || draft.commands.length > 0 || Object.keys(draft.responses).length > 0 || draft.hintLevel > 0 || draft.note) && <details className="guided-options-menu"><summary>Tùy chọn bài học</summary><button className="guided-secondary" onClick={restart}><RotateCcw size={15} /> Làm lại bài này</button></details>}
     </div>
   </div>
 }
@@ -138,6 +175,10 @@ function QuestionCard({ question, draft, onSelect, onCheck, onOpenLibrary }: { q
   const missingProbe = question.requiredProbeIds?.some(id => !draft.commands.some(entry => entry.supported && entry.probeId === id))
   const multiple = question.kind === 'multi_select'
   const move = (index: number, direction: -1 | 1) => { const next = [...selected]; [next[index], next[index + direction]] = [next[index + direction], next[index]]; onSelect(next) }
-  return <section className="guided-card guided-question"><div className="guided-question-top"><span>{question.kind === 'step_order' ? 'SẮP XẾP BƯỚC' : question.kind === 'command_choice' ? 'CHỌN COMMAND' : multiple ? 'CHỌN NHIỀU' : question.kind === 'output_interpretation' ? 'ĐỌC OUTPUT' : 'CHỌN MỘT'}</span>{feedback && <strong className={feedback.correct ? 'correct' : 'incorrect'}>{feedback.correct ? 'Đúng' : 'Cần xem lại'}</strong>}</div><h2>{question.prompt}</h2>{missingProbe ? <p className="guided-muted">Hãy chạy probe liên quan ở bước Kiểm tra trước khi trả lời câu này.</p> : <>{question.kind === 'step_order' ? <ol className="guided-order">{selected.map((id, index) => <li key={id}><span>{question.options.find(option => option.id === id)?.label}</span><div><button aria-label={`Đưa bước ${index + 1} lên`} disabled={!!feedback || index === 0} onClick={() => move(index, -1)}>↑</button><button aria-label={`Đưa bước ${index + 1} xuống`} disabled={!!feedback || index === selected.length - 1} onClick={() => move(index, 1)}>↓</button></div></li>)}</ol> : <div className="guided-options">{question.options.map(option => <label key={option.id} className={selected.includes(option.id) ? 'selected' : ''}><input type={multiple ? 'checkbox' : 'radio'} name={question.id} checked={selected.includes(option.id)} disabled={!!feedback} onChange={() => onSelect(multiple ? selected.includes(option.id) ? selected.filter(id => id !== option.id) : [...selected, option.id] : [option.id])} /><span>{option.label}</span></label>)}</div>}{!feedback ? <button className="guided-secondary" onClick={onCheck} disabled={!selected.length}>Kiểm tra câu trả lời</button> : <div className={`guided-feedback ${feedback.correct ? 'correct' : 'incorrect'}`}><p>{feedback.explanation}</p>{question.kind === 'step_order' && <p><b>Thứ tự đúng:</b> {feedback.correctIds.map(id => question.options.find(option => option.id === id)?.label).join(' → ')}</p>}{question.options.map(option => <p key={option.id}><b>{option.label}:</b> {feedback.optionFeedback[option.id]}</p>)}{feedback.commandId && <button onClick={() => onOpenLibrary(feedback.commandId)}>Xem thẻ command liên quan <ArrowRight size={14} /></button>}</div>}</>}</section>
+  return <section className="guided-card guided-question"><div className="guided-question-top"><span>{question.kind === 'step_order' ? 'SẮP XẾP BƯỚC' : question.kind === 'command_choice' ? 'CHỌN LỆNH' : multiple ? 'CHỌN NHIỀU' : question.kind === 'output_interpretation' ? 'ĐỌC OUTPUT' : 'CHỌN MỘT'}</span>{feedback && <strong className={feedback.correct ? 'correct' : 'incorrect'}>{feedback.correct ? 'Đúng' : 'Cần xem lại'}</strong>}</div><h2>{question.prompt}</h2>
+    {missingProbe ? <p className="guided-muted">Thu thập bằng chứng liên quan ở bước Kiểm tra trước khi trả lời.</p> : <>
+      {question.kind === 'step_order' ? <ol className="guided-order">{selected.map((id, index) => <li key={id}><span>{question.options.find(option => option.id === id)?.label}</span><div><button aria-label={'Đưa bước ' + (index + 1) + ' lên'} disabled={!!feedback || index === 0} onClick={() => move(index, -1)}>↑</button><button aria-label={'Đưa bước ' + (index + 1) + ' xuống'} disabled={!!feedback || index === selected.length - 1} onClick={() => move(index, 1)}>↓</button></div></li>)}</ol> : <div className="guided-options">{question.options.map(option => <label key={option.id} className={selected.includes(option.id) ? 'selected' : ''}><input type={multiple ? 'checkbox' : 'radio'} name={question.id} checked={selected.includes(option.id)} disabled={!!feedback} onChange={() => onSelect(multiple ? selected.includes(option.id) ? selected.filter(id => id !== option.id) : [...selected, option.id] : [option.id])} /><span>{option.label}</span></label>)}</div>}
+      {!feedback ? <button className="guided-secondary" onClick={onCheck} disabled={!selected.length}>Kiểm tra câu trả lời</button> : <div className={'guided-feedback ' + (feedback.correct ? 'correct' : 'incorrect')} role="status"><p>{feedback.explanation}</p><details><summary>Giải thích từng lựa chọn</summary>{question.kind === 'step_order' && <p><b>Thứ tự đúng:</b> {feedback.correctIds.map(id => question.options.find(option => option.id === id)?.label).join(' → ')}</p>}{question.options.map(option => <p key={option.id}><b>{option.label}:</b> {feedback.optionFeedback[option.id]}</p>)}</details>{feedback.commandId && <button onClick={() => onOpenLibrary(feedback.commandId)}>Tra lệnh liên quan <ArrowRight size={14} /></button>}</div>}
+    </>}
+  </section>
 }
-
