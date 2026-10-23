@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Thu task timeline, disk I/O và console/host logs; chuyển đội ảo hóa với owner về rủi ro dữ liệu. Xác minh: Đội hạ tầng xác nhận VM state ổn định và filesystem/ứng dụng kiểm tra sau recovery.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

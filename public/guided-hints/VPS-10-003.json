@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VM có IP nhưng không tới gateway được cấp.",
+    "Đọc P1 (virsh domiflist vm-102) và P2 (PANEL: expected bridge); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Đúng bridge/MAC, guest ARP/ping gateway và kết nối ngoài theo phân bổ."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS không phản hồi từ mạng.",
+    "Đọc P1 (PANEL: VM state) và P2 (PANEL: event log); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Panel báo Running, guest boot xong và dịch vụ khách cần dùng phản hồi."
+  ]
+}

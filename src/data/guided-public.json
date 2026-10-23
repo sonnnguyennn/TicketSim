@@ -11177,5 +11177,2877 @@
       }
     ],
     "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Validating resolvers trả bản ghi đúng, DNSSEC chain hợp lệ sau TTL và client tải site."
+  },
+  {
+    "id": "VPS-06-001",
+    "objective": "Đối chiếu power state với lịch sử thao tác và quyền bật VPS.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: VM state",
+        "output": "Powered Off",
+        "context": "panel",
+        "purpose": "power state ở panel",
+        "meaning": "Panel ghi Powered Off; chưa biết vì lỗi hay thao tác có chủ đích.",
+        "commandId": "virsh-dominfo",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: event log",
+        "output": "User requested shutdown 12:30",
+        "context": "panel",
+        "purpose": "sự kiện shutdown trong panel",
+        "meaning": "Event log ghi yêu cầu shutdown lúc 12:30; cần xác nhận người yêu cầu.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: shutdown audit",
+        "output": "12:30 UTC action=shutdown actor=account-owner request_id=act-731",
+        "purpose": "Xác minh actor của yêu cầu.",
+        "meaning": "Audit gắn thao tác với tài khoản owner; vẫn cần xác nhận ý muốn khởi động lại.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "VPS không phản hồi từ mạng."
+          },
+          {
+            "id": "other",
+            "label": "Chỉ HTTP trả 403 còn SSH bình thường."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "vm-power-state"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc power state ở panel?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: VM state"
+          },
+          {
+            "id": "wrong1",
+            "label": "dig example.com A"
+          },
+          {
+            "id": "wrong2",
+            "label": "df -h /"
+          }
+        ],
+        "commandId": "virsh-dominfo",
+        "skill": "vm-power-state"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Power state và audit hiện chứng minh điều gì?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "VM đang off và panel có sự kiện user requested shutdown; chưa thể gọi là lỗi host."
+          },
+          {
+            "id": "over",
+            "label": "Sự kiện này chứng minh provider tự ý tắt VM."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "vm-power-state"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Panel ghi Powered Off; chưa biết vì lỗi hay thao tác có chủ đích."
+          },
+          {
+            "id": "p2",
+            "label": "Event log ghi yêu cầu shutdown lúc 12:30; cần xác nhận người yêu cầu."
+          },
+          {
+            "id": "over",
+            "label": "Sự kiện này chứng minh provider tự ý tắt VM."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "vm-power-state"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Khách muốn bật lại sau shutdown. Bước nào đúng quyền?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Đối chiếu audit actor và xác nhận owner muốn bật lại; chỉ chuyển yêu cầu start qua panel có quyền."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự bật hoặc reinstall VPS khi chưa xác minh owner."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "vm-power-state"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Panel báo Running, guest boot xong và dịch vụ khách cần dùng phản hồi.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Panel báo Running, guest boot xong và dịch vụ khách cần dùng phản hồi."
+  },
+  {
+    "id": "VPS-06-002",
+    "objective": "Điều tra VPS chậm trước yêu cầu reboot, giữ backup job và dữ liệu.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: VM state",
+        "output": "Running",
+        "context": "panel",
+        "purpose": "VM state ở panel",
+        "meaning": "VM Running; panel không đo chất lượng ứng dụng.",
+        "commandId": "virsh-dominfo",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "top -b -n1 | head",
+        "output": "top - 02:11:02 up 4 days, 2:14, 1 user, load average: 2.89, 2.11, 1.40\n%Cpu(s): 96.2 us, 2.0 sy, 1.8 id\n  PID USER      %CPU COMMAND\n 2418 mysql      94.7 mariabackup",
+        "context": "guest",
+        "purpose": "process dùng CPU trong guest",
+        "meaning": "Backup database đang dùng CPU cao tại snapshot; cần xem job và latency.",
+        "commandId": "top",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: backup job state",
+        "output": "database-backup task running since 02:00 UTC; progress 72%",
+        "purpose": "Xác nhận job còn hoạt động.",
+        "meaning": "Job chưa xong; reboot có thể làm gián đoạn và ảnh hưởng consistency.",
+        "commandId": "panel-backup-status",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "VPS chậm và khách yêu cầu reboot ngay."
+          },
+          {
+            "id": "other",
+            "label": "VPS Powered Off từ tối qua."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "reboot-risk"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc vm state ở panel?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: VM state"
+          },
+          {
+            "id": "wrong1",
+            "label": "dig example.com A"
+          },
+          {
+            "id": "wrong2",
+            "label": "getent passwd admin"
+          }
+        ],
+        "commandId": "virsh-dominfo",
+        "skill": "reboot-risk"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "VM đang chạy, backup DB dùng CPU nhiều; chưa chứng minh job bất thường hay cần reboot."
+          },
+          {
+            "id": "over",
+            "label": "CPU cao trong backup chứng minh dữ liệu bị hỏng."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "top",
+        "skill": "reboot-risk"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "VM Running; panel không đo chất lượng ứng dụng."
+          },
+          {
+            "id": "p2",
+            "label": "Backup database đang dùng CPU cao tại snapshot; cần xem job và latency."
+          },
+          {
+            "id": "over",
+            "label": "CPU cao trong backup chứng minh dữ liệu bị hỏng."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "top",
+        "skill": "reboot-risk"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Đo latency/tải và trạng thái backup, trao đổi owner về cửa sổ job; chỉ bàn change sau đánh giá tác động."
+          },
+          {
+            "id": "unsafe",
+            "label": "Reboot VPS ngay giữa backup đang chạy."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "reboot-risk"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Backup hoàn tất/được xử lý theo runbook và hiệu năng khách đo lại ổn.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Backup hoàn tất/được xử lý theo runbook và hiệu năng khách đo lại ổn."
+  },
+  {
+    "id": "VPS-06-003",
+    "objective": "Phân biệt console accessible với quyền reset root; yêu cầu xác minh sở hữu và recovery được duyệt.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: console",
+        "output": "Accessible",
+        "context": "panel",
+        "purpose": "khả năng mở console trong panel",
+        "meaning": "Console accessible; không nói mật khẩu root là gì.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: OS template",
+        "output": "CentOS Stream 9",
+        "context": "panel",
+        "purpose": "OS template được ghi ở panel",
+        "meaning": "Panel ghi CentOS Stream 9; cần kiểm tra image thực trước runbook.",
+        "commandId": "os-release",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: ownership verification",
+        "output": "Account identity review: pending",
+        "purpose": "Đọc trạng thái xác minh quyền yêu cầu.",
+        "meaning": "Chưa thể thực hiện credential change khi review còn pending.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Khách quên mật khẩu root."
+          },
+          {
+            "id": "other",
+            "label": "VPS mất volume dữ liệu."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "credential-recovery"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc khả năng mở console trong panel?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: console"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "panel-probes",
+        "skill": "credential-recovery"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Có console và template CentOS Stream 9; chưa có bằng chứng hợp lệ để thay credential."
+          },
+          {
+            "id": "over",
+            "label": "Console mở được nên support có quyền đặt lại mật khẩu ngay."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "os-release",
+        "skill": "credential-recovery"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Console accessible; không nói mật khẩu root là gì."
+          },
+          {
+            "id": "p2",
+            "label": "Panel ghi CentOS Stream 9; cần kiểm tra image thực trước runbook."
+          },
+          {
+            "id": "over",
+            "label": "Console mở được nên support có quyền đặt lại mật khẩu ngay."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "os-release",
+        "skill": "credential-recovery"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác minh chủ tài khoản/quyền, backup và runbook credential recovery; chuyển đội được ủy quyền."
+          },
+          {
+            "id": "unsafe",
+            "label": "Gửi mật khẩu mới qua ticket hoặc reset root không xác minh owner."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "credential-recovery"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Owner đăng nhập được qua kênh an toàn sau recovery và audit ghi thay đổi.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Owner đăng nhập được qua kênh an toàn sau recovery và audit ghi thay đổi."
+  },
+  {
+    "id": "VPS-06-004",
+    "objective": "Đọc cảnh báo overwrite, backup/RPO và quyền trước yêu cầu đổi OS.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: OS reinstall confirmation",
+        "output": "All contents of main disk will be overwritten",
+        "context": "panel",
+        "purpose": "phạm vi overwrite của reinstall trong panel",
+        "meaning": "Reinstall sẽ ghi đè main disk; đây là thay đổi phá hủy dữ liệu.",
+        "commandId": "panel-reinstall-confirmation",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: backup list",
+        "output": "No recent backup found",
+        "context": "panel",
+        "purpose": "restore point gần đây",
+        "meaning": "Panel không có backup gần đây; không thể cam kết khôi phục dữ liệu.",
+        "commandId": "panel-backup-status",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: backup integrity check",
+        "output": "No verified restore test on record",
+        "purpose": "Đọc bằng chứng restore được hay chưa.",
+        "meaning": "Danh sách backup trống và chưa có restore test; cần bảo vệ dữ liệu trước reinstall.",
+        "commandId": "panel-backup-status",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Khách yêu cầu đổi VPS sang Ubuntu nhưng có dữ liệu quan trọng."
+          },
+          {
+            "id": "other",
+            "label": "Chỉ cần thay package manager để giữ nguyên disk."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "reinstall-data-safety"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc phạm vi overwrite của reinstall trong panel?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: OS reinstall confirmation"
+          },
+          {
+            "id": "wrong1",
+            "label": "systemctl status sshd"
+          },
+          {
+            "id": "wrong2",
+            "label": "free -h"
+          }
+        ],
+        "commandId": "panel-reinstall-confirmation",
+        "skill": "reinstall-data-safety"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Reinstall main disk sẽ xóa nội dung hiện có và chưa có backup gần đây; phải dừng trước khi có phương án dữ liệu."
+          },
+          {
+            "id": "over",
+            "label": "Đổi template OS giữ nguyên toàn bộ /home và database."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-backup-status",
+        "skill": "reinstall-data-safety"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Reinstall sẽ ghi đè main disk; đây là thay đổi phá hủy dữ liệu."
+          },
+          {
+            "id": "p2",
+            "label": "Panel không có backup gần đây; không thể cam kết khôi phục dữ liệu."
+          },
+          {
+            "id": "over",
+            "label": "Đổi template OS giữ nguyên toàn bộ /home và database."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-backup-status",
+        "skill": "reinstall-data-safety"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Giải thích phạm vi mất dữ liệu, yêu cầu backup được kiểm tra và phê duyệt rõ; chuyển quy trình migration/reinstall."
+          },
+          {
+            "id": "unsafe",
+            "label": "Bấm reinstall ngay vì khách đã nhắc Ubuntu."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "reinstall-data-safety"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Sau change được duyệt, OS đúng và dữ liệu được restore/test theo kế hoạch; không chỉ nhìn panel Completed.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Sau change được duyệt, OS đúng và dữ liệu được restore/test theo kế hoạch; không chỉ nhìn panel Completed."
+  },
+  {
+    "id": "VPS-06-005",
+    "objective": "Tách UUID fstab không khớp, volume missing và boot emergency; không sửa mount mù.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: VNC",
+        "output": "Failed to mount /data; emergency mode",
+        "context": "panel",
+        "purpose": "thông báo boot từ console",
+        "meaning": "Boot dừng ở mount /data; guest còn truy cập console.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "cat /etc/fstab",
+        "output": "UUID=deadbeef /data ext4 defaults 0 2",
+        "context": "guest",
+        "purpose": "fstab entry của /data",
+        "meaning": "fstab tham chiếu UUID deadbeef; cần so với block device hiện có.",
+        "commandId": "fstab-read",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "blkid",
+        "output": "/dev/vda1: UUID=\"f2b1-root\" TYPE=\"ext4\"\n/dev/vdb1: UUID=\"cafe1234\" TYPE=\"ext4\"",
+        "purpose": "Đọc UUID thực của block devices.",
+        "meaning": "UUID deadbeef không thấy trong snapshot; cần xác nhận vdb1 có phải volume dữ liệu mong đợi.",
+        "commandId": "lsblk",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: attached volumes",
+        "output": "vm-102: os-disk vda; data-volume vol-72 as vdb",
+        "purpose": "Kiểm tra attachment ở panel.",
+        "meaning": "Panel ghi vol-72 attached; cần xác minh UUID và nội dung trước khi đổi fstab.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "VM Running nhưng console vào emergency mode."
+          },
+          {
+            "id": "other",
+            "label": "Chỉ Nginx trả 404 sau deploy."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "emergency-fstab"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc thông báo boot từ console?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: VNC"
+          },
+          {
+            "id": "wrong1",
+            "label": "dig example.com A"
+          },
+          {
+            "id": "wrong2",
+            "label": "systemctl restart nginx"
+          }
+        ],
+        "commandId": "panel-probes",
+        "skill": "emergency-fstab"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Mount /data thất bại; fstab UUID không có trong blkid snapshot, nhưng cần xác định volume bị tháo hay UUID đổi."
+          },
+          {
+            "id": "over",
+            "label": "Chắc chắn chỉ là lỗi gõ fstab và có thể bỏ /data vĩnh viễn."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "fstab-read",
+        "skill": "emergency-fstab"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Boot dừng ở mount /data; guest còn truy cập console."
+          },
+          {
+            "id": "p2",
+            "label": "fstab tham chiếu UUID deadbeef; cần so với block device hiện có."
+          },
+          {
+            "id": "over",
+            "label": "Chắc chắn chỉ là lỗi gõ fstab và có thể bỏ /data vĩnh viễn."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "fstab-read",
+        "skill": "emergency-fstab"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Đối chiếu volume attachment/UUID, backup và owner; chuyển storage nếu volume thiếu, chỉ sửa fstab theo change có rollback."
+          },
+          {
+            "id": "unsafe",
+            "label": "Xóa fstab entry hoặc format volume để boot nhanh."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "emergency-fstab"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Sau recovery được duyệt, boot bình thường, /data mount đúng volume và dữ liệu đọc được."
+          },
+          {
+            "id": "act",
+            "label": "Đối chiếu volume attachment/UUID, backup và owner; chuyển storage nếu volume thiếu, chỉ sửa fstab theo change có rollback."
+          }
+        ],
+        "skill": "emergency-fstab"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Sau recovery được duyệt, boot bình thường, /data mount đúng volume và dữ liệu đọc được.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Sau recovery được duyệt, boot bình thường, /data mount đúng volume và dữ liệu đọc được."
+  },
+  {
+    "id": "VPS-06-006",
+    "objective": "Phân biệt rescue ISO được gắn với lỗi OS disk; thay boot order cần xác nhận owner.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: boot source",
+        "output": "Rescue ISO mounted",
+        "context": "panel",
+        "purpose": "boot source hiện chọn",
+        "meaning": "Panel ghi Rescue ISO mounted; chưa chứng minh OS disk hỏng.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: boot order",
+        "output": "Optical before disk",
+        "context": "panel",
+        "purpose": "boot order ở panel",
+        "meaning": "Optical được ưu tiên trước disk; phù hợp boot vào rescue.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: boot activity",
+        "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
+        "purpose": "Xem ai gắn rescue và vì sao.",
+        "meaning": "Recovery khác còn mở; cần phối hợp trước khi thay boot order.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: OS disk inventory",
+        "output": "vm-102 os-disk attached; capacity 40 GiB; health check pending",
+        "purpose": "Đọc attachment OS disk.",
+        "meaning": "Disk có attachment nhưng health chưa được xác nhận; không cam kết boot thành công.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "VM luôn vào rescue mode thay vì OS cài đặt."
+          },
+          {
+            "id": "other",
+            "label": "Ứng dụng chỉ trả 503 sau deploy."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "rescue-boot-order"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc boot source hiện chọn?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: boot source"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -i /"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "panel-probes",
+        "skill": "rescue-boot-order"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "ISO rescue đang gắn và optical đứng trước disk; có thể giải thích boot path, cần đối chiếu change history/owner."
+          },
+          {
+            "id": "over",
+            "label": "Hệ điều hành trên disk chắc chắn đã mất."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "rescue-boot-order"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Panel ghi Rescue ISO mounted; chưa chứng minh OS disk hỏng."
+          },
+          {
+            "id": "p2",
+            "label": "Optical được ưu tiên trước disk; phù hợp boot vào rescue."
+          },
+          {
+            "id": "over",
+            "label": "Hệ điều hành trên disk chắc chắn đã mất."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "rescue-boot-order"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác nhận rescue có còn được dùng, snapshot/backup và phê duyệt change boot source; chuyển đội ảo hóa thao tác có rollback."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự tháo ISO và ép reboot khi chưa biết recovery đang diễn ra."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "rescue-boot-order"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Sau change được duyệt, guest boot từ OS disk và dịch vụ/volume khách được kiểm tra."
+          },
+          {
+            "id": "act",
+            "label": "Xác nhận rescue có còn được dùng, snapshot/backup và phê duyệt change boot source; chuyển đội ảo hóa thao tác có rollback."
+          }
+        ],
+        "skill": "rescue-boot-order"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Sau change được duyệt, guest boot từ OS disk và dịch vụ/volume khách được kiểm tra.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Sau change được duyệt, guest boot từ OS disk và dịch vụ/volume khách được kiểm tra."
+  },
+  {
+    "id": "VPS-06-007",
+    "objective": "Phân biệt web console gateway 502 với VM guest, dùng kênh kiểm tra khác trước escalation.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: VM state",
+        "output": "Running",
+        "context": "panel",
+        "purpose": "VM state trong panel",
+        "meaning": "Panel ghi Running; không chứng minh console gateway khỏe.",
+        "commandId": "virsh-dominfo",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: console gateway",
+        "output": "Websocket handshake failed (502)",
+        "context": "panel",
+        "purpose": "lỗi websocket của console gateway",
+        "meaning": "Gateway trả 502 khi handshake; chưa cho biết guest có hiển thị trên serial/VNC host hay không.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: console gateway health",
+        "output": "gateway-c2 status=degraded; websocket 5xx rate=38% at 08:15 UTC",
+        "purpose": "Kiểm tra phạm vi gateway.",
+        "meaning": "Gateway có lỗi diện rộng; không chứng minh một VM hỏng.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: VM heartbeat",
+        "output": "vm-102 qemu process heartbeat at 08:16 UTC: present",
+        "purpose": "Kiểm tra VM qua kênh khác.",
+        "meaning": "QEMU còn heartbeat; guest OS vẫn cần kiểm tra riêng.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "VM Running nhưng web console đen."
+          },
+          {
+            "id": "other",
+            "label": "SSH xác thực sai mật khẩu."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "console-gateway"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc vm state trong panel?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: VM state"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "virsh-dominfo",
+        "skill": "console-gateway"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Gateway console báo 502; đường web console có lỗi, trạng thái guest vẫn chưa chắc chắn."
+          },
+          {
+            "id": "over",
+            "label": "Màn hình đen chứng minh kernel guest crash."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "console-gateway"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Panel ghi Running; không chứng minh console gateway khỏe."
+          },
+          {
+            "id": "p2",
+            "label": "Gateway trả 502 khi handshake; chưa cho biết guest có hiển thị trên serial/VNC host hay không."
+          },
+          {
+            "id": "over",
+            "label": "Màn hình đen chứng minh kernel guest crash."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "console-gateway"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Đối chiếu health VM qua host/panel và gateway logs; chuyển đội control-plane, giữ phiên khách đang chạy."
+          },
+          {
+            "id": "unsafe",
+            "label": "Hard reset VM để chữa UI console."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "console-gateway"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Gateway websocket kết nối và console hiển thị; guest/service xác minh riêng."
+          },
+          {
+            "id": "act",
+            "label": "Đối chiếu health VM qua host/panel và gateway logs; chuyển đội control-plane, giữ phiên khách đang chạy."
+          }
+        ],
+        "skill": "console-gateway"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Gateway websocket kết nối và console hiển thị; guest/service xác minh riêng.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Gateway websocket kết nối và console hiển thị; guest/service xác minh riêng."
+  },
+  {
+    "id": "VPS-06-008",
+    "objective": "Xử lý VM Stopping lâu với giới hạn ACPI và rủi ro hard stop.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: lifecycle",
+        "output": "Stopping 20m",
+        "context": "panel",
+        "purpose": "thời gian trạng thái Stopping",
+        "meaning": "Panel ghi Stopping 20 phút; cần xác nhận tác vụ còn tiến triển.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: QEMU event",
+        "output": "ACPI shutdown sent; no guest response",
+        "context": "panel",
+        "purpose": "ACPI shutdown event từ QEMU",
+        "meaning": "Host đã gửi ACPI shutdown nhưng guest không phản hồi ở snapshot; chưa xác định process nào treo.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: host task timeline",
+        "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
+        "purpose": "Đối chiếu task và guest response.",
+        "meaning": "Task chưa hoàn tất; không nói dữ liệu đã flush.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: storage latency",
+        "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
+        "purpose": "Kiểm tra tín hiệu I/O ở host.",
+        "meaning": "I/O chậm có thể liên quan; cần đội hạ tầng xác nhận và bảo vệ dữ liệu.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Shutdown đã yêu cầu nhưng VM kẹt Stopping 20 phút."
+          },
+          {
+            "id": "other",
+            "label": "DNS A record vừa đổi."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "stopping-state"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc thời gian trạng thái stopping?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: lifecycle"
+          },
+          {
+            "id": "wrong1",
+            "label": "dig example.com A"
+          },
+          {
+            "id": "wrong2",
+            "label": "getent passwd admin"
+          }
+        ],
+        "commandId": "panel-probes",
+        "skill": "stopping-state"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "ACPI request đã gửi, guest chưa phản hồi; cần host/guest evidence trước quyết định cưỡng bức."
+          },
+          {
+            "id": "over",
+            "label": "Có thể dùng virsh destroy an toàn vì ACPI đã gửi."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "stopping-state"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Panel ghi Stopping 20 phút; cần xác nhận tác vụ còn tiến triển."
+          },
+          {
+            "id": "p2",
+            "label": "Host đã gửi ACPI shutdown nhưng guest không phản hồi ở snapshot; chưa xác định process nào treo."
+          },
+          {
+            "id": "over",
+            "label": "Có thể dùng virsh destroy an toàn vì ACPI đã gửi."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "stopping-state"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Thu task timeline, disk I/O và console/host logs; chuyển đội ảo hóa với owner về rủi ro dữ liệu."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự hard stop/destroy VM đang có dữ liệu chưa flush."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "stopping-state"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Đội hạ tầng xác nhận VM state ổn định và filesystem/ứng dụng kiểm tra sau recovery."
+          },
+          {
+            "id": "act",
+            "label": "Thu task timeline, disk I/O và console/host logs; chuyển đội ảo hóa với owner về rủi ro dữ liệu."
+          }
+        ],
+        "skill": "stopping-state"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đội hạ tầng xác nhận VM state ổn định và filesystem/ứng dụng kiểm tra sau recovery.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đội hạ tầng xác nhận VM state ổn định và filesystem/ứng dụng kiểm tra sau recovery."
+  },
+  {
+    "id": "VPS-10-001",
+    "objective": "Đối chiếu panel và libvirt state sau outage, không suy từ VM off rằng guest disk hỏng.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: VM status",
+        "output": "Stopped",
+        "context": "panel",
+        "purpose": "trạng thái VM ở panel",
+        "meaning": "Panel ghi Stopped sau outage.",
+        "commandId": "virsh-dominfo",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "virsh domstate vm-102",
+        "output": "shut off",
+        "context": "hypervisor",
+        "purpose": "domstate từ libvirt host",
+        "meaning": "Host trả shut off; panel và host cùng thấy VM off.",
+        "commandId": "virsh-dominfo",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: outage incident",
+        "output": "Node outage INC-410; storage consistency review pending",
+        "purpose": "Đọc trạng thái incident node.",
+        "meaning": "Chưa xác nhận storage an toàn để start; cần đội hạ tầng.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Panel báo VPS không chạy sau outage."
+          },
+          {
+            "id": "other",
+            "label": "Guest vẫn SSH được từ mọi nguồn."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "hypervisor-vm-off"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc trạng thái vm ở panel?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: VM status"
+          },
+          {
+            "id": "wrong1",
+            "label": "dig example.com A"
+          },
+          {
+            "id": "wrong2",
+            "label": "systemctl status sshd"
+          }
+        ],
+        "commandId": "virsh-dominfo",
+        "skill": "hypervisor-vm-off"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "VM off theo panel và host; nguyên nhân dừng và an toàn khởi động lại còn cần incident review."
+          },
+          {
+            "id": "over",
+            "label": "Dữ liệu guest chắc chắn hỏng vì host từng outage."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "virsh-dominfo",
+        "skill": "hypervisor-vm-off"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Panel ghi Stopped sau outage."
+          },
+          {
+            "id": "p2",
+            "label": "Host trả shut off; panel và host cùng thấy VM off."
+          },
+          {
+            "id": "over",
+            "label": "Dữ liệu guest chắc chắn hỏng vì host từng outage."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "virsh-dominfo",
+        "skill": "hypervisor-vm-off"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Kiểm tra host incident/storage, owner và quyền; đề xuất start có kiểm soát qua đội ảo hóa."
+          },
+          {
+            "id": "unsafe",
+            "label": "Bật VM liên tục hoặc rollback snapshot không có kế hoạch."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "hypervisor-vm-off"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: VM Running, guest boot xong, volume và dịch vụ khách hoạt động.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: VM Running, guest boot xong, volume và dịch vụ khách hoạt động."
+  },
+  {
+    "id": "VPS-10-002",
+    "objective": "Phân biệt loopback-only trong guest với vNIC attachment ở hypervisor.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "ip -br link",
+        "output": "lo UNKNOWN",
+        "context": "guest",
+        "purpose": "network links trong guest",
+        "meaning": "Snapshot chỉ có lo; guest không thấy NIC khác.",
+        "commandId": "ip-link",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: vNIC list",
+        "output": "no virtual NIC attached",
+        "context": "panel",
+        "purpose": "vNIC attachment ở panel",
+        "meaning": "Panel không liệt kê vNIC; cần kiểm tra config host/migration.",
+        "commandId": "virsh-domiflist",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: expected vNIC",
+        "output": "vm-102 expected NIC count=1; MAC=52:54:00:ab:10:02; network=br-public",
+        "purpose": "Đối chiếu desired inventory.",
+        "meaning": "Desired state có NIC; current panel rỗng, cần host team sửa attachment.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "VM boot sau migration nhưng chỉ có loopback."
+          },
+          {
+            "id": "other",
+            "label": "Chỉ SMTP outbound bị policy chặn."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "missing-vnic"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc network links trong guest?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "ip -br link"
+          },
+          {
+            "id": "wrong1",
+            "label": "free -h"
+          },
+          {
+            "id": "wrong2",
+            "label": "df -h /"
+          }
+        ],
+        "commandId": "ip-link",
+        "skill": "missing-vnic"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Guest thiếu NIC và panel không gắn vNIC; khả năng lỗi attachment, phải chuyển đội ảo hóa."
+          },
+          {
+            "id": "over",
+            "label": "Chắc chắn NetworkManager trong guest lỗi."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "virsh-domiflist",
+        "skill": "missing-vnic"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Snapshot chỉ có lo; guest không thấy NIC khác."
+          },
+          {
+            "id": "p2",
+            "label": "Panel không liệt kê vNIC; cần kiểm tra config host/migration."
+          },
+          {
+            "id": "over",
+            "label": "Chắc chắn NetworkManager trong guest lỗi."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "virsh-domiflist",
+        "skill": "missing-vnic"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Đối chiếu expected NIC/MAC/bridge từ inventory; chuyển host team gắn lại theo change được duyệt."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự tạo interface/bridge trong guest để thay NIC ảo."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "missing-vnic"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Guest thấy đúng NIC/MAC, IP/route và kết nối từ client hoạt động.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Guest thấy đúng NIC/MAC, IP/route và kết nối từ client hoạt động."
+  },
+  {
+    "id": "VPS-10-003",
+    "objective": "Đối chiếu bridge thực với inventory, không sửa host networking từ guest.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "virsh domiflist vm-102",
+        "output": "vnet4 bridge br-storage",
+        "context": "hypervisor",
+        "purpose": "bridge của VM trên libvirt host",
+        "meaning": "vnet4 đang gắn br-storage; cần so network được cấp.",
+        "commandId": "virsh-domiflist",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: expected bridge",
+        "output": "br-public",
+        "context": "panel",
+        "purpose": "expected bridge trong panel",
+        "meaning": "Inventory ghi br-public cho VM này.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: network allocation",
+        "output": "vm-102 network=public-vlan-12; bridge=br-public; gateway=198.51.100.1",
+        "purpose": "Xác minh bridge/gateway được cấp.",
+        "meaning": "Inventory nhất quán với br-public; host attachment cần được đội có quyền kiểm tra.",
+        "commandId": "panel-ip-allocation",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "VM có IP nhưng không tới gateway được cấp."
+          },
+          {
+            "id": "other",
+            "label": "Ứng dụng từ chối mật khẩu DB."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "wrong-bridge"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc bridge của vm trên libvirt host?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "virsh domiflist vm-102"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -i /"
+          },
+          {
+            "id": "wrong2",
+            "label": "systemctl status nginx"
+          }
+        ],
+        "commandId": "virsh-domiflist",
+        "skill": "wrong-bridge"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Attachment host đang ở br-storage khác br-public theo inventory; cần xác nhận mapping và change."
+          },
+          {
+            "id": "over",
+            "label": "Đã chứng minh firewall guest chặn gateway."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "wrong-bridge"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "vnet4 đang gắn br-storage; cần so network được cấp."
+          },
+          {
+            "id": "p2",
+            "label": "Inventory ghi br-public cho VM này."
+          },
+          {
+            "id": "over",
+            "label": "Đã chứng minh firewall guest chặn gateway."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "wrong-bridge"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Thu MAC, network ID, gateway và host bridge config; chuyển hạ tầng mạng/ảo hóa sửa theo change có console."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự đổi bridge VM đang chạy hoặc đổi IP guest ngẫu nhiên."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "wrong-bridge"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đúng bridge/MAC, guest ARP/ping gateway và kết nối ngoài theo phân bổ.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đúng bridge/MAC, guest ARP/ping gateway và kết nối ngoài theo phân bổ."
+  },
+  {
+    "id": "VPS-10-004",
+    "objective": "Đọc steal time và host saturation, chuyển đúng đội khi thiếu quyền hypervisor.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "top -b -n1 | head",
+        "output": "%Cpu(s): 60.0 st",
+        "context": "guest",
+        "purpose": "CPU steal trong guest",
+        "meaning": "Guest snapshot có 60% steal; cần trend và ảnh hưởng ứng dụng.",
+        "commandId": "top",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: host metrics",
+        "output": "node hypervisor saturation",
+        "context": "panel",
+        "purpose": "host CPU saturation alert",
+        "meaning": "Panel báo node saturated; cần xác minh thời gian và phạm vi.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: affected VMs",
+        "output": "node-4: 5 VMs report elevated CPU ready 09:00-09:20 UTC",
+        "purpose": "Định phạm vi node.",
+        "meaning": "Nhiều VM bị ảnh hưởng; cần đội hạ tầng đánh giá capacity.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "VM chậm dù process trong guest idle."
+          },
+          {
+            "id": "other",
+            "label": "Guest bị hết inode."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "host-cpu-contention"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc cpu steal trong guest?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "top -b -n1 | head"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -i /"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "top",
+        "skill": "host-cpu-contention"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Steal cao cùng host saturation; phù hợp contention ở hypervisor nhưng chưa định danh nguồn."
+          },
+          {
+            "id": "over",
+            "label": "Có thể tự migrate VM ngay vì host alert."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "host-cpu-contention"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Guest snapshot có 60% steal; cần trend và ảnh hưởng ứng dụng."
+          },
+          {
+            "id": "p2",
+            "label": "Panel báo node saturated; cần xác minh thời gian và phạm vi."
+          },
+          {
+            "id": "over",
+            "label": "Có thể tự migrate VM ngay vì host alert."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "host-cpu-contention"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Thu trend st/latency và node metrics; mở incident hạ tầng, phối hợp lịch capacity."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự kill VM khác hoặc hard migrate khi không có quyền."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "host-cpu-contention"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Steal time giảm, latency khách bình thường và node metrics ổn.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Steal time giảm, latency khách bình thường và node metrics ổn."
+  },
+  {
+    "id": "VPS-10-005",
+    "objective": "Tách guest lsblk khỏi domblklist host và bảo vệ volume trước reattach.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "lsblk",
+        "output": "vda 25G only",
+        "context": "guest",
+        "purpose": "block devices nhìn từ guest",
+        "meaning": "Guest chỉ thấy vda, chưa thấy vdb.",
+        "commandId": "lsblk",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "virsh domblklist vm-102",
+        "output": "Target   Source\n------------------------------------------------\nvda      /var/lib/libvirt/images/os.qcow2",
+        "context": "hypervisor",
+        "purpose": "block attachment ở host",
+        "meaning": "Host domblklist không có vdb; chưa biết data volume đang ở đâu.",
+        "commandId": "virsh-domblklist",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: data volume inventory",
+        "output": "vol-72 status=available; last attached vm-102 before migration; integrity review pending",
+        "purpose": "Xác định volume ID và tình trạng.",
+        "meaning": "Volume còn trong inventory, nhưng integrity chưa được xác minh.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: migration storage task",
+        "output": "08:00 migration completed with warning: optional disk vol-72 attach skipped",
+        "purpose": "Đối chiếu thời điểm lỗi attachment.",
+        "meaning": "Task có warning phù hợp, cần host team khôi phục attachment đúng ID.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "App volume biến mất sau migration."
+          },
+          {
+            "id": "other",
+            "label": "Website chỉ sai chứng chỉ."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "detached-data-volume"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc block devices nhìn từ guest?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "lsblk"
+          },
+          {
+            "id": "wrong1",
+            "label": "dig example.com A"
+          },
+          {
+            "id": "wrong2",
+            "label": "systemctl restart nginx"
+          }
+        ],
+        "commandId": "lsblk",
+        "skill": "detached-data-volume"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "vdb vắng ở cả guest và domblklist; cần inventory volume và storage incident."
+          },
+          {
+            "id": "over",
+            "label": "Volume chắc chắn bị xóa vĩnh viễn."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "virsh-domblklist",
+        "skill": "detached-data-volume"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Guest chỉ thấy vda, chưa thấy vdb."
+          },
+          {
+            "id": "p2",
+            "label": "Host domblklist không có vdb; chưa biết data volume đang ở đâu."
+          },
+          {
+            "id": "over",
+            "label": "Volume chắc chắn bị xóa vĩnh viễn."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "virsh-domblklist",
+        "skill": "detached-data-volume"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Dừng ghi vào path có thể thay thế, đối chiếu volume ID/snapshot và chuyển đội storage/virtualization reattach có kiểm soát."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tạo filesystem mới ở path /data để app chạy lại."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "detached-data-volume"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Đúng volume ID gắn lại, filesystem mount đúng và dữ liệu ứng dụng kiểm tra integrity."
+          },
+          {
+            "id": "act",
+            "label": "Dừng ghi vào path có thể thay thế, đối chiếu volume ID/snapshot và chuyển đội storage/virtualization reattach có kiểm soát."
+          }
+        ],
+        "skill": "detached-data-volume"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đúng volume ID gắn lại, filesystem mount đúng và dữ liệu ứng dụng kiểm tra integrity.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đúng volume ID gắn lại, filesystem mount đúng và dữ liệu ứng dụng kiểm tra integrity."
+  },
+  {
+    "id": "VPS-10-006",
+    "objective": "Đánh giá mốc dữ liệu sau snapshot restore, không ghi đè bản hiện tại trước khi xác định RPO.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: activity",
+        "output": "Snapshot restore completed 10:14",
+        "context": "panel",
+        "purpose": "snapshot restore activity",
+        "meaning": "Panel ghi restore hoàn tất lúc 10:14; chưa cho biết snapshot tạo lúc nào.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "stat /srv/app/data.db",
+        "output": "  File: /srv/app/data.db\n  Size: 16384\tBlocks: 32\tIO Block: 4096 regular file\nModify: 2026-10-18 00:00:00.000000000 +0000",
+        "context": "guest",
+        "purpose": "mtime của data.db",
+        "meaning": "File có mtime cũ hơn kỳ vọng; mtime riêng không chứng minh toàn bộ dữ liệu đã mất.",
+        "commandId": "stat-file",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: restored snapshot metadata",
+        "output": "snapshot snap-104 created=2026-10-18 00:00 UTC; restore completed=2026-10-22 10:14 UTC",
+        "purpose": "Tách thời điểm tạo snapshot khỏi thời điểm restore.",
+        "meaning": "Snapshot cũ bốn ngày; giao dịch sau đó có thể không nằm trong bản restore.",
+        "commandId": "panel-backup-status",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: newer backup inventory",
+        "output": "2026-10-21 00:00 UTC backup present; restore verification=not run",
+        "purpose": "Tìm nguồn dữ liệu mới hơn.",
+        "meaning": "Backup mới hơn có trong inventory nhưng chưa chứng minh restore được.",
+        "commandId": "panel-backup-status",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Dữ liệu có vẻ cũ sau khi admin restore snapshot."
+          },
+          {
+            "id": "other",
+            "label": "Chỉ DNS propagation chậm."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "snapshot-rollback-rpo"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc snapshot restore activity?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: activity"
+          },
+          {
+            "id": "wrong1",
+            "label": "ip route"
+          },
+          {
+            "id": "wrong2",
+            "label": "free -h"
+          }
+        ],
+        "commandId": "panel-probes",
+        "skill": "snapshot-rollback-rpo"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Có restore và file mtime trước kỳ vọng; cần xác minh snapshot timestamp và giao dịch thiếu."
+          },
+          {
+            "id": "over",
+            "label": "Khôi phục snapshot lần nữa sẽ tự tìm lại dữ liệu mới."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "stat-file",
+        "skill": "snapshot-rollback-rpo"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Panel ghi restore hoàn tất lúc 10:14; chưa cho biết snapshot tạo lúc nào."
+          },
+          {
+            "id": "p2",
+            "label": "File có mtime cũ hơn kỳ vọng; mtime riêng không chứng minh toàn bộ dữ liệu đã mất."
+          },
+          {
+            "id": "over",
+            "label": "Khôi phục snapshot lần nữa sẽ tự tìm lại dữ liệu mới."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "stat-file",
+        "skill": "snapshot-rollback-rpo"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Bảo toàn trạng thái hiện tại, thu snapshot/backup timeline và đối chiếu order log; chuyển data recovery với owner về RPO."
+          },
+          {
+            "id": "unsafe",
+            "label": "Ghi đè hiện trạng hoặc rollback lần nữa mà chưa sao lưu."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "snapshot-rollback-rpo"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Owner đối chiếu bản ghi theo mốc, integrity test và RPO được báo rõ."
+          },
+          {
+            "id": "act",
+            "label": "Bảo toàn trạng thái hiện tại, thu snapshot/backup timeline và đối chiếu order log; chuyển data recovery với owner về RPO."
+          }
+        ],
+        "skill": "snapshot-rollback-rpo"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Owner đối chiếu bản ghi theo mốc, integrity test và RPO được báo rõ.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Owner đối chiếu bản ghi theo mốc, integrity test và RPO được báo rõ."
+  },
+  {
+    "id": "VPS-10-007",
+    "objective": "Tương quan migration với loss, điều tra vNIC/bridge/ARP và giới hạn quyền.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: migration task",
+        "output": "Start 08:00:00, finish 08:00:36",
+        "context": "panel",
+        "purpose": "cửa sổ live migration",
+        "meaning": "Task chạy 08:00:00–08:00:36; cần đối chiếu network.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: network monitor",
+        "output": "packet loss 08:00:04-08:00:35",
+        "context": "panel",
+        "purpose": "cửa sổ packet loss",
+        "meaning": "Monitor thấy loss 08:00:04–08:00:35, trùng migration.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: migration hosts",
+        "output": "source=node-4 destination=node-7; network=public-vlan-12; vNIC=52:54:00:ab:10:02",
+        "purpose": "Lấy cặp host và vNIC.",
+        "meaning": "Đủ context để đội mạng tra bridge/ARP; chưa tự chứng minh lỗi.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: migration warning",
+        "output": "08:00:05 UTC destination bridge learning delay 29 s",
+        "purpose": "Đọc warning network của task.",
+        "meaning": "Warning phù hợp loss; đội hạ tầng phải xác minh switch/bridge trước thay đổi.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Kết nối rớt khoảng 30 giây khi VM migration."
+          },
+          {
+            "id": "other",
+            "label": "API chậm đều 24 giờ dù không migration."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "migration-network-flap"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc cửa sổ live migration?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: migration task"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "getent passwd admin"
+          }
+        ],
+        "commandId": "panel-probes",
+        "skill": "migration-network-flap"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Loss trùng gần toàn bộ migration; nghi đường chuyển vNIC/bridge, chưa xác định cơ chế host."
+          },
+          {
+            "id": "over",
+            "label": "Chắc chắn ARP cache trên một switch cụ thể bị sai."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "migration-network-flap"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Task chạy 08:00:00–08:00:36; cần đối chiếu network."
+          },
+          {
+            "id": "p2",
+            "label": "Monitor thấy loss 08:00:04–08:00:35, trùng migration."
+          },
+          {
+            "id": "over",
+            "label": "Chắc chắn ARP cache trên một switch cụ thể bị sai."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "migration-network-flap"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Thu source/destination host, bridge/vNIC, ARP và capture có giới hạn; chuyển network/virtualization, tạm hoãn migration thêm theo policy."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự đổi bridge hoặc tắt firewall guest để thử."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "migration-network-flap"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Migration thử được duyệt không gây loss vượt SLA và client TCP giữ ổn định."
+          },
+          {
+            "id": "act",
+            "label": "Thu source/destination host, bridge/vNIC, ARP và capture có giới hạn; chuyển network/virtualization, tạm hoãn migration thêm theo policy."
+          }
+        ],
+        "skill": "migration-network-flap"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Migration thử được duyệt không gây loss vượt SLA và client TCP giữ ổn định.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Migration thử được duyệt không gây loss vượt SLA và client TCP giữ ổn định."
+  },
+  {
+    "id": "VPS-10-008",
+    "objective": "Phân biệt host clock đúng với guest NTP chưa đồng bộ, kiểm tra timezone và nguồn thời gian.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "timedatectl",
+        "output": "               Local time: Wed 2026-10-21 01:00:00 UTC\n           Universal time: Wed 2026-10-21 01:00:00 UTC\nSystem clock synchronized: no\n              NTP service: inactive",
+        "context": "guest",
+        "purpose": "trạng thái sync/NTP trong guest",
+        "meaning": "Guest chưa synchronized và NTP inactive; cần biết service/time source.",
+        "commandId": "timedatectl",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "date -u",
+        "output": "Wed Oct 21 01:00:00 UTC 2026",
+        "context": "guest",
+        "purpose": "UTC guest so với host",
+        "meaning": "Guest chậm khoảng một ngày trong fixture; cert validation có thể thất bại.",
+        "commandId": "date-utc",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "cat /etc/os-release",
+        "output": "ID=ubuntu\nVERSION_ID=\"24.04\"",
+        "purpose": "Xác định OS để chọn service sync.",
+        "meaning": "Ubuntu image; kiểm tra systemd-timesyncd hoặc chrony theo cấu hình thực.",
+        "commandId": "os-release",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "systemctl status systemd-timesyncd",
+        "output": "● systemd-timesyncd.service - Network Time Synchronization\n   Active: inactive (dead)",
+        "purpose": "Đọc service sync trên Ubuntu guest.",
+        "meaning": "Service inactive; chưa biết có chrony thay thế hay NTP reachability.",
+        "commandId": "systemctl-service",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "TLS trong VM lỗi dù host có giờ đúng."
+          },
+          {
+            "id": "other",
+            "label": "Guest báo ENOSPC khi ghi file."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "guest-clock-sync"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc trạng thái sync/ntp trong guest?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "timedatectl"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "ip route"
+          }
+        ],
+        "commandId": "timedatectl",
+        "skill": "guest-clock-sync"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Guest time sai đáng kể và NTP inactive; đây là giả thuyết mạnh cho TLS failure, cần thử cert chain sau đồng bộ."
+          },
+          {
+            "id": "over",
+            "label": "Host clock đúng nên guest tự đồng bộ chắc chắn."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "date-utc",
+        "skill": "guest-clock-sync"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Guest chưa synchronized và NTP inactive; cần biết service/time source."
+          },
+          {
+            "id": "p2",
+            "label": "Guest chậm khoảng một ngày trong fixture; cert validation có thể thất bại."
+          },
+          {
+            "id": "over",
+            "label": "Host clock đúng nên guest tự đồng bộ chắc chắn."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "date-utc",
+        "skill": "guest-clock-sync"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Kiểm tra chrony/timesyncd và nguồn NTP theo OS, change có duyệt để đồng bộ; kiểm tra service nhạy thời gian."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự sửa tay date trên production rồi đóng ticket."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "guest-clock-sync"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "timedatectl synchronized, UTC đúng, TLS chain/hostname kiểm tra lại từ guest."
+          },
+          {
+            "id": "act",
+            "label": "Kiểm tra chrony/timesyncd và nguồn NTP theo OS, change có duyệt để đồng bộ; kiểm tra service nhạy thời gian."
+          }
+        ],
+        "skill": "guest-clock-sync"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: timedatectl synchronized, UTC đúng, TLS chain/hostname kiểm tra lại từ guest.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: timedatectl synchronized, UTC đúng, TLS chain/hostname kiểm tra lại từ guest."
   }
 ]

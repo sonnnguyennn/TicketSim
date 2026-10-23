@@ -128,6 +128,24 @@ test('Batch 3 Guided keeps editorial source annotations out of simulated stdout'
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true)
 })
 
+test('Batch 4 virtualization evidence is labeled Hypervisor and retains fixture output', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-10-005')
+  await page.locator('[data-ticket-id="VPS-10-005"]').click()
+  await page.getByRole('button', { name: /Guided/i }).first().click()
+  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
+  const item = guided.find((entry: { id: string }) => entry.id === 'VPS-10-005')
+  const triageKey = JSON.parse(await readFile('public/guided-feedback/VPS-10-005/triage.json', 'utf8'))
+  const triageQuestion = item.questions.find((question: { id: string }) => question.id === 'triage')
+  await page.getByLabel(triageQuestion.options.find((option: { id: string }) => option.id === triageKey.correctIds[0]).label).check()
+  await page.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
+  await page.getByRole('button', { name: /Tiếp tục/i }).click()
+  await expect(page.getByText('Hypervisor', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(1).click()
+  await expect(page.locator('pre').filter({ hasText: '/var/lib/libvirt/images/os.qcow2' })).toBeVisible()
+  await expect(page.locator('pre').filter({ hasText: '(no vdb)' })).toHaveCount(0)
+})
+
 test('support level persists and Independent keeps inline command lookup', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Kiểm tra chrony/timesyncd và nguồn NTP theo OS, change có duyệt để đồng bộ; kiểm tra service nhạy thời gian. Xác minh: timedatectl synchronized, UTC đúng, TLS chain/hostname kiểm tra lại từ guest.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "correctIds": [
+    "p1",
+    "p2"
+  ],
+  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "commandId": "top",
+  "optionFeedback": {
+    "p1": "Đúng theo P1 trong bài này.",
+    "p2": "Đúng theo P2 trong bài này.",
+    "over": "Chưa được P1/P2 chứng minh."
+  }
+}

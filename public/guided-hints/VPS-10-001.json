@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Panel báo VPS không chạy sau outage.",
+    "Đọc P1 (PANEL: VM status) và P2 (virsh domstate vm-102); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: VM Running, guest boot xong, volume và dịch vụ khách hoạt động."
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VM Running nhưng console vào emergency mode.",
+    "Đọc P1 (PANEL: VNC) và P2 (cat /etc/fstab); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Sau recovery được duyệt, boot bình thường, /data mount đúng volume và dữ liệu đọc được."
+  ]
+}

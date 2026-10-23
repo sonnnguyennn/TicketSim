@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS chậm và khách yêu cầu reboot ngay.",
+    "Đọc P1 (PANEL: VM state) và P2 (top -b -n1 | head); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Backup hoàn tất/được xử lý theo runbook và hiệu năng khách đo lại ổn."
+  ]
+}

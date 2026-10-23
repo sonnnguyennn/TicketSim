@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Xác nhận rescue có còn được dùng, snapshot/backup và phê duyệt change boot source; chuyển đội ảo hóa thao tác có rollback. Xác minh: Sau change được duyệt, guest boot từ OS disk và dịch vụ/volume khách được kiểm tra.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

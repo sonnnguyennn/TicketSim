@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Thu source/destination host, bridge/vNIC, ARP và capture có giới hạn; chuyển network/virtualization, tạm hoãn migration thêm theo policy. Xác minh: Migration thử được duyệt không gây loss vượt SLA và client TCP giữ ổn định.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

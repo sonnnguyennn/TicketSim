@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Kết nối rớt khoảng 30 giây khi VM migration.",
+    "Đọc P1 (PANEL: migration task) và P2 (PANEL: network monitor); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Migration thử được duyệt không gây loss vượt SLA và client TCP giữ ổn định."
+  ]
+}

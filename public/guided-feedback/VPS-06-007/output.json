@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "supported"
+  ],
+  "explanation": "Phân biệt bằng chứng với giả thuyết: Gateway console báo 502; đường web console có lỗi, trạng thái guest vẫn chưa chắc chắn.",
+  "commandId": "panel-probes",
+  "optionFeedback": {
+    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
+    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
+    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+  }
+}

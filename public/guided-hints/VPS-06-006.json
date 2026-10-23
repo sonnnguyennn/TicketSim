@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VM luôn vào rescue mode thay vì OS cài đặt.",
+    "Đọc P1 (PANEL: boot source) và P2 (PANEL: boot order); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Sau change được duyệt, guest boot từ OS disk và dịch vụ/volume khách được kiểm tra."
+  ]
+}
