@@ -110,6 +110,16 @@ describe('self scoring and persistence', () => {
   it('rejects malformed answer data', () => {
     expect(isAnswer({ expected_diagnosis: 3 })).toBe(false)
   })
+  it('stores support preference in v5 while accepting older v5 snapshots', () => {
+    const oldV5 = emptyProgress()
+    expect(validProgress(oldV5)).toBe(true)
+    const selected = { ...oldV5, supportLevel: 'independent' as const }
+    const values = new Map<string, string>()
+    const storage = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value) } }
+    expect(saveProgress(selected, storage)).toBe(true)
+    expect(loadProgress(storage).supportLevel).toBe('independent')
+    expect(validProgress({ ...oldV5, supportLevel: 'expert' })).toBe(false)
+  })
 })
 
 describe('Exam for all tickets', () => {

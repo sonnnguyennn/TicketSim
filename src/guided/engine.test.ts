@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import guidedPublic from '../data/guided-public.json'
 import { commandLibrary } from './commands'
 import { classifyGuidedCommand, emptyGuidedDraft, gradeSelection, objectiveScore, stageComplete } from './engine'
-import { isMastered, isRetestDue, mistakeIds, mistakeStats, objectiveQuestions } from './review'
+import { isMastered, isRetestDue, knowledgeQueue, mistakeIds, mistakeStats, objectiveQuestions } from './review'
 import { emptyProgress } from '../lib'
 import type { GuidedCase } from './types'
 
@@ -147,6 +147,19 @@ describe('Guided content', () => {
     progress.reviewAttempts.push({ id: 'review-incomplete', ticketId: guidedCase.id, sourceAttemptId: source.id, createdAt: '2026-10-21T01:00:00Z', kind: 'retest', variantId: variant!.id, questionIds: variantIds, responses: {}, outcomes: Object.fromEntries(variantIds.map((id, index) => [id, index > 0])) })
     expect(isMastered(progress, guidedCase)).toBe(false)
     progress.reviewAttempts.push({ id: 'review-independent', ticketId: guidedCase.id, sourceAttemptId: source.id, createdAt: '2026-10-21T01:00:00Z', kind: 'retest', variantId: variant!.id, questionIds: variantIds, responses: {}, outcomes: Object.fromEntries(variantIds.map(id => [id, true])) })
-    expect(isMastered(progress, guidedCase)).toBe(true)
+    expect(isMastered(progress, guidedCase)).toBe(false)
+    expect(isRetestDue(progress, guidedCase, Date.parse('2026-10-22T00:00:00Z'))).toBe(false)
+    const firstTryCorrect = { ...progress, reviewAttempts: progress.reviewAttempts.filter(review => review.id !== 'review-incomplete' && review.id !== 'review-too-early') }
+    expect(isMastered(firstTryCorrect, guidedCase)).toBe(true)
+  })
+  it('groups unresolved mistakes by knowledge and clears guided weakness after review', () => {
+    const guidedCase = cases[0]
+    const source = { id: 'g-weak', ticketId: guidedCase.id, createdAt: '2026-10-20T00:00:00Z', responses: {}, commands: [], hintLevel: 0, note: 'Evidence and next check', score: 5, total: 6, independent: false, outcomes: { output: false } }
+    const progress = { ...emptyProgress(), guidedAttempts: [source] }
+    expect(knowledgeQueue(progress, cases).find(item => item.skill === 'interpret')?.mode).toBe('guided')
+    progress.reviewAttempts.push({ id: 'fixed', ticketId: guidedCase.id, sourceAttemptId: source.id, createdAt: '2026-10-20T01:00:00Z', kind: 'mistakes', questionIds: ['output'], responses: { output: ['stopped'] }, outcomes: { output: true } })
+    expect(knowledgeQueue(progress, cases).find(item => item.skill === 'interpret')).toBeUndefined()
+    progress.objectiveExamAttempts.push({ id: 'exam-weak', ticketId: guidedCase.id, createdAt: '2026-10-21T00:00:00Z', responses: {}, commands: [], outcomes: { output: false }, score: 0, total: 6, errors: [{ questionId: 'output', category: 'missing_evidence', detail: 'Read the service state', at: '2026-10-21T00:00:00Z' }] })
+    expect(knowledgeQueue(progress, cases).find(item => item.skill === 'interpret')?.mode).toBe('objective')
   })
 })

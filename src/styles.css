@@ -452,3 +452,12 @@ main { max-width: 1560px; margin: auto; padding: 25px 28px 70px; }
 .stateful-page .guided-output code, .objective-page .guided-output code { white-space: normal; overflow-wrap: anywhere; }
 @media (max-width: 430px) { .stateful-page .guided-card, .objective-page .guided-card { padding: 14px; } .stateful-page .guided-footer { flex-wrap: wrap; } .stateful-page .guided-footer button { width: 100%; } }
 @media (max-width: 760px) { .stateful-actions { grid-template-columns: 1fr; } .stateful-page .guided-layout, .objective-page .guided-layout { grid-template-columns: 1fr; } }
+.support-level { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 16px; padding: 10px 12px; border: 1px solid #dce6f0; border-radius: 6px; background: #f8fbff; color: #40566d; font-size: 13px; }
+.support-level > span { font-weight: 700; }
+.support-level > div { display: flex; flex-wrap: wrap; gap: 5px; }
+.support-level button { border: 1px solid #cbdbe9; border-radius: 4px; padding: 6px 9px; background: white; color: #31577f; font-size: 12px; cursor: pointer; }
+.support-level button[aria-pressed="true"] { background: #2563eb; color: white; border-color: #2563eb; }
+.support-level small { flex-basis: 100%; color: #657a8f; }
+.knowledge-buttons { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.knowledge-buttons button { border: 1px solid #c9d9e8; border-radius: 5px; background: white; color: #244e79; padding: 8px 10px; text-align: left; cursor: pointer; }
+.knowledge-buttons button span { margin-left: 8px; font-weight: 700; }

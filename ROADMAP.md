@@ -8,6 +8,7 @@
 | Milestone 4 — Content expansion | Đang làm: 42/112 Guided | Batch 30 mới phủ SSH, Network, Linux Services, Performance, Disk, Web và DNS. L2/L3 có probe bổ sung bắt buộc và câu sắp xếp bước. |
 | Milestone 5A — Stateful Troubleshooting & Learning Quality | Đã triển khai pilot 6/112 | SSH, Nginx, disk full, missing route, DNS delegation, storage escalation. State/action/verification fixture, quyền và safety gate, Objective Exam 6 câu mỗi case, lỗi theo nhóm, v5 progress. |
 | Milestone 5B — Independent Review & QA | Hoàn thành cho 6 pilot | Sáu tình huống biến thể, Mastered sau 24 giờ và đúng toàn bộ; browser QA desktop/mobile, keyboard, import/export/refresh/migration. |
+| Phase 4 — Learning experience | Hoàn thành ở mức ứng dụng | Beginner/Normal/Independent lưu trong v5; Command Library luôn truy cập được; Review Mistakes nhóm lỗi theo kiến thức và mở bài ôn liên quan. Mastered chỉ tính lượt đầu của biến thể độc lập. |
 
 ## Độ phủ hiện tại
 
@@ -32,4 +33,6 @@ Các batch còn lại đã được chia theo ID/topic và mức đếm trong [k
 5. Kiểm tra trình duyệt toàn bộ luồng Stateful/Objective/Guided, import/export, bàn phím và mobile. Mở rộng state/action chỉ bằng fixture đã biên soạn, không kết nối VPS thật.
 
 Quyết định phạm vi và hướng dẫn tác giả nội dung nằm trong [living spec](TicketSim_UX_Learning_Redesign_Spec.md). Repository Git đã được khởi tạo; mỗi phase có commit riêng. Xem [QA 5B](Milestone_5B_QA.md) và [QA batch 30](Phase_2_Guided_QA.md).
+
+[QA Phase 4](Phase_4_QA.md) ghi kiểm thử mức hỗ trợ và Review Mistakes; 42/112 Guided và 70 case còn lại là độ phủ hiện tại.
 

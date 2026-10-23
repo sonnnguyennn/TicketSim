@@ -4,7 +4,7 @@
 
 ### Phase 1–2 pickup update
 
-Milestone 5B and the first Guided expansion batch are now implemented. The app has 42/112 Guided cases, 96 command/task cards, six Stateful + Objective Exam cases, and six independent review variants with delayed Mastered. The 30 new Guided cases span SSH, Network, Linux Services, Performance, Disk, Web and DNS; L2/L3 require extra authored probes before interpretation. Desktop/mobile Chromium, keyboard, import/export, refresh and migration smoke tests are in `tests/browser.spec.ts`. See `Milestone_5B_QA.md` and `Phase_2_Guided_QA.md`. The older 12-case figures below are the Milestone 5A pickup snapshot, retained as history; `README.md` and `ROADMAP.md` carry current counts. A Git repository was initialized with baseline and per-phase commits.
+Milestone 5B and the first Guided expansion batch are now implemented. The app has 42/112 Guided cases, 96 command/task cards, six Stateful + Objective Exam cases, and six independent review variants with delayed first-try Mastered. The 30 new Guided cases span SSH, Network, Linux Services, Performance, Disk, Web and DNS; L2/L3 require extra authored probes before interpretation. Beginner/Normal/Independent support and knowledge-level Review Mistakes are now in the app. Desktop/mobile Chromium, keyboard, import/export, refresh and migration smoke tests are in `tests/browser.spec.ts`. See `Milestone_5B_QA.md`, `Phase_2_Guided_QA.md`, `Guided_112_Batch_Plan.md` and `Phase_4_QA.md`. The older 12-case figures below are the Milestone 5A pickup snapshot, retained as history; `README.md` and `ROADMAP.md` carry current counts. A Git repository was initialized with baseline and per-phase commits.
 
 ### Milestone 5A pickup update
 

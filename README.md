@@ -23,7 +23,8 @@ Mở URL local do Vite hiển thị. Sau khi cài dependency, app không cần i
 - **Practice và Legacy Exam (112 ticket):** Practice có gợi ý, tra command và rubric tự chấm. Legacy Exam giấu gợi ý, command suggestion và đáp án trong bài; yêu cầu xem hai fixture, viết nhận định và tự đối chiếu rubric sau nộp. Điểm này luôn gắn nhãn **tự đánh giá**; văn bản tự do không bị chấm bằng keyword.
 - **Stateful Simulator (6 ticket):** điều tra bằng các output ban đầu; lựa chọn hành động chỉ hiện sau P1/P2. Engine đòi đúng bằng chứng và quyền trước hành động được phép, sau đó nạp output trạng thái mới. Hành động không an toàn bị chặn; chưa có fixture thì chỉ báo chưa hỗ trợ. Hoàn tất cần chạy các probe hậu hành động và viết ticket note. Phục hồi một phần hoặc escalation không bị trình bày như resolved.
 - **Objective Exam (6 ticket):** sáu câu chọn đáp án đã biên soạn cho triệu chứng, command, output, bằng chứng, quyết định và xác minh/escalation. Điểm khách quan riêng với Legacy Exam; đáp án và giải thích mở sau nộp. Lỗi được phân loại và lưu vào Review Mistakes.
-- **Review Mistakes:** giữ bài ôn Guided ngắn và ghi thêm lỗi Stateful/Objective Exam theo nhóm sai kiến thức, thiếu bằng chứng, hành động không an toàn. Sáu case Stateful có bài kiểm tra biến thể khác tình huống; Mastered đòi đúng toàn bộ sau ít nhất 24 giờ từ lượt Guided gần nhất. Lặp lại câu hỏi gốc không cấp Mastered; 36 case Guided còn lại chưa có bài biến thể.
+- **Review Mistakes:** gom lỗi chưa khắc phục theo kiến thức, mở bài ôn ngắn đúng nhóm, và ghi thêm lỗi Stateful/Objective Exam theo nhóm sai kiến thức, thiếu bằng chứng, hành động không an toàn. Sáu case Stateful có bài kiểm tra biến thể khác tình huống; Mastered đòi đúng toàn bộ ở **lượt đầu** của biến thể sau ít nhất 24 giờ từ lượt Guided gần nhất. Lặp lại cùng câu hỏi/biến thể sau khi xem feedback không cấp Mastered; 36 case Guided còn lại chưa có bài biến thể.
+- **Mức hỗ trợ:** Beginner hiện command gợi ý và rút gọn form Practice; Normal gợi ý theo độ khó; Independent yêu cầu tự nhập phép kiểm tra và ẩn hint. Command Library vẫn mở được ngay trong ticket ở cả ba mức. Lựa chọn được lưu trong tiến độ v5, không xóa ghi chú cũ.
 - **Thư viện command:** 96 thẻ tài liệu, mở được ngay trong Practice/Guided hoặc ở trang riêng. Mỗi thẻ có công dụng, cú pháp CentOS Stream 9/Ubuntu hoặc ngữ cảnh panel, tham số, ví dụ output, cách đọc, khi dùng, kiểm tra tiếp, quyền và mức an toàn. Thư viện là tài liệu; xem thẻ không chạy lệnh hoặc tự tạo output.
 - **Toàn bộ 112 ticket:** command lookup tại terminal, typeahead từ fixture của ticket, chữ và bố cục dễ đọc hơn, nút quay lại ticket đang học. Ở L0, form hiện bốn ô chính; ba ô bổ sung nằm trong phần tùy chọn. Lịch sử luyện tự do và rubric tự đánh giá được giữ nguyên.
 
@@ -45,9 +46,11 @@ Guided đã phủ 42/112 ticket; Stateful/Objective Exam và bài biến thể p
 
 Các batch 3–7 cho 70 case còn lại được liệt kê theo ID và checklist nghiệm thu trong [kế hoạch Guided 112](Guided_112_Batch_Plan.md); đây là kế hoạch nội dung, chưa phải 70 bài đã triển khai.
 
+Xem [QA Phase 4](Phase_4_QA.md) về mức hỗ trợ, hàng đợi kiến thức, Mastered và kiểm thử dữ liệu cũ.
+
 ## Milestone 5B update
 
-Sáu Stateful case có tình huống ôn độc lập được biên soạn riêng. `Mastered` chỉ được cấp khi đúng toàn bộ câu hỏi của tình huống mới sau ít nhất 24 giờ từ lượt Guided gần nhất. Case chưa có biến thể vẫn ở `Completed`. Đáp án ôn tách khỏi prompt; ghi chú tự do vẫn do người học tự đối chiếu.
+Sáu Stateful case có tình huống ôn độc lập được biên soạn riêng. `Mastered` chỉ được cấp khi đúng toàn bộ câu hỏi ở lượt đầu của tình huống mới sau ít nhất 24 giờ từ lượt Guided gần nhất. Case chưa có biến thể vẫn ở `Completed`. Đáp án ôn tách khỏi prompt; ghi chú tự do vẫn do người học tự đối chiếu.
 
 Chạy `npm run test:browser` để kiểm tra Chromium desktop/mobile. Nếu máy chỉ có bản Chromium cũ, đặt `PLAYWRIGHT_CHROMIUM_PATH` trỏ tới executable. Xem [QA 5B](Milestone_5B_QA.md) về phạm vi kiểm tra.
 

@@ -102,3 +102,37 @@ test('new L3 Guided case requires authored extra evidence before interpretation'
   await page.getByRole('button', { name: /Chạy mô phỏng/i }).nth(3).click()
   await expect(page.getByRole('button', { name: /Tiếp tục/i })).toBeEnabled()
 })
+
+test('support level persists and Independent keeps inline command lookup', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  const levels = page.getByRole('group', { name: 'Mức hỗ trợ khi học' })
+  await levels.getByRole('button', { name: 'Independent' }).click()
+  await expect(levels.getByRole('button', { name: 'Independent' })).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.locator('.probe-suggestions')).toHaveCount(0)
+  await expect(page.locator('.hint-row')).toHaveCount(0)
+  await expect(page.locator('.quick-lookup')).toBeVisible()
+  await page.getByRole('button', { name: /Guided/i }).first().click()
+  await expect(page.getByRole('button', { name: 'Thư viện lệnh' }).last()).toBeVisible()
+  await page.reload()
+  await expect(page.getByRole('group', { name: 'Mức hỗ trợ khi học' }).getByRole('button', { name: 'Independent' })).toHaveAttribute('aria-pressed', 'true')
+  await page.getByRole('group', { name: 'Mức hỗ trợ khi học' }).getByRole('button', { name: 'Beginner' }).click()
+  await expect(page.locator('.probe-suggestions')).toBeVisible()
+  await expect(page.locator('.optional-fields')).toBeVisible()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true)
+})
+
+test('Review Mistakes opens a short quiz for the weak knowledge area', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(() => {
+    const key = 'vps-ticket-simulator-progress-v5'
+    const progress = JSON.parse(localStorage.getItem(key)!)
+    progress.guidedAttempts.push({ id: 'weak-guided', ticketId: 'VPS-01-001', createdAt: new Date().toISOString(), responses: {}, commands: [], hintLevel: 0, note: 'Evidence and next check', score: 5, total: 6, independent: false, outcomes: { output: false } })
+    localStorage.setItem(key, JSON.stringify(progress))
+  })
+  await page.reload()
+  await page.getByTitle('Review Mistakes').click()
+  await page.getByRole('button', { name: /Đọc bằng chứng · 1 lỗi/ }).click()
+  await expect(page.getByRole('heading', { name: /Ôn lỗi/ })).toBeVisible()
+  await expect(page.locator('.review-quiz .guided-question')).toHaveCount(1)
+})
