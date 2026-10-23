@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "host",
+    "guest"
+  ],
+  "explanation": "Attachment và visibility khác nhau.",
+  "optionFeedback": {
+    "host": "Đúng: “Host domblklist có vdb” được ghi trực tiếp trong output của tình huống này.",
+    "guest": "Đúng: “Guest lsblk không liệt kê vdb” được ghi trực tiếp trong output của tình huống này.",
+    "data": "Chưa mount/kiểm tra integrity."
+  }
+}

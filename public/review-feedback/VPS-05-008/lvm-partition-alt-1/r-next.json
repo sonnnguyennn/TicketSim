@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "map"
+  ],
+  "explanation": "Chỉ xử lý sau backup, rollback và loại filesystem rõ.",
+  "optionFeedback": {
+    "map": "Đúng: cần đúng thứ tự và quyền.",
+    "lv": "VG không có free extents.",
+    "format": "Mất dữ liệu."
+  }
+}

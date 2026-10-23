@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "no"
+  ],
+  "explanation": "Đừng suy nguyên nhân từ triệu chứng giống nhau.",
+  "optionFeedback": {
+    "no": "Đúng: dữ liệu mới không có 502.",
+    "yes": "Black screen có nhiều lớp.",
+    "off": "Host báo running."
+  }
+}

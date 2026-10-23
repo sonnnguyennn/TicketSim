@@ -80,6 +80,32 @@ test('delayed alternate scenario grants Mastered only after independent answers'
   await expect(page.getByRole('article').filter({ hasText: 'VPS-01-001' })).toContainText('Mastered')
 })
 
+test('new API access review variant awards Mastered after delayed independent answers', async ({ page }) => {
+  const ticketId = 'VPS-12-007'
+  const guided = JSON.parse(await readFile('src/data/guided-public.json', 'utf8'))
+  const variant = guided.find((item: { id: string }) => item.id === ticketId).reviewVariants[0]
+  await page.goto('/')
+  await page.evaluate(id => {
+    const key = 'vps-ticket-simulator-progress-v5'
+    const progress = JSON.parse(localStorage.getItem(key)!)
+    progress.guidedAttempts.push({ id: 'browser-guided-api', ticketId: id, createdAt: new Date(Date.now() - 25 * 60 * 60 * 1000).toISOString(), responses: {}, commands: [], hintLevel: 0, note: 'Đã đối chiếu bằng chứng và xác minh.', score: 5, total: 6, independent: false, outcomes: {} })
+    localStorage.setItem(key, JSON.stringify(progress))
+  }, ticketId)
+  await page.reload()
+  await page.getByTitle('Review Mistakes').click()
+  await page.getByRole('button', { name: 'Đánh giá biến thể' }).first().click()
+  await expect(page.getByText(variant.scenario)).toBeVisible()
+  for (const question of variant.questions) {
+    const key = JSON.parse(await readFile(`public/review-feedback/${ticketId}/${variant.id}/${question.id}.json`, 'utf8'))
+    for (const id of key.correctIds) await page.getByLabel(question.options.find((option: { id: string }) => option.id === id).label, { exact: true }).check()
+  }
+  await page.getByRole('button', { name: 'Nộp bài ôn' }).click()
+  await expect(page.getByText(`Đúng ${variant.questions.length}/${variant.questions.length}.`, { exact: false })).toBeVisible()
+  await page.reload()
+  await page.getByTitle('Review Mistakes').click()
+  await expect(page.getByRole('article').filter({ hasText: ticketId })).toContainText('Mastered')
+})
+
 test('new L3 Guided case requires authored extra evidence before interpretation', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('textbox', { name: 'Tìm ticket' }).fill('VPS-05-007')

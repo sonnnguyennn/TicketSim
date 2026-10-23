@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "dest",
+    "tcp"
+  ],
+  "explanation": "Cửa sổ này bình thường không bác bỏ ticket cũ hoàn toàn.",
+  "optionFeedback": {
+    "dest": "Đúng: “Destination MTR trả đủ 100 probe” được ghi trực tiếp trong output của tình huống này.",
+    "tcp": "Đúng: “100 TCP connects tới port 22 thành công” được ghi trực tiếp trong output của tình huống này.",
+    "always": "Mẫu đo không phủ mọi thời điểm."
+  }
+}

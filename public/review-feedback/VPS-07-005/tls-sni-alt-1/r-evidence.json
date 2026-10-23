@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "served",
+    "old"
+  ],
+  "explanation": "Inventory và served cert là hai lớp.",
+  "optionFeedback": {
+    "served": "Đúng: “shop SNI nhận notAfter 2027” được ghi trực tiếp trong output của tình huống này.",
+    "old": "Đúng: “Panel vẫn giữ cert cũ” được ghi trực tiếp trong output của tình huống này.",
+    "other": "Chưa hỏi SNI đó."
+  }
+}

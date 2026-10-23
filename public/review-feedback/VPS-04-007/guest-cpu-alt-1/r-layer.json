@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "guest"
+  ],
+  "explanation": "Phân biệt user CPU với steal.",
+  "optionFeedback": {
+    "guest": "Đúng: user CPU cao và steal thấp.",
+    "host": "Node không alert và steal thấp.",
+    "disk": "Không có df."
+  }
+}

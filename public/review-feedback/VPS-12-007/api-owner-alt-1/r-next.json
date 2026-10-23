@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "transfer"
+  ],
+  "explanation": "Quyền tối thiểu và đúng owner trước action.",
+  "optionFeedback": {
+    "transfer": "Đúng: giữ nguyên ranh giới quyền.",
+    "admin": "Vượt quyền và không sửa ownership.",
+    "reboot": "Không có authorization từ owner hiện tại."
+  }
+}

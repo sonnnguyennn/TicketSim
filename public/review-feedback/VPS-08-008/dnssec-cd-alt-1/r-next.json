@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "ns"
+  ],
+  "explanation": "Thu thêm bằng chứng trước change DNS.",
+  "optionFeedback": {
+    "ns": "Đúng: tìm vì sao không hỏi được authority.",
+    "remove": "Thay đổi DNSSEC thiếu chứng cứ.",
+    "guest": "Không liên quan."
+  }
+}

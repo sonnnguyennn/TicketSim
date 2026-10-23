@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "ws",
+    "vm"
+  ],
+  "explanation": "Cần serial/VNC/guest boot evidence.",
+  "optionFeedback": {
+    "ws": "Đúng: “Websocket session đã mở” được ghi trực tiếp trong output của tình huống này.",
+    "vm": "Đúng: “Libvirt VM running” được ghi trực tiếp trong output của tình huống này.",
+    "boot": "Running không chứng minh OS boot."
+  }
+}

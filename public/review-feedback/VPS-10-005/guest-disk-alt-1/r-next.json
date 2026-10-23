@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "escalate"
+  ],
+  "explanation": "Bảo vệ data volume trước mọi action.",
+  "optionFeedback": {
+    "escalate": "Đúng: cần đội host/guest phối hợp.",
+    "format": "Format phá dữ liệu.",
+    "retry": "Có nguy cơ duplicate mapping."
+  }
+}

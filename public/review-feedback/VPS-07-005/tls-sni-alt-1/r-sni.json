@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "notyet"
+  ],
+  "explanation": "Đối chiếu đúng hostname và SAN/chain.",
+  "optionFeedback": {
+    "notyet": "Đúng: panel cũ không thay endpoint thực.",
+    "expired": "Inventory cũ chưa nói cert nào đang served.",
+    "all": "Chỉ một SNI được đo."
+  }
+}

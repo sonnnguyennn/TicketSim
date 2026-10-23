@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "test"
+  ],
+  "explanation": "Không cam kết kết quả từ inventory.",
+  "optionFeedback": {
+    "test": "Đúng: tránh ghi đè production.",
+    "overwrite": "Có thể gây trùng/hỏng dữ liệu.",
+    "promise": "Chưa kiểm tra integrity hay replay."
+  }
+}

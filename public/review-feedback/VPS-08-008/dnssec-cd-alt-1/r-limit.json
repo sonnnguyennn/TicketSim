@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "no"
+  ],
+  "explanation": "Không áp chẩn đoán DNSSEC khi +cd không đổi kết quả.",
+  "optionFeedback": {
+    "no": "Đúng: chưa tách được validation khỏi availability.",
+    "ds": "Không có DS/DNSKEY/RRSIG evidence.",
+    "cache": "Authoritative timeout cần điều tra."
+  }
+}

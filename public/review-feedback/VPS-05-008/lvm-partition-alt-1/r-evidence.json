@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "disk",
+    "vg"
+  ],
+  "explanation": "Xác định từng lớp trước change.",
+  "optionFeedback": {
+    "disk": "Đúng: “vdb 100G” được ghi trực tiếp trong output của tình huống này.",
+    "vg": "Đúng: “vgdata VFree 0” được ghi trực tiếp trong output của tình huống này.",
+    "safe": "mkfs phá dữ liệu và không mở partition/PV."
+  }
+}

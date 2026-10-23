@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "unknown"
+  ],
+  "explanation": "RPO mốc thời gian khác thực tế phục hồi.",
+  "optionFeedback": {
+    "unknown": "Đúng: có log chưa replay và chưa đo giao dịch.",
+    "all": "Có binlog và chưa biết đơn nào phát sinh.",
+    "none": "Boot không chứng minh order DB đầy đủ."
+  }
+}

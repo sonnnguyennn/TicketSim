@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "rate"
+  ],
+  "explanation": "Đọc loss ở đích trước khi quy lỗi hop.",
+  "optionFeedback": {
+    "rate": "Đúng: gói qua hop vẫn tới đích.",
+    "router": "Đích trả đủ 100/100.",
+    "ssh": "TCP connect chưa đo auth."
+  }
+}

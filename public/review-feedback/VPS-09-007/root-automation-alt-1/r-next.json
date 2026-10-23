@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "compare"
+  ],
+  "explanation": "Tránh cả bỏ qua lẫn thay đổi vội.",
+  "optionFeedback": {
+    "compare": "Đúng: xác minh trước đóng hoặc containment.",
+    "delete": "Có thể gián đoạn automation và mất chứng cứ.",
+    "close": "Thiếu key và window match."
+  }
+}

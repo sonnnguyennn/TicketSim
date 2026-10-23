@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "clear",
+    "pending"
+  ],
+  "explanation": "Chưa được báo resolved.",
+  "optionFeedback": {
+    "clear": "Đúng: “Security-lead đã ký cleared” được ghi trực tiếp trong output của tình huống này.",
+    "pending": "Đúng: “Service vẫn Suspended và sync pending” được ghi trực tiếp trong output của tình huống này.",
+    "ssh": "Chưa có phép kiểm tra client."
+  }
+}

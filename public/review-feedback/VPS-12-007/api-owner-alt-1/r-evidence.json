@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "permission",
+    "resource"
+  ],
+  "explanation": "Không tự nâng token khi owner lệch.",
+  "optionFeedback": {
+    "permission": "Đúng: “Token có reboot:vm” được ghi trực tiếp trong output của tình huống này.",
+    "resource": "Đúng: “VM thuộc account-44 ở snapshot” được ghi trực tiếp trong output của tình huống này.",
+    "approved": "Approval còn pending."
+  }
+}

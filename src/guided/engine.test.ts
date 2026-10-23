@@ -181,4 +181,35 @@ describe('Guided content', () => {
     progress.objectiveExamAttempts.push({ id: 'exam-weak', ticketId: guidedCase.id, createdAt: '2026-10-21T00:00:00Z', responses: {}, commands: [], outcomes: { output: false }, score: 0, total: 6, errors: [{ questionId: 'output', category: 'missing_evidence', detail: 'Read the service state', at: '2026-10-21T00:00:00Z' }] })
     expect(knowledgeQueue(progress, cases).find(item => item.skill === 'interpret')?.mode).toBe('objective')
   })
+  it('adds fourteen distinct review scenarios and grants Mastered only after a delayed first try', () => {
+    const expanded = cases.filter(item => item.reviewVariants?.length && !item.simulation)
+    expect(expanded).toHaveLength(14)
+    for (const item of expanded) {
+      const variant = item.reviewVariants![0]
+      expect(variant.questions).toHaveLength(3)
+      expect(variant.questions.every(question => question.skill === item.questions[0].skill)).toBe(true)
+      expect(variant.questions.every(question => !item.questions.some(original => original.prompt === question.prompt))).toBe(true)
+      expect(variant.evidence.length).toBeGreaterThanOrEqual(2)
+      for (const question of variant.questions) {
+        const key = JSON.parse(fs.readFileSync(`public/review-feedback/${item.id}/${variant.id}/${question.id}.json`, 'utf8'))
+        expect(question.options.every(option => key.optionFeedback[option.id]?.length > 5)).toBe(true)
+        expect(gradeSelection(key.correctIds, key, question.kind === 'step_order' ? 'step_order' : 'selection')).toBe(true)
+      }
+    }
+    const item = expanded.find(entry => entry.id === 'VPS-12-007')!
+    const variant = item.reviewVariants![0]
+    const ids = variant.questions.map(question => question.id)
+    const progress = emptyProgress()
+    progress.objectiveExamAttempts.push({ id: 'exam', ticketId: item.id, createdAt: '2026-10-20T00:00:00Z', responses: {}, commands: [], outcomes: {}, score: 6, total: 6, errors: [] })
+    expect(isMastered(progress, item)).toBe(false)
+    progress.guidedAttempts.push({ id: 'guided', ticketId: item.id, createdAt: '2026-10-20T00:00:00Z', responses: {}, commands: [], hintLevel: 0, note: 'Đã ghi bằng chứng và bước xác minh.', score: 6, total: 6, independent: false, outcomes: {} })
+    expect(isRetestDue(progress, item, Date.parse('2026-10-20T23:00:00Z'))).toBe(false)
+    expect(isRetestDue(progress, item, Date.parse('2026-10-21T01:00:00Z'))).toBe(true)
+    progress.reviewAttempts.push({ id: 'first', ticketId: item.id, sourceAttemptId: 'guided', createdAt: '2026-10-21T01:00:00Z', kind: 'retest', variantId: variant.id, questionIds: ids, responses: {}, outcomes: Object.fromEntries(ids.map(id => [id, true])) })
+    expect(isMastered(progress, item)).toBe(true)
+    progress.reviewAttempts[0].outcomes[ids[0]] = false
+    expect(knowledgeQueue(progress, cases).some(weak => weak.skill === 'api-token-scope')).toBe(true)
+    progress.reviewAttempts.push({ id: 'second', ticketId: item.id, sourceAttemptId: 'guided', createdAt: '2026-10-21T02:00:00Z', kind: 'retest', variantId: variant.id, questionIds: ids, responses: {}, outcomes: Object.fromEntries(ids.map(id => [id, true])) })
+    expect(isMastered(progress, item)).toBe(false)
+  })
 })

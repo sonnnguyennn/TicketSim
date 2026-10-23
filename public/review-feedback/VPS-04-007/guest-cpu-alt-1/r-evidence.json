@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "us",
+    "st"
+  ],
+  "explanation": "Snapshot cần trend và request context.",
+  "optionFeedback": {
+    "us": "Đúng: “Guest user CPU 91%” được ghi trực tiếp trong output của tình huống này.",
+    "st": "Đúng: “Steal chỉ 1% trong snapshot” được ghi trực tiếp trong output của tình huống này.",
+    "blame": "Top không profile code."
+  }
+}

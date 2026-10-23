@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "partial"
+  ],
+  "explanation": "Tách approval khỏi applied state.",
+  "optionFeedback": {
+    "partial": "Đúng: decision và state còn lệch.",
+    "online": "Billing vẫn Suspended, chưa đo network.",
+    "denied": "Decision là cleared."
+  }
+}

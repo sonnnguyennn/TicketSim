@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "repeat"
+  ],
+  "explanation": "Đo đúng cửa sổ ảnh hưởng.",
+  "optionFeedback": {
+    "repeat": "Đúng: xác minh theo thời điểm và nguồn.",
+    "reroute": "Thiếu bằng chứng end-to-end loss.",
+    "close": "Sự cố có thể ngắt quãng."
+  }
+}

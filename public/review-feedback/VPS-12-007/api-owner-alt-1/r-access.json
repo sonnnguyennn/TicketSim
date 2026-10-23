@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "owner"
+  ],
+  "explanation": "Quyền action không vượt resource ownership.",
+  "optionFeedback": {
+    "owner": "Đúng: 403 có thể do resource ownership.",
+    "scope": "Token đã có scope.",
+    "host": "Không có VM state."
+  }
+}

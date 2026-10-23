@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "notproven"
+  ],
+  "explanation": "Không tái dùng chẩn đoán case cũ khi bằng chứng mới khác.",
+  "optionFeedback": {
+    "notproven": "Đúng: một lần đo không phủ mọi đợt nhưng không ủng hộ OOM lúc 03:05.",
+    "oom": "Journal không có OOM event.",
+    "healthy": "RAM đủ không loại trừ lỗi đường mạng hoặc sshd."
+  }
+}

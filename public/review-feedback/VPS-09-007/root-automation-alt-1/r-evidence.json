@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "login",
+    "inventory"
+  ],
+  "explanation": "IP match chưa đủ cho authorization.",
+  "optionFeedback": {
+    "login": "Đúng: “Có Accepted publickey root từ .90” được ghi trực tiếp trong output của tình huống này.",
+    "inventory": "Đúng: “Inventory ghi .90 là automation egress” được ghi trực tiếp trong output của tình huống này.",
+    "key": "Chưa có key inventory."
+  }
+}

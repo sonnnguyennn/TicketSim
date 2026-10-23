@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "host"
+  ],
+  "explanation": "Không tuyên bố mọi hostname khỏe từ một endpoint.",
+  "optionFeedback": {
+    "host": "Đúng: kiểm tra đúng đích báo lỗi.",
+    "delete": "Có thể cần rollback; không giải thích subdomain.",
+    "disable": "Không an toàn."
+  }
+}

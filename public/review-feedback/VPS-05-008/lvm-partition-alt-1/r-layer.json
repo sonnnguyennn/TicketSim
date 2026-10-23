@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "partition"
+  ],
+  "explanation": "Không lặp lại bước mở LV khi VG chưa có chỗ.",
+  "optionFeedback": {
+    "partition": "Đúng theo lsblk và vgs.",
+    "fs": "VFree bằng 0.",
+    "data": "LV chỉ 50G."
+  }
+}

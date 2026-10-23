@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "console"
+  ],
+  "explanation": "Đường gateway khỏe chỉ loại một giả thuyết.",
+  "optionFeedback": {
+    "console": "Đúng: khoanh màn hình/guest trước action.",
+    "reset": "Rủi ro dữ liệu, chưa có lý do.",
+    "close": "Khách vẫn không thấy console."
+  }
+}

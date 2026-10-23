@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "ram",
+    "journal"
+  ],
+  "explanation": "Giới hạn kết luận theo cửa sổ đo.",
+  "optionFeedback": {
+    "ram": "Đúng theo free.",
+    "journal": "Đúng với truy vấn được cho.",
+    "cause": "Chưa có client/sshd/network timeline."
+  }
+}

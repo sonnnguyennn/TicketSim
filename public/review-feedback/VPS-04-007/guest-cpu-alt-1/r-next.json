@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "profile"
+  ],
+  "explanation": "Không áp chẩn đoán host từ case khác.",
+  "optionFeedback": {
+    "profile": "Đúng: khoanh app workload.",
+    "migrate": "Host evidence không hỗ trợ.",
+    "reboot": "Có thể cắt dịch vụ mà không sửa tải."
+  }
+}

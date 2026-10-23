@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "more"
+  ],
+  "explanation": "Giữ bằng chứng và xác minh access có quyền.",
+  "optionFeedback": {
+    "more": "Đúng: IP một mình không xác thực actor.",
+    "safe": "IP có thể dùng chung hoặc key khác.",
+    "attack": "Inventory cung cấp giả thuyết hợp lệ cần xác minh."
+  }
+}

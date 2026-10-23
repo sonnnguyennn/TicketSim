@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "resolver"
+  ],
+  "explanation": "Không sửa Docker riêng khi host cũng bị.",
+  "optionFeedback": {
+    "resolver": "Đúng: host-wide symptom cần kiểm tra upstream.",
+    "all": "Thay đổi rộng, chưa biết nguồn lỗi.",
+    "restart": "Không giải thích host DNS timeout."
+  }
+}

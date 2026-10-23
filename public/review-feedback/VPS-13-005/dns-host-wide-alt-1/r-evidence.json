@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "timeout",
+    "route"
+  ],
+  "explanation": "Route là một lớp, DNS cần phép đo riêng.",
+  "optionFeedback": {
+    "timeout": "Đúng: “Host DNS query timeout” được ghi trực tiếp trong output của tình huống này.",
+    "route": "Đúng: “Container có default route” được ghi trực tiếp trong output của tình huống này.",
+    "internet": "Route chưa chứng minh reachability."
+  }
+}

@@ -2,6 +2,10 @@
 
 ## Current state and pickup guide — 2026-10-23
 
+### Phase 5E pickup update
+
+Guided **112/112**, Objective Exam **20/112**, Stateful **6/112**, independent review variants **20/112**. Fourteen new variants use different scenarios, evidence and questions from the source Guided case. Mastered still requires a complete first attempt on the variant at least 24 hours after Guided; Objective Exam never grants it. Source tickets and v5 progress shape are unchanged. See `Phase_5E_QA.md`. Older counts below are historical checkpoints.
+
 ### Phase 5D pickup update
 
 Objective Exam now covers **20/112** cases. Fourteen new cases require all authored initial probes before six-choice grading and add independent verification/escalation keys. Guided remains **112/112**, Stateful **6/112**, independent review variants **6/112**. Legacy Exam and free text are still self-reviewed; Objective scores never grant Mastered. See `Phase_5D_QA.md`.

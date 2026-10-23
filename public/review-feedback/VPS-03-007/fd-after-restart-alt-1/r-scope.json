@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "no"
+  ],
+  "explanation": "Giữ timeline và PID đúng.",
+  "optionFeedback": {
+    "no": "Đúng: snapshot mới không mô tả PID đã lỗi.",
+    "yes": "Log của PID cũ vẫn là bằng chứng.",
+    "leak": "Một mẫu thấp không cho trend."
+  }
+}

@@ -5,7 +5,7 @@
   ],
   "explanation": "Dung lượng thư mục không phải giấy phép xóa toàn bộ.",
   "optionFeedback": {
-    "full": "Đúng.",
+    "full": "Đúng: “/ đang 100% theo df” được ghi trực tiếp trong output của tình huống này.",
     "logs": "Đúng theo du.",
     "all": "Không có phân loại retention hay file đang mở."
   }

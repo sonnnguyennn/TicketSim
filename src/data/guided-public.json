@@ -8671,7 +8671,88 @@
           "label": "VM khởi động lại thành công"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "ssh-load-alt-1",
+        "scenario": "Một VPS Ubuntu rớt SSH khoảng 03:00 UTC. Khách nghi job đêm làm cạn RAM, nhưng lần đo mới không có OOM.",
+        "evidence": [
+          {
+            "label": "Guest · journalctl -k --since \"2026-10-23 02:50\" --until \"2026-10-23 03:10\"",
+            "output": "-- No entries --"
+          },
+          {
+            "label": "Guest · free -h lúc 03:05",
+            "output": "               total        used        free      shared  buff/cache   available\nMem:           4.0Gi       1.4Gi       1.2Gi        50Mi       1.4Gi       2.1Gi\nSwap:          1.0Gi          0B       1.0Gi"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-contrast",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Mức kết luận nào phù hợp với ảnh chụp bộ nhớ này?",
+            "options": [
+              {
+                "id": "notproven",
+                "label": "Chưa thấy OOM hoặc cạn RAM trong lần đo; cần kiểm tra đúng thời điểm rớt"
+              },
+              {
+                "id": "oom",
+                "label": "Đã xác nhận kernel kill sshd"
+              },
+              {
+                "id": "healthy",
+                "label": "SSH chắc chắn không thể rớt khi available còn cao"
+              }
+            ],
+            "skill": "ssh-memory-correlation"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Chọn điều thật sự có trong hai quan sát.",
+            "options": [
+              {
+                "id": "ram",
+                "label": "2.1 GiB available ở 03:05"
+              },
+              {
+                "id": "journal",
+                "label": "Kernel journal query không trả event trong cửa sổ đã hỏi"
+              },
+              {
+                "id": "cause",
+                "label": "Đã xác định nguyên nhân mọi lần SSH rớt"
+              }
+            ],
+            "skill": "ssh-memory-correlation"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bước tiếp theo nào phân biệt các giả thuyết?",
+            "options": [
+              {
+                "id": "timeline",
+                "label": "Thu SSH client/server log, job time và network loss cùng timestamp trước đề xuất change"
+              },
+              {
+                "id": "kill",
+                "label": "Tắt job đêm ngay"
+              },
+              {
+                "id": "reboot",
+                "label": "Reboot VPS để kiểm tra"
+              }
+            ],
+            "skill": "ssh-memory-correlation"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-02-006",
@@ -8887,7 +8968,88 @@
           "label": "Một hop MTR trả ICMP đầy đủ"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "loss-hop-alt-1",
+        "scenario": "Khách báo SSH chập chờn. Một MTR mới hiển thị loss cao tại hop 4, nhưng destination không loss trong 100 probe.",
+        "evidence": [
+          {
+            "label": "Client · mtr -rw -c 100 203.0.113.42",
+            "output": "Host              Loss%   Snt   Last   Avg  Best  Wrst StDev\n4. 198.51.100.4     78.0%   100   31.2  32.0  30.1  34.2   1.1\n5. 203.0.113.42      0.0%   100   32.1  32.0  29.8  35.0   1.2"
+          },
+          {
+            "label": "Client · TCP connect monitor (100 mẫu)",
+            "output": "target=203.0.113.42:22 attempted=100 connected=100 median_ms=32"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-meaning",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Hop 4 loss cao nhưng destination 0% loss nói gì?",
+            "options": [
+              {
+                "id": "rate",
+                "label": "Hop có thể rate-limit ICMP; mẫu này chưa chứng minh end-to-end loss"
+              },
+              {
+                "id": "router",
+                "label": "Router hop 4 chắc chắn hỏng"
+              },
+              {
+                "id": "ssh",
+                "label": "SSH xác thực chắc chắn thành công"
+              }
+            ],
+            "skill": "network-loss-scope"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Quan sát nào được mẫu mới hỗ trợ?",
+            "options": [
+              {
+                "id": "dest",
+                "label": "Destination MTR trả đủ 100 probe"
+              },
+              {
+                "id": "tcp",
+                "label": "100 TCP connects tới port 22 thành công"
+              },
+              {
+                "id": "always",
+                "label": "Không thể có lỗi ngắt quãng ngoài cửa sổ mẫu"
+              }
+            ],
+            "skill": "network-loss-scope"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bạn ghi hướng tiếp thế nào?",
+            "options": [
+              {
+                "id": "repeat",
+                "label": "Thu mẫu trong chính lúc khách bị chậm, từ nguồn khách; chưa mở incident hop 4"
+              },
+              {
+                "id": "reroute",
+                "label": "Đổi route của VPS vì hop 4"
+              },
+              {
+                "id": "close",
+                "label": "Đóng ticket và khẳng định khách sai"
+              }
+            ],
+            "skill": "network-loss-scope"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-02-008",
@@ -9299,7 +9461,88 @@
           "label": "Process vừa restart nên FD count thấp"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "fd-after-restart-alt-1",
+        "scenario": "Một API mới khởi động lại sau lỗi EMFILE. Hiện FD count thấp, khách đề nghị tăng LimitNOFILE thật cao ngay.",
+        "evidence": [
+          {
+            "label": "Guest · journalctl -u api",
+            "output": "Oct 22 08:01 api[5001]: OSError: [Errno 24] Too many open files"
+          },
+          {
+            "label": "Guest · ls /proc/5102/fd | wc -l",
+            "output": "96"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-scope",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "FD count 96 của PID mới có bác bỏ lỗi trước đó không?",
+            "options": [
+              {
+                "id": "no",
+                "label": "Không; PID mới sau restart cần limit và trend dưới tải để giải thích EMFILE cũ"
+              },
+              {
+                "id": "yes",
+                "label": "Có; log EMFILE chắc chắn giả"
+              },
+              {
+                "id": "leak",
+                "label": "96 FD chứng minh leak"
+              }
+            ],
+            "skill": "fd-exhaustion"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Điều gì đã được quan sát?",
+            "options": [
+              {
+                "id": "log",
+                "label": "Log cũ có EMFILE"
+              },
+              {
+                "id": "new",
+                "label": "PID hiện có 96 FD"
+              },
+              {
+                "id": "limit",
+                "label": "LimitNOFILE chắc chắn là 1024"
+              }
+            ],
+            "skill": "fd-exhaustion"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Trước change limit, nên làm gì?",
+            "options": [
+              {
+                "id": "measure",
+                "label": "Đọc /proc/PID/limits, đếm FD theo thời gian và phân loại socket/file"
+              },
+              {
+                "id": "infinite",
+                "label": "Đặt LimitNOFILE=infinity ngay"
+              },
+              {
+                "id": "kill",
+                "label": "Kill PID mới"
+              }
+            ],
+            "skill": "fd-exhaustion"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-03-008",
@@ -9907,7 +10150,88 @@
           "label": "Process user CPU vẫn thấp trong một mẫu"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "guest-cpu-alt-1",
+        "scenario": "VPS chậm nhưng node không báo contention. Khác case trước, guest có CPU user cao và steal gần bằng 0.",
+        "evidence": [
+          {
+            "label": "Guest · top -b -n 1",
+            "output": "%Cpu(s): 91 us, 5 sy, 3 id, 1 st\nPID 2450 myapp 88.4 %CPU"
+          },
+          {
+            "label": "Panel · node health",
+            "output": "CPU ready normal; no contention alert at 09:00 UTC"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-layer",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Bằng chứng hiện nghiêng về lớp nào?",
+            "options": [
+              {
+                "id": "guest",
+                "label": "Workload trong guest cần kiểm tra trước"
+              },
+              {
+                "id": "host",
+                "label": "Host noisy neighbor đã được xác nhận"
+              },
+              {
+                "id": "disk",
+                "label": "Filesystem đầy"
+              }
+            ],
+            "skill": "host-cpu-steal"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Hai quan sát nào đúng?",
+            "options": [
+              {
+                "id": "us",
+                "label": "Guest user CPU 91%"
+              },
+              {
+                "id": "st",
+                "label": "Steal chỉ 1% trong snapshot"
+              },
+              {
+                "id": "blame",
+                "label": "Đã biết code line gây CPU cao"
+              }
+            ],
+            "skill": "host-cpu-steal"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Hướng kiểm tra an toàn?",
+            "options": [
+              {
+                "id": "profile",
+                "label": "Thu process/request trend và hỏi owner workload trước tuning"
+              },
+              {
+                "id": "migrate",
+                "label": "Tự migrate VM sang node khác"
+              },
+              {
+                "id": "reboot",
+                "label": "Reboot để hạ CPU"
+              }
+            ],
+            "skill": "host-cpu-steal"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-04-008",
@@ -10319,7 +10643,88 @@
           "label": "Chỉ vgs báo VFree giảm"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "lvm-partition-alt-1",
+        "scenario": "Sau tăng virtual disk lên 100G, /data vẫn 50G. Lần này VG không còn free extents.",
+        "evidence": [
+          {
+            "label": "Guest · lsblk",
+            "output": "vdb 100G disk\n└─vdb1 50G part\n  └─vgdata-lvdata 50G lvm /data"
+          },
+          {
+            "label": "Guest · vgs",
+            "output": "VG vgdata VSize 49.99g VFree 0"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-layer",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Dung lượng mới đang dừng ở lớp nào?",
+            "options": [
+              {
+                "id": "partition",
+                "label": "Disk lớn hơn partition/PV; VG chưa có free extents"
+              },
+              {
+                "id": "fs",
+                "label": "VG có 50G free, chỉ filesystem chưa grow"
+              },
+              {
+                "id": "data",
+                "label": "/data đã có 100G"
+              }
+            ],
+            "skill": "lvm-capacity-layers"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Chọn các số liệu thật trong output.",
+            "options": [
+              {
+                "id": "disk",
+                "label": "vdb 100G"
+              },
+              {
+                "id": "vg",
+                "label": "vgdata VFree 0"
+              },
+              {
+                "id": "safe",
+                "label": "Có thể chạy mkfs để dùng 50G còn lại"
+              }
+            ],
+            "skill": "lvm-capacity-layers"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bước kế hoạch phù hợp?",
+            "options": [
+              {
+                "id": "map",
+                "label": "Xác nhận backup/type/mapping rồi lập change mở partition/PV trước LV/filesystem"
+              },
+              {
+                "id": "lv",
+                "label": "Chạy lvextend ngay với 50G free"
+              },
+              {
+                "id": "format",
+                "label": "Format vdb1 để nhận dung lượng"
+              }
+            ],
+            "skill": "lvm-capacity-layers"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-07-003",
@@ -10708,7 +11113,88 @@
           "label": "Chỉ xem date -u trên server"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "tls-sni-alt-1",
+        "scenario": "Panel vẫn ghi cert cũ hết hạn, nhưng client khi gửi SNI đúng nhận cert mới còn hạn. Một khách báo warning ở subdomain khác.",
+        "evidence": [
+          {
+            "label": "Client · openssl s_client -connect shop.example.com:443 -servername shop.example.com | openssl x509 -noout -subject -enddate",
+            "output": "subject=CN = shop.example.com\nnotAfter=Dec  1 00:00:00 2027 GMT"
+          },
+          {
+            "label": "Panel · certificate inventory",
+            "output": "old shop.example.com certificate: expired; new certificate deployed to shop vhost"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-sni",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Lỗi cert của shop.example.com đã được chứng minh còn tồn tại không?",
+            "options": [
+              {
+                "id": "notyet",
+                "label": "Chưa; endpoint với SNI shop đang phục vụ cert còn hạn, cần thử hostname khách bị warning"
+              },
+              {
+                "id": "expired",
+                "label": "Có; panel có cert expired"
+              },
+              {
+                "id": "all",
+                "label": "Mọi subdomain chắc chắn hợp lệ"
+              }
+            ],
+            "skill": "tls-certificate-expiry"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Điều gì được hai nguồn hỗ trợ?",
+            "options": [
+              {
+                "id": "served",
+                "label": "shop SNI nhận notAfter 2027"
+              },
+              {
+                "id": "old",
+                "label": "Panel vẫn giữ cert cũ"
+              },
+              {
+                "id": "other",
+                "label": "Subdomain khác cũng dùng cert này"
+              }
+            ],
+            "skill": "tls-certificate-expiry"
+          },
+          {
+            "id": "r-next",
+            "stage": "verify",
+            "kind": "single_choice",
+            "prompt": "Bước nào xác minh warning của khách?",
+            "options": [
+              {
+                "id": "host",
+                "label": "Hỏi đúng subdomain qua SNI, kiểm tra SAN/chain/clock client"
+              },
+              {
+                "id": "delete",
+                "label": "Xóa cert cũ ngay"
+              },
+              {
+                "id": "disable",
+                "label": "Bỏ TLS validation"
+              }
+            ],
+            "skill": "tls-certificate-expiry"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-07-008",
@@ -11316,7 +11802,88 @@
           "label": "Authoritative trả A record"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "dnssec-cd-alt-1",
+        "scenario": "Một domain trả SERVFAIL qua resolver A. Lần này thêm +cd vẫn SERVFAIL và authoritative NS timeout.",
+        "evidence": [
+          {
+            "label": "Client · dig @resolver.example name.example A +cd",
+            "output": ";; ->>HEADER<<- opcode: QUERY, status: SERVFAIL, id: 41120"
+          },
+          {
+            "label": "Client · dig @ns1.name.example name.example A",
+            "output": ";; connection timed out; no servers could be reached"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-limit",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Có thể kết luận sai DS DNSSEC từ dữ liệu mới không?",
+            "options": [
+              {
+                "id": "no",
+                "label": "Không; +cd vẫn SERVFAIL và authoritative timeout, cần kiểm tra reachability/NS"
+              },
+              {
+                "id": "ds",
+                "label": "Có, xóa DS ngay"
+              },
+              {
+                "id": "cache",
+                "label": "Chỉ cần chờ TTL"
+              }
+            ],
+            "skill": "dnssec-validation"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Quan sát nào đúng?",
+            "options": [
+              {
+                "id": "cd",
+                "label": "Resolver vẫn SERVFAIL với +cd"
+              },
+              {
+                "id": "auth",
+                "label": "Authoritative query timeout"
+              },
+              {
+                "id": "key",
+                "label": "DNSKEY chắc chắn thiếu"
+              }
+            ],
+            "skill": "dnssec-validation"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bước điều tra hợp lý?",
+            "options": [
+              {
+                "id": "ns",
+                "label": "Kiểm tra NS reachability từ nhiều nguồn và trạng thái authoritative/provider"
+              },
+              {
+                "id": "remove",
+                "label": "Xóa DS ở registrar ngay"
+              },
+              {
+                "id": "guest",
+                "label": "Restart sshd guest"
+              }
+            ],
+            "skill": "dnssec-validation"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-06-001",
@@ -12576,7 +13143,88 @@
           "label": "Hard reset VM để chắc chắn thấy màn hình"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "console-black-alt-1",
+        "scenario": "Một khách thấy web console đen. Lần này gateway websocket trả 101 Switching Protocols và host VM Running.",
+        "evidence": [
+          {
+            "label": "Panel · console gateway",
+            "output": "Websocket handshake: 101 Switching Protocols; session active"
+          },
+          {
+            "label": "Host · virsh domstate vm-210",
+            "output": "running"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-gateway",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Có thể gán lỗi cho gateway 502 như case trước không?",
+            "options": [
+              {
+                "id": "no",
+                "label": "Không; handshake hiện thành công, cần kiểm tra console display/guest riêng"
+              },
+              {
+                "id": "yes",
+                "label": "Có, vì màn hình vẫn đen"
+              },
+              {
+                "id": "off",
+                "label": "VM chắc chắn off"
+              }
+            ],
+            "skill": "console-gateway"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Output chứng minh điều gì?",
+            "options": [
+              {
+                "id": "ws",
+                "label": "Websocket session đã mở"
+              },
+              {
+                "id": "vm",
+                "label": "Libvirt VM running"
+              },
+              {
+                "id": "boot",
+                "label": "Guest OS boot thành công"
+              }
+            ],
+            "skill": "console-gateway"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bước kế tiếp đúng quyền?",
+            "options": [
+              {
+                "id": "console",
+                "label": "Thu serial/graphics/boot log qua đội host và kiểm tra guest path"
+              },
+              {
+                "id": "reset",
+                "label": "Hard reset VM ngay"
+              },
+              {
+                "id": "close",
+                "label": "Đóng ticket vì gateway 101"
+              }
+            ],
+            "skill": "console-gateway"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-06-008",
@@ -13640,7 +14288,88 @@
           "label": "Panel task báo Completed"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "guest-disk-alt-1",
+        "scenario": "Sau migration, guest không thấy vdb nhưng host inventory cho thấy volume dữ liệu đã attach vào VM đúng ID.",
+        "evidence": [
+          {
+            "label": "Host · virsh domblklist vm-302",
+            "output": "Target Source\nvda /images/os.qcow2\nvdb /volumes/data-72.qcow2"
+          },
+          {
+            "label": "Guest · lsblk",
+            "output": "NAME SIZE TYPE\nvda 25G disk"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-layer",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Dữ liệu mới có chứng minh host quên attach volume không?",
+            "options": [
+              {
+                "id": "no",
+                "label": "Không; host thấy vdb, cần điều tra guest discovery/driver và mapping"
+              },
+              {
+                "id": "yes",
+                "label": "Có; reattach thêm một bản ngay"
+              },
+              {
+                "id": "lost",
+                "label": "Volume đã bị xóa"
+              }
+            ],
+            "skill": "detached-data-volume"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Chọn hai quan sát có thật.",
+            "options": [
+              {
+                "id": "host",
+                "label": "Host domblklist có vdb"
+              },
+              {
+                "id": "guest",
+                "label": "Guest lsblk không liệt kê vdb"
+              },
+              {
+                "id": "data",
+                "label": "Dữ liệu trong volume chắc chắn nguyên vẹn"
+              }
+            ],
+            "skill": "detached-data-volume"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bước đúng phạm vi support?",
+            "options": [
+              {
+                "id": "escalate",
+                "label": "Thu device hotplug/udev/kernel log và chuyển storage/virtualization; tránh reattach mù"
+              },
+              {
+                "id": "format",
+                "label": "Format vdb để guest thấy"
+              },
+              {
+                "id": "retry",
+                "label": "Attach volume lần nữa không kiểm tra"
+              }
+            ],
+            "skill": "detached-data-volume"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-10-006",
@@ -15488,7 +16217,88 @@
           "label": "Reboot VPS để xóa phiên rồi đóng ticket"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "root-automation-alt-1",
+        "scenario": "Khách thấy root login từ IP lạ. Audit inventory mới cho thấy IP thuộc automation được duyệt nhưng fingerprint key chưa đối chiếu.",
+        "evidence": [
+          {
+            "label": "Guest · journalctl -u sshd (CentOS Stream 9)",
+            "output": "Oct 23 02:07:11 vm-91 sshd[4210]: Accepted publickey for root from 203.0.113.90 port 51120 ssh2: ED25519 SHA256:VGhpcy1pc19hX3NhbXBsZV9maW5nZXJwcmludF9oYXNo"
+          },
+          {
+            "label": "Panel · approved automation",
+            "output": "Backup automation egress IP: 203.0.113.90; approved window 02:00-02:15 UTC"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-identity",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "IP khớp automation đã đủ kết luận login hợp lệ chưa?",
+            "options": [
+              {
+                "id": "more",
+                "label": "Chưa; cần đối chiếu timestamp, key fingerprint và owner job"
+              },
+              {
+                "id": "safe",
+                "label": "Đủ để bỏ qua audit"
+              },
+              {
+                "id": "attack",
+                "label": "Chắc chắn attacker"
+              }
+            ],
+            "skill": "unknown-root-login"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Điều gì được quan sát?",
+            "options": [
+              {
+                "id": "login",
+                "label": "Có Accepted publickey root từ .90"
+              },
+              {
+                "id": "inventory",
+                "label": "Inventory ghi .90 là automation egress"
+              },
+              {
+                "id": "key",
+                "label": "Fingerprint đã khớp approved key"
+              }
+            ],
+            "skill": "unknown-root-login"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bước tiếp phù hợp?",
+            "options": [
+              {
+                "id": "compare",
+                "label": "Đối chiếu key/timestamp/job audit với security và owner; escalation nếu lệch"
+              },
+              {
+                "id": "delete",
+                "label": "Xóa key ngay"
+              },
+              {
+                "id": "close",
+                "label": "Đóng ticket chỉ từ IP match"
+              }
+            ],
+            "skill": "unknown-root-login"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-09-008",
@@ -16552,7 +17362,88 @@
           "label": "Container restart thành công"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "dns-host-wide-alt-1",
+        "scenario": "Nhiều container cùng host không resolve được, và chính host cũng timeout khi hỏi resolver được cấp. Một container vẫn có route mặc định.",
+        "evidence": [
+          {
+            "label": "Host · dig example.com A",
+            "output": ";; communications error to 198.51.100.53#53: timed out\n;; no servers could be reached"
+          },
+          {
+            "label": "Container · ip route",
+            "output": "default via 172.17.0.1 dev eth0"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-scope",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Phạm vi DNS mới khác bài gốc thế nào?",
+            "options": [
+              {
+                "id": "wider",
+                "label": "Host cũng lỗi; cần kiểm tra resolver/upstream của host trước khi quy Docker embedded DNS"
+              },
+              {
+                "id": "same",
+                "label": "Chắc chắn chỉ container resolver lỗi"
+              },
+              {
+                "id": "zone",
+                "label": "Authoritative A record chắc chắn thiếu"
+              }
+            ],
+            "skill": "container-dns-scope"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Điều nào được đo?",
+            "options": [
+              {
+                "id": "timeout",
+                "label": "Host DNS query timeout"
+              },
+              {
+                "id": "route",
+                "label": "Container có default route"
+              },
+              {
+                "id": "internet",
+                "label": "Container tới Internet bằng TCP chắc chắn được"
+              }
+            ],
+            "skill": "container-dns-scope"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bước điều tra tiếp?",
+            "options": [
+              {
+                "id": "resolver",
+                "label": "Kiểm tra resolver host, network reachability tới DNS và provider status theo policy"
+              },
+              {
+                "id": "all",
+                "label": "Đổi DNS mọi container ngay"
+              },
+              {
+                "id": "restart",
+                "label": "Restart mọi container"
+              }
+            ],
+            "skill": "container-dns-scope"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-13-006",
@@ -18204,7 +19095,88 @@
           "label": "Cam kết toàn bộ đơn trong 60 giờ mất vĩnh viễn"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "rpo-binlog-alt-1",
+        "scenario": "Khách báo thiếu đơn sau restore. Backup tạo 23:00, incident 00:00; có binlog đến 23:50 nhưng chưa replay thử.",
+        "evidence": [
+          {
+            "label": "Panel · restored backup",
+            "output": "Created 2026-10-22 23:00 UTC; restore booted 2026-10-23 00:20 UTC"
+          },
+          {
+            "label": "Panel · binlog inventory",
+            "output": "2026-10-22 23:00 to 23:50 UTC present; integrity pending"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-gap",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Có thể nói mất toàn bộ đơn trong một giờ không?",
+            "options": [
+              {
+                "id": "unknown",
+                "label": "Không; cần kiểm tra binlog và order IDs, gap thời gian chưa bằng dữ liệu mất"
+              },
+              {
+                "id": "all",
+                "label": "Có; backup 23:00 nên mọi đơn đến 00:00 mất"
+              },
+              {
+                "id": "none",
+                "label": "Không mất gì vì OS boot"
+              }
+            ],
+            "skill": "backup-rpo-gap"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Hai điều được fixture hỗ trợ?",
+            "options": [
+              {
+                "id": "backup",
+                "label": "Backup tạo 23:00"
+              },
+              {
+                "id": "logs",
+                "label": "Binlog tồn tại đến 23:50"
+              },
+              {
+                "id": "tested",
+                "label": "Binlog đã replay thành công"
+              }
+            ],
+            "skill": "backup-rpo-gap"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Bước data recovery an toàn?",
+            "options": [
+              {
+                "id": "test",
+                "label": "Bảo toàn bản hiện tại, thử replay trên môi trường riêng và đối chiếu order IDs"
+              },
+              {
+                "id": "overwrite",
+                "label": "Replay trực tiếp lên production ngay"
+              },
+              {
+                "id": "promise",
+                "label": "Hứa khôi phục chính xác 23:50"
+              }
+            ],
+            "skill": "backup-rpo-gap"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-11-007",
@@ -19856,7 +20828,88 @@
           "label": "Chỉ GET /vm trả 200"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "api-owner-alt-1",
+        "scenario": "Khách có token với reboot:vm nhưng API trả 403 khi thao tác một VM vừa chuyển chủ. Audit ghi VM thuộc account khác.",
+        "evidence": [
+          {
+            "label": "Panel · token scope",
+            "output": "token t-92 scope: read:vm reboot:vm; owner account-12"
+          },
+          {
+            "label": "Panel · VM ownership",
+            "output": "vm-920 owner account-44; transfer approval pending"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-access",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Lý do cần kiểm tra trước khi đổi scope là gì?",
+            "options": [
+              {
+                "id": "owner",
+                "label": "Token có action scope nhưng account chưa sở hữu VM; cần hoàn tất transfer/authorization"
+              },
+              {
+                "id": "scope",
+                "label": "Chỉ thiếu reboot:vm"
+              },
+              {
+                "id": "host",
+                "label": "VM chắc chắn off"
+              }
+            ],
+            "skill": "api-token-scope"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Chọn hai quan sát đúng.",
+            "options": [
+              {
+                "id": "permission",
+                "label": "Token có reboot:vm"
+              },
+              {
+                "id": "resource",
+                "label": "VM thuộc account-44 ở snapshot"
+              },
+              {
+                "id": "approved",
+                "label": "Transfer đã được phê duyệt"
+              }
+            ],
+            "skill": "api-token-scope"
+          },
+          {
+            "id": "r-next",
+            "stage": "decide",
+            "kind": "single_choice",
+            "prompt": "Hướng xử lý an toàn?",
+            "options": [
+              {
+                "id": "transfer",
+                "label": "Chuyển IAM/billing xác minh transfer và owner; không reboot hộ"
+              },
+              {
+                "id": "admin",
+                "label": "Cấp admin:* để bỏ qua 403"
+              },
+              {
+                "id": "reboot",
+                "label": "Dùng tài khoản support reboot VM"
+              }
+            ],
+            "skill": "api-token-scope"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "VPS-12-008",
@@ -21508,6 +22561,87 @@
           "label": "Tự unsuspend để khách làm việc"
         }
       ]
-    }
+    },
+    "reviewVariants": [
+      {
+        "id": "abuse-cleared-alt-1",
+        "scenario": "Security kết thúc abuse review và cho phép khôi phục, nhưng billing panel vẫn ghi Suspended; khách hỏi có thể SSH chưa.",
+        "evidence": [
+          {
+            "label": "Panel · security decision",
+            "output": "AB-2026-22 decision=cleared; approved_resume=true; signed by security-lead"
+          },
+          {
+            "label": "Billing · service state",
+            "output": "Suspended: abuse case AB-2026-22; sync task pending"
+          }
+        ],
+        "questions": [
+          {
+            "id": "r-state",
+            "stage": "interpret",
+            "kind": "single_choice",
+            "prompt": "Trạng thái nào đã được xác nhận?",
+            "options": [
+              {
+                "id": "partial",
+                "label": "Security cho phép resume, nhưng panel chưa áp; chưa thể hứa SSH hoạt động"
+              },
+              {
+                "id": "online",
+                "label": "VPS chắc chắn online"
+              },
+              {
+                "id": "denied",
+                "label": "Security vẫn từ chối appeal"
+              }
+            ],
+            "skill": "abuse-suspension-appeal"
+          },
+          {
+            "id": "r-evidence",
+            "stage": "interpret",
+            "kind": "multi_select",
+            "prompt": "Chọn hai quan sát từ panel.",
+            "options": [
+              {
+                "id": "clear",
+                "label": "Security-lead đã ký cleared"
+              },
+              {
+                "id": "pending",
+                "label": "Service vẫn Suspended và sync pending"
+              },
+              {
+                "id": "ssh",
+                "label": "SSH từ client đã xác thực thành công"
+              }
+            ],
+            "skill": "abuse-suspension-appeal"
+          },
+          {
+            "id": "r-next",
+            "stage": "verify",
+            "kind": "single_choice",
+            "prompt": "Bước follow-up đúng quyền?",
+            "options": [
+              {
+                "id": "sync",
+                "label": "Chuyển control-plane áp decision có audit, rồi kiểm tra panel và kết nối khách"
+              },
+              {
+                "id": "manual",
+                "label": "Tự bỏ hold trong DB billing"
+              },
+              {
+                "id": "close",
+                "label": "Đóng ticket vì có quyết định cleared"
+              }
+            ],
+            "skill": "abuse-suspension-appeal"
+          }
+        ]
+      }
+    ]
   }
 ]

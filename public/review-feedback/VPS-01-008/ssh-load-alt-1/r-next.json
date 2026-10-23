@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "timeline"
+  ],
+  "explanation": "Điều tra theo timeline trước thay đổi.",
+  "optionFeedback": {
+    "timeline": "Đúng: cần correlation để khoanh phạm vi.",
+    "kill": "Không có bằng chứng job là nguyên nhân ở tình huống mới.",
+    "reboot": "Có tác động rộng và không tạo chứng cứ nguyên nhân."
+  }
+}

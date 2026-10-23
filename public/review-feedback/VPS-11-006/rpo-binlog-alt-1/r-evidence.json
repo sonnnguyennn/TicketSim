@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "backup",
+    "logs"
+  ],
+  "explanation": "Artifact tồn tại cần thử restore có kiểm soát.",
+  "optionFeedback": {
+    "backup": "Đúng: “Backup tạo 23:00” được ghi trực tiếp trong output của tình huống này.",
+    "logs": "Đúng: “Binlog tồn tại đến 23:50” được ghi trực tiếp trong output của tình huống này.",
+    "tested": "Integrity còn pending."
+  }
+}

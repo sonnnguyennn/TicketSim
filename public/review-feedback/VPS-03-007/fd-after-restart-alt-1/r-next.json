@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "measure"
+  ],
+  "explanation": "Thay đổi có quyền chỉ sau khi xác định bottleneck.",
+  "optionFeedback": {
+    "measure": "Đúng: kiểm tra giới hạn và xu hướng.",
+    "infinite": "Có thể che leak và tác động tài nguyên.",
+    "kill": "Tác động dịch vụ nhưng chưa giải thích lỗi."
+  }
+}

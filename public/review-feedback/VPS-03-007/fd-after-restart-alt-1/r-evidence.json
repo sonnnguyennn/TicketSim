@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "log",
+    "new"
+  ],
+  "explanation": "Cần thêm limit và load profile.",
+  "optionFeedback": {
+    "log": "Đúng: “Log cũ có EMFILE” được ghi trực tiếp trong output của tình huống này.",
+    "new": "Đúng: “PID hiện có 96 FD” được ghi trực tiếp trong output của tình huống này.",
+    "limit": "Chưa đọc limit của PID/unit."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "correctIds": [
+    "cd",
+    "auth"
+  ],
+  "explanation": "Output hiện nghiêng availability nhưng chưa định vị.",
+  "optionFeedback": {
+    "cd": "Đúng: “Resolver vẫn SERVFAIL với +cd” được ghi trực tiếp trong output của tình huống này.",
+    "auth": "Đúng: “Authoritative query timeout” được ghi trực tiếp trong output của tình huống này.",
+    "key": "Chưa đọc key."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "wider"
+  ],
+  "explanation": "Định phạm vi theo nơi phép hỏi thất bại.",
+  "optionFeedback": {
+    "wider": "Đúng: không còn là container-only evidence.",
+    "same": "Host query cũng timeout.",
+    "zone": "Timeout không phải NXDOMAIN."
+  }
+}

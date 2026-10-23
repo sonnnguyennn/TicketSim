@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "sync"
+  ],
+  "explanation": "Khôi phục dịch vụ cần state applied và verification.",
+  "optionFeedback": {
+    "sync": "Đúng: xác minh state và triệu chứng sau approval.",
+    "manual": "Không thuộc thao tác support được phép.",
+    "close": "Khách vẫn chưa được khôi phục."
+  }
+}

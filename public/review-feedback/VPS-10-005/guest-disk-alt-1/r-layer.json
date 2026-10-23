@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "no"
+  ],
+  "explanation": "So host với guest trước thay đổi.",
+  "optionFeedback": {
+    "no": "Đúng: khác case thiếu attachment.",
+    "yes": "Có thể gắn duplicate volume và tăng rủi ro.",
+    "lost": "Host còn liệt kê source."
+  }
+}
