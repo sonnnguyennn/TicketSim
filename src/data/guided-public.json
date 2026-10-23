@@ -14049,5 +14049,2877 @@
       }
     ],
     "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: timedatectl synchronized, UTC đúng, TLS chain/hostname kiểm tra lại từ guest."
+  },
+  {
+    "id": "VPS-09-001",
+    "objective": "Phân biệt failed login scan với đăng nhập thành công và khả năng compromise.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "journalctl -u sshd -n 20",
+        "output": "Oct 22 08:22:09 vps sshd[1240]: Failed password for invalid user admin from 198.51.100.55 port 51002 ssh2",
+        "context": "guest",
+        "purpose": "failed SSH authentication events",
+        "meaning": "Có failed password cho invalid user admin từ IP nguồn; chưa thấy login thành công.",
+        "commandId": "journalctl-unit",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "last -n 5",
+        "output": "ops      pts/0        198.51.100.12    Thu Oct 22 08:14   still logged in\nops      pts/1        198.51.100.12    Wed Oct 21 16:02 - 16:30",
+        "context": "guest",
+        "purpose": "recent successful login sessions",
+        "meaning": "Các phiên được liệt kê thuộc user/IP đã biết; last không phải bằng chứng forensic đầy đủ.",
+        "commandId": "last-logins",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "journalctl -u sshd --since \"2026-10-22 00:00:00\" --no-pager",
+        "output": "Oct 22 08:22:09 vps sshd[1240]: Failed password for invalid user admin from 198.51.100.55 port 51002 ssh2\nOct 22 08:22:10 vps sshd[1240]: Connection closed by invalid user admin 198.51.100.55 port 51002 [preauth]",
+        "purpose": "Đối chiếu failed event và giai đoạn preauth.",
+        "meaning": "Các dòng này không cho thấy xác thực thành công; cần tìm Accepted/audit khác.",
+        "commandId": "journalctl-unit",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Nhiều Failed password trong SSH log."
+          },
+          {
+            "id": "other",
+            "label": "Đã thấy Accepted publickey root từ IP lạ."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "ssh-auth-noise"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc failed ssh authentication events?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "journalctl -u sshd -n 20"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "journalctl-unit",
+        "skill": "ssh-auth-noise"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Đang có failed login từ invalid user; snapshot last không thấy phiên lạ, chưa kết luận máy an toàn tuyệt đối."
+          },
+          {
+            "id": "over",
+            "label": "Hàng trăm lần fail tự chứng minh kẻ tấn công đã vào được."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "last-logins",
+        "skill": "ssh-auth-noise"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Có failed password cho invalid user admin từ IP nguồn; chưa thấy login thành công."
+          },
+          {
+            "id": "p2",
+            "label": "Các phiên được liệt kê thuộc user/IP đã biết; last không phải bằng chứng forensic đầy đủ."
+          },
+          {
+            "id": "over",
+            "label": "Hàng trăm lần fail tự chứng minh kẻ tấn công đã vào được."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "last-logins",
+        "skill": "ssh-auth-noise"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Thu source/time, rà Accepted events, key/account changes và policy; chuyển security nếu có dấu hiệu thành công."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự block dải IP rộng hoặc tắt SSH để hết log."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "ssh-auth-noise"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Không có access trái phép trong log/audit được đối chiếu, monitoring và biện pháp approved hoạt động.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Không có access trái phép trong log/audit được đối chiếu, monitoring và biện pháp approved hoạt động."
+  },
+  {
+    "id": "VPS-09-002",
+    "objective": "Xác nhận đúng source IP và lý do ban trước yêu cầu hỗ trợ office SSH.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "fail2ban-client status sshd",
+        "output": "Banned IP list: 198.51.100.60",
+        "context": "guest",
+        "purpose": "IP bị ban trong sshd jail",
+        "meaning": "Jail liệt kê 198.51.100.60; cần xác minh đây có phải IP office hiện tại.",
+        "commandId": "fail2ban-status",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "journalctl -u fail2ban -n 10",
+        "output": "2026-10-22 09:12:30,411 fail2ban.actions [902]: NOTICE [sshd] Ban 198.51.100.60",
+        "context": "guest",
+        "purpose": "sự kiện ban gần đây",
+        "meaning": "Log có ban IP .60; chưa cho biết chính sách unban được phép.",
+        "commandId": "fail2ban-log",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: office egress IP",
+        "output": "Verified office egress IP: 198.51.100.60",
+        "purpose": "Đối chiếu IP khách đang dùng.",
+        "meaning": "IP khớp ban list; cần kiểm tra vì sao bị ban trước thay đổi.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Office không SSH được nhưng mobile được."
+          },
+          {
+            "id": "other",
+            "label": "Mọi nguồn đều bị TCP connection refused."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "fail2ban-source-scope"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc ip bị ban trong sshd jail?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "fail2ban-client status sshd"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "fail2ban-status",
+        "skill": "fail2ban-source-scope"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Office public IP khớp banned IP và có failed attempts; reachability theo nguồn phù hợp Fail2ban."
+          },
+          {
+            "id": "over",
+            "label": "IP là trusted nên có thể unban vĩnh viễn mà không điều tra."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "fail2ban-log",
+        "skill": "fail2ban-source-scope"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Jail liệt kê 198.51.100.60; cần xác minh đây có phải IP office hiện tại."
+          },
+          {
+            "id": "p2",
+            "label": "Log có ban IP .60; chưa cho biết chính sách unban được phép."
+          },
+          {
+            "id": "over",
+            "label": "IP là trusted nên có thể unban vĩnh viễn mà không điều tra."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "fail2ban-log",
+        "skill": "fail2ban-source-scope"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác nhận IP office qua kênh tin cậy, auth failures và policy; đề xuất unban có duyệt, sửa credential/client trước."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự tắt Fail2ban hoặc whitelist cả subnet office."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "fail2ban-source-scope"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Office SSH lại bằng tài khoản hợp lệ, jail/policy còn hoạt động và không tái ban bất thường.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Office SSH lại bằng tài khoản hợp lệ, jail/policy còn hoạt động và không tái ban bất thường."
+  },
+  {
+    "id": "VPS-09-003",
+    "objective": "Đọc AVC name_connect và port đích để xác định policy/context thay vì tắt SELinux.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "getenforce",
+        "output": "Enforcing",
+        "context": "guest",
+        "purpose": "SELinux enforcement mode",
+        "meaning": "Enforcing đang bật; riêng mode không chứng minh nó chặn request.",
+        "commandId": "getenforce",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "ausearch -m AVC -ts recent",
+        "output": "type=AVC msg=audit(1792670400.101:112): avc:  denied  { name_connect } for  pid=901 comm=\"httpd\" dest=9000 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0",
+        "context": "guest",
+        "purpose": "AVC của httpd tới TCP/9000",
+        "meaning": "AVC denied name_connect cho httpd tới port 9000; cần xác minh backend và policy cụ thể.",
+        "commandId": "ausearch-avc",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "ss -ltnp | grep :9000",
+        "output": "LISTEN 0 128 127.0.0.1:9000 0.0.0.0:* users:((\"myapp\",pid=902,fd=8))",
+        "purpose": "Xác nhận backend local trên TCP/9000.",
+        "meaning": "Backend đang nghe local; AVC giải thích một rào cản nhưng không xác minh app end-to-end.",
+        "commandId": "ss-ltnp",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "App chỉ hoạt động khi SELinux bị tắt."
+          },
+          {
+            "id": "other",
+            "label": "DNS authoritative trả NXDOMAIN."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "selinux-httpd-connect"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc selinux enforcement mode?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "getenforce"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "ip route"
+          }
+        ],
+        "commandId": "getenforce",
+        "skill": "selinux-httpd-connect"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "AVC cho httpd tới TCP/9000 khi Enforcing; đây là bằng chứng policy chặn connect, cần xem route/backend và chính sách cho phép."
+          },
+          {
+            "id": "over",
+            "label": "Có thể để SELinux permissive vĩnh viễn vì website chạy."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "ausearch-avc",
+        "skill": "selinux-httpd-connect"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Enforcing đang bật; riêng mode không chứng minh nó chặn request."
+          },
+          {
+            "id": "p2",
+            "label": "AVC denied name_connect cho httpd tới port 9000; cần xác minh backend và policy cụ thể."
+          },
+          {
+            "id": "over",
+            "label": "Có thể để SELinux permissive vĩnh viễn vì website chạy."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "ausearch-avc",
+        "skill": "selinux-httpd-connect"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Đối chiếu target port và AVC với admin, chọn boolean/policy hẹp theo runbook được duyệt; kiểm tra lại ở Enforcing."
+          },
+          {
+            "id": "unsafe",
+            "label": "Chạy setenforce 0 hoặc disable SELinux cho khách."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "selinux-httpd-connect"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Ứng dụng gọi backend được khi Enforcing, không có AVC liên quan và policy audit rõ.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Ứng dụng gọi backend được khi Enforcing, không có AVC liên quan và policy audit rõ."
+  },
+  {
+    "id": "VPS-09-004",
+    "objective": "Điều tra account có sudo ngoài ý muốn, bảo toàn audit trước containment.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "getent passwd supportadmin",
+        "output": "supportadmin:x:1002:1002::/home/supportadmin:/bin/bash",
+        "context": "guest",
+        "purpose": "account supportadmin trong identity database",
+        "meaning": "Account tồn tại với shell; chưa chứng minh ai tạo hoặc đã đăng nhập.",
+        "commandId": "getent-passwd",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "grep -R supportadmin /etc/sudoers.d",
+        "output": "/etc/sudoers.d/supportadmin:supportadmin ALL=(ALL) ALL",
+        "context": "guest",
+        "purpose": "sudoers grant cho account",
+        "meaning": "Drop-in trao sudo cho supportadmin; cần xác nhận approval và nguồn tạo.",
+        "commandId": "sudoers-read",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "journalctl _COMM=useradd --since \"2026-10-20\" --no-pager",
+        "output": "Oct 21 04:10:17 vps useradd[2002]: new user: name=supportadmin, UID=1002, GID=1002, home=/home/supportadmin, shell=/bin/bash",
+        "purpose": "Tìm thời điểm tạo account.",
+        "meaning": "Biết thời điểm tạo nhưng chưa xác định actor/approval; cần audit trail đầy đủ.",
+        "commandId": "journal-boot",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Khách thấy account admin không nhận ra."
+          },
+          {
+            "id": "other",
+            "label": "Web chỉ trả 404 sau deploy."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "privileged-account-audit"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc account supportadmin trong identity database?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "getent passwd supportadmin"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "getent-passwd",
+        "skill": "privileged-account-audit"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Account tồn tại và được cấp sudo, chưa rõ tính hợp lệ; cần audit creation/login."
+          },
+          {
+            "id": "over",
+            "label": "Tên lạ tự chứng minh compromise và có thể xóa account ngay."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "sudoers-read",
+        "skill": "privileged-account-audit"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Account tồn tại với shell; chưa chứng minh ai tạo hoặc đã đăng nhập."
+          },
+          {
+            "id": "p2",
+            "label": "Drop-in trao sudo cho supportadmin; cần xác nhận approval và nguồn tạo."
+          },
+          {
+            "id": "over",
+            "label": "Tên lạ tự chứng minh compromise và có thể xóa account ngay."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "sudoers-read",
+        "skill": "privileged-account-audit"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Giữ bằng chứng, xác nhận change record/owner, rà auth và sudo logs; chuyển security để containment được duyệt."
+          },
+          {
+            "id": "unsafe",
+            "label": "Xóa account ngay làm mất chứng cứ hoặc tự đổi toàn bộ mật khẩu."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "privileged-account-audit"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Owner/security xác nhận nguồn account, quyền được xử lý theo incident và không còn access trái phép.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Owner/security xác nhận nguồn account, quyền được xử lý theo incident và không còn access trái phép."
+  },
+  {
+    "id": "VPS-09-005",
+    "objective": "Liên hệ abuse notice với socket/process, giữ bằng chứng và escalation có giới hạn quyền.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: abuse notice",
+        "output": "Outbound SMTP spike from 198.51.100.20",
+        "context": "panel",
+        "purpose": "abuse notice SMTP của provider",
+        "meaning": "Provider báo spike SMTP từ IP VPS; notice chưa chứng minh process nào vi phạm.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "ss -tunap",
+        "output": "ESTAB 0 0 198.51.100.20:45000 203.0.113.25:25 users:((\"python3\",pid=1802,fd=9))",
+        "context": "guest",
+        "purpose": "socket SMTP outbound và PID trong guest",
+        "meaning": "Python PID 1802 có kết nối tới TCP/25; cần định danh process/owner và thời gian.",
+        "commandId": "ss-connections",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "ps -p 1802 -o pid,ppid,user,comm,args",
+        "output": "PID PPID USER COMM ARGS\n1802 1 app python3 /srv/app/mail_worker.py",
+        "purpose": "Nhận diện owner và command line của PID.",
+        "meaning": "Có vẻ là mail worker ứng dụng; không chứng minh gửi hợp lệ hay độc hại.",
+        "commandId": "ps-process",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: abuse flow summary",
+        "output": "14:00-14:15 UTC outbound TCP/25 connections: 1280; baseline: 20 per 15 min",
+        "purpose": "Định lượng spike và thời gian.",
+        "meaning": "Spike rõ ràng, cần log ứng dụng và owner giải thích.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Provider báo spam từ public IP VPS."
+          },
+          {
+            "id": "other",
+            "label": "Chỉ một client DNS trả NXDOMAIN."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "abuse-smtp-triage"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc abuse notice smtp của provider?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: abuse notice"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -i /"
+          },
+          {
+            "id": "wrong2",
+            "label": "systemctl status nginx"
+          }
+        ],
+        "commandId": "panel-probes",
+        "skill": "abuse-smtp-triage"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Notice và socket SMTP outbound cùng IP phù hợp traffic cần điều tra; chưa chứng minh nội dung spam hay compromise."
+          },
+          {
+            "id": "over",
+            "label": "Python process chắc chắn là malware và có thể xóa ngay."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "ss-connections",
+        "skill": "abuse-smtp-triage"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Provider báo spike SMTP từ IP VPS; notice chưa chứng minh process nào vi phạm."
+          },
+          {
+            "id": "p2",
+            "label": "Python PID 1802 có kết nối tới TCP/25; cần định danh process/owner và thời gian."
+          },
+          {
+            "id": "over",
+            "label": "Python process chắc chắn là malware và có thể xóa ngay."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "ss-connections",
+        "skill": "abuse-smtp-triage"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Bảo toàn notice, socket, process ancestry và mail logs; chuyển abuse/security, phối hợp owner và chính sách containment."
+          },
+          {
+            "id": "unsafe",
+            "label": "Kill/xóa process, wipe VPS hoặc mở lại mail traffic không điều tra."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "abuse-smtp-triage"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Security xác nhận nguồn traffic, containment được phê duyệt và provider thấy spike dừng."
+          },
+          {
+            "id": "act",
+            "label": "Bảo toàn notice, socket, process ancestry và mail logs; chuyển abuse/security, phối hợp owner và chính sách containment."
+          }
+        ],
+        "skill": "abuse-smtp-triage"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security xác nhận nguồn traffic, containment được phê duyệt và provider thấy spike dừng.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security xác nhận nguồn traffic, containment được phê duyệt và provider thấy spike dừng."
+  },
+  {
+    "id": "VPS-09-006",
+    "objective": "Phân biệt mitigation/null-route upstream với guest firewall và dùng incident escalation.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "PANEL: mitigation",
+        "output": "Triggered 14:05; target 198.51.100.20",
+        "context": "panel",
+        "purpose": "mitigation event ở panel",
+        "meaning": "Mitigation kích hoạt 14:05 cho IP; chưa biết trigger đúng hay false positive.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: upstream",
+        "output": "Null-route active 14:06",
+        "context": "panel",
+        "purpose": "upstream null-route state",
+        "meaning": "Upstream đang null-route từ 14:06; guest không thể tự sửa state này.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: mitigation traffic summary",
+        "output": "14:02 UTC inbound pps 2.4M; baseline 18k; mitigation policy ID DDOS-7",
+        "purpose": "Đọc mức traffic và policy.",
+        "meaning": "Traffic spike có thật trong fixture; chưa kết luận traffic hợp lệ hay attack.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: mitigation incident",
+        "output": "Incident NET-612 open; network on-call assigned",
+        "purpose": "Kiểm tra ownership của xử lý upstream.",
+        "meaning": "Đội mạng đã nhận; ticket chưa resolved.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Public IP không phản hồi trong traffic spike."
+          },
+          {
+            "id": "other",
+            "label": "Chỉ ứng dụng trả lỗi 401."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "ddos-mitigation-scope"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc mitigation event ở panel?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "PANEL: mitigation"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "getent passwd admin"
+          }
+        ],
+        "commandId": "panel-probes",
+        "skill": "ddos-mitigation-scope"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Mitigation và null-route trùng thời gian mất kết nối; cần điều tra lưu lượng và policy provider."
+          },
+          {
+            "id": "over",
+            "label": "Tắt firewall guest sẽ gỡ null-route upstream."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "ddos-mitigation-scope"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Mitigation kích hoạt 14:05 cho IP; chưa biết trigger đúng hay false positive."
+          },
+          {
+            "id": "p2",
+            "label": "Upstream đang null-route từ 14:06; guest không thể tự sửa state này."
+          },
+          {
+            "id": "over",
+            "label": "Tắt firewall guest sẽ gỡ null-route upstream."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "ddos-mitigation-scope"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Thu traffic graphs, incident ID, source/time; chuyển network/security để xem mitigation và điều kiện gỡ theo policy."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự gỡ null-route hoặc mở firewall toàn bộ để thử."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "ddos-mitigation-scope"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Upstream route khôi phục được duyệt, client từ nhiều nguồn tới dịch vụ và monitoring ổn."
+          },
+          {
+            "id": "act",
+            "label": "Thu traffic graphs, incident ID, source/time; chuyển network/security để xem mitigation và điều kiện gỡ theo policy."
+          }
+        ],
+        "skill": "ddos-mitigation-scope"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Upstream route khôi phục được duyệt, client từ nhiều nguồn tới dịch vụ và monitoring ổn.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Upstream route khôi phục được duyệt, client từ nhiều nguồn tới dịch vụ và monitoring ổn."
+  },
+  {
+    "id": "VPS-09-007",
+    "objective": "Xử lý Accepted root login từ IP lạ như incident nghiêm trọng nhưng chưa quy kết actor.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "journalctl -u sshd --since today",
+        "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:AbCdEf123456",
+        "context": "guest",
+        "purpose": "Accepted root SSH event",
+        "meaning": "sshd ghi Accepted publickey cho root từ IP .77; cần kiểm tra fingerprint/key và owner.",
+        "commandId": "journalctl-unit",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "last -n 10",
+        "output": "root     pts/0        203.0.113.77    Thu Oct 22 09:14   still logged in",
+        "context": "guest",
+        "purpose": "session root trong last",
+        "meaning": "last có root session từ cùng IP; củng cố login thành công, không xác định người đứng sau.",
+        "commandId": "last-logins",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "journalctl -u sshd --since \"2026-10-22 00:00:00\" --no-pager",
+        "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:AbCdEf123456",
+        "purpose": "Lấy timestamp và fingerprint key từ auth log.",
+        "meaning": "Có key fingerprint để đối chiếu inventory; không tiết lộ private key.",
+        "commandId": "journalctl-unit",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: approved access inventory",
+        "output": "Approved root SSH source IPs: 198.51.100.12; 203.0.113.77: not listed",
+        "purpose": "Đối chiếu IP với allowlist được duyệt.",
+        "meaning": "IP không có trong inventory; cần owner/security xác minh thay vì tự kết luận actor.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Khách thấy successful root SSH từ IP không nhận ra."
+          },
+          {
+            "id": "other",
+            "label": "Chỉ có failed password cho user không tồn tại."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "unknown-root-login"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc accepted root ssh event?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "journalctl -u sshd --since today"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "journalctl-unit",
+        "skill": "unknown-root-login"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Hai nguồn ghi login root thành công từ .77; tính được phép chưa biết, cần incident/security ngay."
+          },
+          {
+            "id": "over",
+            "label": "IP lạ chứng minh attacker cụ thể và hệ thống đã sạch sau logout."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "last-logins",
+        "skill": "unknown-root-login"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "sshd ghi Accepted publickey cho root từ IP .77; cần kiểm tra fingerprint/key và owner."
+          },
+          {
+            "id": "p2",
+            "label": "last có root session từ cùng IP; củng cố login thành công, không xác định người đứng sau."
+          },
+          {
+            "id": "over",
+            "label": "IP lạ chứng minh attacker cụ thể và hệ thống đã sạch sau logout."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "last-logins",
+        "skill": "unknown-root-login"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Bảo toàn auth/audit, xác minh owner/automation, chuyển security để containment, key rotation và forensic có duyệt."
+          },
+          {
+            "id": "unsafe",
+            "label": "Xóa log, reboot hoặc khóa root ngay khi chưa có containment plan."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "unknown-root-login"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Security xác nhận phạm vi, access trái phép bị chặn theo change, key/audit được kiểm tra và monitoring sạch."
+          },
+          {
+            "id": "act",
+            "label": "Bảo toàn auth/audit, xác minh owner/automation, chuyển security để containment, key rotation và forensic có duyệt."
+          }
+        ],
+        "skill": "unknown-root-login"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security xác nhận phạm vi, access trái phép bị chặn theo change, key/audit được kiểm tra và monitoring sạch.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security xác nhận phạm vi, access trái phép bị chặn theo change, key/audit được kiểm tra và monitoring sạch."
+  },
+  {
+    "id": "VPS-09-008",
+    "objective": "Đọc cron persistence và hash mismatch, không tự xóa artifact trước forensic.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "crontab -l -u root",
+        "output": "*/5 * * * * /usr/local/bin/agent-update",
+        "context": "guest",
+        "purpose": "root cron entry tái chạy process",
+        "meaning": "Cron chạy /usr/local/bin/agent-update mỗi 5 phút; chưa biết hợp lệ hay độc hại.",
+        "commandId": "crontab-read",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "sha256sum /usr/local/bin/agent-update",
+        "output": "6f4a7f06e1241c56084354206463b687cbe92ab26d9d7c9c7e5ed12c2a67a901  /usr/local/bin/agent-update",
+        "context": "guest",
+        "purpose": "SHA-256 của artifact hiện tại",
+        "meaning": "Hash hiện tại cần đối chiếu baseline tin cậy; không tự nói malicious.",
+        "commandId": "sha256sum",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: approved agent hash",
+        "output": "agent-update approved SHA-256: dce7824babcc0a9c2a4101d010d6301f0d41666cbfc6a2e698ae1200c674689",
+        "purpose": "Lấy baseline tin cậy.",
+        "meaning": "Baseline khác hash hiện tại; cần xác nhận version/change record, không tự xóa.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "ps -eo pid,ppid,user,comm,args | grep agent-update",
+        "output": "4412 1 root agent-update /usr/local/bin/agent-update",
+        "purpose": "Xem process và parent hiện tại.",
+        "meaning": "Process đang chạy từ đường dẫn cron; chưa biết tác động hoặc nguồn cài.",
+        "commandId": "ps-process",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Process xuất hiện lại sau khi bị terminate."
+          },
+          {
+            "id": "other",
+            "label": "Nginx chỉ trả 404 vì root path."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "suspicious-persistence"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc root cron entry tái chạy process?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "crontab -l -u root"
+          },
+          {
+            "id": "wrong1",
+            "label": "dig example.com A"
+          },
+          {
+            "id": "wrong2",
+            "label": "df -h /"
+          }
+        ],
+        "commandId": "crontab-read",
+        "skill": "suspicious-persistence"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Root cron tái chạy binary, hash khác baseline trong inventory; nghi unauthorized persistence, cần xác minh change/owner."
+          },
+          {
+            "id": "over",
+            "label": "Hash khác tự chứng minh malware và xóa file là đủ."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "sha256sum",
+        "skill": "suspicious-persistence"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Cron chạy /usr/local/bin/agent-update mỗi 5 phút; chưa biết hợp lệ hay độc hại."
+          },
+          {
+            "id": "p2",
+            "label": "Hash hiện tại cần đối chiếu baseline tin cậy; không tự nói malicious."
+          },
+          {
+            "id": "over",
+            "label": "Hash khác tự chứng minh malware và xóa file là đủ."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "sha256sum",
+        "skill": "suspicious-persistence"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Bảo toàn cron, binary/hash, timeline và process tree; chuyển security để containment/forensic có duyệt."
+          },
+          {
+            "id": "unsafe",
+            "label": "rm -rf binary/cron hoặc reboot trước khi lưu chứng cứ."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "suspicious-persistence"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Security xác định artifact, persistence được xử lý theo plan và monitoring không còn tái xuất hiện."
+          },
+          {
+            "id": "act",
+            "label": "Bảo toàn cron, binary/hash, timeline và process tree; chuyển security để containment/forensic có duyệt."
+          }
+        ],
+        "skill": "suspicious-persistence"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security xác định artifact, persistence được xử lý theo plan và monitoring không còn tái xuất hiện.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Security xác định artifact, persistence được xử lý theo plan và monitoring không còn tái xuất hiện."
+  },
+  {
+    "id": "VPS-13-001",
+    "objective": "Đọc container Exited và Python import error trước khi đề xuất deploy fix.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "docker ps -a",
+        "output": "api Exited (1) 2 minutes ago",
+        "context": "guest",
+        "purpose": "trạng thái api container",
+        "meaning": "api Exited (1); chưa biết vì config hay image.",
+        "commandId": "docker-ps",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "docker logs api --tail 20",
+        "output": "ModuleNotFoundError: appconfig",
+        "context": "guest",
+        "purpose": "lỗi khởi động container",
+        "meaning": "ModuleNotFoundError: appconfig cho thấy import thất bại; cần kiểm tra image/manifest.",
+        "commandId": "docker-logs",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "panel",
+        "command": "PANEL: deployment manifest",
+        "output": "api release=v2.0; appconfig package omitted from build manifest",
+        "purpose": "Đối chiếu dependency trong artifact.",
+        "meaning": "Manifest thiếu package phù hợp log; owner cần sửa build và xác minh.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Docker app offline."
+          },
+          {
+            "id": "other",
+            "label": "VPS Powered Off ở panel."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "container-exit-log"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc trạng thái api container?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "docker ps -a"
+          },
+          {
+            "id": "wrong1",
+            "label": "dig example.com A"
+          },
+          {
+            "id": "wrong2",
+            "label": "ip route"
+          }
+        ],
+        "commandId": "docker-ps",
+        "skill": "container-exit-log"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "api container exit code 1 và log import module appconfig; cần đối chiếu release/dependency."
+          },
+          {
+            "id": "over",
+            "label": "Docker daemon host chắc chắn hỏng."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "docker-logs",
+        "skill": "container-exit-log"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "api Exited (1); chưa biết vì config hay image."
+          },
+          {
+            "id": "p2",
+            "label": "ModuleNotFoundError: appconfig cho thấy import thất bại; cần kiểm tra image/manifest."
+          },
+          {
+            "id": "over",
+            "label": "Docker daemon host chắc chắn hỏng."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "docker-logs",
+        "skill": "container-exit-log"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Kiểm tra image digest, release manifest và owner; đề xuất redeploy dependency đúng theo change."
+          },
+          {
+            "id": "unsafe",
+            "label": "Xóa volume rồi chạy lại container."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "container-exit-log"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Container stable, app endpoint trả đúng và log không còn import error.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Container stable, app endpoint trả đúng và log không còn import error."
+  },
+  {
+    "id": "VPS-13-002",
+    "objective": "Phân biệt exposed container port với published host port.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "docker ps --format \"{{.Names}} {{.Ports}}\"",
+        "output": "web 8080/tcp",
+        "context": "guest",
+        "purpose": "PORTS của web container",
+        "meaning": "Chỉ 8080/tcp không có host mapping hiển thị.",
+        "commandId": "docker-ps",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "docker port web",
+        "output": "",
+        "context": "guest",
+        "purpose": "published port mapping",
+        "meaning": "Không có stdout mapping trong fixture; cần đối chiếu compose/run config.",
+        "commandId": "docker-port",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "docker inspect web --format \"{{json .HostConfig.PortBindings}}\"",
+        "output": "{}",
+        "purpose": "Xác nhận HostConfig không có port binding.",
+        "meaning": "Metadata khớp output docker port rỗng; chưa biết app listener và intended exposure.",
+        "commandId": "docker-inspect",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "App trong container hoạt động nhưng VPS IP không vào được."
+          },
+          {
+            "id": "other",
+            "label": "Backend trả HTTP 500 ngay trong container."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "docker-port-publish"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc ports của web container?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "docker ps --format \"{{.Names}} {{.Ports}}\""
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "free -h"
+          }
+        ],
+        "commandId": "docker-ps",
+        "skill": "docker-port-publish"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Container có exposed 8080/tcp nhưng không có published host port; cần kiểm tra thiết kế proxy/network trước change."
+          },
+          {
+            "id": "over",
+            "label": "Dockerfile EXPOSE 8080 tự mở public port."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "docker-port",
+        "skill": "docker-port-publish"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Chỉ 8080/tcp không có host mapping hiển thị."
+          },
+          {
+            "id": "p2",
+            "label": "Không có stdout mapping trong fixture; cần đối chiếu compose/run config."
+          },
+          {
+            "id": "over",
+            "label": "Dockerfile EXPOSE 8080 tự mở public port."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "docker-port",
+        "skill": "docker-port-publish"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác nhận yêu cầu public/private và owner; đề xuất publish hoặc reverse proxy có bảo vệ theo change."
+          },
+          {
+            "id": "unsafe",
+            "label": "Mở 0.0.0.0:8080 và firewall rộng ngay không review."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "docker-port-publish"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đúng endpoint từ client vào được theo policy, port khác không lộ và app trả nội dung.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Đúng endpoint từ client vào được theo policy, port khác không lộ và app trả nội dung."
+  },
+  {
+    "id": "VPS-13-003",
+    "objective": "Đọc host bind 127.0.0.1 và xác định phạm vi public exposure trước change.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "docker port web",
+        "output": "8080/tcp -> 127.0.0.1:8080",
+        "context": "guest",
+        "purpose": "host IP/port của published mapping",
+        "meaning": "Port 8080 chỉ bind 127.0.0.1 trên host.",
+        "commandId": "docker-port",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "curl -I http://127.0.0.1:8080",
+        "output": "HTTP/1.1 200 OK\nContent-Type: text/html",
+        "context": "guest",
+        "purpose": "HTTP local qua host mapping",
+        "meaning": "Localhost trả HTTP 200; không chứng minh truy cập ngoài.",
+        "commandId": "curl-head",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "ss -ltnp | grep :8080",
+        "output": "LISTEN 0 4096 127.0.0.1:8080 0.0.0.0:* users:((\"docker-proxy\",pid=2011,fd=4))",
+        "purpose": "Đối chiếu listener trên host.",
+        "meaning": "Listener loopback xác nhận scope; firewall ngoài không tạo public bind.",
+        "commandId": "ss-ltnp",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "App ở localhost chạy, client ngoài không tới."
+          },
+          {
+            "id": "other",
+            "label": "Container đã Exited (1)."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "docker-loopback-bind"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc host ip/port của published mapping?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "docker port web"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -i /"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "docker-port",
+        "skill": "docker-loopback-bind"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Host mapping chỉ trên loopback; cần xác nhận intended exposure và reverse proxy trước đổi."
+          },
+          {
+            "id": "over",
+            "label": "Mở firewall là đủ dù socket chỉ bind loopback."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "curl-head",
+        "skill": "docker-loopback-bind"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Port 8080 chỉ bind 127.0.0.1 trên host."
+          },
+          {
+            "id": "p2",
+            "label": "Localhost trả HTTP 200; không chứng minh truy cập ngoài."
+          },
+          {
+            "id": "over",
+            "label": "Mở firewall là đủ dù socket chỉ bind loopback."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "curl-head",
+        "skill": "docker-loopback-bind"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác nhận architecture/authorization; dùng proxy hoặc publish đúng interface kèm ACL/TLS theo change."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự expose container ra Internet không review."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "docker-loopback-bind"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Client được phép tới app qua đúng endpoint, các nguồn khác vẫn theo policy.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Client được phép tới app qua đúng endpoint, các nguồn khác vẫn theo policy."
+  },
+  {
+    "id": "VPS-13-004",
+    "objective": "Đọc OOMKilled cùng memory limit, không tăng limit mù.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "docker inspect api --format \"{{.State.OOMKilled}}\"",
+        "output": "true",
+        "context": "guest",
+        "purpose": "OOMKilled flag của api",
+        "meaning": "Container bị OOM kill ở lần exit gần đây.",
+        "commandId": "docker-inspect",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "docker stats --no-stream",
+        "output": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT     MEM %\na4c21d02f881   api    44.2%   498MiB / 512MiB       97.27%",
+        "context": "guest",
+        "purpose": "memory usage/limit snapshot",
+        "meaning": "498 MiB gần limit 512 MiB; cần xem tải, memory trend và host capacity.",
+        "commandId": "docker-stats",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "docker inspect api --format \"{{.HostConfig.Memory}}\"",
+        "output": "536870912",
+        "purpose": "Xác nhận memory limit byte từ config.",
+        "meaning": "536870912 byte = 512 MiB; cần so host capacity và workload.",
+        "commandId": "docker-inspect",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Container restart ở peak traffic."
+          },
+          {
+            "id": "other",
+            "label": "Chỉ DNS trong host lỗi."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "container-oom-limit"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc oomkilled flag của api?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "docker inspect api --format \"{{.State.OOMKilled}}\""
+          },
+          {
+            "id": "wrong1",
+            "label": "dig example.com A"
+          },
+          {
+            "id": "wrong2",
+            "label": "ip route"
+          }
+        ],
+        "commandId": "docker-inspect",
+        "skill": "container-oom-limit"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "OOMKilled true và memory gần 512 MiB; nguyên nhân cấp phát/tải/leak chưa được định vị."
+          },
+          {
+            "id": "over",
+            "label": "Chỉ tăng limit lên 8 GiB chắc chắn giải quyết."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "docker-stats",
+        "skill": "container-oom-limit"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Container bị OOM kill ở lần exit gần đây."
+          },
+          {
+            "id": "p2",
+            "label": "498 MiB gần limit 512 MiB; cần xem tải, memory trend và host capacity."
+          },
+          {
+            "id": "over",
+            "label": "Chỉ tăng limit lên 8 GiB chắc chắn giải quyết."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "docker-stats",
+        "skill": "container-oom-limit"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Đo trend, request và host headroom; owner chỉnh workload/limit trong change có rollback."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tắt memory limit và restart container ngay ở peak."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "container-oom-limit"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Qua peak representative container không OOM, memory có headroom và API ổn.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Qua peak representative container không OOM, memory có headroom và API ổn."
+  },
+  {
+    "id": "VPS-13-005",
+    "objective": "Tách DNS trong container khỏi host resolver và network reachability.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "docker exec api getent hosts example.com",
+        "output": "",
+        "context": "guest",
+        "purpose": "name lookup trong api container",
+        "meaning": "Không có stdout cho lookup; chưa có exit status, cần thêm DNS query.",
+        "commandId": "getent-hosts",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "getent hosts example.com",
+        "output": "93.184.215.14",
+        "context": "guest",
+        "purpose": "name lookup từ host",
+        "meaning": "Host trả IP cho hostname; lỗi có thể riêng container.",
+        "commandId": "getent-hosts",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "docker exec api cat /etc/resolv.conf",
+        "output": "nameserver 127.0.0.11\noptions ndots:0",
+        "purpose": "Đọc DNS resolver trong container.",
+        "meaning": "Docker embedded DNS được cấu hình; chưa chứng minh upstream hoạt động.",
+        "commandId": "docker-exec-read",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "docker exec api nslookup example.com",
+        "output": ";; communications error to 127.0.0.11#53: timed out\n;; no servers could be reached",
+        "purpose": "Kiểm tra DNS query thực từ container.",
+        "meaning": "Query tới embedded DNS timeout; cần Docker daemon/network logs, không quy lỗi public zone.",
+        "commandId": "docker-exec-read",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Container không resolve domain còn host resolve được."
+          },
+          {
+            "id": "other",
+            "label": "Container không có default route và mọi IP đều unreachable."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "container-dns-scope"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc name lookup trong api container?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "docker exec api getent hosts example.com"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "systemctl status nginx"
+          }
+        ],
+        "commandId": "getent-hosts",
+        "skill": "container-dns-scope"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Host có name lookup, container query DNS bổ sung timeout; scope ở container resolver/network path."
+          },
+          {
+            "id": "over",
+            "label": "Public DNS authoritative chắc chắn không có A record."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "getent-hosts",
+        "skill": "container-dns-scope"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Không có stdout cho lookup; chưa có exit status, cần thêm DNS query."
+          },
+          {
+            "id": "p2",
+            "label": "Host trả IP cho hostname; lỗi có thể riêng container."
+          },
+          {
+            "id": "over",
+            "label": "Public DNS authoritative chắc chắn không có A record."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "getent-hosts",
+        "skill": "container-dns-scope"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Đọc /etc/resolv.conf của container, Docker network và DNS reachability; owner/infra sửa cấu hình có quyền."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự thay DNS toàn bộ host và restart mọi container."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "container-dns-scope"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Container resolve domain qua resolver được cấp và app kết nối endpoint, host vẫn bình thường."
+          },
+          {
+            "id": "act",
+            "label": "Đọc /etc/resolv.conf của container, Docker network và DNS reachability; owner/infra sửa cấu hình có quyền."
+          }
+        ],
+        "skill": "container-dns-scope"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Container resolve domain qua resolver được cấp và app kết nối endpoint, host vẫn bình thường.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Container resolve domain qua resolver được cấp và app kết nối endpoint, host vẫn bình thường."
+  },
+  {
+    "id": "VPS-13-006",
+    "objective": "Đọc container route với host forwarding off; không tự thay sysctl/firewall VPS.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "docker exec api ip route",
+        "output": "default via 172.17.0.1 dev eth0",
+        "context": "guest",
+        "purpose": "default route trong container",
+        "meaning": "Container có route qua 172.17.0.1; chưa chứng minh host forward/NAT.",
+        "commandId": "ip-route",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "sysctl net.ipv4.ip_forward",
+        "output": "net.ipv4.ip_forward = 0",
+        "context": "guest",
+        "purpose": "IPv4 forwarding trên host",
+        "meaning": "net.ipv4.ip_forward=0 trên host; là rào cản forwarding cần đối chiếu policy.",
+        "commandId": "sysctl-read",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "docker network inspect bridge --format \"{{json .IPAM.Config}}\"",
+        "output": "[{\"Subnet\":\"172.17.0.0/16\",\"Gateway\":\"172.17.0.1\"}]",
+        "purpose": "Đối chiếu gateway bridge.",
+        "meaning": "Route container trỏ bridge gateway hợp lệ; vẫn cần forwarding/NAT ở host.",
+        "commandId": "docker-inspect",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: host network policy",
+        "output": "Container egress expected: allowed via Docker bridge; change approval required",
+        "purpose": "Đọc expected policy và quyền.",
+        "meaning": "Forwarding đang off khác desired policy; admin host cần xử lý.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Container tới host được nhưng không tới Internet."
+          },
+          {
+            "id": "other",
+            "label": "App chỉ sai mật khẩu database."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "container-forwarding"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc default route trong container?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "docker exec api ip route"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -h /"
+          },
+          {
+            "id": "wrong2",
+            "label": "getent passwd admin"
+          }
+        ],
+        "commandId": "ip-route",
+        "skill": "container-forwarding"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Route container có, host IPv4 forwarding off; đây là một nguyên nhân khả dĩ, cần kiểm tra NAT/policy trước change."
+          },
+          {
+            "id": "over",
+            "label": "Bật ip_forward=1 sẽ tự sửa mọi vấn đề NAT/firewall."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "sysctl-read",
+        "skill": "container-forwarding"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Container có route qua 172.17.0.1; chưa chứng minh host forward/NAT."
+          },
+          {
+            "id": "p2",
+            "label": "net.ipv4.ip_forward=0 trên host; là rào cản forwarding cần đối chiếu policy."
+          },
+          {
+            "id": "over",
+            "label": "Bật ip_forward=1 sẽ tự sửa mọi vấn đề NAT/firewall."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "sysctl-read",
+        "skill": "container-forwarding"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Kiểm tra Docker bridge/NAT và host security policy; chuyển admin được ủy quyền lập change/rollback."
+          },
+          {
+            "id": "unsafe",
+            "label": "Tự bật forwarding và mở firewall toàn bộ."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "container-forwarding"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "Container tới đích IP và DNS theo policy; host firewall/NAT vẫn đúng."
+          },
+          {
+            "id": "act",
+            "label": "Kiểm tra Docker bridge/NAT và host security policy; chuyển admin được ủy quyền lập change/rollback."
+          }
+        ],
+        "skill": "container-forwarding"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Container tới đích IP và DNS theo policy; host firewall/NAT vẫn đúng.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: Container tới đích IP và DNS theo policy; host firewall/NAT vẫn đúng."
+  },
+  {
+    "id": "VPS-13-007",
+    "objective": "Không coi api Up là toàn stack khỏe; điều tra db exit và host/container memory.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "docker compose ps",
+        "output": "NAME   IMAGE       SERVICE   STATUS\napi    api:v2.0    api       Up 2 minutes\ndb     mariadb:11  db        Exited (1) 2 minutes ago",
+        "context": "guest",
+        "purpose": "trạng thái api và db services",
+        "meaning": "api Up nhưng db Exited (1); app health không bảo đảm query DB.",
+        "commandId": "docker-compose-ps",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "docker compose logs db --tail 10",
+        "output": "InnoDB: Cannot allocate memory",
+        "context": "guest",
+        "purpose": "db startup failure",
+        "meaning": "InnoDB báo Cannot allocate memory; cần biết OOM/cgroup/host capacity.",
+        "commandId": "docker-compose-logs",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "docker inspect db --format \"{{.State.OOMKilled}} {{.HostConfig.Memory}}\"",
+        "output": "true 1073741824",
+        "purpose": "Đọc OOM flag và memory limit db.",
+        "meaning": "DB từng OOM với limit 1 GiB; cần đối chiếu workload và host headroom.",
+        "commandId": "docker-inspect",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "guest",
+        "command": "free -h",
+        "output": "Mem:  4.0Gi  2.7Gi  400Mi  100Mi  900Mi  700Mi\nSwap: 0B 0B 0B",
+        "purpose": "Đọc available memory của host.",
+        "meaning": "Host còn available, nhưng container limit riêng vẫn có thể gây OOM.",
+        "commandId": "free-h",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "App container healthy nhưng DB query thất bại."
+          },
+          {
+            "id": "other",
+            "label": "DNS A record của domain sai."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "compose-db-memory"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc trạng thái api và db services?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "docker compose ps"
+          },
+          {
+            "id": "wrong1",
+            "label": "dig example.com A"
+          },
+          {
+            "id": "wrong2",
+            "label": "systemctl status sshd"
+          }
+        ],
+        "commandId": "docker-compose-ps",
+        "skill": "compose-db-memory"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "DB container đã exit với memory allocation failure; cần xác định giới hạn container hay host."
+          },
+          {
+            "id": "over",
+            "label": "Tăng RAM guest ngay chắc chắn sửa InnoDB."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "docker-compose-logs",
+        "skill": "compose-db-memory"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "api Up nhưng db Exited (1); app health không bảo đảm query DB."
+          },
+          {
+            "id": "p2",
+            "label": "InnoDB báo Cannot allocate memory; cần biết OOM/cgroup/host capacity."
+          },
+          {
+            "id": "over",
+            "label": "Tăng RAM guest ngay chắc chắn sửa InnoDB."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "docker-compose-logs",
+        "skill": "compose-db-memory"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Thu inspect OOMKilled, memory limit, host available và data volume health; chuyển DB/infra lập recovery an toàn."
+          },
+          {
+            "id": "unsafe",
+            "label": "Xóa DB volume hoặc restart loop không kiểm tra integrity."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "compose-db-memory"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "db stable, query representative thành công, không OOM và dữ liệu integrity được xác nhận."
+          },
+          {
+            "id": "act",
+            "label": "Thu inspect OOMKilled, memory limit, host available và data volume health; chuyển DB/infra lập recovery an toàn."
+          }
+        ],
+        "skill": "compose-db-memory"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: db stable, query representative thành công, không OOM và dữ liệu integrity được xác nhận.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: db stable, query representative thành công, không OOM và dữ liệu integrity được xác nhận."
+  },
+  {
+    "id": "VPS-13-008",
+    "objective": "Đối chiếu log với image tag/digest và config compatibility trước rollback.",
+    "probes": [
+      {
+        "id": "P1",
+        "command": "docker logs api --tail 20",
+        "output": "Error: unknown config option legacyMode",
+        "context": "guest",
+        "purpose": "lỗi startup trong api container",
+        "meaning": "Release hiện tại từ chối legacyMode; cần kiểm tra config schema.",
+        "commandId": "docker-logs",
+        "aliases": []
+      },
+      {
+        "id": "P2",
+        "command": "PANEL: deployments",
+        "output": "image tag changed from v1.8 to v2.0",
+        "context": "panel",
+        "purpose": "thay đổi tag trong deployment",
+        "meaning": "Tag đổi v1.8→v2.0 gần sự cố; tag không chứng minh exact image digest.",
+        "commandId": "panel-probes",
+        "aliases": []
+      },
+      {
+        "id": "G1",
+        "context": "guest",
+        "command": "docker inspect api --format \"{{.Image}}\"",
+        "output": "sha256:87a4b2c611de331191237634edcb8656944410b00a2429958d86f7359444250a",
+        "purpose": "Ghi digest của image đang chạy.",
+        "meaning": "Digest cố định để đối chiếu artifact; không tự nói config nào hợp lệ.",
+        "commandId": "docker-inspect",
+        "aliases": []
+      },
+      {
+        "id": "G2",
+        "context": "panel",
+        "command": "PANEL: v2.0 release notes",
+        "output": "v2.0 removes legacyMode; data migration status: unknown",
+        "purpose": "Đối chiếu compatibility và rollback risk.",
+        "meaning": "Config mismatch được hỗ trợ; thiếu dữ liệu migration nên chưa thể rollback mù.",
+        "commandId": "panel-probes",
+        "aliases": []
+      }
+    ],
+    "questions": [
+      {
+        "id": "triage",
+        "stage": "triage",
+        "kind": "single_choice",
+        "prompt": "Triệu chứng nào cần được xác nhận trước khi chọn hướng xử lý?",
+        "options": [
+          {
+            "id": "symptom",
+            "label": "Deploy mới làm API lỗi ngay."
+          },
+          {
+            "id": "other",
+            "label": "VM mất vNIC sau migration."
+          },
+          {
+            "id": "cause",
+            "label": "Đã xác định chính xác root cause chỉ từ lời khách."
+          }
+        ],
+        "skill": "image-regression"
+      },
+      {
+        "id": "check",
+        "stage": "investigate",
+        "kind": "command_choice",
+        "prompt": "Phép kiểm tra nào trực tiếp đọc lỗi startup trong api container?",
+        "options": [
+          {
+            "id": "direct",
+            "label": "docker logs api --tail 20"
+          },
+          {
+            "id": "wrong1",
+            "label": "df -i /"
+          },
+          {
+            "id": "wrong2",
+            "label": "dig example.com A"
+          }
+        ],
+        "commandId": "docker-logs",
+        "skill": "image-regression"
+      },
+      {
+        "id": "output",
+        "stage": "interpret",
+        "kind": "output_interpretation",
+        "prompt": "Sau khi đọc P1/P2 và phép kiểm tra bổ sung, cách hiểu nào đủ bằng chứng?",
+        "options": [
+          {
+            "id": "supported",
+            "label": "Log config option không được nhận cùng thời điểm tag đổi; nghi incompatibility release/config."
+          },
+          {
+            "id": "over",
+            "label": "Chỉ đổi tag ngược mà không kiểm tra data migration là rollback an toàn."
+          },
+          {
+            "id": "ignore",
+            "label": "Các output không có giá trị điều tra nào."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2",
+          "G1",
+          "G2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "image-regression"
+      },
+      {
+        "id": "evidence",
+        "stage": "interpret",
+        "kind": "multi_select",
+        "prompt": "Chọn đúng hai quan sát có trong fixture; bỏ nhận định suy diễn.",
+        "options": [
+          {
+            "id": "p1",
+            "label": "Release hiện tại từ chối legacyMode; cần kiểm tra config schema."
+          },
+          {
+            "id": "p2",
+            "label": "Tag đổi v1.8→v2.0 gần sự cố; tag không chứng minh exact image digest."
+          },
+          {
+            "id": "over",
+            "label": "Chỉ đổi tag ngược mà không kiểm tra data migration là rollback an toàn."
+          }
+        ],
+        "requiredProbeIds": [
+          "P1",
+          "P2"
+        ],
+        "commandId": "panel-probes",
+        "skill": "image-regression"
+      },
+      {
+        "id": "decision",
+        "stage": "decide",
+        "kind": "single_choice",
+        "prompt": "Quyết định tiếp theo nào đúng phạm vi và an toàn nhất?",
+        "options": [
+          {
+            "id": "safe",
+            "label": "Xác nhận image digest/changelog và schema/data migration; owner duyệt rollback hoặc sửa config có kế hoạch."
+          },
+          {
+            "id": "unsafe",
+            "label": "Xóa container/volume và pull latest ngẫu nhiên."
+          },
+          {
+            "id": "close",
+            "label": "Đóng ticket ngay mà không kiểm tra sau xử lý."
+          }
+        ],
+        "skill": "image-regression"
+      },
+      {
+        "id": "order",
+        "stage": "verify",
+        "kind": "step_order",
+        "prompt": "Sắp xếp quy trình điều tra và xử lý để tránh kết luận sớm.",
+        "options": [
+          {
+            "id": "evidence",
+            "label": "Đối chiếu P1, P2 và probe bổ sung; ghi điều còn chưa biết."
+          },
+          {
+            "id": "verify",
+            "label": "API health và request đại diện thành công, data integrity và deployment digest được đối chiếu."
+          },
+          {
+            "id": "act",
+            "label": "Xác nhận image digest/changelog và schema/data migration; owner duyệt rollback hoặc sửa config có kế hoạch."
+          }
+        ],
+        "skill": "image-regression"
+      },
+      {
+        "id": "note",
+        "stage": "verify",
+        "kind": "short_answer",
+        "prompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: API health và request đại diện thành công, data integrity và deployment digest được đối chiếu.",
+        "options": [],
+        "skill": "verify"
+      }
+    ],
+    "verificationPrompt": "Ghi triệu chứng, P1/P2 và dữ liệu bổ sung đã thấy; nêu điều chưa chắc chắn, hướng xử lý/escalation và cách xác minh: API health và request đại diện thành công, data integrity và deployment digest được đối chiếu."
   }
 ]

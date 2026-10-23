@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Nhiều Failed password trong SSH log.",
+    "Đọc P1 (journalctl -u sshd -n 20) và P2 (last -n 5); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Không có access trái phép trong log/audit được đối chiếu, monitoring và biện pháp approved hoạt động."
+  ]
+}

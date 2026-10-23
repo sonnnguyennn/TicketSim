@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Deploy mới làm API lỗi ngay.",
+    "Đọc P1 (docker logs api --tail 20) và P2 (PANEL: deployments); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: API health và request đại diện thành công, data integrity và deployment digest được đối chiếu."
+  ]
+}

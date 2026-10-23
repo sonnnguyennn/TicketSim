@@ -1,0 +1,11 @@
+{
+  "correctIds": [
+    "safe"
+  ],
+  "explanation": "Bước tiếp theo: Xác nhận IP office qua kênh tin cậy, auth failures và policy; đề xuất unban có duyệt, sửa credential/client trước. Xác minh: Office SSH lại bằng tài khoản hợp lệ, jail/policy còn hoạt động và không tái ban bất thường.",
+  "optionFeedback": {
+    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
+    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
+    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+  }
+}

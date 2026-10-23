@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách thấy account admin không nhận ra.",
+    "Đọc P1 (getent passwd supportadmin) và P2 (grep -R supportadmin /etc/sudoers.d); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Owner/security xác nhận nguồn account, quyền được xử lý theo incident và không còn access trái phép."
+  ]
+}

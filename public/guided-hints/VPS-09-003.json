@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: App chỉ hoạt động khi SELinux bị tắt.",
+    "Đọc P1 (getenforce) và P2 (ausearch -m AVC -ts recent); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Ứng dụng gọi backend được khi Enforcing, không có AVC liên quan và policy audit rõ."
+  ]
+}

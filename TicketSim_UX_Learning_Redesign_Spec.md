@@ -4,6 +4,8 @@
 
 ### Phase 5C pickup update
 
+Batch 5 is implemented: **88/112 Guided**, covering all security and container tickets. Empty stdout fixtures are explicitly supported for two Docker checks; they are supplemented by further probes and do not produce invented output. No changes were made to the 112 source tickets or v5 progress format. Stateful, Objective Exam and independent variants remain **6/112**. See `Phase_5C_Batch_5_QA.md`. Batch 6–7 and independent assessment expansion remain open.
+
 Batch 4 is implemented: **72/112 Guided**, with all eight VPS lifecycle and eight virtualization tickets covered. Panel, guest and hypervisor context is distinguished in Guided. The source 112 and v5 progress format remain unchanged; Stateful, Objective Exam and variant counts remain **6/112**. See `Phase_5C_Batch_4_QA.md`. Batch 5–7 and independent assessment expansion remain open.
 
 Batch 3 is implemented: **56/112 Guided**. The 14 new cases complete the priority SSH, Network, Services, Performance, Disk, Web and DNS topics. Guided-only output overrides replace editorial annotations in `VPS-07-003` and `VPS-08-006`; the 112 source tickets and their original probes remain unchanged. Stateful, Objective Exam and independent Mastered variants remain at **6/112**. See `Phase_5C_Batch_3_QA.md`. Batch 4–7, Objective Exam expansion and review variant expansion remain open. Counts in the Phase 1–2 section below describe the previous pickup point.

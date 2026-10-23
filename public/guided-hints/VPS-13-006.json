@@ -1,0 +1,7 @@
+{
+  "hints": [
+    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Container tới host được nhưng không tới Internet.",
+    "Đọc P1 (docker exec api ip route) và P2 (sysctl net.ipv4.ip_forward); ghi điều mỗi output thật sự chứng minh.",
+    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Container tới đích IP và DNS theo policy; host firewall/NAT vẫn đúng."
+  ]
+}
