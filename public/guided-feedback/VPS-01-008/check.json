@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Kernel log có thể ghi process bị OOM kill; cần giữ tên process và timestamp để đối chiếu.",
   "commandId": "journal-boot",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Log unit SSH có thể hữu ích, nhưng không đọc sự kiện OOM của kernel.",
+    "direct": "Đọc kernel ở boot hiện tại, lấy các dòng cuối làm điểm bắt đầu.",
+    "wrong1": "RAM hiện tại không cho biết kernel đã ghi OOM kill vào lúc SSH rớt."
   }
 }

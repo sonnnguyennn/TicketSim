@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Đọc task trước khi xem chi tiết job liên quan.",
   "commandId": "panel-task-queue",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "OS chưa đổi không phân biệt task chờ với task lỗi.",
+    "direct": "Ghi trạng thái waiting lock của reinstall.",
+    "wrong1": "Giúp đánh giá job đang giữ lock, không thay trạng thái reinstall."
   }
 }

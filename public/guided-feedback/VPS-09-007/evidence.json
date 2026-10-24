@@ -6,8 +6,8 @@
   "explanation": "Hai nguồn khớp hỗ trợ sự kiện truy cập, không thay cho điều tra ai thực hiện và làm gì.",
   "commandId": "last-logins",
   "optionFeedback": {
+    "over": "Chưa đối chiếu key/owner hay hoạt động sau đăng nhập.",
     "p1": "Auth log ghi cách xác thực, user và địa chỉ nguồn.",
-    "p2": "Dữ liệu phiên củng cố timeline trong auth log.",
-    "over": "Chưa đối chiếu key/owner hay hoạt động sau đăng nhập."
+    "p2": "Dữ liệu phiên củng cố timeline trong auth log."
   }
 }

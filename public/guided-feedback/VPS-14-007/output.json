@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Hai invoice lines cùng service nhưng panel chỉ một service; nghi duplicate billing line, phải đối chiếu ledger.",
+  "explanation": "Cần ledger/order để định mismatch, không tự refund từ số line.",
   "commandId": "panel-provision-task",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Resource count không bảo đảm số dòng tính phí đúng.",
+    "supported": "G1/G2 bổ sung một charge 2 plan và order 1; billing xác định điều chỉnh.",
+    "over": "Có thể sai lượng điều chỉnh hoặc chưa thu đủ; đúng đội cần đối soát."
   }
 }

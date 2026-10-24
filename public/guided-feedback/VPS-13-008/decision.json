@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận image digest/changelog và schema/data migration; owner duyệt rollback hoặc sửa config có kế hoạch. Xác minh: API health và request đại diện thành công, data integrity và deployment digest được đối chiếu.",
+  "explanation": "Owner quyết định sau thu artifact, changelog và dữ liệu migration.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Chưa xác minh API hoặc tương thích dữ liệu.",
+    "safe": "Có phương án bảo vệ data và verify chức năng.",
+    "unsafe": "Có thể mất dữ liệu và đưa vào một artifact chưa biết."
   }
 }

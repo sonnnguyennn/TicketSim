@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Gateway console báo 502; đường web console có lỗi, trạng thái guest vẫn chưa chắc chắn.",
+  "explanation": "Bằng chứng ủng hộ sự cố đường web console; tình trạng guest và ứng dụng vẫn cần kiểm tra độc lập.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Gateway lỗi rõ ràng trong khi heartbeat không phải bằng chứng guest crash hay khỏe.",
+    "over": "Chưa có serial/kernel evidence và gateway lỗi đã được ghi nhận.",
+    "ignore": "Heartbeat process không kiểm tra websocket hoặc nội dung hiển thị."
   }
 }

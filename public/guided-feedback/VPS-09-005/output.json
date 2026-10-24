@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Notice và socket SMTP outbound cùng IP phù hợp traffic cần điều tra; chưa chứng minh nội dung spam hay compromise.",
+  "explanation": "Có lưu lượng cần điều tra; chưa đủ nội dung và phê duyệt để quy là độc hại.",
   "commandId": "ss-connections",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Đối chiếu owner, log và thông báo trước khi containment.",
+    "over": "Command line và socket không chứng minh ý định độc hại.",
+    "ignore": "Chưa so nội dung, số lượng và policy."
   }
 }

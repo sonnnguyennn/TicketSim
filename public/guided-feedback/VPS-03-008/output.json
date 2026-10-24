@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Root ro đồng thời có ext4 error; nguy cơ integrity cần xử lý bởi đội hạ tầng theo runbook.",
+  "explanation": "Có rủi ro integrity và bằng chứng remount sau lỗi; cần quy trình storage/recovery, chưa đủ định danh lỗi phần cứng.",
   "commandId": "journal-boot",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Không ép ghi lên volume đang báo lỗi; cần backup và đánh giá nguyên nhân.",
+    "over": "Không có health/mapping block vật lý hoặc kiểm tra integrity dữ liệu.",
+    "ignore": "Quyền file không đổi mount options hoặc sửa lỗi filesystem."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Restore points xác định mốc có sẵn; thời điểm mong muốn không tự tạo ra backup.",
   "commandId": "panel-restore-points",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Đây là mục tiêu khách muốn, không phải inventory backup.",
+    "wrong2": "Một task không thay thế danh sách các bản đã hoàn tất.",
+    "direct": "Danh sách này ghi các điểm khôi phục đã có."
   }
 }

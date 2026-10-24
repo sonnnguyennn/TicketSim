@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Số đo device và free VG không tự bảo đảm mapping/type/backup đã sẵn sàng cho change.",
   "commandId": "lvm-report",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "VFree49.99g là free extents ở VG.",
+    "over": "Chưa thể bỏ qua LV30G và filesystem30G.",
+    "p1": "Đúng các lớp trong cây block device."
   }
 }

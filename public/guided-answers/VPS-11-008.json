@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Restored clone duplicates production IP assignment.",
-  "recommended_next_checks": "Check isolated restore network and deployment plan.",
-  "resolution_guidance": "Isolate clone and assign nonconflicting IP before connecting.",
-  "verification": "No IP conflict; intended services accessible.",
-  "escalate_when": "Network virtualization incident.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Clone và production cùng 198.51.100.20; clone Running trên public bridge, có sự kiện hai MAC phát cùng IP.",
+  "recommended_next_checks": "Map VM/MAC, attachment, owner và kế hoạch mạng restore; xác minh ảnh hưởng theo thời điểm.",
+  "resolution_guidance": "Đội ảo hóa cách ly đúng NIC clone; owner duyệt IP/mạng test riêng trước nối lại.",
+  "verification": "Hết conflict, production truy cập được và clone chỉ hoạt động trong mạng test đã thống nhất.",
+  "escalate_when": "Cần đội network/virtualization thao tác host hoặc production đang bị ảnh hưởng.",
+  "production_warning": "Không tắt production để nhường IP cho clone hoặc đổi DNS để che xung đột.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đọc /etc/resolv.conf của container, Docker network và DNS reachability; owner/infra sửa cấu hình có quyền. Xác minh: Container resolve domain qua resolver được cấp và app kết nối endpoint, host vẫn bình thường.",
+  "explanation": "Cần khoanh lớp và owner trước thay cấu hình diện rộng.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể làm hỏng dịch vụ khác mà chưa biết nguồn.",
+    "close": "Triệu chứng trong container vẫn chưa được xác minh.",
+    "safe": "Giữ cấu hình cũ để rollback và thử lại trong api."
   }
 }

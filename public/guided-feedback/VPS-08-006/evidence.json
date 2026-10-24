@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Record chỉ nêu đích; tính sẵn sàng cần đối chiếu allocation và kiểm tra mạng.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "Hai IP family không thay thế bằng chứng cho nhau.",
+    "p1": "Đây là đích IPv4 quan sát được.",
+    "p2": "Đây là đích IPv6 cần đối chiếu."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "findmnt chỉ đọc mount options, không remount hay sửa filesystem.",
   "commandId": "findmnt",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Dung lượng block còn trống không cho mount option ro/rw hiện tại.",
+    "wrong2": "Kernel log hỗ trợ điều tra vì sao, không đọc mount option hiện tại của /.",
+    "direct": "Trả options của đúng filesystem gốc đang tạo file."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "ls"
   ],
-  "explanation": "Kiểm tra đối tượng mà cảnh báo nêu.",
+  "explanation": "ls -l cho biết mode và owner; không làm thay đổi key hay SSH server.",
   "commandId": "ls-key-mode",
   "optionFeedback": {
-    "ls": "Đúng: liệt kê mode và owner của chính file key.",
-    "status": "Service guest không cho biết quyền private key trên client.",
-    "route": "Route không cho biết mode file."
+    "route": "Cấu hình server không hiển thị quyền đọc file key ở client.",
+    "ls": "Đọc đúng file key mà lệnh SSH đã chọn bằng -i.",
+    "status": "Trạng thái daemon không cho mode của private key ở client."
   }
 }

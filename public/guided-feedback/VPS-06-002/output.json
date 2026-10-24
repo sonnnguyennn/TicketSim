@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: VM đang chạy, backup DB dùng CPU nhiều; chưa chứng minh job bất thường hay cần reboot.",
+  "explanation": "Có một workload nặng đang chạy; cần xác nhận nó có đúng kế hoạch và có làm chậm dịch vụ trước khi can thiệp.",
   "commandId": "top",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Snapshot và task cùng cho thấy backup hoạt động nhưng không xác định job bị lỗi.",
+    "over": "CPU sử dụng nhiều không kiểm tra được tính toàn vẹn database.",
+    "ignore": "Trạng thái nguồn không đo latency hay tài nguyên của ứng dụng."
   }
 }

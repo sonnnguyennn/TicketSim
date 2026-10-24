@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Sự khác biệt request nhỏ/lớn trên cùng tunnel định hướng PMTU/MSS, chưa chứng minh lỗi ở interface public.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Chưa có so sánh tunnel/PMTU/TCP để chỉ định interface phải đổi.",
+    "symptom": "Đây là khác biệt kích thước/phạm vi cần đo tiếp.",
+    "other": "401 là phản hồi xác thực ứng dụng, không phải hiện tượng treo theo kích thước."
   }
 }

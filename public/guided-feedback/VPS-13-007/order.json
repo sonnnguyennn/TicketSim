@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Trạng thái và dữ liệu trước, change đúng owner sau, chức năng DB/API cuối.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Xác định dependency và rủi ro dữ liệu.",
+    "verify": "DB Up riêng chưa xác minh dữ liệu và dịch vụ.",
+    "act": "Chỉ thay đổi sau đánh giá capacity, dữ liệu và rollback."
   }
 }

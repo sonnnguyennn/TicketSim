@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Hai VM cùng IP trong panel; cần xem network attachment/VM state và giữ restored VM cách ly.",
+  "explanation": "Bằng chứng hỗ trợ trùng IP trên mạng chung; cần nhắm đúngclone và giữ production.",
   "commandId": "panel-ip-allocation",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "DNS không đổi IP mà NIC phát trên cùng mạng.",
+    "ignore": "ARP hai MAC là bằng chứng hoạt động cần map với VM.",
+    "supported": "Không coi clone boot được là restore an toàn cho mạng thật."
   }
 }

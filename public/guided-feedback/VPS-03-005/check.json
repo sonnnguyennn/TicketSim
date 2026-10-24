@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Trạng thái unit và các sự kiện giúp chọn service nào cần điều tra tiếp.",
   "commandId": "systemctl-service",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Đọc trạng thái và sự kiện startup của ứng dụng đang không lên.",
+    "wrong1": "Trạng thái MariaDB giúp kiểm tra dependency, không đọc trạng thái unit myapp.",
+    "wrong2": "Journal là sự kiện lịch sử, không thay phép đọc trạng thái hiện tại của unit."
   }
 }

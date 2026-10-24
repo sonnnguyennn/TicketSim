@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận owner, authoritative NS và cutover; cập nhật A record ở zone có thẩm quyền khi được duyệt. Xác minh: Authoritative answer đúng IP mới và website của khách hoạt động qua domain.",
+  "explanation": "Xác nhận owner, authority và readiness/cutover; sửa đúng zone rồi xác minh client.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể cắt DNS mà không sửa cache/delegation.",
+    "close": "Khách vẫn tới server cũ qua domain.",
+    "safe": "Tránh đưa traffic tới endpoint chưa sẵn sàng hoặc sửa nhầm zone."
   }
 }

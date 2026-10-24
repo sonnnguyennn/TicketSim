@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Mode và denial là hai bằng chứng; chưa chứng minh tắt SELinux là biện pháp đúng.",
   "commandId": "ausearch-avc",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "Không có đánh giá rủi ro nào như vậy trong hai phép đọc.",
+    "p1": "Đúng kết quả getenforce ở thời điểm đọc.",
+    "p2": "AVC có comm=httpd, write và name=uploads."
   }
 }

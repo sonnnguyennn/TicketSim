@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Chưa nhầm chính sách hỗ trợ với một request đã gửi.",
   "commandId": "panel-lifecycle-policy",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Đây là mốc kỳ hiện tại.",
+    "p2": "Policy cho cách hủy theo yêu cầu.",
+    "over": "Không có approval cho terminate tức thời."
   }
 }

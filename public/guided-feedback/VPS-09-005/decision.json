@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Bảo toàn notice, socket, process ancestry và mail logs; chuyển abuse/security, phối hợp owner và chính sách containment. Xác minh: Security xác nhận nguồn traffic, containment được phê duyệt và provider thấy spike dừng.",
+  "explanation": "Giữ thông báo, dữ liệu process và mail trước khi điều phối containment đúng quyền.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Owner và policy quyết định containment; không kill process theo suy đoán.",
+    "unsafe": "Có thể mất bằng chứng và làm gián đoạn workload hợp lệ.",
+    "close": "Mức tăng traffic và yêu cầu provider vẫn cần xác minh."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Admin credential lost; VM console access is available.",
-  "recommended_next_checks": "Verify identity, recovery policy, distro-specific rescue method.",
-  "resolution_guidance": "Use approved offline reset procedure; prefer temporary access and rotate.",
-  "verification": "Customer confirms authorized login works.",
-  "escalate_when": "Ownership verification fails.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Console sẵn có và panel ghi CentOS Stream 9, nhưng ownership review đang pending. Chưa đủ điều kiện thay mật khẩu root.",
+  "recommended_next_checks": "Xác minh người yêu cầu và serviceID; đối chiếu guest/image, dữ liệu quan trọng và runbook recovery được phép.",
+  "resolution_guidance": "Đội được ủy quyền thực hiện recovery theo policy sau khi ownership được duyệt. Dùng kênh secret phù hợp, yêu cầu đổi credential tạm nếu có.",
+  "verification": "Khách xác nhận login hợp lệ qua đường dự kiến; kiểm tra audit và thu hồi quyền/tài khoản tạm theo policy.",
+  "escalate_when": "Chuyển đội account/security khi identity không rõ hoặc thất bại; chuyển admin recovery nếu cần thao tác rescue ngoài quyền support.",
+  "production_warning": "Không reset đặc quyền cho yêu cầu chưa xác minh hoặc gửi password/private key trực tiếp trong ticket.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

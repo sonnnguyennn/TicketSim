@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Ping được VPS nhưng SSH từ client bị timeout.",
-    "Đọc P1 (systemctl is-active sshd) và P2 (firewall-cmd --list-all); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: TCP/22 và đăng nhập từ client được phép, rule còn hiệu lực sau reload."
+    "Ping và SSH dùng giao thức khác; đừng lấy ping làm bằng chứng cổng 22 đang mở.",
+    "Đọc sshd rồi xem zone firewalld được hỏi có service ssh hay port 22 không.",
+    "sshd active nhưng danh sách zone chưa có SSH. Cần đối chiếu listener, active zone và phép TCP từ client trước khi sửa firewall."
   ]
 }

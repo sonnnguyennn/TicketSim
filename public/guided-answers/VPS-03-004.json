@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "SELinux policy/context denies intended write operation.",
-  "recommended_next_checks": "ls -Z /srv/app/uploads; audit2why (if installed)",
-  "resolution_guidance": "Restore correct security context or approved policy, do not disable SELinux globally.",
-  "verification": "Works in enforcing mode; no new related AVC denial.",
-  "escalate_when": "Custom SELinux policy required.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "SELinux đang Enforcing và AVC ghi httpd bị từ chối write vào uploads. Cần xác nhận đúng thời điểm/path và truy cập có hợp lệ theo thiết kế không.",
+  "recommended_next_checks": "Đọc ls -Z, context của process/path, policy và audit liên quan; đối chiếu label mặc định/persistent mapping trước khi sửa.",
+  "resolution_guidance": "Nếu truy cập hợp lệ và có quyền, sửa label/context hoặc policy được review đúng phạm vi; không tự tạo allow module từ mọi denial.",
+  "verification": "App ghi được khi vẫn Enforcing và không có AVC liên quan mới; kiểm tra quyền Unix cũng vẫn đúng.",
+  "escalate_when": "Chuyển đội security/SELinux khi cần custom policy hoặc chưa rõ intended access.",
+  "production_warning": "Không giữ permissive hay tắt SELinux toàn hệ thống để tránh một denial của ứng dụng.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

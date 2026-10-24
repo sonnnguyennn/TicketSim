@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Status và scope chưa tự cho quyền thực hiện reboot.",
   "commandId": "panel-api-audit",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Đây là scope được audit ghi.",
+    "over": "Matrix cho scope hẹp reboot:vm, không yêu cầu admin.",
+    "p1": "Yêu cầu đã bị từ chối."
   }
 }

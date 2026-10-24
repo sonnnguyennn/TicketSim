@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Thu dữ liệu chain, sửa có quyền, rồi thử đúng validating resolver.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Xác định điểm gãy trong chain trước khi sửa.",
+    "verify": "NOERROR với +cd không xác minh validation.",
+    "act": "Quyền tại parent và zone có thể thuộc hai bên."
   }
 }

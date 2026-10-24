@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Đọc state trước, sau đó đối chiếu gateway và tín hiệu host để phân biệt các lớp.",
   "commandId": "virsh-dominfo",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Heartbeat process VM là tín hiệu host, không phải trạng thái lifecycle được hỏi.",
+    "direct": "Mục này trả trạng thái lifecycle của VM.",
+    "wrong1": "Gateway cho biết đường console, không thay thế VM state."
   }
 }

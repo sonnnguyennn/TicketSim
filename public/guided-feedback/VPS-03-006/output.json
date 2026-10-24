@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: App thoát do thiếu module trong runtime đang dùng; package manifest và unit ExecStart cần đối chiếu.",
+  "explanation": "ImportError thuộc môi trường interpreter đang thực thi; phải so unit/manifest thay vì dùng pip hệ thống theo mặc định.",
   "commandId": "journalctl-service",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Unit không dùng system Python trong ExecStart được cung cấp.",
+    "ignore": "Auto-restart không thêm module vào venv đang thiếu.",
+    "supported": "ExecStart trỏ venv cụ thể, nên sửa hoặc rollback phải đúng môi trường đó."
   }
 }

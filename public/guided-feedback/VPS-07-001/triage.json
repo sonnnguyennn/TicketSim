@@ -2,10 +2,10 @@
   "correctIds": [
     "tcp"
   ],
-  "explanation": "Phân biệt kết nối TCP và status HTTP.",
+  "explanation": "Refused là lỗi thiết lập kết nối TCP;403 chỉ xuất hiện sau khi đã nhận phản hồi HTTP.",
   "optionFeedback": {
-    "403": "403 là HTTP response, không phải connection refused.",
-    "tcp": "Đúng: chưa nhận HTTP status.",
-    "dns": "Ticket không mô tả NXDOMAIN."
+    "403": "403 là một phản hồiHTTP, khác refused.",
+    "dns": "curl báorefused không tự xác nhận lỗi phân giải tên.",
+    "tcp": "curl chưa nhận mãHTTP từ server."
   }
 }

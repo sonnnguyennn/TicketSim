@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác minh danh tính phải đi trước thay known_hosts và trước việc xác nhận đăng nhập.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Cần biết đúng VPS và key qua kênh độc lập trước khi thay trust record.",
+    "verify": "Sau cập nhật mới kiểm tra được danh tính và chức năng đăng nhập.",
+    "act": "Chỉ loại entry đã xác minh là cũ; không xóa toàn bộ danh sách tin cậy."
   }
 }

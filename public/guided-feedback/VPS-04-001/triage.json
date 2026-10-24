@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Ghi sự trùng thời gian là đầu mối để đo, chưa xác định script lỗi hoặc độc hại.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không có thông báo địa chỉ mạng trong lời khách.",
+    "cause": "Chưa biết owner, nội dung hoặc mục đích script.",
+    "symptom": "Đúng sự liên hệ khách quan sát; cần so với số đo tài nguyên."
   }
 }

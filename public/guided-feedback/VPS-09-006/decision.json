@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu traffic graphs, incident ID, source/time; chuyển network/security để xem mitigation và điều kiện gỡ theo policy. Xác minh: Upstream route khôi phục được duyệt, client từ nhiều nguồn tới dịch vụ và monitoring ổn.",
+  "explanation": "Thu incident, traffic và thời gian để đội có quyền đánh giá điều kiện bảo vệ và gỡ chặn.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Vượt phạm vi quyền và có thể mở đường cho traffic tấn công.",
+    "close": "Khách vẫn mất kết nối; cần theo dõi và xác minh phục hồi.",
+    "safe": "Kèm biểu đồ; đúng đội quyết định biện pháp bảo vệ theo policy provider."
   }
 }

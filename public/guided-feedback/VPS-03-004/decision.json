@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đọc context và nguyên nhân AVC; sửa label/policy đúng phạm vi theo phê duyệt. Xác minh: Tác vụ ghi hoạt động trong Enforcing và không có AVC liên quan mới.",
+  "explanation": "Ưu tiên sửa đúng label/cấu hình đã xác minh; policy tùy chỉnh cần người quản lý SELinux review.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Xử lý intended access mà vẫn giữ Enforcing.",
+    "unsafe": "Bỏ thực thi policy cho toàn hệ thống để né một thao tác lỗi.",
+    "close": "Khách cần chức năng hoạt động khi lớp bảo vệ theo policy vẫn bật."
   }
 }

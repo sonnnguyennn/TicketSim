@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Bảo toàn trạng thái hiện tại, thu snapshot/backup timeline và đối chiếu order log; chuyển data recovery với owner về RPO. Xác minh: Owner đối chiếu bản ghi theo mốc, integrity test và RPO được báo rõ.",
+  "explanation": "Giữ hiện trạng và thử khôi phục độc lập để không ghi đè chứng cứ hoặc dữ liệu mới.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Owner xác nhận điểm phục hồi và dữ liệu cần giữ.",
+    "unsafe": "Có thể mất thêm dữ liệu và làm khó điều tra.",
+    "close": "Khách còn thấy dữ liệu cũ."
   }
 }

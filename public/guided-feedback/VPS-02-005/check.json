@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Cờ -6 chọn đúng họ địa chỉ; sau đó vẫn phải có phép đọc -4 riêng.",
   "commandId": "ip-family-addr",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "IPv6 route không liệt kê địa chỉ inet6 đã gắn trên interface.",
+    "direct": "Chỉ đọc IPv6 trên interface đang được kiểm tra.",
+    "wrong1": "Cờ -4 đọc họ IPv4; câu hỏi đang xác nhận IPv6 riêng."
   }
 }

@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Process xuất hiện lại sau khi bị terminate.",
-    "Đọc P1 (crontab -l -u root) và P2 (sha256sum /usr/local/bin/agent-update); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Security xác định artifact, persistence được xử lý theo plan và monitoring không còn tái xuất hiện."
+    "Process xuất hiện lại có thể do scheduler hoặc supervisor.",
+    "So root cron, process và hash với inventory tin cậy.",
+    "Hash khác chưa tự chứng minh malware; giữ binary và timeline rồi chuyển security."
   ]
 }

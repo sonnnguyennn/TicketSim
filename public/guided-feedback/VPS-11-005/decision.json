@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Bảo vệ guest hiện tại, đối chiếu volume ID, backup scope và owner; chuyển storage reattach/restore đúng disk có duyệt. Xác minh: Đúng data volume gắn/mount, checksum hoặc app integrity và owner xác nhận dữ liệu.",
+  "explanation": "Đúng volume, đúng quyền và bảo vệ hiện trạng đều cần trước change dữ liệu.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Data disk và ứng dụng vẫn chưa được xác minh.",
+    "safe": "Tránh gắn nhầm hoặc ghi đè disk đang có.",
+    "unsafe": "Format không phục hồi dữ liệu và có thể phá volume vừa attach."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Chuyển IPAM/provisioning capacity, báo trạng thái trung thực và phương án được owner duyệt. Xác minh: IPAM cấp IP hợp lệ, provision task hoàn tất, panel và guest/network khớp.",
+  "explanation": "Đội quản lý pool và task cần tiếp nhận, không tạo tài nguyên ngẫu nhiên.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Khách cần VPS sử dụng được, không chỉ xác nhận payment.",
+    "safe": "Đúng lớp lỗi; không hứa ETA chưa có.",
+    "unsafe": "Có thể trùng IP hoặc tạo tài nguyên tính phí thêm."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "confirm"
   ],
-  "explanation": "Xác minh đúng FQDN phân giải và trang tải sau thay đổi được phép.",
+  "explanation": "Xác nhận tên cần dùng; sửa typo hoặc thêm record theo quyền, không xóa zone.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "confirm": "Đúng: không tự thay đổi zone.",
-    "all": "Phá hủy cấu hình và không có cơ sở.",
-    "reboot": "NXDOMAIN không giải quyết bằng reboot guest."
+    "all": "Phá các tên đang hoạt động và chưa cần thiết.",
+    "reboot": "Reboot guest không tạo record trong authoritative DNS.",
+    "confirm": "Giữ ý định domain owner trước thay DNS."
   }
 }

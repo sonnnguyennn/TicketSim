@@ -2,10 +2,10 @@
   "correctIds": [
     "files"
   ],
-  "explanation": "Một filesystem có thể hết inode trước khi hết block.",
+  "explanation": "Có thể tài nguyên metadata khác block đã cạn; cần đo thay vì tăng GB theo thói quen.",
   "optionFeedback": {
-    "files": "Đúng: cần kiểm tra inode.",
-    "ram": "Khách không nói về RAM.",
-    "ssh": "Không có triệu chứng SSH."
+    "ram": "Đây không phải thông tin mà khách nêu về filesystem.",
+    "ssh": "Ticket nói thao tác tạo file, không phải truy cập quản trị.",
+    "files": "Đúng sự khác biệt khách thấy cần kiểm tra inode."
   }
 }

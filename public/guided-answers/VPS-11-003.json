@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Archive is truncated/corrupt relative to expected checksum.",
-  "recommended_next_checks": "Inspect alternate restore points and storage logs.",
-  "resolution_guidance": "Do not overwrite originals; restore only validated backup.",
-  "verification": "Test extraction succeeds in isolated restore area.",
-  "escalate_when": "Storage corruption across backups.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "tar không đọc trọn archive; hash tính được cần so chuẩn. Khi đối chiếu checksum lưu, hai bản có hash khác nhau.",
+  "recommended_next_checks": "So nguồn copy, checksum chuẩn và log storage; tìm backup khác đã được kiểm định.",
+  "resolution_guidance": "Giữ bản lỗi, không ghi đè; nhờ backup team đánh giá và thử bản thay thế trong khu vực riêng.",
+  "verification": "Đọc/giải nén bản thay thế thành công, so checksum và dữ liệu ứng dụng.",
+  "escalate_when": "Nhiều backup cùng lỗi, không có bản tin cậy hoặc cần điều tra storage/transport.",
+  "production_warning": "Tính hash không sửa file; không xóa nguồn cuối hoặc thử restore đè dữ liệu thật.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

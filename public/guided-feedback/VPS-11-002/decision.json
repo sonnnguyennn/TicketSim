@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Báo gap RPO, tra backup khác/snapshot/app logs, xác nhận lựa chọn với owner và chuyển backup team. Xác minh: Restore thử trên môi trường riêng, owner xác nhận mốc và dữ liệu trước production change.",
+  "explanation": "Owner phải biết mốc và rủi ro trước mọi thao tác ghi dữ liệu.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể ghi đè dữ liệu mới mà khách chưa chấp thuận.",
+    "close": "Có bản backup chưa đồng nghĩa đáp ứng đúng thời điểm.",
+    "safe": "Không hứa mốc chưa có hoặc ghi đè khi chưa đồng ý."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Provider protection currently filters/null-routes destination IP.",
-  "recommended_next_checks": "Check attack alert, duration, mitigation policy and unaffected paths.",
-  "resolution_guidance": "Coordinate with network/DDoS team; do not bypass policy.",
-  "verification": "Mitigation clears, allowed traffic restored.",
-  "escalate_when": "Network/security team.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Mitigation và null-route ở upstream cùng active trong cửa sổ lỗi kết nối. Traffic tăng mạnh, nhưng chưa phân loại đầy đủ hoặc xác nhận đây là false positive.",
+  "recommended_next_checks": "Thu biểu đồ packet/giây, IP nguồn và thời gian, policy ID, incident NET-612; so các đường không bị ảnh hưởng và cửa sổ lỗi.",
+  "resolution_guidance": "Network và security review điều kiện kích hoạt, bảo vệ và gỡ chặn theo policy; không bypass trong guest.",
+  "verification": "Route được khôi phục theo phê duyệt, client từ nhiều nguồn tới được dịch vụ và monitoring ổn định.",
+  "escalate_when": "Chuyển đội network và security có quyền provider, theo dõi incident đến khi có kết quả xác minh.",
+  "production_warning": "Không tắt firewall guest hoặc tự gỡ null-route để thử; incident được giao chưa đồng nghĩa sự cố đã xử lý.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: API trả 504 vào giờ cao điểm.",
-    "Đọc P1 (tail /var/log/nginx/error.log) và P2 (curl -s -o /dev/null -w \"%{time_total}\" http://127.0.0.1:3000/health); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Tải peak đại diện không còn 504, p95/p99 latency trong SLA và backend health ổn."
+    "Dịch vụ active vẫn có thể phản hồi quá chậm.",
+    "So log lỗi, thời gian phản hồi tại backend và đồ thị tải trong cùng cửa sổ.",
+    "Chưa biết CPU, cơ sở dữ liệu hay dependency gây chậm; cần thu trace và metrics trước khi đổi timeout."
   ]
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: AVC cho httpd tới TCP/9000 khi Enforcing; đây là bằng chứng policy chặn connect, cần xem route/backend và chính sách cho phép.",
+  "explanation": "AVC phù hợp với policy kết nối; cần xác nhận target, boolean hoặc rule và quyền trước khi sửa.",
   "commandId": "ausearch-avc",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Socket có thể lắng nghe trong khi httpd vẫn bị từ chối kết nối.",
+    "supported": "Đối chiếu timestamp và truy cập dự kiến; giữ Enforcing.",
+    "over": "Bỏ enforcement làm giảm kiểm soát toàn hệ thống."
   }
 }

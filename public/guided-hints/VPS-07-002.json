@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Website mở được nhưng trả 403 Forbidden.",
-    "Đọc P1 (curl -I http://127.0.0.1) và P2 (tail /var/log/nginx/error.log); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: URL mong đợi tải đúng trang và thư mục nhạy cảm không bị liệt kê."
+    "403 là phản hồi HTTP, khác connection refused.",
+    "Đọc error log và cấu hình root/index của site.",
+    "Directory index forbidden chưa tự nói file index bị xóa; so nội dung deploy và quyền truy cập mong muốn."
   ]
 }

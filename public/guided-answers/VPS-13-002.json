@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Container port not published to host in bridge mode.",
-  "recommended_next_checks": "Inspect network_mode and required exposure.",
-  "resolution_guidance": "With approval, publish correct port/recreate deployment safely.",
-  "verification": "Host TCP port and external HTTP work.",
-  "escalate_when": "Provider firewall still blocking.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "PORTS chỉ có 8080/tcp, docker port rỗng và PortBindings{}; chưa thấy host port publish.",
+  "recommended_next_checks": "So network mode, listener ứng dụng, proxy và yêu cầu public/private với owner.",
+  "resolution_guidance": "Dùng proxy hoặc publish đúng interface theo change có ACL/TLS, không expose mù.",
+  "verification": "Đúng endpoint host/public truy cập được theo thiết kế, không lộ port ngoài phạm vi.",
+  "escalate_when": "Cần thay đổi Docker host/provider firewall hoặc kiến trúc chưa rõ.",
+  "production_warning": "EXPOSE không tự publish; mở public có thể làm lộ backend vốn private.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

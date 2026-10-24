@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Cần thử đúng hostname bị lỗi trước khi kết luận về các domain khác.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Lời khách xác định một domain; cần thử đúng SNI của nó.",
+    "other": "Khách chỉ báo cảnh báo chứng chỉ trên một domain.",
+    "cause": "Chưa kiểm tra chứng chỉ và ánh xạ virtual host; tắt xác thực không sửa lỗi."
   }
 }

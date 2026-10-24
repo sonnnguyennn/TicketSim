@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Phân giải tên là một bước bổ sung khi dùng domain; vẫn cần đo thay vì quy lỗi bản ghi ngay.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đó là khác biệt khách nêu, chưa xác định DNS hay cấu hình ứng dụng.",
+    "other": "Khách đã nêu truy cập bằng IP được; cần kiểm tra phạm vi cụ thể.",
+    "cause": "Chưa có câu trả lời DNS có thẩm quyền để kết luận bản ghi bị xóa."
   }
 }

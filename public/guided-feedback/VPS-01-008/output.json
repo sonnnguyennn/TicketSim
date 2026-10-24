@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: OOM kill python3 trùng giai đoạn RAM cạn; tác động trực tiếp tới phiên SSH vẫn cần log và tái kiểm tra.",
+  "explanation": "Áp lực bộ nhớ là hướng điều tra có bằng chứng, nhưng process được kernel ghi là python3 và session closed chưa nêu lý do.",
   "commandId": "free-h",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Một dòng đóng phiên không giải thích vì sao; OOM và memory stall vẫn cần điều tra.",
+    "supported": "Giữ cả bằng chứng tài nguyên và giới hạn của log SSH.",
+    "over": "Tên process trong log là python3, không phải sshd; còn thiếu nhiều cửa sổ thời gian."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Root cron tái chạy binary, hash khác baseline trong inventory; nghi unauthorized persistence, cần xác minh change/owner.",
+  "explanation": "Có lịch chạy định kỳ và binary khác baseline; quyền sử dụng và nguồn update cần review.",
   "commandId": "sha256sum",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "So owner, change và timeline, giữ binary trước containment.",
+    "over": "Update hợp lệ cũng đổi hash, còn phạm vi chưa được đánh giá.",
+    "ignore": "Crontab không lưu phê duyệt hoặc danh tính người thêm job."
   }
 }

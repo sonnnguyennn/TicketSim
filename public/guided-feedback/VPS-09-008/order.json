@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Giữ bằng chứng, xử lý có quyền rồi theo dõi là các bước khác nhau.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Tránh xóa chứng cứ trước khi xác định nguồn.",
+    "verify": "Một lần kill không loại bỏ cơ chế tự chạy lại.",
+    "act": "Cần đúng phạm vi và bảo toàn bằng chứng."
   }
 }

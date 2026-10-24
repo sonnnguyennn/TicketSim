@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Cần đọc listener trước khi thay firewall; dịch vụ chỉ bind localhost sẽ cần hướng điều tra khác.",
   "commandId": "ss-ltnp",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Địa chỉ Local Address:Port phân biệt 127.0.0.1 với 0.0.0.0.",
+    "wrong1": "Firewall liệt kê rule của zone, không đọc socket TCP/443 đang LISTEN.",
+    "wrong2": "Một HTTP response local không liệt kê đầy đủ listener và địa chỉ bind."
   }
 }

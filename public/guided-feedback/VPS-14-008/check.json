@@ -5,8 +5,8 @@
   "explanation": "Lý do hold là dữ liệu quản lý dịch vụ; kiểm tra guest không thay thế hồ sơ này.",
   "commandId": "billing-service",
   "optionFeedback": {
+    "wrong2": "Hóa đơn giúp kiểm tra nợ phí nhưng không bao quát các lý do đình chỉ như security hold.",
     "direct": "Hồ sơ dịch vụ ghi trạng thái và mã nguyên nhân đình chỉ để đi tiếp đúng quy trình.",
-    "wrong1": "Trạng thái chạy/dừng không nêu hồ sơ hoặc lý do đình chỉ dịch vụ.",
-    "wrong2": "Hóa đơn giúp kiểm tra nợ phí nhưng không bao quát các lý do đình chỉ như security hold."
+    "wrong1": "Trạng thái chạy/dừng không nêu hồ sơ hoặc lý do đình chỉ dịch vụ."
   }
 }

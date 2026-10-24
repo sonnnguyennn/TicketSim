@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Giữ VM đang chạy, thu task sync/error, chuyển control-plane; xác minh guest qua client. Xác minh: Panel cập nhật Running đúng host, SSH/app vẫn hoạt động và sync không trễ.",
+  "explanation": "Giữ dịch vụ hoạt động và chuyển lỗi đồng bộ đúng đội.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể gián đoạn VM mà không sửa worker.",
+    "close": "Panel chưa đúng; cần xác minh sync phục hồi.",
+    "safe": "Không dùng reboot để sửa nhãn quản lý cũ."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận architecture/authorization; dùng proxy hoặc publish đúng interface kèm ACL/TLS theo change. Xác minh: Client được phép tới app qua đúng endpoint, các nguồn khác vẫn theo policy.",
+  "explanation": "Hỏi intended exposure trước, tránh biến backend private thành public.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Giữ TLS/ACL và chỉ public endpoint được duyệt.",
+    "unsafe": "Có thể bỏ qua proxy/auth vốn là ranh giới bảo vệ.",
+    "close": "Đường khách cần từ ngoài chưa được kiểm tra."
   }
 }

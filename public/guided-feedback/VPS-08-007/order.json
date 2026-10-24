@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác nhận đúng IP và hostname, thay đổi qua đúng owner, rồi thử DNS và mail.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Tránh đặt PTR cho sai IP hoặc tên không khớp.",
+    "verify": "PTR đúng chưa bảo đảm mọi policy SMTP đều đạt.",
+    "act": "Reverse zone không mặc định thuộc quyền domain khách."
   }
 }

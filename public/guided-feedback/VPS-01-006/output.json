@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: IP trong jail bị ban; cần đối chiếu IP nguồn và auth failures trước khi kết luận đây là nguyên nhân của khách.",
+  "explanation": "Ban record chỉ liên hệ được với ticket khi IP/time/account được đối chiếu; chưa biết danh tính người thử.",
   "commandId": "fail2ban-log",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "NAT/IP chung có thể có nhiều user; log còn có user admin không hợp lệ.",
+    "ignore": "Jail SSH có thể chặn kết nối theo nguồn, nên cần điều tra sự liên hệ.",
+    "supported": "Cần nối IP trong log với nguồn thực và thời điểm khách bị lỗi."
   }
 }

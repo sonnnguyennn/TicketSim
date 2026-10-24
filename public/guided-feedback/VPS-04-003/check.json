@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Dòng kernel giúp giữ PID/tên/thời điểm; grep chỉ chọn một nhóm log, chưa bao quát mọi nguyên nhân thoát.",
   "commandId": "journal-boot",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Unit có thể ghi Result oom-kill, nhưng không cho dòng kernel Killed process cụ thể.",
+    "wrong2": "Ảnh chụp RAM hiện tại không đọc sự kiện kernel đã kill PID.",
+    "direct": "Đọc kernel boot hiện tại và lọc thông báo có process bị kill."
   }
 }

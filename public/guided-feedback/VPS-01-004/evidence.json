@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Phân biệt điều đã đọc với phạm vi policy chưa được xác định.",
   "commandId": "firewall-list",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Danh sách service chỉ có cockpit và dhcpv6-client, mục ports rỗng.",
+    "over": "Một lệnh của guest không liệt kê toàn bộ đường mạng hoặc edge ACL.",
+    "p1": "Đúng trạng thái unit được lệnh trả về."
   }
 }

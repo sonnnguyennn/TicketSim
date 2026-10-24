@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Có restore và file mtime trước kỳ vọng; cần xác minh snapshot timestamp và giao dịch thiếu.",
+  "explanation": "Thời điểm restore không cập nhật dữ liệu của snapshot; số giao dịch thiếu cần đối chiếu riêng.",
   "commandId": "stat-file",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Cần kiểm tra log, backup và bản ghi thực tế.",
+    "over": "Chưa biết backup mới hơn hoặc log có phục hồi được không.",
+    "ignore": "Ngày hoàn tất thao tác khác ngày tạo snapshot."
   }
 }

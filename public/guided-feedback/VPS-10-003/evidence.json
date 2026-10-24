@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Không đánh đồng interface tồn tại với đúng mạng được cấp.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Đây là cấu hình mong muốn của VM.",
+    "over": "Chưa có dữ liệu guest firewall.",
+    "p1": "domiflist liệt kê Source đó."
   }
 }

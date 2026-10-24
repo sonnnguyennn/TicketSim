@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Scheduled backup fail sau key rotation.",
-    "Đọc P1 (journalctl -u backup-agent -n 30) và P2 (PANEL: credentials); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Backup task mới thành công, artifact hash/restore test đạt và secret không lộ."
+    "Lỗi xác thực khác quota hoặc lỗi đọc file.",
+    "So key rejected với audit rotation và key ID agent dùng.",
+    "Khóa mới backup-key-7 nhưng agent còn tham chiếu backup-key-6; owner cần cập nhật qua kênh secret rồi kiểm tra backup."
   ]
 }

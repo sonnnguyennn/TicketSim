@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác định PID, limit và dạng tăng trước change; sau đó kiểm tra trend lẫn request thành công.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Cần nối đúng process và thời điểm để phân biệt leak với lưu lượng hợp lệ.",
+    "verify": "Không chỉ nhìn systemctl active hoặc count sau restart còn thấp.",
+    "act": "Thay đổi phải giải quyết nguyên nhân/nhu cầu đã đo, không đặt vô hạn."
   }
 }

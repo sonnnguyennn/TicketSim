@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Timeout nằm ở bước chờ kết nối/phản hồi; ping chỉ cho biết có phản hồi ICMP.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Permission denied khác timeout và không được khách nêu.",
+    "cause": "Lời khách chưa có rule, active zone hoặc capture để định vị chỗ rơi gói.",
+    "symptom": "Đúng với hai triệu chứng khách mô tả, chưa xác định nơi chặn TCP."
   }
 }

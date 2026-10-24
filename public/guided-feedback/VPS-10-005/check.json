@@ -2,7 +2,7 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "lsblk liệt kê thiết bị ởguest; attachment ởhypervisor phải đọc bằng phép kiểm tra riêng.",
+  "explanation": "lsblk liệt kê thiết bị ở guest; attachment ở hypervisor phải đọc bằng phép kiểm tra riêng.",
   "commandId": "lsblk",
   "optionFeedback": {
     "direct": "Đọc cây thiết bị block và kích thước guest nhận được.",

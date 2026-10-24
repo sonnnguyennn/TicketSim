@@ -2,10 +2,10 @@
   "correctIds": [
     "write"
   ],
-  "explanation": "Tóm đúng việc người dùng không làm được.",
+  "explanation": "Ghi đúng thao tác ghi thất bại rồi đo tài nguyên filesystem; không đổi sang lỗi SSH/DNS.",
   "optionFeedback": {
-    "write": "Đúng: khách nhận No space left on device.",
-    "login": "Ticket không báo lỗi SSH.",
-    "dns": "Không có dấu hiệu DNS."
+    "dns": "Lỗi DNS khác No space left on device.",
+    "write": "Đúng thao tác khách cần làm lại được sau xử lý.",
+    "login": "Không phải triệu chứng được nêu trong ticket ghi dữ liệu."
   }
 }

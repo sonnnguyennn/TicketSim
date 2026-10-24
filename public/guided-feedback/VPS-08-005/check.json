@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Dùng @server để chọn nguồn; vẫn phải xác nhận server đó có thẩm quyền với zone.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Hỏi trực tiếp server được chỉ định.",
+    "wrong1": "Đây là recursive resolver có thể còn cache.",
+    "wrong2": "RAM không so authoritative DNS."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "App process reached file descriptor limit.",
-  "recommended_next_checks": "ls /proc/1234/fd | wc -l; systemctl show myapp -p LimitNOFILE",
-  "resolution_guidance": "Find leak; adjust limit only after root cause/resource assessment.",
-  "verification": "No file descriptor errors during representative load.",
-  "escalate_when": "Application bug or host-wide limit.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "myapp đã ghi EMFILE; PID1234 có limit1024 và hiện đếm1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
+  "recommended_next_checks": "Lấy trend FD theo traffic, phân loại socket/file và đối chiếu process/limit; kiểm tra drop-in/unit và tài nguyên liên quan.",
+  "resolution_guidance": "Owner ứng dụng sửa vòng đời FD hoặc lập change limit hữu hạn phù hợp sau đánh giá capacity; xác minh process mới nhận đúng limit nếu restart được duyệt.",
+  "verification": "Dưới tải đại diện, FD không tăng không kiểm soát, còn khoảng trống dưới limit, không EMFILE và API xử lý request đúng.",
+  "escalate_when": "Chuyển đội ứng dụng khi nghi leak; chuyển platform khi liên quan giới hạn hệ thống/capacity ngoài app.",
+  "production_warning": "Không đặt limit vô hạn, kill process hoặc kết luận leak chỉ từ một lần đếm FD.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

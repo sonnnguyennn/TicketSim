@@ -4,8 +4,8 @@
   ],
   "explanation": "Khách báo VPS bị đình chỉ và muốn mở lại; nguyên nhân chỉ được xác nhận sau khi đọc hồ sơ dịch vụ.",
   "optionFeedback": {
-    "symptom": "Đúng với yêu cầu khách gửi, chưa gán nguyên nhân abuse hay nợ phí.",
     "other": "Chưa đọc billing; không thể gán mọi đình chỉ cho nợ phí.",
-    "cause": "Yêu cầu gấp chưa xác nhận lý do hold hoặc quyền được bỏ hold."
+    "cause": "Yêu cầu gấp chưa xác nhận lý do hold hoặc quyền được bỏ hold.",
+    "symptom": "Đúng với yêu cầu khách gửi, chưa gán nguyên nhân abuse hay nợ phí."
   }
 }

@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Connection refused khác HTTP 403/404.",
-    "Xem service web và listener :80.",
-    "Nếu Nginx dừng, xem log/config trước khi đề xuất start; sau đó curl local và bên ngoài."
+    "Connection refused xảy ra trước khi có mã HTTP.",
+    "Xem trạng thái Nginx và listener cổng 80.",
+    "Nginx dừng chưa cho biết vì sao; xem log/cấu hình trước start có quyền và thử lại từ client."
   ]
 }

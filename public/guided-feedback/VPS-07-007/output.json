@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: SNI shop nhận cert api và config không thấy vhost shop; DNS, SAN và mapping cần đối chiếu.",
+  "explanation": "CN khác tên là dấu hiệu cần điều tra; SAN vẫn có thể bao phủ nhiều hostname.",
   "commandId": "nginx-dump",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Bỏ xác thực có thể che việc kết nối sai máy chủ.",
+    "ignore": "SAN có thể chứa nhiều hostname ngoài CN.",
+    "supported": "Chưa đủ SAN, chain và cấu hình runtime để khẳng định hostname mismatch."
   }
 }

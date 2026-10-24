@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Sự lặp theo giờ giúp so job/tải, nhưng chưa xác nhận một job gây ra tất cả.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Lời khách chưa có dữ liệu job/I/O/traffic để xác nhận.",
+    "symptom": "Đúng cửa sổ khách nêu để đối chiếu log và metric.",
+    "other": "Không có lỗi xác thực trong báo cáo hiệu năng."
   }
 }

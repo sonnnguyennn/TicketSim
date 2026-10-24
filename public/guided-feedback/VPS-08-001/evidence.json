@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "DNS answer và IP allocation là hai nguồn riêng, chưa thay cho approval cutover.",
   "commandId": "panel-ip-allocation",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Đây là A record tại điểm hỏi.",
+    "p2": "Đây là IP mới được cấp cho VPS.",
+    "over": "Chưa hỏi từng authoritative NS."
   }
 }

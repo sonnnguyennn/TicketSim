@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Rủi ro ghi đè và thiếu bản sao đã được kiểm tra là hai vấn đề tách biệt cần xử lý.",
   "commandId": "panel-backup-status",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "Không có cam kết đó; cảnh báo hiện nói toàn main disk.",
+    "p1": "Đây là tác động trực tiếp của thao tác reinstall.",
+    "p2": "Chưa có bằng chứng về điểm phục hồi đủ mới."
   }
 }

@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác định đúng thiết bị, change có quyền, rồi kiểm tra chức năng sau phục hồi.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Tránh thay UUID chỉ vì một disk bất kỳ xuất hiện.",
+    "verify": "Boot thành công chưa chứng minh app dùng đúng volume.",
+    "act": "Đổi config hoặc attachment cần đúng quyền và bảo toàn dữ liệu."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Incorrect SNI virtual host/certificate mapping for domain.",
-  "recommended_next_checks": "Check server_name, cert paths, DNS A/AAAA, cert coverage.",
-  "resolution_guidance": "Correct vhost and deploy matching valid cert safely.",
-  "verification": "SNI endpoint serves certificate covering requested domain.",
-  "escalate_when": "Customer-managed TLS configuration.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "SNI shop nhận chứng chỉ có CN api và bản dump chỉ thấy virtual host mặc định cho api. Nghi vấn ánh xạ chứng chỉ; CN riêng lẻ chưa chứng minh SAN không bao phủ shop.",
+  "recommended_next_checks": "Đối chiếu A/AAAA, SNI, SAN, chain và server block đang chạy trên endpoint liên quan.",
+  "resolution_guidance": "Người có quyền sửa ánh xạ hoặc triển khai chứng chỉ đúng hostname theo quy trình thay đổi; kiểm tra cấu hình và phương án hoàn tác trước khi nạp lại.",
+  "verification": "Client dùng SNI shop xác minh chain, hostname, hạn dùng và nội dung trang; kiểm tra các domain chung IP nếu bị ảnh hưởng.",
+  "escalate_when": "Chuyển nhóm TLS hoặc chủ site nếu thiếu quyền với chứng chỉ, hoặc chưa rõ cấu hình đang chạy trên nhiều endpoint.",
+  "production_warning": "Không tắt xác thực TLS để che cảnh báo; không kết luận hostname mismatch chỉ từ CN khi chưa đọc SAN.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

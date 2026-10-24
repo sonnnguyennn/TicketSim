@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Không đồng disk đã tăng với không gian filesystem mà app dùng.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không phải vấn đề dung lượng logical volume trong ticket.",
+    "cause": "Cần so VG/LV/FS; các lớp không nhất thiết tăng cùng nhau.",
+    "symptom": "Đúng triệu chứng khách báo; cần đo từng lớp để giải thích."
   }
 }

@@ -3,12 +3,12 @@
     "gb",
     "inode"
   ],
-  "explanation": "Tách quan sát khỏi quyết định dọn dữ liệu.",
+  "explanation": "Hai phép đo xác nhận hai loại tài nguyên; chưa phân loại dữ liệu hay chẩn đoán phần cứng.",
   "commandId": "df-i",
   "optionFeedback": {
-    "gb": "Đúng từ P1.",
-    "inode": "Đúng từ P2.",
-    "which": "Chưa biết loại file nào được phép xóa.",
-    "hardware": "Không có bằng chứng phần cứng."
+    "inode": "df -i có IFree0 và IUse%100.",
+    "which": "Hai df không liệt kê loại dữ liệu và owner/retention.",
+    "hardware": "Hết inode không phải kết quả kiểm tra sức khỏe ổ vật lý.",
+    "gb": "df -h có Avail11G và Use%45."
   }
 }

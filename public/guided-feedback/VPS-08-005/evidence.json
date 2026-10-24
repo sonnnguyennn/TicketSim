@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Đọc đúng IP và TTL theo từng nguồn, không suy rộng cho mọi NS.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Cache này còn câu trả lời cũ tại thời điểm đo.",
+    "over": "Chưa truy vấn toàn bộ authoritative server.",
+    "p1": "Chỉ xác nhận server đó trong lần hỏi."
   }
 }

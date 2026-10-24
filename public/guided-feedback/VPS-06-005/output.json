@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Mount /data thất bại; fstab UUID không có trong blkid snapshot, nhưng cần xác định volume bị tháo hay UUID đổi.",
+  "explanation": "Sai khác định danh đã rõ; phải tìm đúng volume trước khi sửa UUID hoặc khôi phục attachment.",
   "commandId": "fstab-read",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Đối chiếu config, thiết bị và inventory để tránh mount nhầm.",
+    "over": "Chưa biết dữ liệu và phụ thuộc của /data; bỏ entry có thể làm app ghi nhầm.",
+    "ignore": "Console đang báo mount thất bại, trái với kết luận này."
   }
 }

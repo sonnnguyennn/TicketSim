@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Ghi xu hướng mà khách thấy, rồi cần chuỗi mẫu và log để kiểm tra.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đúng diễn biến khách báo, chưa xác định code bị leak.",
+    "other": "Không có dấu hiệu certificate trong ticket daemon.",
+    "cause": "Chưa có heap profile hoặc phân tích code."
   }
 }

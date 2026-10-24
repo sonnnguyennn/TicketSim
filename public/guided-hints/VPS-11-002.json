@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách muốn restore về sáng nay.",
-    "Đọc P1 (PANEL: restore points) và P2 (PANEL: requested time); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Restore thử trên môi trường riêng, owner xác nhận mốc và dữ liệu trước production change."
+    "“Sáng nay” cần một mốc giờ có múi giờ.",
+    "So restore points đã hoàn tất với requested time.",
+    "Bản ngày 20/10 sớm hơn yêu cầu ngày 22/10. Tìm nguồn khác và giải thích dữ liệu có thể thiếu trước khi chọn mốc."
   ]
 }

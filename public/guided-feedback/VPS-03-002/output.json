@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Mode 755 root:root không cấp write cho webapp theo quyền cơ bản; ACL/mount cần đối chiếu nếu có.",
+  "explanation": "Mode cơ bản không cấp write cho webapp; còn phải xác nhận process user, ACL và mount để kết luận đầy đủ.",
   "commandId": "id-user",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Tạo file cần quyền write và search trên thư mục theo policy áp dụng.",
+    "supported": "Owner root có write, còn group/others chỉ r-x.",
+    "over": "ls -ld một đường dẫn và id không bao quát ACL/thư mục cha."
   }
 }

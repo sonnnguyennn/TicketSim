@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Host key xác thực máy chủ. Việc reinstall có thể làm nó đổi nhưng không phải lý do bỏ bước xác minh.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không có lỗi dung lượng trong lời khách.",
+    "cause": "Reinstall mới là bối cảnh, chưa chứng minh client đang nối đúng host.",
+    "symptom": "Cảnh báo danh tính host xảy ra trước khi client tin máy chủ."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "HTTP response là điểm đầu trước đối chiếu scope và owner.",
   "commandId": "panel-api-audit",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Cho HTTP status của request bị lỗi.",
+    "wrong1": "Không cho phản hồi authorization của API request.",
+    "wrong2": "Thông số gói không thay quyền token."
   }
 }

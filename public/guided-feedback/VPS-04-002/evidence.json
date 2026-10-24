@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Cần đọc đúng available và si/so của dòng interval, không suy tên ứng dụng gây lỗi.",
   "commandId": "vmstat",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "Hai lệnh không có bằng chứng vòng đời heap của process.",
+    "p1": "Đúng các cột bộ nhớ được free trả.",
+    "p2": "Có hoạt động swap trong khoảng một giây, khác chỉ thấy swap đã dùng."
   }
 }

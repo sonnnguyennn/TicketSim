@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "So timeline và đối chứng trước chỉnh lịch; sau đó đo hiệu năng và kiểm tra chất lượng backup riêng.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Cần kiểm tra sự tương quan và các công việc cùng giờ trước change.",
+    "verify": "App nhanh hơn chưa chứng minh backup tốt, và task completed chưa chứng minh restore được.",
+    "act": "Thay đổi phải giữ mục tiêu RPO và tác động workload."
   }
 }

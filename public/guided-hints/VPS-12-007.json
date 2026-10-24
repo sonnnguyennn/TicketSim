@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách không reboot được VM qua API.",
-    "Đọc P1 (PANEL: API) và P2 (PANEL: audit); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Token đúng scope được duyệt, API dry-run/authorized request thành công và audit ghi nhận."
+    "403 là từ chối quyền, không tự cho biết VM tắt hay API hỏng.",
+    "So read:vm với permission matrix của POST reboot và owner VM/token.",
+    "Cùng owner nhưng token chỉ có read:vm; cần owner tạo quyền reboot tối thiểu, không cấp admin hoặc reboot hộ."
   ]
 }

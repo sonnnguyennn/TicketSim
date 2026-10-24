@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Các kết quả thuộc ICMP trên path đã thử; chưa xác định cấu hình cuối cùng phải thay ở đâu.",
   "commandId": "ping",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Thông báo Frag needed và mtu1400 cho biết đường không mang gói đó như hiện tại.",
+    "p2": "Đúng hai lượt thành công của phép nhỏ hơn.",
+    "over": "Payload không bằng MTU, và chưa xác định lớp interface cần sửa."
   }
 }

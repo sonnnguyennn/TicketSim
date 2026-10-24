@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: IP HTTP thành công còn DNS query timeout; nghi resolver hoặc đường tới resolver, chưa biết bản ghi domain sai.",
+  "explanation": "Request HTTP theo IP hoạt động, còn resolver hoặc đường tới nó cần được kiểm tra; chưa thể quy lỗi cho A record.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Timeout chưa cho biết domain có record hay không.",
+    "over": "Không nhận được NXDOMAIN hoặc NODATA từ resolver.",
+    "ignore": "Request theo IP không cần phân giải tên."
   }
 }

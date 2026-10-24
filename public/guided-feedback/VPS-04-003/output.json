@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Kernel OOM kill và unit oom-kill cùng chỉ vào app; cần xác định giới hạn và peak bộ nhớ.",
+  "explanation": "Đã có bằng chứng OOM; điều tra tiếp phải xác định limit và workload thay vì chỉ mặc định tăng RAM.",
   "commandId": "systemctl-service",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "OOM nêu sự kiện thiếu tài nguyên nhưng chưa giải thích cấu hình hay workload gây ra.",
+    "over": "Giới hạn cgroup/heap hoặc workload sai vẫn có thể làm lỗi lặp lại.",
+    "ignore": "Hai nguồn có thể liên hệ khi PID/time/unit khớp, nên cần đối chiếu."
   }
 }

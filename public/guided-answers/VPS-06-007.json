@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Console proxy/access path failed; guest status not established by black screen.",
-  "recommended_next_checks": "Try alternative panel console, check console service logs.",
-  "resolution_guidance": "Escalate panel/console gateway; avoid guest reboot without evidence.",
-  "verification": "Console session opens and VM condition verified.",
-  "escalate_when": "Console infrastructure team.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Websocket console trả 502 và gateway degraded; heartbeat QEMU vẫn có. Đường web console lỗi, còn tình trạng guest OS/app chưa được xác minh đầy đủ.",
+  "recommended_next_checks": "Thu VM ID, gateway ID, timestamp, lỗi websocket và log gateway; kiểm tra serial/host console hoặc guest path được phép.",
+  "resolution_guidance": "Chuyển control-plane/console team xử lý gateway; giữ workload đang chạy và tránh reset guest thiếu bằng chứng.",
+  "verification": "Websocket kết nối, console hiển thị; xác minh guest OS và dịch vụ khách cần dùng riêng.",
+  "escalate_when": "Chuyển console/control-plane với dữ liệu cùng thời điểm; phối hợp virtualization nếu tín hiệu host/guest cũng bất thường.",
+  "production_warning": "Không hard reset VM chỉ vì console đen; đây có thể là lỗi đường truy cập trước guest.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

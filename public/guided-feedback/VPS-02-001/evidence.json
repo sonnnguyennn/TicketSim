@@ -3,12 +3,12 @@
     "ip",
     "route"
   ],
-  "explanation": "Cần xác nhận gateway trước mọi thay đổi.",
+  "explanation": "Câu này chỉ xét hai phép đọc địa chỉ/route; gateway được cấp phải tra nguồn riêng, dù panel bổ sung có thể cung cấp sau đó.",
   "commandId": "ip-route",
   "optionFeedback": {
-    "ip": "Đúng từ P1.",
-    "route": "Đúng từ P2.",
-    "gateway": "Fixture chưa cung cấp gateway được cấp.",
-    "upstream": "Không thể kết luận upstream khi guest thiếu route."
+    "route": "Chỉ có route subnet trong output ip route.",
+    "gateway": "Không có gateway trong hai output; cần nguồn cấp phát panel riêng.",
+    "upstream": "Chưa có route phù hợp từ guest để kiểm tra đường upstream.",
+    "ip": "Địa chỉ 10.10.20.25/24 nằm trong subnet này."
   }
 }

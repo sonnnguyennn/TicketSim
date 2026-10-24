@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Chúng nối IP với một kết nối và PID, chưa giải thích toàn bộ traffic.",
   "commandId": "ss-connections",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Thông báo nêu loại traffic và IP nguồn.",
+    "p2": "ss nối một kết nối với process này.",
+    "over": "Chưa kiểm tra binary, nội dung mail hoặc phê duyệt."
   }
 }

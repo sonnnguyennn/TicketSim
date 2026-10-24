@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Boot chỉ kiểm chứng một phần, không thay kiểm tra data disk.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đúng phần khách cần tìm lại.",
+    "other": "Khách đã xác nhận boot được.",
+    "cause": "Guest không thấy disk chưa chứng minh host đã xóa volume."
   }
 }

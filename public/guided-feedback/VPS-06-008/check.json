@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Lifecycle state phải được đối chiếu với QEMU event và timeline, không chỉ thử lại cùng thao tác.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "I/O giúp điều tra nguyên nhân chậm, không thay thế state task.",
+    "wrong2": "Event cho biết yêu cầu đã gửi, không thay trạng thái task đang chờ.",
+    "direct": "Mục này ghi Stopping và thời gian chờ."
   }
 }

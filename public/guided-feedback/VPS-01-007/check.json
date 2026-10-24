@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "ss -ltnp đọc listener hiện tại; chỉ grep file cấu hình chưa chứng minh cổng runtime.",
   "commandId": "ss-ltnp",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Cấu hình port dự kiến không chứng minh daemon thực sự lắng nghe ở cổng đó.",
+    "wrong2": "Firewall rule không liệt kê socket đang LISTEN của sshd.",
+    "direct": "-l chọn listener, -t TCP, -n giữ số cổng để thấy 22/2222."
   }
 }

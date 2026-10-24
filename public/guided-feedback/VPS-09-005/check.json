@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Abuse notice nêu phạm vi cáo buộc; socket bổ sung process ở thời điểm kiểm tra.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Định danh process, nhưng chưa đọc phạm vi provider báo.",
+    "direct": "Đọc IP và loại traffic bị provider báo.",
+    "wrong1": "Đọc socket hiện tại, không thay nội dung thông báo của provider."
   }
 }

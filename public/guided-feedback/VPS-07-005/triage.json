@@ -4,8 +4,8 @@
   ],
   "explanation": "Cảnh báo hết hạn thuộc quá trình kiểm tra chứng chỉ, không tự chứng minh lỗi backend HTTP.",
   "optionFeedback": {
-    "symptom": "Khách thấy cảnh báo thời hạn cert khi truy cập website.",
     "other": "Khách báo certificate expired, không phải một HTTP502 đã được đo.",
-    "cause": "Gia hạn trong panel chưa chứng minh endpoint đã phục vụ cert mới."
+    "cause": "Gia hạn trong panel chưa chứng minh endpoint đã phục vụ cert mới.",
+    "symptom": "Khách thấy cảnh báo thời hạn cert khi truy cập website."
   }
 }

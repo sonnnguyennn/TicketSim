@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Chưa biết số giao dịch từ hai phép đọc ban đầu.",
   "commandId": "panel-provision-task",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "Chưa có decision billing hoặc tax/ledger reconciliation.",
+    "p1": "Đây là ID trùng trên hóa đơn.",
+    "p2": "Đây là resource count khác số line."
   }
 }

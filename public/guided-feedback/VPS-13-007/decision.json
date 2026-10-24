@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu inspect OOMKilled, memory limit, host available và data volume health; chuyển DB/infra lập recovery an toàn. Xác minh: db stable, query representative thành công, không OOM và dữ liệu integrity được xác nhận.",
+  "explanation": "Bảo vệ dữ liệu DB và điều tra tài nguyên trước recovery.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Khách vẫn không truy vấn được DB.",
+    "safe": "Không xóa dữ liệu để chữa allocation error.",
+    "unsafe": "Mất dữ liệu, không giải quyết nguyên nhân tài nguyên."
   }
 }

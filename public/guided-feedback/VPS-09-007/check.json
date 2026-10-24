@@ -5,8 +5,8 @@
   "explanation": "Ở CentOS Stream 9, log unit sshd ghi sự kiện xác thực; Ubuntu thường dùng unit ssh và phải chọn đúng môi trường.",
   "commandId": "journalctl-unit",
   "optionFeedback": {
+    "wrong2": "DNS của website không xác minh một phiên SSH root.",
     "direct": "Đọc log sshd trong ngày để tìm Accepted, user, IP và timestamp.",
-    "wrong1": "Dung lượng ổ đĩa không cho biết key nào vừa được SSH chấp nhận.",
-    "wrong2": "DNS của website không xác minh một phiên SSH root."
+    "wrong1": "Dung lượng ổ đĩa không cho biết key nào vừa được SSH chấp nhận."
   }
 }

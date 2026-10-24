@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: AAAA tồn tại nhưng panel không cấp IPv6 cho VPS này; record không khớp allocation, cần kiểm tra authority/owner.",
+  "explanation": "DNS và allocation không khớp; cần xác nhận owner, authority và endpoint, tránh đoán địa chỉ.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "IPv4 đã hoạt động và chưa có bằng chứng A record sai.",
+    "ignore": "DNS record không tự cấp địa chỉ hoặc mở đường mạng.",
+    "supported": "Phải xác nhận endpoint và owner trước khi sửa hoặc triển khai IPv6."
   }
 }

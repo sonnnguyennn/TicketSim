@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS chậm dù CPU user thấp.",
-    "Đọc P1 (vmstat 1 3) và P2 (iostat -xz 1 2); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: await và độ trễ ứng dụng trở lại baseline dưới tải tương đương."
+    "CPU user thấp có thể vì task đang chờ I/O; xem wa ở các dòng interval.",
+    "So vmstat với r_await/w_await và hàng đợi của vda trong iostat.",
+    "Độ trễ và utilization cao không chỉ ra ổ vật lý hỏng; cần workload/host metrics và baseline."
   ]
 }

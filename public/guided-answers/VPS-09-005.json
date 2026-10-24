@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Possible outbound spam process; notice and socket insufficient to prove malice.",
-  "recommended_next_checks": "Correlate mail logs, executable, cron, owner, timestamps.",
-  "resolution_guidance": "Follow provider abuse/incident policy, preserve evidence, coordinate containment.",
-  "verification": "Outbound spam stops and abuse ticket formally resolved.",
-  "escalate_when": "Security/abuse escalation required.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Provider báo SMTP tăng; socket TCP/25 liên quan Python PID 1802 và thống kê kết nối tăng. Chưa đủ chứng minh nội dung spam hoặc VPS bị xâm nhập.",
+  "recommended_next_checks": "Giữ thông báo, timestamps, socket, process ancestry, metadata của binary và mail log; đối chiếu owner và change record.",
+  "resolution_guidance": "Abuse và security điều phối containment theo policy cùng owner, bảo toàn bằng chứng trước can thiệp.",
+  "verification": "Nguồn traffic được xác định, containment có hiệu lực, provider xác nhận yêu cầu abuse đã xử lý và monitoring ổn định.",
+  "escalate_when": "Chuyển abuse và security; phối hợp app hoặc mail owner khi cần xác minh nội dung hay quyền của process.",
+  "production_warning": "Không kill, xóa process hoặc wipe VPS chỉ từ một socket; chưa đánh giá phạm vi thì chưa hứa hệ thống sạch.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

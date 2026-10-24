@@ -2,11 +2,11 @@
   "correctIds": [
     "route"
   ],
-  "explanation": "Kiểm tra route bằng phép đọc.",
+  "explanation": "ip route hiển thị route; cần đối chiếu địa chỉ đích để biết có default hay route cụ thể phù hợp không.",
   "commandId": "ip-route",
   "optionFeedback": {
-    "route": "Đúng: xem bảng route, đặc biệt default.",
-    "memory": "RAM không cho biết đường ra mạng.",
-    "service": "SSH không giải thích mọi IP công cộng đều không tới."
+    "route": "Đọc bảng định tuyến IPv4, không đổi cấu hình mạng.",
+    "memory": "Địa chỉ interface không cho biết next hop tới ngoài subnet.",
+    "service": "Ping thử reachability, không đọc bảng route để xác định đường bị thiếu."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Lỗi phụ thuộc nguồn; SSH port 22 được cấu hình nhưng đường đi hoặc filtering còn cần chứng cứ.",
+  "explanation": "Có lỗi phụ thuộc nguồn; listener và cấu hình loại bớt giả thuyết nhưng chưa định vị chỗ rơi SYN.",
   "commandId": "sshd-effective",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Đường đi khác nhau; một nguồn thành công không phủ nhận timeout ở nguồn khác.",
+    "supported": "Kết quả theo nguồn khác nhau, trong khi guest có listener 22.",
+    "over": "Chưa có route/capture đủ để xác định đoạn mạng hay peer."
   }
 }

@@ -5,8 +5,8 @@
   "explanation": "Trạng thái máy ảo ở panel trả lời câu hỏi nguồn điện; DNS và dung lượng guest không thay thế được phép kiểm tra này.",
   "commandId": "virsh-dominfo",
   "optionFeedback": {
+    "wrong2": "Host health không cho biết VM cụ thể đang Powered Off hay Running.",
     "direct": "Mục này cho biết VM đang Powered Off hay Running.",
-    "wrong1": "dig hỏi bản ghi DNS; một IP đúng vẫn không trả lời nếu VM đã tắt.",
-    "wrong2": "df đọc dung lượng trong guest và không cho biết trạng thái nguồn ở hypervisor."
+    "wrong1": "Lịch sử sự kiện cho biết thao tác trước đó, không thay trạng thái nguồn hiện tại."
   }
 }

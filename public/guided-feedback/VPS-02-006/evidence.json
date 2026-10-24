@@ -6,8 +6,8 @@
   "explanation": "Các số đo xác nhận thiếu phản hồi ICMP ở đích, không xác nhận thiết bị hỏng hoặc quyền đổi route.",
   "commandId": "ping",
   "optionFeedback": {
-    "p1": "Dòng đích có Snt 20 và Loss% 25.0.",
     "p2": "Chênh lệch 5 phản hồi tương ứng 25% trong thống kê ping.",
-    "over": "Hai thống kê không định vị thiết bị hỏng; không nên chỉ tên một hop từ chúng."
+    "over": "Hai thống kê không định vị thiết bị hỏng; không nên chỉ tên một hop từ chúng.",
+    "p1": "Dòng đích có Snt 20 và Loss% 25.0."
   }
 }

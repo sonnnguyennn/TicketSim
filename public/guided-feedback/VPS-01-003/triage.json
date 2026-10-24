@@ -2,10 +2,10 @@
   "correctIds": [
     "key"
   ],
-  "explanation": "Ghi nhận triệu chứng xác thực trước khi tìm nguyên nhân.",
+  "explanation": "Đã biết đăng nhập bằng key thất bại và password không dùng được; chưa biết daemon hay account có lỗi.",
   "optionFeedback": {
-    "key": "Đúng với lời khách; lý do cần kiểm tra thêm.",
-    "server": "Chưa có probe kiểm tra service guest.",
-    "dns": "Ticket dùng địa chỉ IP, không có bằng chứng DNS."
+    "key": "Đúng với lời khách, chưa gán nguyên nhân cho server.",
+    "server": "Chưa có phép đọc trạng thái dịch vụ; thất bại bằng key không tự chứng minh daemon dừng.",
+    "dns": "Không có lỗi phân giải tên được nêu."
   }
 }

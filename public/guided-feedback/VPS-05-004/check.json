@@ -2,11 +2,11 @@
   "correctIds": [
     "mount"
   ],
-  "explanation": "Kiểm tra mount trước khi đề xuất sửa.",
+  "explanation": "findmnt cho mapping filesystem và mount options, không thay mount state.",
   "commandId": "findmnt",
   "optionFeedback": {
-    "mount": "Đúng: xem nguồn và tùy chọn mount.",
-    "free": "RAM không cho biết /data là ro hay rw.",
-    "restart": "Reboot thay đổi trạng thái và có rủi ro dữ liệu."
+    "mount": "Đọc đúng target /data đang bị lỗi ghi.",
+    "free": "lsblk xác định filesystem và mountpoint, không đọc mount option ro/rw.",
+    "restart": "Kernel log có thể nêu lỗi I/O, không cho mount option hiện tại của /data."
   }
 }

@@ -22,6 +22,14 @@ export function applyGuidedEdits(contents, edits) {
         if (!Array.isArray(tuple) || tuple.length !== 2 || tuple.some(value => typeof value !== 'string')) throw new Error(`Invalid authored option: ${id}/${question.id}/${option.id}`)
         ;[option.label, option.feedback] = tuple
       }
+      // Stable positions avoid teaching that the first option is always right.
+      // Saved responses use IDs. Ordering questions keep their authored order.
+      if (question.kind !== 'step_order') {
+        let seed = 2166136261
+        for (const character of `${id}/${question.id}`) seed = Math.imul(seed ^ character.charCodeAt(0), 16777619) >>> 0
+        const offset = seed % question.options.length
+        question.options = [...question.options.slice(offset), ...question.options.slice(0, offset)]
+      }
     }
     const initialIds = ['P1', 'P2', ...content.extras.flatMap((probe, index) => !probe.requiredState || probe.requiredState.includes('initial') ? [`G${index + 1}`] : [])]
     if (initialIds.some(probeId => !edit.probes[probeId]) || Object.keys(edit.probes).some(probeId => !initialIds.includes(probeId))) throw new Error(`Incomplete initial probe review: ${id}`)

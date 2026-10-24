@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Log và rotation giúp điều tra, không cấp phép thu secret.",
   "commandId": "panel-backup-task",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Đây là lỗi xác thực, không phải backup thành công.",
+    "p2": "Cần so sự kiện với key reference agent.",
+    "over": "Không cần secret để đối chiếu key ID."
   }
 }

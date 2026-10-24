@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS xuất hiện hai lần sau retry purchase.",
-    "Đọc P1 (PANEL: tasks) và P2 (PANEL: VM list); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Owner xác nhận VM đúng, billing/allocations được chỉnh và dữ liệu VM còn lại an toàn."
+    "Hai nhãn không tự chứng minh hai VM, nhưng cũng không cho phép xóa một bản.",
+    "So task order-771 với VM IDs, activity và invoice.",
+    "Có hai VM ID, task completed hai lần và billing một VPS; VM không ghi login chưa chắc rỗng. Cần reconciliation có owner."
   ]
 }

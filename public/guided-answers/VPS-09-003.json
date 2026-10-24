@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "SELinux prohibits web service from connecting to backend port.",
-  "recommended_next_checks": "Check boolean policy and approved backend architecture.",
-  "resolution_guidance": "Enable only justified SELinux policy boolean/rule; keep enforcing.",
-  "verification": "Backend access works with SELinux enforcing.",
-  "escalate_when": "Custom policy/security reviewer needed.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "SELinux ở Enforcing và AVC từ chối httpd name_connect tới port 9000; backend có listener. Policy kết nối là hướng điều tra được hỗ trợ, cần xác nhận timestamp và truy cập dự kiến.",
+  "recommended_next_checks": "So AVC, timestamp, backend target và policy hoặc boolean hiện tại; kiểm tra sức khỏe backend riêng.",
+  "resolution_guidance": "Admin hoặc security duyệt boolean hay rule hẹp đúng kiến trúc, giữ Enforcing và có rollback.",
+  "verification": "Request tới ứng dụng và backend thành công trong Enforcing; không có AVC liên quan mới trong cửa sổ thử.",
+  "escalate_when": "Chuyển security để review policy nếu cần custom rule hoặc quyền ngoài phạm vi support.",
+  "production_warning": "Không dùng setenforce 0 làm bản sửa production hoặc tự mở policy rộng khi chưa xác định truy cập dự kiến.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

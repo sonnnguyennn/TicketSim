@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Đã xóa log lớn nhưng df gần như không giảm.",
-    "Đọc P1 (df -h /) và P2 (lsof +L1); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: lsof +L1 hết handle liên quan và df tăng free space; app vẫn khỏe."
+    "Xóa tên file không bắt buộc đóng file descriptor mà process còn giữ.",
+    "So dung lượng filesystem với lsof +L1 và PID giữ file deleted.",
+    "Java PID2300 đang giữ file5GiB đã unlink; cần owner chọn reopen/graceful restart có phép rồi xác minh cả dung lượng và ứng dụng."
   ]
 }

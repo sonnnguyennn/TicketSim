@@ -2,11 +2,11 @@
   "correctIds": [
     "confirm"
   ],
-  "explanation": "Thay đổi mạng cần console và phương án rollback.",
+  "explanation": "Gateway phải được xác minh và có console/rollback trước thay đổi có thể ảnh hưởng đường quản trị.",
   "commandId": "nmcli-show",
   "optionFeedback": {
-    "confirm": "Đúng: vừa xác minh dữ liệu cấp phát vừa giữ đường quản trị.",
-    "guess": "Có thể mất đường quản trị; không được đoán.",
-    "dns": "DNS không giải quyết thiếu route tới IP công cộng."
+    "dns": "Thiếu route tới IP công cộng không được sửa bằng DNS.",
+    "confirm": "Dùng dữ liệu được cấp, giữ đường quản trị và kiểm soát tác động.",
+    "guess": "Đoán sai hoặc down profile có thể mất truy cập mà không còn đường phục hồi."
   }
 }

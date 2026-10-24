@@ -4,8 +4,8 @@
   ],
   "explanation": "Cần đúng cert, đúng hostname/vhost và quyền triển khai; sau reload phải hỏi lại endpoint để kiểm tra cert thực được phục vụ.",
   "optionFeedback": {
-    "safe": "Giữ rollback và thử lại từ client để xác nhận deployment thực sự có hiệu lực.",
     "unsafe": "Cách này có thể che lỗi xác thực server và tạo rủi ro kết nối tới sai host.",
-    "close": "Khách vẫn nhận cert hết hạn; chưa kiểm chứng kết quả sau triển khai."
+    "close": "Khách vẫn nhận cert hết hạn; chưa kiểm chứng kết quả sau triển khai.",
+    "safe": "Giữ rollback và thử lại từ client để xác nhận deployment thực sự có hiệu lực."
   }
 }

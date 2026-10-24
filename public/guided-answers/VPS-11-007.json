@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Backup agent credential is no longer accepted.",
-  "recommended_next_checks": "Confirm secret rotation and agent service account.",
-  "resolution_guidance": "Update agent credentials via secret manager according to policy.",
-  "verification": "New backup completes without exposing secret.",
-  "escalate_when": "Backup/security credential ownership.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Backup-agent bị từ chối khóa; audit ghi rotation sang key-7 nhưng agent còn tham chiếu key-6.",
+  "recommended_next_checks": "So key ID, scope, service account và rotation audit qua kênh được phép; giữ secret ngoài ticket.",
+  "resolution_guidance": "Owner/backup team cập nhật reference hoặc credential qua secret manager theo runbook có rollback.",
+  "verification": "Backup mới hoàn tất, không còn lỗi xác thực và thử restore được kiểm định.",
+  "escalate_when": "Không có quyền quản lý secret, scope chưa rõ hoặc backup gián đoạn vượt mốc chấp nhận.",
+  "production_warning": "Không gửi private key qua ticket hoặc tắt xác thực backup.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

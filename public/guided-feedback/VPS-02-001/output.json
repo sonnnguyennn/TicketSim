@@ -2,11 +2,11 @@
   "correctIds": [
     "default"
   ],
-  "explanation": "Route tới cùng subnet không thay thế default route.",
+  "explanation": "Route connected cho subnet chỉ giúp tới subnet đó; không phải đường mặc định ra Internet.",
   "commandId": "ip-route",
   "optionFeedback": {
-    "default": "Đúng: chưa có đường mặc định tới mạng khác.",
-    "address": "ip -4 addr cho thấy guest có IP.",
-    "dns": "Kết nối IP công cộng không phụ thuộc A record."
+    "default": "Không có dòng default trong bảng được cung cấp.",
+    "address": "ip -4 addr đã có 10.10.20.25/24; route không phải danh sách account địa chỉ.",
+    "dns": "Đích công cộng đang được thử bằng IP; DNS không tạo route."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "So cùng IP/cổng từ các nguồn giúp phân biệt lỗi phổ biến của service với đường đi theo nguồn.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đúng khác biệt nguồn mà khách nêu.",
+    "other": "Khác với timeout theo một số nguồn; chưa có kết quả xác thực.",
+    "cause": "Lời khách chỉ mô tả phạm vi, không có dữ liệu routing/capture để định vị peer."
   }
 }

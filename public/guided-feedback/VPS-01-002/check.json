@@ -2,11 +2,11 @@
   "correctIds": [
     "getent"
   ],
-  "explanation": "Kiểm tra account bằng phép đọc trước khi đề xuất thay đổi.",
+  "explanation": "getent passwd tra account qua các nguồn định danh được cấu hình; đây là phép đọc.",
   "commandId": "getent-passwd",
   "optionFeedback": {
-    "getent": "Đúng: tra nguồn danh tính của hệ thống.",
-    "route": "Route không kiểm tra account.",
-    "restart": "Restart là thay đổi không cần thiết và không kiểm tra username."
+    "getent": "Lệnh hỏi đúng tên account mà client đang dùng.",
+    "route": "SSH verbose cho biết bước xác thực thất bại, không tra account admin trong guest.",
+    "restart": "Daemon đang chạy không xác nhận username admin tồn tại."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Dạng brief liệt kê nhanh thiết bị và địa chỉ, không thay đổi connection.",
   "commandId": "ip-addr",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Trạng thái NetworkManager không hiển thị IPv4 đang gắn trên interface.",
+    "wrong2": "Link UP không cho biết interface đã có địa chỉ IPv4.",
+    "direct": "Cho thấy device còn xuất hiện và địa chỉ gắn trên nó."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Cần kiểm tra từng lớp trước khi nói provider chưa tăng disk hay filesystem đã đầy đủ.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Chưa đọc kích thước disk bên trong guest ở bước này.",
+    "symptom": "Đúng chênh lệch khách nêu cần đối chiếu trong guest.",
+    "other": "Không liên quan dung lượng disk/filesystem."
   }
 }

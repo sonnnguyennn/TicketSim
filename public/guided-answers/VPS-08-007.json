@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "No PTR is published for outgoing IPv4.",
-  "recommended_next_checks": "Confirm outbound SMTP IP and forward DNS/HELO policy.",
-  "resolution_guidance": "Request PTR at provider IP owner and ensure forward confirmation where applicable.",
-  "verification": "dig -x resolves expected hostname; mail provider retest.",
-  "escalate_when": "IP block ownership/SMTP policy.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "PTR của IP gửi SMTP 198.51.100.20 trả NXDOMAIN và panel chưa đặt reverse DNS. Forward mail.example.com khớp IP; chưa đánh giá các policy mail khác.",
+  "recommended_next_checks": "Xác nhận IP gửi thực, hostname hoặc HELO, forward DNS và policy của provider.",
+  "resolution_guidance": "Yêu cầu provider hoặc IP owner đặt PTR cho hostname được duyệt; phối hợp domain owner về forward DNS.",
+  "verification": "PTR và forward DNS khớp theo policy; mail provider thử lại và chấp nhận request gửi hợp lệ.",
+  "escalate_when": "Chuyển IP owner, provider hoặc mail team nếu thiếu quyền reverse zone hay vẫn bị từ chối vì policy khác.",
+  "production_warning": "Không hứa mail sẽ được gửi thành công chỉ vì đã có PTR; không sửa A record ngẫu nhiên để thử reverse DNS.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

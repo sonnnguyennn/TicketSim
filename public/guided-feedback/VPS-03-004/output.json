@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: AVC liên quan write của httpd hỗ trợ giả thuyết SELinux; cần đọc context và policy trước khi đổi.",
+  "explanation": "Denial liên quan hỗ trợ giả thuyết SELinux; cần kiểm tra context và nhu cầu write hợp lệ trước thay policy.",
   "commandId": "ausearch-avc",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Xác định đúng tài nguyên và loại truy cập tránh mở policy quá rộng.",
+    "over": "Đổi mode toàn hệ thống bỏ cơ chế kiểm soát ngoài nhu cầu app này.",
+    "ignore": "Mode không nêu rule/path; chính AVC và context mới giúp điều tra."
   }
 }

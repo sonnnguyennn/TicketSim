@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "SSH daemon runs; guest firewall zone does not allow SSH in this fixture.",
-  "recommended_next_checks": "firewall-cmd --get-active-zones; ss -ltnp; test TCP from client",
-  "resolution_guidance": "After confirming correct zone and approval, add SSH service rule using documented firewalld policy.",
-  "verification": "External TCP/22 succeeds, login succeeds, rule persistence verified.",
-  "escalate_when": "Unclear firewall owner, source-specific restrictions, host firewall.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "sshd đang active. Zone firewalld được hỏi chưa liệt kê SSH, nhưng chưa xác định đó là zone/policy áp dụng cho client.",
+  "recommended_next_checks": "Đọc firewall-cmd --get-active-zones, listener ss -ltnp, source IP và phép TCP từ client; đối chiếu edge ACL nếu cần.",
+  "resolution_guidance": "Chỉ đề xuất rule SSH hẹp trong đúng zone/policy sau phê duyệt; giữ console và cách hoàn tác. Không tắt toàn bộ firewall.",
+  "verification": "TCP/22 và đăng nhập từ nguồn được phép hoạt động; xác minh cả runtime và cấu hình lưu lâu dài theo policy.",
+  "escalate_when": "Chuyển đội network/security khi chưa rõ owner firewall, có rule theo nguồn hoặc nghi lọc ở host/edge.",
+  "production_warning": "Không lấy ping hoặc unit active làm lý do mở mọi cổng hay báo SSH đã khôi phục.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

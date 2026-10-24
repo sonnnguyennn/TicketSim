@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận filesystem type, mapping, backup và quyền; lập change mở LV rồi grow filesystem bằng công cụ đúng loại. Xác minh: lvs và df -h /data phản ánh dung lượng dự kiến, mount và ứng dụng vẫn đọc/ghi được.",
+  "explanation": "LVM/FS change phải đúng mapping/type, có backup và quyền; không dùng mkfs cho tăng dung lượng dữ liệu đang có.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Ứng dụng vẫn chỉ có không gian trong filesystem30G gần đầy.",
+    "safe": "Tạo chỗ đúng lớp và dùng công cụ filesystem phù hợp.",
+    "unsafe": "Format/xóa có thể phá dữ liệu, không phải mở rộng filesystem hiện có."
   }
 }

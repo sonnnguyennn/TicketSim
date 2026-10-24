@@ -3,12 +3,12 @@
     "ro",
     "io"
   ],
-  "explanation": "Có dấu hiệu rủi ro storage nhưng phạm vi và nguồn gốc cần xác minh.",
+  "explanation": "Có ro và lỗi I/O cùng liên quan vdb; chưa xác định ổ vật lý hoặc được phép remount.",
   "commandId": "dmesg-tail",
   "optionFeedback": {
-    "ro": "Đúng từ P1.",
-    "io": "Đúng từ P2.",
-    "drive": "Chưa có dữ liệu host/provider để kết luận phần cứng.",
-    "repair": "Lỗi I/O đòi hỏi bảo vệ dữ liệu và điều tra."
+    "repair": "I/O error tạo rủi ro integrity; hai output không cấp điều kiện an toàn để ép ghi.",
+    "ro": "Đúng dòng mount của /dev/vdb1.",
+    "io": "Tên thiết bị liên quan volume cần được giữ cho đội storage.",
+    "drive": "Guest chỉ thấy virtual device; chưa có mapping/health host."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Tuổi thông tin cần thiết khi so với host hiện tại.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Đọc service SSH, không đọc timestamp panel.",
+    "direct": "Bản ghi có last sync cùng nhãn Stopped.",
+    "wrong1": "Đọc host, không cho thời điểm panel đồng bộ."
   }
 }

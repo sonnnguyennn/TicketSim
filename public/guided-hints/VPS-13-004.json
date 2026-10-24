@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Container restart ở peak traffic.",
-    "Đọc P1 (docker inspect api --format \"{{.State.OOMKilled}}\") và P2 (docker stats --no-stream); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Qua peak representative container không OOM, memory có headroom và API ổn."
+    "Restart có thể có nhiều lý do; xem trạng thái OOM trước.",
+    "Đọc OOMKilled, stats và HostConfig.Memory của đúng api.",
+    "Có OOM event, limit 512MiB và snapshot gần limit; cần timeline/host headroom trước tăng hoặc bỏ limit."
   ]
 }

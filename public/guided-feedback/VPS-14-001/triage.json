@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Đọc nguyên nhân sau, chưa coi mọi đình chỉ là lỗi guest.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Khách nêu Suspended, chưa có bằng chứng lỗi SSH riêng.",
+    "cause": "Lời khách chưa xác nhận lý do hoặc tình trạng guest.",
+    "symptom": "Đúng trạng thái khách cần được giải thích."
   }
 }

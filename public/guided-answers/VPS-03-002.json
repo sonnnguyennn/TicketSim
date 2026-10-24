@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Webapp user lacks write permission on upload directory.",
-  "recommended_next_checks": "namei -l /srv/app/uploads; getfacl /srv/app/uploads",
-  "resolution_guidance": "Correct narrowly scoped ownership/ACL with owner approval.",
-  "verification": "Webapp writes test file; permissions remain least-privilege.",
-  "escalate_when": "Shared mount ownership or policy unclear.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Mode 755 root:root không cấp write cho webapp theo quyền Unix cơ bản; cần xác nhận process user, ACL, mount và quyền thư mục cha.",
+  "recommended_next_checks": "Đọc user của process, namei -l /srv/app/uploads, getfacl và mount options; xét SELinux khi có bằng chứng liên quan.",
+  "resolution_guidance": "Với owner phê duyệt, sửa ownership/ACL hoặc quyền đúng thư mục cho user cần thiết; không cấp world-write hàng loạt.",
+  "verification": "Ứng dụng chạy dưới đúng user ghi được file kiểm tra trong phạm vi được phép, quyền vẫn theo nguyên tắc tối thiểu.",
+  "escalate_when": "Chuyển owner ứng dụng/storage khi shared mount, ACL hoặc policy chưa rõ.",
+  "production_warning": "Không chmod -R 777 hoặc coi id webapp là bằng chứng process đang chạy dưới user đó.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

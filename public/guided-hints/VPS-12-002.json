@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Panel ghi Stopped nhưng khách SSH được.",
-    "Đọc P1 (PANEL: VM state) và P2 (virsh domstate vm-110); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Panel cập nhật Running đúng host, SSH/app vẫn hoạt động và sync không trễ."
+    "Một nhãn trạng thái có thời điểm đồng bộ, không phải lúc nào cũng là hiện tại.",
+    "So last sync với virsh domstate của đúng VM.",
+    "Panel cũ 50 phút, host running và queue tồn đọng. Chuyển control-plane rồi xác minh panel và kết nối khách."
   ]
 }

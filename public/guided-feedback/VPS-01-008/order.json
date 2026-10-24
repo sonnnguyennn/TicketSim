@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Đối chiếu nhiều lớp trước thay đổi workload rồi theo dõi lại ở các cửa sổ tương đương.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Bước đầu giúp xác định các sự kiện có thực sự trùng nhau hay không.",
+    "verify": "Một snapshot RAM sau job không xác minh lỗi ngắt quãng đã hết.",
+    "act": "Thay đổi dựa trên dữ liệu và quyền, không tự xóa job."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Application image upgraded with incompatible config option.",
-  "recommended_next_checks": "Compare release notes, configuration and last working image.",
-  "resolution_guidance": "Rollback to validated tag or migrate config with approval.",
-  "verification": "Healthcheck/functional tests pass after fix.",
-  "escalate_when": "App vendor/developer support.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Sau đổi image v1.8 sang v2.0, app báo legacyMode không được chấp nhận; release notes phù hợp, lịch migration data chưa rõ.",
+  "recommended_next_checks": "So đúng digest, config, changelog, last-known-good và data/schema migration.",
+  "resolution_guidance": "Owner duyệt config fix hoặc rollback chỉ sau kiểm tra tương thích data và kế hoạch khôi phục.",
+  "verification": "Health/functional tests và dữ liệu ứng dụng đúng, không chỉ container Up hoặc đổi tag.",
+  "escalate_when": "Cần app/vendor/DB owner quyết định compatibility hoặc migration.",
+  "production_warning": "Tag có thể đổi; không xóa volume hoặc rollback mù khi migration unknown.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

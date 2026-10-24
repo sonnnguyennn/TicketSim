@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Cần giữ bằng chứng và dữ liệu, phục hồi dependency có phép rồi kiểm tra chức năng.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Trước change phải biết dữ liệu dự kiến ở đâu và điều kiện startup còn thiếu.",
+    "verify": "Unit active chưa đủ xác minh kết nối hoặc nội dung ứng dụng.",
+    "act": "Không khởi tạo DB mới để né datadir thiếu; cần kế hoạch đúng dữ liệu."
   }
 }

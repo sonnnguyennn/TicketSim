@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Cùng IP là đầu mối; cần trạng thái/NIC và ARP để xác định hoạt động.",
   "commandId": "panel-ip-allocation",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "DNS không sửa cấp phát hoặc cấu hình NIC.",
+    "p1": "Đây là địa chỉ VM restore.",
+    "p2": "Hai bản ghi đang trùng địa chỉ."
   }
 }

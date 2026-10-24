@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Root filesystem has no space available; logs occupy large part.",
-  "recommended_next_checks": "Find largest safe-to-review files and log growth source.",
-  "resolution_guidance": "Use approved rotation/cleanup or disk upgrade after backup.",
-  "verification": "Available disk restored and app writes.",
-  "escalate_when": "Unknown high-growth logs or data criticality.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm13G nhưng journal chỉ1.2G. Chưa biết file/log nào tăng và có thể dọn.",
+  "recommended_next_checks": "Xác nhận mount của dữ liệu app, phân loại file/log lớn và nguồn phát sinh; đối chiếu retention/backup với owner.",
+  "resolution_guidance": "Theo phê duyệt, dùng rotation/vacuum hoặc dọn phần đã xác định; có thể lập capacity change nếu nhu cầu hợp lệ, không xóa cả /var/log.",
+  "verification": "Avail có lại, inode đủ và app lưu được dữ liệu kiểm tra; theo dõi nguồn log không tăng bất thường.",
+  "escalate_when": "Chuyển owner ứng dụng/security khi chưa rõ dữ liệu/retention hoặc log tăng lặp lại chưa tìm nguồn.",
+  "production_warning": "Không xem dung lượng thư mục là giấy phép xóa; journal vacuum không xử lý mọi file trong /var/log.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

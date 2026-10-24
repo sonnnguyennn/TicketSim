@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách yêu cầu hủy VPS cuối chu kỳ.",
-    "Đọc P1 (BILLING: service) và P2 (PANEL: cancellation policy); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Panel ghi cancellation effective date đúng, khách nhận xác nhận và dữ liệu được xử lý theo policy."
+    "Hủy cuối kỳ khác terminate ngay.",
+    "So Active until với policy và audit yêu cầu cancellation.",
+    "Dịch vụ tới 15/11 và chưa có request được gửi; cần owner xác nhận mốc, backup/export rồi ghi yêu cầu đúng quy trình."
   ]
 }

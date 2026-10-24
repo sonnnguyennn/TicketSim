@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Một mạng bị lỗi còn mạng khác hoạt động gợi ý phạm vi theo nguồn; chưa định vị firewall hay jail.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Khách mô tả timeout theo một nguồn, không phải lỗi xác thực ở mọi nguồn.",
+    "cause": "Cần xác minh IP, account và log; lời khách không chứng minh tính hợp lệ của từng attempt.",
+    "symptom": "Phạm vi nguồn là điểm cần đối chiếu với ban list."
   }
 }

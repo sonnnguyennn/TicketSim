@@ -2,10 +2,10 @@
   "correctIds": [
     "dns"
   ],
-  "explanation": "Ghi đúng tên được hỏi là quan trọng nhất.",
+  "explanation": "Giữ đúng FQDN trước khi chuyển sang HTTP hoặc cấu hình server.",
   "optionFeedback": {
-    "dns": "Đúng: cần xem exact FQDN.",
-    "http": "Chưa tới HTTP nếu tên không phân giải.",
-    "ssh": "Không liên quan."
+    "ssh": "Ticket nói về hostname website, không nói về xác thực SSH.",
+    "dns": "Cần hỏi DNS cho đúng tên, không sửa sang tên khác trước.",
+    "http": "Chưa có phản hồi HTTP hoặc bằng chứng từ backend."
   }
 }

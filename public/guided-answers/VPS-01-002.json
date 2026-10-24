@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Requested Linux username does not exist.",
-  "recommended_next_checks": "id admin; getent passwd; verify authorized account",
-  "resolution_guidance": "Use a valid authorized username; do not create/reset accounts without approval.",
-  "verification": "Authorized user can log in successfully.",
-  "escalate_when": "Account ownership cannot be verified.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Kết nối đã tới xác thực; các phép tra hiện chưa tìm được account admin. Chưa có bằng chứng chỉ ra mật khẩu sai.",
+  "recommended_next_checks": "Xác nhận username được cấp với chủ VPS, đối chiếu id/getent và nguồn định danh nếu dùng LDAP/SSSD.",
+  "resolution_guidance": "Hướng khách dùng account hợp lệ, được phép. Chỉ tạo hoặc reset account theo quy trình xác minh chủ sở hữu và quyền quản trị.",
+  "verification": "Account được phép đăng nhập thành công từ client; không chỉ dừng ở việc service active.",
+  "escalate_when": "Chuyển đội quản trị danh tính khi chưa xác minh được chủ account hoặc nguồn định danh không hoạt động.",
+  "production_warning": "Không yêu cầu khách gửi mật khẩu hay private key; không tự tạo user để bỏ qua xác minh quyền.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

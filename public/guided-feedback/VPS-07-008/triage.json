@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Lỗi tập trung vào giờ cao điểm, nên cần dữ liệu ở lúc khách bị ảnh hưởng.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Tải cao chưa xác định dependency hoặc tài nguyên nào gây chậm.",
+    "symptom": "Đo trong cửa sổ cao điểm thay vì chỉ lúc vắng tải.",
+    "other": "Đó là lỗi khác với 504 xuất hiện theo thời điểm."
   }
 }

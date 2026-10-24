@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Hai họ địa chỉ có cấu hình và đường đi riêng; IPv6 tốt chưa xác minh IPv4.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Lời khách nói IPv4 lỗi từ mọi client, chưa tới kết luận xác thực riêng user.",
+    "cause": "Dual-stack có thể có cả hai; cần đọc địa chỉ và cấp phát thật.",
+    "symptom": "Đúng phạm vi address family khách mô tả."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đo latency/tải và trạng thái backup, trao đổi owner về cửa sổ job; chỉ bàn change sau đánh giá tác động. Xác minh: Backup hoàn tất/được xử lý theo runbook và hiệu năng khách đo lại ổn.",
+  "explanation": "Đo ảnh hưởng, theo dõi job và trao đổi owner trước thay đổi; không cắt ngang backup chỉ để thử.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể cắt dịch vụ và làm backup thất bại mà chưa xử lý nguồn tải.",
+    "close": "Workload có thể hợp lệ nhưng mức ảnh hưởng khách báo vẫn cần đo và giải quyết.",
+    "safe": "Kết hợp nhu cầu dịch vụ với tiến độ backup giúp chọn change có kiểm soát."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Theo dõi snapshot job, xác minh backup/approval và chuyển task queue team nếu kẹt; thông báo khách chưa reinstall. Xác minh: Snapshot hoàn tất/được xử lý có duyệt, reinstall task chỉ chạy khi điều kiện dữ liệu đạt và OS kiểm tra lại.",
+  "explanation": "Giữ tính toàn vẹn job và điều kiện dữ liệu trước mọi thay đổi phá hủy.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể mất cả nguồn khôi phục và dữ liệu production.",
+    "close": "Task tồn tại chưa thực hiện yêu cầu khách.",
+    "safe": "Không bỏ qua safety gate chỉ vì khách chờ lâu."
   }
 }

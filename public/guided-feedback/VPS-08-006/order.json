@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "So DNS với allocation trước, thay đổi theo owner, sau đó thử từ client IPv6.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Biết đích được cấp trước khi đụng cấu hình mạng.",
+    "verify": "DNS đúng chưa tự chứng minh site hoạt động.",
+    "act": "Chỉ đổi đúng phạm vi DNS hoặc network có quyền."
   }
 }

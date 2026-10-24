@@ -2,11 +2,11 @@
   "correctIds": [
     "escalate"
   ],
-  "explanation": "Xác minh dữ liệu và mount sau xử lý được phê duyệt; không mô phỏng sửa thật.",
+  "explanation": "Bảo toàn hiện trạng và chuyển đội storage có quyền/telemetry; không dùng remount để che I/O error.",
   "commandId": "dmesg-tail",
   "optionFeedback": {
-    "escalate": "Đúng: ưu tiên integrity dữ liệu.",
-    "remount": "Có thể làm hỏng thêm dữ liệu khi I/O đang lỗi.",
-    "delete": "Không giải quyết lỗi I/O và làm mất bằng chứng."
+    "remount": "Có thể làm hỏng thêm khi lớp storage chưa ổn định.",
+    "delete": "Dọn log không sửa trạng thái mount hoặc lỗi I/O trên thiết bị.",
+    "escalate": "Đúng hướng bảo vệ dữ liệu trước recovery được kiểm soát."
   }
 }

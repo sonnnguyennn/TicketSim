@@ -5,8 +5,8 @@
   "explanation": "Cần đọc bảng route trong đúng network namespace của container, trước khi đánh giá host forwarding.",
   "commandId": "ip-route",
   "optionFeedback": {
+    "wrong2": "Lệnh liệt kê các Docker network, không hiện bảng route mà container api thực sự đang dùng.",
     "direct": "docker exec chạy phép đọc route trong container api, nơi gói bắt đầu đi.",
-    "wrong1": "Nếu chạy trên host, lệnh chỉ đọc route của host; cần docker exec để xem route trong container api.",
-    "wrong2": "Lệnh liệt kê các Docker network, không hiện bảng route mà container api thực sự đang dùng."
+    "wrong1": "Nếu chạy trên host, lệnh chỉ đọc route của host; cần docker exec để xem route trong container api."
   }
 }

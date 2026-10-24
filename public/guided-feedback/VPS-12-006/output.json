@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Order IP và guest IP khác nhau; cần xác minh migration/assignment history, không đổi live IP từ SSH.",
+  "explanation": "Mismatch có lý do cần đối chiếu task; không đổi mạng từ một phiên SSH duy nhất.",
   "commandId": "ip-family-addr",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Dịch vụ chưa đáp ứng địa chỉ của order và nhu cầu khách.",
+    "supported": "Có ownership cụ thể nhưng chưa có đầy đủ cấu hình đích.",
+    "over": "IPAM ghi migration pool, không xác nhận kết luận đó."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Recovery ISO remains selected as primary boot source.",
-  "recommended_next_checks": "Verify rescue work completed and disk bootability.",
-  "resolution_guidance": "Unmount rescue ISO/update boot device with permission.",
-  "verification": "VM boots expected installed OS and services work.",
-  "escalate_when": "Installed disk itself cannot boot.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Rescue ISO đang gắn và optical đứng trước disk. REC-420 còn mở, OS disk còn gắn nhưng health pending; chưa thể kết luận disk hỏng hay khỏe.",
+  "recommended_next_checks": "Xác nhận với đội recovery/owner công việc đã xong; kiểm tra đúng OS disk, bootloader, health và backup.",
+  "resolution_guidance": "Đội ảo hóa đổi boot hoặc tháo ISO khi được duyệt và có rollback; không tự ép reboot.",
+  "verification": "OS mong đợi boot lên; kiểm tra volume và các dịch vụ khách cần dùng riêng.",
+  "escalate_when": "Chuyển recovery/virtualization nếu ticket còn mở, disk chưa sẵn sàng hoặc OS không boot được.",
+  "production_warning": "Không ngắt recovery đang chạy; ISO gắn không phải lý do reinstall OS disk.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

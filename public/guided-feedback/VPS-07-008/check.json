@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Log lỗi mô tả giai đoạn upstream; cần thêm metrics để tìm nguyên nhân sâu hơn.",
   "commandId": "nginx-error-tail",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Bản ghi A không cho biết giai đoạn timeout của upstream.",
+    "wrong2": "Một HTTP status tại local chưa nêu giai đoạn upstream timeout trong log.",
+    "direct": "Log cho biết proxy đợi response header quá hạn."
   }
 }

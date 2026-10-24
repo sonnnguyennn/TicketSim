@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận PID/service owner và log rotation; phối hợp reopen/restart graceful nếu được duyệt. Xác minh: lsof +L1 hết handle liên quan và df tăng free space; app vẫn khỏe.",
+  "explanation": "Ưu tiên cơ chế reopen/rotation hoặc graceful restart đúng app theo quyền; tránh kill -9 mù.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Block vẫn đang cao và app chưa được kiểm tra sau đóng handle.",
+    "safe": "Nhắm đúng PID/service và có thể kiểm soát gián đoạn.",
+    "unsafe": "Dừng đột ngột có thể gây gián đoạn hoặc mất công việc chưa ghi xong."
   }
 }

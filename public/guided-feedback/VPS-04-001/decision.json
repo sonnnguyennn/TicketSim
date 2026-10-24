@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác định owner, lịch và tác động của PID 2601; phối hợp tối ưu hoặc dời lịch nếu được duyệt. Xác minh: Độ trễ khách giảm và CPU trở lại baseline ở lần chạy tương đương.",
+  "explanation": "Owner và mục tiêu job cần được xác nhận; thay đổi có thể ảnh hưởng công việc đang chạy.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Chưa xác minh độ trễ chấp nhận được hoặc workload được thiết kế như vậy.",
+    "safe": "Kết nối số đo PID với công việc thực và giữ quyền thao tác.",
+    "unsafe": "Có thể làm mất tiến trình xử lý dữ liệu hoặc công việc khách hàng."
   }
 }

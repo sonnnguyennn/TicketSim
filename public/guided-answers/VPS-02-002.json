@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Configured DNS resolver unavailable; IP connectivity appears available.",
-  "recommended_next_checks": "cat /etc/resolv.conf; nmcli dev show | grep DNS",
-  "resolution_guidance": "Repair valid DNS resolver settings after checking network policy.",
-  "verification": "dig resolves using configured resolver; domain request works.",
-  "escalate_when": "Managed DNS outage or policy-owned resolver.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Phản hồi ICMP tới IP công cộng thành công, nhưng truy vấn qua resolver hiện tại timeout. Chưa xác định resolver service, đường mạng hay cấu hình gây lỗi.",
+  "recommended_next_checks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP53 và policy khi cần.",
+  "resolution_guidance": "Đề xuất sửa resolver/profile đúng nguồn quản lý và đúng policy nếu đã xác định sai cấu hình; không ghi đè file do dịch vụ khác quản lý.",
+  "verification": "Resolver được cấu hình trả lời đúng và site truy cập được theo đúng hostname, gồm Host/SNI khi cần.",
+  "escalate_when": "Chuyển đội DNS/network nếu resolver dùng chung bị lỗi hoặc thuộc policy do đội khác quản lý.",
+  "production_warning": "Không coi timeout là bản ghi không tồn tại hoặc đổi sang DNS ngoài khi chưa xác nhận policy.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Unrecognized sudo-capable account; possible compromise, not proven.",
-  "recommended_next_checks": "Verify deployment/change records and login logs; preserve evidence.",
-  "resolution_guidance": "Escalate incident, restrict access according to IR runbook.",
-  "verification": "Account provenance resolved and authorized access restored.",
-  "escalate_when": "Immediate security escalation.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "supportadmin tồn tại với shell và sudo rule. Có sự kiện useradd, nhưng phê duyệt, nguồn tạo và lịch sử sử dụng chưa được xác minh.",
+  "recommended_next_checks": "Giữ account, sudoers, log tạo account, auth và sudo; đối chiếu owner, change record và automation.",
+  "resolution_guidance": "Chuyển security đánh giá; chỉ hạn chế hoặc thu hồi quyền theo incident runbook và phê duyệt phù hợp.",
+  "verification": "Nguồn tạo account được giải thích, quyền hợp lệ được xác nhận hoặc containment được kiểm tra; rà phiên và key liên quan.",
+  "escalate_when": "Chuyển security sớm khi owner không nhận ra account, có sudo trái phép hoặc đăng nhập bất thường.",
+  "production_warning": "Không xóa account trước khi giữ bằng chứng; tên lạ hay entry passwd đều không phải kết luận cuối.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

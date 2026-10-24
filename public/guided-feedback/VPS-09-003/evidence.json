@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Đọc mode và denial cùng process, port và thời gian.",
   "commandId": "ausearch-avc",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "AVC chỉ ra hành động, process và target cụ thể.",
+    "over": "Không có phê duyệt hoặc review như vậy.",
+    "p1": "Đó là mode được báo trong phép kiểm tra."
   }
 }

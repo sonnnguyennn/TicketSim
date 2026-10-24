@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Bảng socket và file cấu hình là hai lớp khác nhau; chưa thay thế kiểm tra client.",
   "commandId": "sshd-effective",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Đây là cấu hình trên đĩa, chưa bao quát mọi nguồn cấu hình.",
+    "over": "Không có kết quả đăng nhập của client trong hai phép đọc.",
+    "p1": "Dòng LISTEN chứa địa chỉ 0.0.0.0:2222."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Duplicate provisioning for one order.",
-  "recommended_next_checks": "Compare billing/order mapping and VM resources; preserve state.",
-  "resolution_guidance": "Escalate reconciliation; avoid deleting any VM until identity confirmed.",
-  "verification": "One correct managed service and billing mapping.",
-  "escalate_when": "Provisioning/billing coordination.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Order-771 completed hai lần và có hai VM ID; billing ghi một VPS. Chưa xác nhận VM nào có dữ liệu cần giữ.",
+  "recommended_next_checks": "So task/order/payment, VM IDs, disk/activity và owner; không coi thiếu login record là disk rỗng.",
+  "resolution_guidance": "Giữ trạng thái cả hai, chuyển provisioning/billing reconciliation; cleanup chỉ sau phương án owner duyệt.",
+  "verification": "Một dịch vụ đúng, dữ liệu được giữ, resource và billing mapping khớp.",
+  "escalate_when": "Có duplicate resource, dữ liệu hoặc billing cần nhiều đội phối hợp.",
+  "production_warning": "Không xóa VM tạo sau hoặc thu thêm tiền để hợp thức hóa cấp phát trùng.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

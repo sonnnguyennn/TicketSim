@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Giải thích phạm vi mất dữ liệu, yêu cầu backup được kiểm tra và phê duyệt rõ; chuyển quy trình migration/reinstall. Xác minh: Sau change được duyệt, OS đúng và dữ liệu được restore/test theo kế hoạch; không chỉ nhìn panel Completed.",
+  "explanation": "Giải thích cụ thể phạm vi xóa, kiểm tra bản sao và quyền; không áp dụng thay đổi phá hủy chỉ từ một yêu cầuOS.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể mất dữ liệu khách muốn giữ mà chưa có bản phục hồi.",
+    "close": "Cần thống nhất bước tiếp theo; cảnh báo đơn thuần chưa giải quyết yêu cầu.",
+    "safe": "Đây là điều kiện để owner quyết định migration hoặc reinstall có hiểu biết."
   }
 }

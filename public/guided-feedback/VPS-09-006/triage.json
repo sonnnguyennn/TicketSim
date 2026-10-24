@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "IP public không phản hồi nên cần so đường upstream, không mặc định là lỗi HTTP xác thực.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Cần ghi thời gian và các nguồn client bị ảnh hưởng.",
+    "other": "401 là phản hồi HTTP, khác việc không tới được IP public.",
+    "cause": "Chưa biết lớp chặn trước khi đọc trạng thái mitigation."
   }
 }

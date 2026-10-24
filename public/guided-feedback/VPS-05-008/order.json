@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Mapping và khả năng phục hồi phải rõ trước LV/FS change; xác minh ở cả lớp block và app.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Cần biết đúng LV và điều kiện phục hồi trước thay đổi.",
+    "verify": "Số LV tăng chưa tự xác minh filesystem và dữ liệu hoạt động đúng.",
+    "act": "Filesystem không dùng được phần VG free chưa cấp vào LV."
   }
 }

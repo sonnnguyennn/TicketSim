@@ -6,9 +6,9 @@
   "explanation": "Câu hỏi này chỉ dùng hai nguồn đầu; trạng thái registrar phải được đọc bằng tác vụ delegation riêng.",
   "commandId": "panel-zone",
   "optionFeedback": {
-    "old": "Câu trả lời NS hiện có ns1/ns2.old-dns.",
     "new": "Đây là thông tin trong mục edited zone của panel.",
     "registrar": "Chúng chưa trực tiếp đọc registrar; cần tác vụ delegation để xác minh.",
-    "a": "Chưa có cặp A record từ cả hai nameserver để so sánh."
+    "a": "Chưa có cặp A record từ cả hai nameserver để so sánh.",
+    "old": "Câu trả lời NS hiện có ns1/ns2.old-dns."
   }
 }

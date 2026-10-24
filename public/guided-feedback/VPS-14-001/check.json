@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Đúng hồ sơ dịch vụ trước khi kiểm tra invoice hoặc guest.",
   "commandId": "billing-service",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Giúp đối chiếu nợ phí nhưng không bao quát mọi lý do hold.",
+    "wrong2": "Running/stopped không giải thích nguyên nhân quản lý dịch vụ.",
+    "direct": "Ghi lý do của trạng thái đình chỉ."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Task giúp chọn hướng cấp phát thay vì xử lý guest quá sớm.",
   "commandId": "panel-provision-task",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Đọc đúng tác vụ của order.",
+    "wrong1": "Thông số gói không cho kết quả task.",
+    "wrong2": "VM state không thay thế task, nhất là khi VM chưa tạo xong."
   }
 }

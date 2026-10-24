@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Ứng dụng database không start sau reboot.",
-    "Đọc P1 (systemctl status myapp) và P2 (systemctl status mariadb); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: MariaDB khỏe, myapp active và endpoint ứng dụng trả đúng."
+    "Dependency failed nói một điều kiện phụ thuộc chưa đạt; không đồng nghĩa dữ liệu DB đã hỏng.",
+    "Đọc trạng thái MariaDB và journal của nó cùng thời điểm boot.",
+    "Lỗi không thấy đường dẫn dữ liệu còn có thể do mount/cấp phát chưa có. Không tạo datadir mới trước khi kiểm tra volume và backup."
   ]
 }

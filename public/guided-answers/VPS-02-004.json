@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "443 listener exists but current firewalld zone does not allow HTTPS.",
-  "recommended_next_checks": "firewall-cmd --get-active-zones; curl -kI https://127.0.0.1",
-  "resolution_guidance": "Validate zone and permit required HTTPS service according to policy.",
-  "verification": "External curl to HTTPS works.",
-  "escalate_when": "Network edge filtering even after guest fix.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Guest có listener IPv4/443; zone firewalld được hỏi chưa liệt kê HTTPS. Chưa đủ xác định rule/policy nào gây lỗi từ ngoài.",
+  "recommended_next_checks": "Đối chiếu active/default zone, rich rules/policies và edge ACL; thử TCP/HTTPS từ client với đúng hostname/SNI.",
+  "resolution_guidance": "Nếu rule guest thật sự thiếu và có quyền, đề xuất mở HTTPS hẹp theo policy, lưu cấu hình đúng cơ chế và giữ rollback.",
+  "verification": "Client bên ngoài nhận TLS hợp lệ và nội dung HTTP mong đợi; không chỉ thử curl -k tới localhost.",
+  "escalate_when": "Chuyển network/security nếu đường ngoài vẫn bị lọc hoặc policy thuộc đội khác quản lý.",
+  "production_warning": "Không tắt toàn bộ firewall hoặc dùng bỏ kiểm tra certificate làm xác minh HTTPS đã bình thường.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Quyền lợi và capacity trước, cấp phát có quyền sau, xác minh cuối.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Biết bước nào còn chờ trước tác động guest.",
+    "verify": "Chỉ cấu hình guest sau khi có IP/gateway đúng.",
+    "act": "Không tự lấy địa chỉ từ pool."
   }
 }

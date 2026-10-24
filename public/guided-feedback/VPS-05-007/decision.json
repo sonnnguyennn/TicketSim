@@ -4,8 +4,8 @@
   ],
   "explanation": "Support giữ hiện trạng và phối hợp đội storage; quyền, bản phục hồi và trạng thái unmount phải rõ trước mọi repair.",
   "optionFeedback": {
+    "close": "Backup catalog chưa chứng minh khả năng phục hồi và cũng chưa giúp VPS boot lại.",
     "safe": "Đội có quyền cần đánh giá I/O, bản sao và phương án phục hồi trước sửa dữ liệu.",
-    "unsafe": "Repair tự động khi filesystem đang được dùng có thể làm tăng rủi ro dữ liệu.",
-    "close": "Backup catalog chưa chứng minh khả năng phục hồi và cũng chưa giúp VPS boot lại."
+    "unsafe": "Repair tự động khi filesystem đang được dùng có thể làm tăng rủi ro dữ liệu."
   }
 }

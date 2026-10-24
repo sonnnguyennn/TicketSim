@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Source-dependent IPv4 TCP reachability; no root cause yet.",
-  "recommended_next_checks": "Probe same port from sources; tcpdump with timestamps.",
-  "resolution_guidance": "Gather source IPs, paths, captures and escalate filtering/routing.",
-  "verification": "Same TCP test works from formerly affected ISPs.",
-  "escalate_when": "Upstream/source ACL/BGP diagnosis needed.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "TCP/22 có kết quả khác nhau theo nguồn; guest có listener 22. Chưa xác định nguyên nhân ở guest policy, edge hay routing/upstream.",
+  "recommended_next_checks": "Thu source IP/đích/cổng/timestamp, nhiều phép TCP từ nguồn lỗi và nguồn đối chứng; capture giới hạn trong guest nếu có quyền.",
+  "resolution_guidance": "Chuyển bằng chứng cho đội network/edge để xác định đường hoặc policy gây ảnh hưởng; không tự thay route hay SSH port.",
+  "verification": "TCP/22 và xác thực SSH ổn định qua các lần thử từ ISP từng lỗi, cùng điều kiện đo ban đầu.",
+  "escalate_when": "Chuyển network khi cần telemetry edge/upstream, routing hoặc ACL theo nguồn.",
+  "production_warning": "Capture phải có phạm vi/quyền và bảo vệ dữ liệu; một nguồn tốt không bác bỏ sự cố của nguồn khác.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

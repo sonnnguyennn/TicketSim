@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Bản ghi mitigation khác với trạng thái route và socket trong guest.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Đọc thời điểm kích hoạt và IP đích.",
+    "wrong1": "Đọc trạng thái route, không thay thời điểm kích hoạt mitigation.",
+    "wrong2": "Listener trong guest không đọc được trạng thái bảo vệ của provider."
   }
 }

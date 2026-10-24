@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Kiểm tra thiết bị trước cấu hình IP/route trên một NIC chưa xuất hiện.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không giải thích việc thiếu interface ở guest.",
+    "cause": "Host attachment hoặc guest driver cũng có thể liên quan.",
+    "symptom": "Chưa có NIC ngoài lo trong mẫu hiện tại."
   }
 }

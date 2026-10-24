@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Một phép thử IP thành công còn truy vấn DNS timeout; cần tìm resolver và đường tới nó.",
+  "explanation": "Có phản hồi IP và không có phản hồi DNS trong mẫu; chưa biết resolver lỗi, đường tới resolver bị lọc hay nguyên nhân khác.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Không trả lời khác với NXDOMAIN; resolver chưa cung cấp kết quả về tên.",
+    "ignore": "IP reachability không bảo đảm resolver có thể được hỏi hoặc trả lời.",
+    "supported": "Tách được ICMP tới IP công cộng với truy vấn resolver chưa trả lời."
   }
 }

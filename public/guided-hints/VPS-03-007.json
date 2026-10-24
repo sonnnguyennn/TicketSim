@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: API lỗi rải rác với Too many open files.",
-    "Đọc P1 (journalctl -u myapp -n 20) và P2 (cat /proc/1234/limits); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Trong tải đại diện FD ổn định dưới limit, log không còn EMFILE và API thành công."
+    "Too many open files có thể nói về file descriptor, gồm cả socket, không chỉ file trên ổ đĩa.",
+    "So Max open files của đúng PID với số entry trong /proc/PID/fd và thời điểm lỗi.",
+    "1008 gần giới hạn1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
   ]
 }

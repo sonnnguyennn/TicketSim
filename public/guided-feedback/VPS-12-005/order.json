@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Tìm trạng thái thật, xử lý đúng quyền, rồi xác minh OS sau change.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Xác định còn điều kiện gì trước ghi OS.",
+    "verify": "Không chỉ thấy queue hết lock là xong.",
+    "act": "Thao tác chỉ sau safety gate đã đủ."
   }
 }

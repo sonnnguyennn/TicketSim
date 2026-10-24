@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Giữ cả hai, đối chiếu order/billing/VM activity/IP và owner; chuyển provisioning/billing xử lý duplicate có phê duyệt. Xác minh: Owner xác nhận VM đúng, billing/allocations được chỉnh và dữ liệu VM còn lại an toàn.",
+  "explanation": "Owner quyết định VM giữ lại và dữ liệu, đội provisioning/billing đối soát.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Thời gian tạo không chứng minh dữ liệu hoặc quyền xóa.",
+    "close": "Tài nguyên, quản lý và dữ liệu vẫn đang trùng.",
+    "safe": "Tránh xóa nhầm VM khách đang dùng."
   }
 }

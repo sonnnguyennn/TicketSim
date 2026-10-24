@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Lịch và hash chưa đủ để quy ý định độc hại hay quyền hợp lệ.",
   "commandId": "sha256sum",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Cần so với baseline, đường dẫn và version tin cậy.",
+    "over": "Chưa xác định nguồn thay đổi hoặc phạm vi incident response.",
+    "p1": "*/5 ở cột phút biểu thị lịch đó."
   }
 }

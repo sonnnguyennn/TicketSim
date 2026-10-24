@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Mapping và local HTTP không tự xác nhận quyền phơi ứng dụng ra ngoài.",
   "commandId": "curl-head",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "Không có thao tác đổi bind trong phép đọc này.",
+    "p1": "Đọc từ docker port.",
+    "p2": "Chỉ kiểm chứng request qua loopback."
   }
 }

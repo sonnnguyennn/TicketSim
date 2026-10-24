@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu tracepath, MTU/MSS VPN và thử upload có giám sát; chuyển đội VPN/network với source, thời điểm, kích thước. Xác minh: Upload lớn qua đúng VPN hoàn tất, không retransmit bất thường và request nhỏ vẫn hoạt động.",
+  "explanation": "Cần kiểm tra đúng tunnel và luồng bị lỗi, rồi đội owner VPN/network mới chọn thay đổi theo quyền.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể cắt quản trị, ảnh hưởng lưu lượng khác và không đúng lớp tunnel.",
+    "close": "Upload lớn mà khách cần vẫn treo.",
+    "safe": "Gắn kích thước ICMP với triệu chứng TCP thực và phạm vi cấu hình cần xử lý."
   }
 }

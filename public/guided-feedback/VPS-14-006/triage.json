@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Tiếp nhận yêu cầu giữ lại không đồng nghĩa đã được gia hạn.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Chưa có policy hoặc approval ngoại lệ.",
+    "symptom": "Cần kiểm tra deadline và người có quyền.",
+    "other": "Ngược với yêu cầu giữ lại."
   }
 }

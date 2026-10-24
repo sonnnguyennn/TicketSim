@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Tạo snapshot ở host khác giải nén file backup trong guest.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Khách không nêu thao tác này.",
+    "cause": "Chưa đọc số liệu; snapshot có thể lỗi ở kho host.",
+    "symptom": "Đúng tác vụ cần mở để đọc lỗi."
   }
 }

@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Kiểm tra source zone trước, cache sau, rồi xác minh từ nguồn khách gặp lỗi.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Tách zone bất nhất khỏi cache chưa hết hạn.",
+    "verify": "Một NS hoặc resolver không đại diện cho mọi client.",
+    "act": "Chỉ chờ khi đã xác nhận source đúng; thay đổi thuộc quyền owner."
   }
 }

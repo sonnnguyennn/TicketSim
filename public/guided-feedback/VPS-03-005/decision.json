@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đọc journal mariadb và dependency graph; sửa nguyên nhân DB theo owner rồi mới khởi động app. Xác minh: MariaDB khỏe, myapp active và endpoint ứng dụng trả đúng.",
+  "explanation": "Bảo toàn dữ liệu và kiểm tra mapping/mount với owner trước; khởi tạo đường trống có thể che hoặc ghi đè dữ liệu cần khôi phục.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Giải quyết điều kiện nền và giữ dữ liệu trước thay đổi.",
+    "unsafe": "Không làm điều kiện database sẵn sàng và có thể gây thêm log/tải.",
+    "close": "Chấp nhận lệnh không chứng minh ứng dụng phục vụ request hoặc dữ liệu đầy đủ."
   }
 }

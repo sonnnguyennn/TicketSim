@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Bảo toàn cron, binary/hash, timeline và process tree; chuyển security để containment/forensic có duyệt. Xác minh: Security xác định artifact, persistence được xử lý theo plan và monitoring không còn tái xuất hiện.",
+  "explanation": "Giữ scheduler, binary và timeline để security xác định containment đúng quyền.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Bằng chứng giúp xác định phạm vi và nguồn thay đổi.",
+    "unsafe": "Có thể mất chứng cứ trong khi cơ chế persistence khác vẫn còn.",
+    "close": "Job hoặc supervisor có thể chạy lại; phạm vi chưa được kiểm tra."
   }
 }

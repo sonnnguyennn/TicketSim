@@ -2,11 +2,11 @@
   "correctIds": [
     "review"
   ],
-  "explanation": "Kiểm tra Available và thao tác ghi của app sau xử lý.",
+  "explanation": "Cần biết loại log, retention và nguồn tăng; chọn rotation/vacuum/dọn hẹp theo quyền.",
   "commandId": "du-var",
   "optionFeedback": {
-    "review": "Đúng: tránh mất bằng chứng và dữ liệu.",
-    "delete": "Có thể mất dữ liệu/bằng chứng; thao tác phá hủy không được mô phỏng.",
-    "reboot": "Reboot không giải quyết nguyên nhân đầy disk."
+    "delete": "Có thể mất bằng chứng, xóa file ứng dụng đang dùng hoặc ảnh hưởng service.",
+    "reboot": "Reboot không tự giải phóng các file log vẫn nằm trên disk.",
+    "review": "Giữ dữ liệu cần lưu và tránh xóa rộng chỉ dựa vào kích thước."
   }
 }

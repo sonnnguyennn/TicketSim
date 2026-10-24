@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách thiếu đơn hàng hôm qua sau restore.",
-    "Đọc P1 (PANEL: restored backup) và P2 (PANEL: incident time); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Owner kiểm tra order set/integrity và ghi rõ RPO/data gap còn lại."
+    "Ngày backup không trực tiếp đếm đơn bị thiếu.",
+    "So 20/10 00:00 UTC với 22/10 12:00 UTC và tìm binlog.",
+    "Khoảng cách 60 giờ; binlog có tới 09:30 ngày 22 nhưng integrity pending, chưa bảo đảm replay được."
   ]
 }

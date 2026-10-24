@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Đích người dùng thấy khác với kế hoạch migration; cần DNS và IP allocation để so.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đây là triệu chứng sau chuyển dịch vụ.",
+    "other": "Lời báo chưa xác nhận thiếu IP trên VPS mới.",
+    "cause": "Một kết quả từ khách chưa mô tả toàn bộ DNS."
   }
 }

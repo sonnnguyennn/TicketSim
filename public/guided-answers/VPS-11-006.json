@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Restored point predates recent transactions; expected data gap.",
-  "recommended_next_checks": "Confirm backup schedule, DB WAL/binlogs, business RPO.",
-  "resolution_guidance": "Seek point-in-time DB recovery if available; communicate risk.",
-  "verification": "Orders restored to agreed point; consistency checks pass.",
-  "escalate_when": "Database/backup incident team.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Backup sớm hơn incident 60 giờ. Có thể thiếu đơn sau mốc backup, chưa biết số lượng; binlog còn cần kiểm định.",
+  "recommended_next_checks": "So order IDs, backup time và chuỗi binlog; đánh giá log có liên tục và replay được tới đâu.",
+  "resolution_guidance": "Giữ bản hiện tại, thử recovery riêng cùng DB/backup owner; thống nhất mốc và rủi ro trước áp dụng.",
+  "verification": "Đối chiếu order, số liệu nghiệp vụ và consistency ở mốc đã chấp thuận.",
+  "escalate_when": "Dữ liệu giao dịch quan trọng, cần DB recovery hoặc kết quả log chưa rõ.",
+  "production_warning": "Không restore lặp lại production hoặc tự nhập đơn khi chưa đối soát.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

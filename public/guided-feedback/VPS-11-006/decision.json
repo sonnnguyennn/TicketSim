@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Giữ trạng thái restored, tìm DB/binlog/backup mới hơn và đối chiếu order IDs; chuyển data recovery cùng owner. Xác minh: Owner kiểm tra order set/integrity và ghi rõ RPO/data gap còn lại.",
+  "explanation": "Bảo toàn hiện trạng và thử log riêng trước khi áp vào production.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Kiểm tra liên tục, integrity và kết quả nghiệp vụ trước change.",
+    "unsafe": "Có thể ghi đè đơn mới, tạo trùng và mất khả năng đối chiếu.",
+    "close": "DB chạy chưa xác minh các đơn khách cần."
   }
 }

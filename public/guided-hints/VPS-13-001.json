@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Docker app offline.",
-    "Đọc P1 (docker ps -a) và P2 (docker logs api --tail 20); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Container stable, app endpoint trả đúng và log không còn import error."
+    "Ứng dụng offline chưa chứng minh Docker daemon bị hỏng.",
+    "docker ps -a có cả container dừng; đọc log đúng container api.",
+    "Exit code 1 và lỗi import appconfig dẫn tới kiểm tra dependency/image. Không xóa volume để sửa thiếu module."
   ]
 }

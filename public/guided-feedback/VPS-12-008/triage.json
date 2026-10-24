@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Phân biệt hiện tượng nhân đôi với nguyên nhân hoặc an toàn xóa.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Đây là tình huống billing khác chưa được khách nêu.",
+    "cause": "Chưa kiểm tra VM activity, disk và owner.",
+    "symptom": "Cần đối chiếu order và resource ID."
   }
 }

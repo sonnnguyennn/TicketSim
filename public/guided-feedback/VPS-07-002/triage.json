@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Server đã trả HTTP; cần điều tra lý do từ chối thay vì coi cổng chưa mở.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "403 có thể liên quan index/access; chưa đọc nội dung disk.",
+    "symptom": "Request tới server nhưng bị từ chối.",
+    "other": "Đã có HTTP403 nên không phải refused hoàn toàn."
   }
 }

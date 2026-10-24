@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Phân biệt địa chỉ trong order với cấu hình mạng đang chạy.",
   "commandId": "panel-ip-allocation",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Cho gateway/route, không xác nhận IP cam kết trong order.",
+    "direct": "Cho IP được ghi cho order.",
+    "wrong1": "Cho IP hiện tại trong guest, không phải order allocation."
   }
 }

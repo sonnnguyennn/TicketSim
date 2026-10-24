@@ -5,8 +5,8 @@
   "explanation": "Mẫu cho thấy loss trên đường đo từ nguồn khách; chưa phân biệt access, transit hay phía đích bằng ICMP và một probe khác.",
   "commandId": "ping",
   "optionFeedback": {
-    "supported": "Hai phép đo cùng nguồn cùng có loss, còn điểm đo khác không bị trong cửa sổ mẫu.",
     "over": "Router có thể hạn chế ICMP dành cho chính nó; cần nhìn loss tiếp diễn tới đích và phép TCP.",
-    "ignore": "Khác đường đi có thể cho kết quả khác; probe khác tốt không bác bỏ mẫu của khách."
+    "ignore": "Khác đường đi có thể cho kết quả khác; probe khác tốt không bác bỏ mẫu của khách.",
+    "supported": "Hai phép đo cùng nguồn cùng có loss, còn điểm đo khác không bị trong cửa sổ mẫu."
   }
 }

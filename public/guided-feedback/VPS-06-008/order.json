@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Điều tra và giữ bằng chứng, xin quyết định recovery đúng quyền, rồi xác minh dữ liệu sau sự cố.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Biết mức tiến triển và dữ liệu còn có nguy cơ trước can thiệp.",
+    "verify": "Task hết Stopping chưa chứng minh dữ liệu nguyên vẹn.",
+    "act": "Force stop không phải lựa chọn support tự làm để hết task."
   }
 }

@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Chỉ xác nhận chờ lock và snapshot đang chạy.",
   "commandId": "panel-task-queue",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "Không có quyền này trong bản ghi.",
+    "p1": "Chưa xác nhận task đã ghi image.",
+    "p2": "Cần tiến độ/owner để đánh giá lock."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận active zone, local HTTPS và client TCP; chỉ thêm rule HTTPS theo policy khi được duyệt. Xác minh: HTTPS từ client ngoài trả nội dung mong đợi, rule còn hiệu lực.",
+  "explanation": "Chỉ mở đúng nhu cầu trên policy áp dụng với quyền được duyệt; không dùng tắt firewall làm biện pháp khôi phục rộng.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Nối được phép đo với rule cần đổi và giữ cơ chế lọc còn lại.",
+    "unsafe": "Làm lộ các dịch vụ khác và chưa chứng minh đó là lớp gây lỗi.",
+    "close": "Khách còn chưa truy cập được HTTPS từ ngoài."
   }
 }

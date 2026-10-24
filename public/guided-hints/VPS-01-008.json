@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: SSH rớt từng đợt khi nightly job chạy.",
-    "Đọc P1 (journalctl -k -b | tail -n 30) và P2 (free -h); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Không còn OOM trong cửa sổ job, RAM đủ và phiên SSH ổn định qua nhiều lượt chạy."
+    "Lập timeline gồm giờ job chạy, lần SSH rớt và các sự kiện kernel.",
+    "Đọc process được OOM kill, available memory và log phiên SSH; tên process bị kill rất quan trọng.",
+    "Kernel kill python3 chứ không ghi sshd bị kill. PSI có stall bộ nhớ nhưng cần correlation nhiều lượt để giải thích phiên SSH."
   ]
 }

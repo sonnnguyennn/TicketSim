@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Auth log nêu Failed hoặc Accepted và IP nguồn; danh sách phiên hay cấu hình sshd không thay thế được.",
   "commandId": "journalctl-unit",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "last liệt kê phiên được ghi nhận, không mô tả mọi lần xác thực thất bại.",
+    "wrong2": "Cấu hình hiệu lực không phải lịch sử xác thực.",
+    "direct": "Đọc các sự kiện của unit sshd trên CentOS Stream 9."
   }
 }

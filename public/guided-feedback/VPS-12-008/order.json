@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Định danh và bảo vệ trước, cleanup có quyền sau, rồi so mapping cuối.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Không dựa vào tên hiển thị để chọn bản xóa.",
+    "verify": "Cleanup resource chưa đủ nếu billing hoặc data chưa xác minh.",
+    "act": "Đúng quyền và giữ bản sao dữ liệu cần thiết."
   }
 }

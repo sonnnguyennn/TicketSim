@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác minh quyền sở hữu và kế hoạch đích trước đổi mạng, rồi kiểm tra từ client.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Tránh gán IP khi thiếu thông tin cấp phát.",
+    "verify": "Cần kiểm tra cả cấu hình và đường truy cập sau change.",
+    "act": "Giữ đường quản trị và điều kiện khôi phục."
   }
 }

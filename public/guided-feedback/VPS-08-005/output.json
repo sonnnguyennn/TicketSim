@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Một authoritative trả IP mới trong khi resolver 1.1.1.1 còn IP cũ; cần so nhiều NS/resolver.",
+  "explanation": "Có khác biệt theo resolver; cache là giả thuyết hợp lý nhưng cần kiểm tra riêng các authoritative server có thống nhất hay không.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Mới hỏi một authoritative server.",
+    "ignore": "Cache chưa hết hạn có thể hợp lệ; đổi DNS guest không sửa source zone.",
+    "supported": "Không đánh đồng một authoritative server với toàn bộ NS."
   }
 }

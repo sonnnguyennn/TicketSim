@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Vhost dump dùng /var/www/html còn release có file dưới /srv/myapp/public; nghi root sai, cần xác nhận vhost phục vụ.",
+  "explanation": "Sai khác path là giả thuyết mạnh; cần đúng vhost/config đang phục vụ trước sửa.",
   "commandId": "nginx-dump",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "File bổ sung vẫn tồn tại;404 có nhiều cách phát sinh.",
+    "ignore": "Nginx có thể đọc root hoặc route khác.",
+    "supported": "File có ở release path nhưng request vẫn 404; cần runtime-vhost proof."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu MAC, network ID, gateway và host bridge config; chuyển hạ tầng mạng/ảo hóa sửa theo change có console. Xác minh: Đúng bridge/MAC, guest ARP/ping gateway và kết nối ngoài theo phân bổ.",
+  "explanation": "Đội hạ tầng có quyền host, đúng MAC/network/gateway và console/rollback trước change.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Có IP không giải quyết việc không tới gateway.",
+    "safe": "Đội network/ảo hóa sửa mapping có kiểm soát.",
+    "unsafe": "Có thể cắt kết nối hoặc phá isolation và không sửa đúng intent."
   }
 }

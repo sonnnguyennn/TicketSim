@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "DNS points to old IP instead of approved new server.",
-  "recommended_next_checks": "Check authoritative zone and planned cutover.",
-  "resolution_guidance": "Update A record with domain-owner authorization.",
-  "verification": "Authoritative answers and customer website correct.",
-  "escalate_when": "Domain outside customer control.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "A record quan sát được là 203.0.113.10, khác IP VPS mới 198.51.100.20. Chưa biết kết quả ở mọi authoritative server và resolver; kế hoạch cutover cũng chưa được xác nhận.",
+  "recommended_next_checks": "Xác nhận owner, authoritative NS, record hiện hành, TTL và readiness của VPS mới.",
+  "resolution_guidance": "Owner duyệt cutover; cập nhật đúng A record trong zone có thẩm quyền, giữ khả năng rollback.",
+  "verification": "Authoritative trả đúng, resolver client hội tụ theo TTL và domain mở đúng site mới.",
+  "escalate_when": "Chuyển DNS/domain owner nếu thiếu quyền hoặc delegation/zone không rõ.",
+  "production_warning": "Không xóa zone/server cũ trước khi đánh giá resolver còn cache và dữ liệu cần giữ.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

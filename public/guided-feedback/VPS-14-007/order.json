@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Nhận diện record trước, đội có quyền sửa sau, đối chiếu kết quả cuối.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Tách line, giao dịch và resource.",
+    "verify": "Sửa line chưa đủ nếu số tiền hoặc payment không khớp.",
+    "act": "Support không tự định số tiền refund."
   }
 }

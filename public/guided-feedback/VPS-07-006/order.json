@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Giữ lỗi/diff trước, change đúng quyền rồi kiểm tra app và website.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Khoanh startup failure và phạm vi release.",
+    "verify": "Một lần start chưa đủ kiểm chứng restart loop.",
+    "act": "Owner/runbook quyết định change và rollback."
   }
 }

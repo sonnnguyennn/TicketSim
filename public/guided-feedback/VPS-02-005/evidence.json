@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Hai phép đọc này cho biết địa chỉ guest; thông tin provider phải lấy từ panel riêng.",
   "commandId": "ip-family-addr",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Đúng dòng inet6 được hiển thị.",
+    "p2": "Output chỉ có header interface, không có địa chỉ IPv4.",
+    "over": "Chúng không đọc cấp phát; panel bổ sung còn cho thấy IPv4 được cấp."
   }
 }

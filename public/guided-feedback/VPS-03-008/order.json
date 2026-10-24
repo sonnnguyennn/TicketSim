@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Giữ bằng chứng/khả năng phục hồi trước repair; sau đó kiểm tra dữ liệu và chức năng ghi.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Cần biết trạng thái volume và điểm khôi phục trước thay đổi dữ liệu.",
+    "verify": "Mount rw một lần không chứng minh storage ổn định hoặc dữ liệu đầy đủ.",
+    "act": "Hành động cần đúng thiết bị, trạng thái unmount và quyền."
   }
 }

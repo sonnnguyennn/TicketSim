@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Lần thử thất bại là tín hiệu cần theo dõi, khác với đăng nhập thành công.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Khách không nêu sự kiện đăng nhập thành công này.",
+    "cause": "Failed nghĩa là lần xác thực đó không được chấp nhận.",
+    "symptom": "Cần đối chiếu auth log và phạm vi thời gian để đánh giá."
   }
 }

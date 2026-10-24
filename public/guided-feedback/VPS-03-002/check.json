@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Cờ -d xem entry thư mục thay vì liệt kê nội dung; -l hiện quyền và owner.",
   "commandId": "ls-permission",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Danh sách process của user không cho quyền trên thư mục uploads.",
+    "direct": "Đọc metadata đúng đường dẫn đang bị từ chối ghi.",
+    "wrong1": "id cho UID/GID của ứng dụng, không đọc owner và mode của thư mục uploads."
   }
 }

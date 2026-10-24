@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Incorrect hostname ww vs www in request.",
-  "recommended_next_checks": "Confirm exact FQDN; check DNS records.",
-  "resolution_guidance": "Correct typo or create requested alias if owner approves.",
-  "verification": "Correct FQDN resolves and page loads.",
-  "escalate_when": "Potential DNS zone corruption.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "ww.example.com trả NXDOMAIN, còn www.example.com và tên gốc có A record. Hai hostname khác nhau; chưa thể tự khẳng định owner chỉ gõ nhầm.",
+  "recommended_next_checks": "Xác nhận FQDN khách muốn dùng, kiểm tra record và authority cho đúng tên.",
+  "resolution_guidance": "Nếu là typo, hướng khách dùng tên đúng; nếu cần alias, domain owner duyệt tạo record phù hợp.",
+  "verification": "Tên được thống nhất phân giải đúng và HTTP/TLS theo hostname đó hoạt động.",
+  "escalate_when": "Chuyển DNS owner nếu tên đúng vẫn lỗi, authority bất nhất hoặc không có quyền sửa zone.",
+  "production_warning": "Không xóa zone hoặc reboot VPS để chữa NXDOMAIN của một hostname.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

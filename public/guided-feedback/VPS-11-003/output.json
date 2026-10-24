@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: tar không đọc hết archive và hash khác baseline tin cậy; bản này không đủ tin để restore production.",
+  "explanation": "Lỗi đọc đủ để dừng restore mù; hash còn cần đối chiếu chuẩn.",
   "commandId": "sha256sum",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Nếu đã xem checksum chuẩn, ghi rõ khác biệt; không ghi đè production để thử.",
+    "over": "Đổi tên và đọc lại không tái tạo dữ liệu thiếu.",
+    "ignore": "Mọi file đều tính được hash; chưa so chuẩn thì chưa kiểm định."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "nginx"
   ],
-  "explanation": "Bắt đầu từ service liên quan.",
+  "explanation": "Đọc trạng thái unit là điểm bắt đầu; không sửa mạng khi chưa xác nhận service.",
   "commandId": "systemctl-nginx",
   "optionFeedback": {
-    "nginx": "Đúng: phép đọc trạng thái Nginx.",
-    "route": "Route không kiểm tra Nginx.",
-    "disk": "Inode không trực tiếp trả lời service chạy hay dừng."
+    "route": "Listener cho biết socket, còn câu hỏi yêu cầu trạng thái unit Nginx.",
+    "disk": "HTTP từ local không xác định unit Nginx hiện active hay inactive.",
+    "nginx": "status đọc đúng daemon phục vụ web trong case."
   }
 }

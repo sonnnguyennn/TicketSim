@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu timeline job, SSH log và memory trend; đề xuất giới hạn/tối ưu job với owner, chuyển cấp nếu VPS mất ổn định. Xác minh: Không còn OOM trong cửa sổ job, RAM đủ và phiên SSH ổn định qua nhiều lượt chạy.",
+  "explanation": "Thu tài nguyên và log theo cùng timeline, rồi đề xuất tối ưu/giới hạn job có phép; không xóa workload của khách.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "SSH vẫn rớt; loại một suy diễn không có nghĩa đã giải thích và khắc phục triệu chứng.",
+    "safe": "Dữ liệu nhiều lượt giúp chọn thay đổi đúng workload, giữ quyền và mục tiêu xác minh.",
+    "unsafe": "Gây gián đoạn và mất công việc của khách trong khi quan hệ nhân quả chưa xác định."
   }
 }

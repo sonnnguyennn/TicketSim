@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS chậm dù CPU không bận rõ rệt.",
-    "Đọc P1 (free -h) và P2 (vmstat 1 3); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: si/so giảm, available cải thiện và ứng dụng ổn định khi tải tương đương."
+    "available hữu ích hơn cột free khi đánh giá khả năng cấp thêm RAM cho ứng dụng.",
+    "So available/swap của free với si/so ở các dòng vmstat theo khoảng đo.",
+    "Swap đã dùng một mình chưa chứng minh chậm; si/so tiếp tục hoạt động cùng available thấp mới hỗ trợ hướng memory pressure."
   ]
 }

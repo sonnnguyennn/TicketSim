@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "vNIC missing from VM config, not merely wrong default route.",
-  "recommended_next_checks": "virsh domiflist vm-102 (authorized host); migration task logs.",
-  "resolution_guidance": "Escalate to hypervisor team to restore expected vNIC/bridge.",
-  "verification": "Guest sees NIC, IP/route correct, connectivity restored.",
-  "escalate_when": "Hypervisor access required.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Guest chỉ có loopback và panel không có vNIC attached. Khả năng attachment thiếu được hỗ trợ; chưa xác định chi tiết lỗi migration hoặc guest driver.",
+  "recommended_next_checks": "So expected NIC/MAC/network, host domain config và task migration; kiểm tra device discovery nếu host đã gắn đúng.",
+  "resolution_guidance": "Chuyển virtualization khôi phục vNIC đúng network theo change và quyền; không tạo NIC giả trong guest.",
+  "verification": "Guest thấy NIC, IP/route đúng cấp phát và kết nối client hoạt động; kiểm tra isolation/network đúng.",
+  "escalate_when": "Chuyển hypervisor/network team vì cần quyền host và mapping mạng.",
+  "production_warning": "Không đoán bridge hoặc tạo interface trong guest để thay phần cứng ảo còn thiếu.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

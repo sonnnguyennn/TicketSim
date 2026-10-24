@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác định đúng máy trước, cách ly clone sau, xác minh ảnh hưởng cuối.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Tránh cách ly nhầm hoặc chỉ dựa nhãn panel.",
+    "verify": "Cần kiểm chứng cả triệu chứng khách và phạm vi mạng.",
+    "act": "Thay mạng có mục tiêu sau xác định clone."
   }
 }

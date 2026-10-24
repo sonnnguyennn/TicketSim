@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác minh owner, invoice, thời gian và điều khoản áp dụng; chuyển billing review, không hứa kết quả. Xác minh: Billing đưa quyết định có audit, giao dịch và trạng thái service được đối chiếu theo policy.",
+  "explanation": "Không thu thông tin thẻ hoặc dùng quyền support thay quyết định billing.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Vượt quyền hoặc làm lộ dữ liệu thanh toán.",
+    "close": "Khách cần yêu cầu được review và nhận quyết định.",
+    "safe": "Chỉ thông báo trạng thái và kết quả được bên có quyền xác nhận."
   }
 }

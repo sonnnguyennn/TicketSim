@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Đây là khôi phục thông tin truy cập đặc quyền, cần kiểm tra danh tính trước thao tác.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Ticket không báo mất disk hoặc dữ liệu.",
+    "cause": "Quên credential chưa phải bằng chứng compromise; cần hỏi bối cảnh nếu có dấu hiệu khác.",
+    "symptom": "Mục tiêu là khôi phục truy cập hợp lệ, không mặc định hệ thống đã hỏng."
   }
 }

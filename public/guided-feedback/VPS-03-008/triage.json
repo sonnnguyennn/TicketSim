@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Lỗi cho biết cần xem filesystem/mount, không chỉ username hoặc quyền một file.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đúng thông báo và thao tác khách nêu.",
+    "other": "Không phải lỗi tạo file của filesystem.",
+    "cause": "Thông báo người dùng chưa có dữ liệu thiết bị hoặc health telemetry."
   }
 }

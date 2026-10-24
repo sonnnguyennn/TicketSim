@@ -2,11 +2,11 @@
   "correctIds": [
     "open"
   ],
-  "explanation": "Private key cần được bảo vệ ở nơi lưu trên client.",
+  "explanation": "Ba nhóm quyền là owner, group và others; SSH client bảo vệ private key bằng việc từ chối file quá rộng.",
   "commandId": "ls-key-mode",
   "optionFeedback": {
-    "open": "Đúng: đó là mode 0644.",
-    "safe": "Group và others còn quyền đọc.",
-    "remote": "Probe chạy ở client; không suy ra file trong guest."
+    "open": "Các cụm rw-, r--, r-- tương ứng quyền này.",
+    "safe": "Hai cụm r-- phía sau còn cho group và others đọc.",
+    "remote": "Lệnh ls đang chạy ở client và xem ~/.ssh/lab_key tại đó."
   }
 }

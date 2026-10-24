@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Refund eligibility cannot be determined automatically.",
-  "recommended_next_checks": "Gather order details and policy clauses.",
-  "resolution_guidance": "Refer Billing Team, avoid promising approval.",
-  "verification": "Written authorized billing decision.",
-  "escalate_when": "Billing team.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Ngày mua đã có nhưng eligibility cần review; request RF-1404 chưa gửi, decision none.",
+  "recommended_next_checks": "Xác minh owner, invoice, ngày mua và điều khoản áp dụng, không thu thông tin thẻ.",
+  "resolution_guidance": "Chuyển billing review và báo trạng thái xử lý; không hứa approve hoặc 100%.",
+  "verification": "Quyết định bằng văn bản từ bên có quyền, ledger khớp nếu phát sinh refund.",
+  "escalate_when": "Billing team quyết định refund hoặc giải quyết tranh chấp.",
+  "production_warning": "Bảy ngày không tự tạo quyền refund; không tự phát hoàn tiền.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

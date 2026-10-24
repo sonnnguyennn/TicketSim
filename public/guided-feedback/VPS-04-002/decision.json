@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đọc RSS/process và xu hướng, kiểm tra OOM; điều chỉnh workload hoặc RAM với chủ dịch vụ. Xác minh: si/so giảm, available cải thiện và ứng dụng ổn định khi tải tương đương.",
+  "explanation": "Cần phân loại workload và giới hạn/tải trước chọn tối ưu hay capacity, có owner phê duyệt.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Tìm nguồn áp lực và tránh thay capacity chỉ từ một ảnh chụp.",
+    "unsafe": "Có thể tăng nguy cơ OOM và gián đoạn khi chưa giải quyết nhu cầu RAM.",
+    "close": "Ứng dụng còn chậm và bằng chứng swap chưa được xử lý/xác minh."
   }
 }

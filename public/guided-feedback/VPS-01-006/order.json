@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Đối chiếu danh tính/lý do ban trước hành động; kiểm tra lại từ nguồn được phép sau đó.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Bước này xác định ban có liên quan ticket và có an toàn để gỡ hay không.",
+    "verify": "Thành công một lần chưa bảo đảm đã sửa username/key dẫn đến failed login.",
+    "act": "Chỉ sau xác minh mới dùng quyền thay trạng thái chặn."
   }
 }

@@ -6,7 +6,7 @@
   "commandId": "virsh-domblklist",
   "optionFeedback": {
     "supported": "Guest/host cùng thiếu vdb và task bổ sung bước attach skipped.",
-    "over": "Inventory cònvol-72 available; chưa có kết luận dữ liệu bị xóa.",
-    "ignore": "domblklist chưa cóvdb; mount không tự tạo attachment còn thiếu."
+    "over": "Inventory còn vol-72 available; chưa có kết luận dữ liệu bị xóa.",
+    "ignore": "domblklist chưa có vdb; mount không tạo attachment."
   }
 }

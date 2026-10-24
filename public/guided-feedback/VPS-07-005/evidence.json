@@ -6,8 +6,8 @@
   "explanation": "Cần cả hạn của cert được gửi và mốc thời gian kiểm tra; không chỉ trạng thái service hay inventory.",
   "commandId": "hostnamectl",
   "optionFeedback": {
-    "p1": "Giá trị này được openssl x509 đọc từ cert nhận qua TLS.",
     "p2": "Mốc UTC này nằm sau ngày hết hạn đã đọc.",
-    "over": "Mục deployed:no và cert nhận được đều không hỗ trợ nhận định này."
+    "over": "Mục deployed:no và cert nhận được đều không hỗ trợ nhận định này.",
+    "p1": "Giá trị này được openssl x509 đọc từ cert nhận qua TLS."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đo FD qua tải, phân loại socket/file và xác nhận ownership; lập change tăng limit phù hợp hoặc sửa leak với đội ứng dụng. Xác minh: Trong tải đại diện FD ổn định dưới limit, log không còn EMFILE và API thành công.",
+  "explanation": "Đếm theo thời gian và phân loại FD giúp chọn sửa leak hoặc capacity; thay limit cần quyền và xác minh process thực.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Lỗi ngắt quãng cần đo dưới tải tương đương, không chỉ một ảnh chụp.",
+    "safe": "Giải thích được nguồn dùng tài nguyên thay vì chỉ dời ngưỡng lỗi.",
+    "unsafe": "Gây gián đoạn, có thể che leak và tăng tải lên hệ thống mà chưa có kế hoạch."
   }
 }

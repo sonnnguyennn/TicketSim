@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Nginx timeout đọc backend và health local chậm; cần đo backend/DB dưới peak để khoanh nguyên nhân.",
+  "explanation": "Đường xử lý backend chậm; cần đo thêm CPU, cơ sở dữ liệu và dependency.",
   "commandId": "curl-head",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Chờ lâu hơn không giúp backend nhanh hơn và có thể tăng hàng đợi.",
+    "ignore": "Process chạy không đo độ trễ hoặc tỷ lệ lỗi.",
+    "supported": "Log và yêu cầu local phù hợp, nhưng chưa xác định nút thắt."
   }
 }

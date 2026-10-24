@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "404 là triệu chứng HTTP; nguyên nhân cần config và dữ liệu deploy.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Root hoặc route sai cũng có thể trả 404.",
+    "symptom": "Đây là kết quả khách quan sát được.",
+    "other": "Ticket không mô tả lỗi thời hạn TLS."
   }
 }

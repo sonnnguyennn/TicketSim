@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Path MTU/PMTUD issue suspected; probe alone is not final proof.",
-  "recommended_next_checks": "Check tunnel MTU, tcpdump ICMP frag-needed, tracepath.",
-  "resolution_guidance": "Correct MTU/MSS with network owner; avoid blind global changes.",
-  "verification": "Large transfers complete through VPN without stalls.",
-  "escalate_when": "Provider tunnel or upstream PMTUD blocked.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Có dấu hiệu giới hạn kích thước gói trên path VPN: gói DF lớn không qua trong khi gói nhỏ có phản hồi. PMTU/MSS là giả thuyết, chưa phải nguyên nhân duy nhất đã xác nhận.",
+  "recommended_next_checks": "Đối chiếu tunnel MTU/MSS, ICMP frag-needed, tracepath và retransmission của TCP; thử đúng VPN/đích và chiều liên quan.",
+  "resolution_guidance": "Đội owner VPN/network chọn thay đổi MTU/MSS phù hợp sau xác minh và phê duyệt, giữ rollback; không hạ MTU public theo một payload ping.",
+  "verification": "Upload HTTPS lớn qua đúng VPN hoàn tất trong nhiều lượt; request nhỏ và các dịch vụ đang tốt không bị ảnh hưởng.",
+  "escalate_when": "Chuyển đội VPN/provider khi tunnel hoặc lọc ICMP/PMTUD nằm ngoài quyền guest support.",
+  "production_warning": "Không thay MTU qua đường quản trị duy nhất khi chưa có console; ICMP nhỏ thành công không xác minh upload TCP.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

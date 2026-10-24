@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Kernel OOM killer terminated app process.",
-  "recommended_next_checks": "free -h; memory peak / cgroup limits / logs",
-  "resolution_guidance": "Tune heap/process count or resource allocation with owner.",
-  "verification": "No OOM kills under equivalent workload.",
-  "escalate_when": "Requires capacity changes or code fix.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Kernel đã ghi OOM kill java và unit app báo oom-kill. Cần đối chiếu PID/time và tìm ngân sách bộ nhớ gây ra sự kiện.",
+  "recommended_next_checks": "Đo memory peak, RAM/swap/cgroup limit, Java heap/native memory và process khác cùng tải.",
+  "resolution_guidance": "Cùng owner điều chỉnh heap/process count, tối ưu hoặc lập capacity change được duyệt theo số đo.",
+  "verification": "Không OOM lặp dưới workload đại diện; app ổn định và request/dữ liệu đúng, không chỉ service lên lại.",
+  "escalate_when": "Chuyển owner ứng dụng/capacity khi cần sửa code, heap hoặc hạn mức ngoài quyền support.",
+  "production_warning": "Không cấp toàn RAM cho Java heap hoặc coi RAM hiện tại sau OOM là peak lúc sự cố.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

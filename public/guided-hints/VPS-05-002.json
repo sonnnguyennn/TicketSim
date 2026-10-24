@@ -1,7 +1,7 @@
 {
   "hints": [
-    "df -h đo block, nhưng còn một tài nguyên khác cho mỗi file.",
-    "So sánh df -h / với df -i /.",
-    "IUse% 100% cho thấy inode cạn; cần tìm nơi có nhiều file nhỏ."
+    "Block space và inode là hai nguồn lực khác nhau khi tạo file.",
+    "Đối chiếu df -h với df -i trên cùng filesystem.",
+    "Inode100% còn block45% gợi nhiều file nhỏ; số file dưới /var chưa chỉ ra thư mục nào an toàn để xóa."
   ]
 }

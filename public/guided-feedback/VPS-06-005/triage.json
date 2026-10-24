@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Power state và tiến trình boot guest là hai lớp khác nhau.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Console báo lỗi boot rộng hơn một URL web.",
+    "cause": "Lỗi mount có thể do tham chiếu hoặc attachment; chưa kiểm tra integrity.",
+    "symptom": "Panel Running không bảo đảm mount và service hoàn thành."
   }
 }

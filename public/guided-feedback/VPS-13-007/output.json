@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: DB container đã exit với memory allocation failure; cần xác định giới hạn container hay host.",
+  "explanation": "Chưa chọn ngay tăng RAM host khi chưa kiểm tra limit và DB settings.",
   "commandId": "docker-compose-logs",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "DB dependency đang dừng; restart API không cấp thêm RAM cho DB.",
+    "supported": "Dữ liệu hỗ trợ memory issue, chưa lượng hóa giải pháp.",
+    "over": "Còn limit container, DB configuration và integrity cần xem."
   }
 }

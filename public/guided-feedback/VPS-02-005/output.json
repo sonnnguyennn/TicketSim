@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Guest có IPv6 nhưng không có IPv4 trên interface; chưa biết thiếu ở cấp phát hay profile.",
+  "explanation": "Đã biết có cấp phát trong panel; bước còn lại là tìm vì sao địa chỉ đó chưa có ở guest, không phủ nhận allocation.",
   "commandId": "ip-family-addr",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Kết hợp guest và panel khoanh vùng vào mapping/profile hoặc quá trình cấp địa chỉ.",
+    "over": "Panel đã có Assigned IPv4 192.0.2.25/24.",
+    "ignore": "Client đang cần IPv4; hai họ địa chỉ không thay thế nhau cho mọi đường truy cập."
   }
 }

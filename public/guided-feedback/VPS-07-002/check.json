@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "curl-I đọc header HTTP, không kiểm tra file deploy hoặc quyền filesystem.",
   "commandId": "curl-head",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "RAM không cho biết HTTP status của site.",
+    "direct": "Lệnh trả status/header để phân biệt403 với lỗi TCP.",
+    "wrong1": "Error log bổ sung nguyên nhân, không phải phép gửi request HTTP."
   }
 }

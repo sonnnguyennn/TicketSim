@@ -3,12 +3,12 @@
     "stopped",
     "port"
   ],
-  "explanation": "Chỉ chọn điều thật sự quan sát.",
+  "explanation": "Hai phép đọc phù hợp với chưa có daemon nhận HTTP, nhưng chưa xác định lỗi cấu hình hoặc host.",
   "commandId": "ss-ltnp",
   "optionFeedback": {
-    "stopped": "Đúng từ P1.",
-    "port": "Đúng từ P2.",
-    "badconfig": "Fixture không chứng minh điều này.",
-    "hostoff": "Không có bằng chứng."
+    "stopped": "Đúng trạng thái được systemctl báo.",
+    "port": "Bảng ss không có dòng LISTEN ở cổng 80.",
+    "badconfig": "Hai phép này không test cú pháp; phép nginx -t bổ sung còn thành công.",
+    "hostoff": "Không có telemetry host, còn console guest có thể dùng để đọc service."
   }
 }

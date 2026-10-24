@@ -2,11 +2,11 @@
   "correctIds": [
     "client"
   ],
-  "explanation": "Sau khi bảo vệ key, nếu vẫn lỗi thì mới điều tra xác thực phía guest.",
+  "explanation": "Chủ file có thể giới hạn quyền đọc ở client rồi thử lại. Nếu còn lỗi mới kiểm tra key được gửi và authorized_keys có quyền phù hợp.",
   "commandId": "ssh-key-login",
   "optionFeedback": {
-    "client": "Đúng: sửa nơi có vấn đề và xác minh, không chạm guest.",
-    "guest": "Không có bằng chứng cần restart và đó là thay đổi service.",
-    "share": "Không chia sẻ secret; có thể kiểm tra mode mà không gửi key."
+    "client": "Tác động đúng file bị cảnh báo mà không thay SSH server hoặc chia sẻ secret.",
+    "guest": "Restart server không sửa quyền của private key ở client.",
+    "share": "Private key là bí mật; support chỉ cần metadata và public fingerprint khi phù hợp."
   }
 }

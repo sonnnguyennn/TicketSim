@@ -3,12 +3,12 @@
     "full",
     "logs"
   ],
-  "explanation": "Quan sát dung lượng không đồng nghĩa được phép xóa.",
+  "explanation": "Dung lượng lớn là đầu mối review, không phải quyền xóa hoặc thông tin inode.",
   "commandId": "du-var",
   "optionFeedback": {
-    "full": "Đúng từ P1.",
-    "logs": "Đúng từ P2.",
-    "delete": "Dung lượng lớn không phải quyền xóa.",
-    "inode": "P1/P2 không đo inode; cần df -i để đánh giá."
+    "delete": "du không có retention, owner hay yêu cầu lưu bằng chứng.",
+    "inode": "Phép df -i bổ sung ghi42%, không phải100%.",
+    "full": "Đúng dòng df -h.",
+    "logs": "Đúng dòng du, chưa phân loại file cụ thể."
   }
 }

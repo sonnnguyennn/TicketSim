@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Mốc migration giúp đặt đúng cửa sổ điều tra; chưa tự quy lỗi thiết bị.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đó là mẫu lặp khách báo.",
+    "other": "Khách nêu sự kiện migration cụ thể.",
+    "cause": "Lời khách chưa có dữ liệu từ switch."
   }
 }

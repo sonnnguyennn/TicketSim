@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Guest thiếu NIC và panel không gắn vNIC; khả năng lỗi attachment, phải chuyển đội ảo hóa.",
+  "explanation": "Hai lớp cùng cho thấy thiếu NIC/attachment; cần host config review trước đụng mạng guest.",
   "commandId": "virsh-domiflist",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Đối chiếu expected MAC/network rồi chuyển đội ảo hóa.",
+    "over": "Không có vNIC ở panel nên chưa đủ quy lỗi dịch vụ guest.",
+    "ignore": "Route không tạo virtual hardware đang thiếu."
   }
 }

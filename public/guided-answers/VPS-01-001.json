@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "SSH daemon is inactive; port 22 has no listener.",
-  "recommended_next_checks": "journalctl -u sshd -n 50",
-  "resolution_guidance": "Investigate stop reason; start sshd if authorized.",
-  "verification": "SSH service active, port listening, login from client succeeds.",
-  "escalate_when": "Service fails to start or policy forbids guest changes.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "sshd hiện inactive và không có listener TCP/22 trong bảng ss. Điều này phù hợp Connection refused; chưa xác định vì sao dịch vụ dừng.",
+  "recommended_next_checks": "Đọc journal của sshd trong đúng cửa sổ sự cố, kiểm tra cấu hình bằng sshd -t và đối chiếu quyền truy cập console trước khi thao tác.",
+  "resolution_guidance": "Admin được phép xử lý lỗi được xác nhận rồi đề xuất start sshd; tránh reboot hoặc đổi mật khẩu khi TCP chưa tới bước xác thực.",
+  "verification": "Kiểm tra sshd active, listener đúng cổng và thử kết nối, xác thực SSH từ mạng của khách; đối chiếu log lỗi mới.",
+  "escalate_when": "Chuyển quản trị hệ thống nếu service không start được, có lỗi cấu hình ngoài quyền hoặc nghi vấn node/network sau khi guest listener hoạt động.",
+  "production_warning": "Không khởi động lại hoặc sửa firewall theo suy đoán; giữ một đường console được phép để tránh mất quyền truy cập.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

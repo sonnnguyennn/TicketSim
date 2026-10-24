@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Đây là yêu cầu theo thời điểm; cần làm rõ giờ và múi giờ trước chọn backup.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Khách chưa đồng ý dùng một bản cũ hơn.",
+    "other": "Khách hỏi restore, không chỉ tạo bản mới.",
+    "cause": "Yêu cầu không xác nhận lịch backup hay bản đã hoàn tất."
   }
 }

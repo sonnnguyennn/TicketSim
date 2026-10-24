@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: A record nhìn thấy khác IP VPS mới; cần kiểm tra authoritative zone và kế hoạch cutover.",
+  "explanation": "Hai địa chỉ khác nhau; cần authority và kế hoạch cutover trước kết luận phạm vi cache.",
   "commandId": "panel-ip-allocation",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Chỉ có một điểm truy vấn được cho.",
+    "ignore": "Cấp phát VPS không tự thay zone domain bên ngoài.",
+    "supported": "Kiểm tra authoritative zone và IP mục tiêu được duyệt."
   }
 }

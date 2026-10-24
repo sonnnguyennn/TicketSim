@@ -2,11 +2,11 @@
   "correctIds": [
     "logs"
   ],
-  "explanation": "Mô phỏng không thực hiện start service thật.",
+  "explanation": "Cần log/config và quyền trước thay đổi, rồi kiểm tra request HTTP theo đường khách dùng.",
   "commandId": "journalctl-nginx",
   "optionFeedback": {
-    "logs": "Đúng: có điều tra và xác minh.",
-    "start": "Thiếu điều tra nguyên nhân và xác minh.",
-    "reboot": "Không có bằng chứng cần reboot."
+    "logs": "Đo trạng thái ban đầu, kiểm soát thay đổi và xác minh ở tầng người dùng.",
+    "start": "Nginx active chưa bảo đảm site/upstream/đường ngoài trả đúng.",
+    "reboot": "Không có bằng chứng cần reboot toàn VPS để xử lý một daemon dừng."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Order và guest OS không khớp; cần provision audit, dữ liệu hiện tại và owner.",
+  "explanation": "Đã có mismatch; cách khắc phục còn phụ thuộc dữ liệu và owner.",
   "commandId": "os-release",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "os-release phản ánh image đang chạy và cần được đối chiếu.",
+    "supported": "Sai OS không tự cho quyền reinstall.",
+    "over": "Reinstall có thể ghi đè disk bất kể OS."
   }
 }

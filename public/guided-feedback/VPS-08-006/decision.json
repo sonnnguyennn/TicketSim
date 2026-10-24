@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận authoritative zone và quyền domain; owner sửa/xóa AAAA không dùng hoặc triển khai IPv6 đúng quy trình. Xác minh: DNS authoritative và validating resolver trả AAAA đúng nếu có IPv6; client IPv6 tải site hoặc không còn AAAA lỗi.",
+  "explanation": "Domain owner chọn sửa hoặc xóa AAAA không dùng, hoặc duyệt triển khai IPv6.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Không đoán IP; thay đổi endpoint IPv6 là quy trình riêng.",
+    "unsafe": "Có thể gây gián đoạn và không sửa được allocation mismatch.",
+    "close": "Client IPv6 còn lỗi và DNS có thể dẫn họ tới sai đích."
   }
 }

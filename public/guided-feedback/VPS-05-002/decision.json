@@ -2,11 +2,11 @@
   "correctIds": [
     "locate"
   ],
-  "explanation": "Sau xử lý cần thấy inode available và tạo file thành công.",
+  "explanation": "Cần tìm nơi sinh file và phân loại vòng đời dữ liệu trước dọn hoặc archive; tăng GB không tự chắc sửa inode.",
   "commandId": "find-files",
   "optionFeedback": {
-    "locate": "Đúng: điều tra rồi xin phép trước khi xóa.",
-    "delete": "Có nguy cơ mất dữ liệu hoặc log.",
-    "resize": "Tăng block chưa chắc giải quyết inode."
+    "locate": "Nhắm đúng nguồn inode và giữ dữ liệu còn cần.",
+    "delete": "Có thể mất dữ liệu dịch vụ mà chưa xác định file tạm hay retention.",
+    "resize": "Inode phụ thuộc loại/layout filesystem; cần xác minh quy trình, không suy từ GB."
   }
 }

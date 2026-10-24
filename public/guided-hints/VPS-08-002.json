@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Nhìn kỹ từng ký tự trong hostname.",
-    "So sánh ww.example.com và www.example.com.",
-    "Một tên NXDOMAIN nhưng tên khác trả A record; xác nhận FQDN khách thực sự dùng."
+    "Ghi nguyên hostname khách nhập, kể cả số chữ w.",
+    "So DNS cho ww và www trên cùng điểm truy vấn.",
+    "NXDOMAIN của một tên không làm cả zone hỏng; xác nhận tên owner muốn dùng trước thêm alias."
   ]
 }

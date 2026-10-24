@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Cần biết hành động bị từ chối trước điều tra quyền.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Khách nêu API reboot, không nêu mọi tác vụ đọc.",
+    "cause": "Lời khách chưa có VM state hoặc phản hồi API.",
+    "symptom": "Đúng yêu cầu cần kiểm tra response và authorization."
   }
 }

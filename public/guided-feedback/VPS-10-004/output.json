@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Steal cao cùng host saturation; phù hợp contention ở hypervisor nhưng chưa định danh nguồn.",
+  "explanation": "Hai lớp số liệu cùng hướng về tranh chấp CPU trên host, chưa xác định nguồn tải hay mức kéo dài.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Steal cao và cảnh báo host hỗ trợ giả thuyết này.",
+    "over": "Không có số liệu từng VM để định danh nguồn.",
+    "ignore": "Steal có thể cao ngay cả khi process trong guest không bận."
   }
 }

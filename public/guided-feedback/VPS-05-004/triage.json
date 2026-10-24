@@ -2,10 +2,10 @@
   "correctIds": [
     "write"
   ],
-  "explanation": "Bắt đầu từ thao tác thất bại, chưa đoán nguyên nhân.",
+  "explanation": "Phạm vi là filesystem không cho ghi; cần xem mount và storage trước khi sửa quyền của một file.",
   "optionFeedback": {
-    "write": "Đúng với lời khách.",
-    "memory": "Không có thông tin RAM.",
-    "dns": "Không liên quan."
+    "write": "Đúng thông báo khách thấy, chưa xác định nguyên nhân mount ro.",
+    "memory": "Thông báo read-only không phải đo bộ nhớ.",
+    "dns": "DNS không giải thích mount từ chối ghi dữ liệu local."
   }
 }

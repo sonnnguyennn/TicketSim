@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Hai trạng thái không tự cấp quyền retry thiếu kiểm soát.",
   "commandId": "panel-provision-task",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Đây là bước đang chờ của cấp phát.",
+    "over": "Chưa có dữ liệu hỗ trợ việc thu thêm.",
+    "p1": "Đây là trạng thái billing."
   }
 }

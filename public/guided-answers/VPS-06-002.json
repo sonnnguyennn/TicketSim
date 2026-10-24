@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "VPS running; slowness may be related to active workload.",
-  "recommended_next_checks": "Inspect running jobs, users, service impact before reboot.",
-  "resolution_guidance": "Explain findings and seek authorization/maintenance window if reboot truly needed.",
-  "verification": "Reboot only if approved; service recovers.",
-  "escalate_when": "Data-critical workloads, unclear reboot permission.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "VM đang Running; mariabackup dùng nhiều CPU trong lúc task backup đạt 72%. Workload có thể liên quan độ chậm, chưa chứng minh cần reboot hoặc dữ liệu lỗi.",
+  "recommended_next_checks": "Đo latency của dịch vụ, xu hướng CPU/I/O và tiến độ backup; hỏi owner lịch và mức ảnh hưởng chấp nhận được.",
+  "resolution_guidance": "Phối hợp owner điều chỉnh lịch hoặc tài nguyên theo change được duyệt. Chỉ cân nhắc reboot nếu có lý do riêng, kế hoạch gián đoạn và quyền rõ ràng.",
+  "verification": "So latency dưới tải tương đương; kiểm tra backup hoàn thành và dịch vụ hoạt động đúng sau điều chỉnh.",
+  "escalate_when": "Chuyển owner database/backup nếu job không tiến triển, dịch vụ quan trọng suy giảm hoặc quyền can thiệp chưa rõ.",
+  "production_warning": "Reboot giữa backup có thể gián đoạn dịch vụ và làm job thất bại; yêu cầu của khách cần được xác thực và đánh giá tác động.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

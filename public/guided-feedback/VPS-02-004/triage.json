@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Local và external đi qua đường khác nhau; một kết quả không thay thế phép đo từ client.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Local có phản hồi khiến cần kiểm tra listener thật, không khẳng định không bind.",
+    "cause": "Chưa đối chiếu zone, edge ACL và traffic từ client.",
+    "symptom": "Đây là khác biệt cần giữ khi khoanh vùng."
   }
 }

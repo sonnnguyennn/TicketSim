@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "VM is shut off on hypervisor.",
-  "recommended_next_checks": "Review event history, scheduled shutdown, storage state.",
-  "resolution_guidance": "Start only after approval and node health verification.",
-  "verification": "Guest boots and service works.",
-  "escalate_when": "Repeated unexpected stops or host issue.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Panel Stopped và host shut off cùng xác nhận VM tắt. INC-410 còn chờ storage consistency review; chưa đánh giá được dữ liệu hoặc điều kiện bật lại.",
+  "recommended_next_checks": "Đọc event/incident, lịch shutdown và node/storage health; xác nhận VM ID và owner yêu cầu khôi phục.",
+  "resolution_guidance": "Đội ảo hóa start có kiểm soát khi được phép và host/storage đã được xác nhận; giữ kế hoạch recovery phù hợp.",
+  "verification": "Guest boot xong, volume đúng và dịch vụ khách hoạt động từ client; theo dõi dấu hiệu lỗi dữ liệu sau outage.",
+  "escalate_when": "Chuyển host/storage nếu review còn pending, VM tắt lặp lại hoặc boot lỗi.",
+  "production_warning": "Không start lặp hoặc rollback snapshot để thử khi chưa rõ storage state và dữ liệu có thể bị ghi đè.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

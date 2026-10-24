@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Guest clock significantly out of sync; TLS and auth may fail.",
-  "recommended_next_checks": "timedatectl status; chronyc tracking if available",
-  "resolution_guidance": "Correct guest time sync through approved chronyd/host config.",
-  "verification": "Clock synchronized and TLS validation passes.",
-  "escalate_when": "Host time source or migration timer problem.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Guest ghi synchronized: no và NTP inactive; chronyd cũng inactive trong mẫu. Đây là bằng chứng đồng bộ thời gian chưa được xác nhận, nhưng thiếu timestamp chuẩn đồng thời để định lượng độ lệch hoặc quy toàn bộ lỗi TLS cho clock.",
+  "recommended_next_checks": "So UTC với nguồn tin cậy cùng lúc; đọc chronyd tracking/sources, NTP reachability và lỗi cert cụ thể trong guest.",
+  "resolution_guidance": "Admin cấu hình đồng bộ thời gian theo policy sau khi đánh giá ứng dụng nhạy thời gian; không chỉnh giờ thủ công thiếu kế hoạch.",
+  "verification": "Guest synchronized theo nguồn tin cậy; thời gian đúng và kiểm tra chain, hostname, hạn cert/TLS từ guest thành công.",
+  "escalate_when": "Chuyển host/time-service team nếu nguồn thời gian host/migration có vấn đề hoặc guest không tới được NTP sau kiểm tra.",
+  "production_warning": "Không suy giờ guest lệch đúng một ngày từ timestamp thiếu đối chiếu; thay đổi clock có thể ảnh hưởng token, log và ứng dụng.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

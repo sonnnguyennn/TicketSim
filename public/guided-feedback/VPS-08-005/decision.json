@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Kiểm tra các authoritative NS và TTL thực từ nhiều resolver; chờ cache hợp lệ hoặc xử lý bất nhất. Xác minh: Các authoritative thống nhất và resolver từng lỗi hội tụ về IP mới sau TTL.",
+  "explanation": "Xác nhận authoritative server đã thống nhất và cache đang hội tụ; client còn dùng IP cũ cần được phục vụ.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Những client còn lỗi chưa được xác minh.",
+    "safe": "Chờ cache hợp lệ hoặc xử lý authority bất nhất theo bằng chứng.",
+    "unsafe": "Client có thể mất dịch vụ trong thời gian cache còn hiệu lực."
   }
 }

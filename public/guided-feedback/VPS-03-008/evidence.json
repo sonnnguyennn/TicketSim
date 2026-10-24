@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Trạng thái ro và lỗi EXT4 hỗ trợ escalation, không tự cấp phép repair hay xác nhận dữ liệu an toàn.",
   "commandId": "journal-boot",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "findmnt trả ro,relatime.",
+    "p2": "Thông báo lỗi nêu filesystem/thiết bị, chưa phải chẩn đoán ổ vật lý.",
+    "over": "Chưa có bản đồ lỗi thiết bị hoặc kiểm tra dữ liệu sau recovery."
   }
 }

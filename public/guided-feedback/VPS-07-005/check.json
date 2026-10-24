@@ -5,8 +5,8 @@
   "explanation": "Kết nối tới 443 với đúng SNI rồi đọc cert được gửi; ngày trong inventory không thay thế kết quả từ endpoint.",
   "commandId": "openssl-sni",
   "optionFeedback": {
+    "wrong2": "Inventory cho biết cert đã cấp, không xác nhận cert đang được client nhận.",
     "direct": "s_client lấy cert theo SNI; x509-dates in notBefore và notAfter.",
-    "wrong1": "df đo dung lượng filesystem; không đọc cert gửi qua TLS.",
-    "wrong2": "Bảng route cho biết đường IP; không chứa ngày hết hạn cert."
+    "wrong1": "Đọc file cert trên guest, chưa xác nhận endpoint theo SNI đang gửi chính file đó."
   }
 }

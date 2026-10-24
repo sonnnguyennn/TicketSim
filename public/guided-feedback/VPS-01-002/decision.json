@@ -2,11 +2,11 @@
   "correctIds": [
     "valid"
   ],
-  "explanation": "Dùng account hợp lệ và xác minh login; chuyển cấp nếu cần thay đổi account.",
+  "explanation": "Xác nhận account được phép trước; việc tạo hoặc reset account cần kiểm chứng chủ sở hữu và quyền thao tác.",
   "commandId": "getent-passwd",
   "optionFeedback": {
-    "valid": "Đúng: không tự tạo/reset account.",
-    "create": "Tạo account là thay đổi cần phê duyệt.",
-    "reboot": "Không có bằng chứng cần reboot."
+    "reboot": "Không có bằng chứng reboot sẽ bổ sung username, và thao tác gây gián đoạn.",
+    "valid": "Giải quyết đúng bước danh tính mà không tự ý tạo hoặc reset user.",
+    "create": "Tạo account cấp quyền truy cập mới; cần phê duyệt và thông tin chủ sở hữu."
   }
 }

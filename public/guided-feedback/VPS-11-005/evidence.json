@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Hai nguồn chưa xác nhận dữ liệu bị xóa.",
   "commandId": "lsblk",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Đây là scope được ghi rõ.",
+    "p2": "Đây là trạng thái tại lúc đo.",
+    "over": "Chưa có manifest data disk hoặc kiểm tra nội dung."
   }
 }

@@ -5,12 +5,12 @@
     "gateway",
     "verify"
   ],
-  "explanation": "Giữ đường console và rollback trước khi sửa network.",
+  "explanation": "Quan sát cấu hình trước, xác nhận dữ liệu cấp phát và quyền, rồi xác minh kết nối sau thay đổi.",
   "commandId": "ip-route",
   "optionFeedback": {
-    "ip": "Đầu tiên biết guest đang có địa chỉ gì.",
-    "route": "Kiểm tra đường đi trước khi sửa.",
-    "gateway": "Không đoán gateway.",
-    "verify": "Xác minh từ guest và client."
+    "ip": "Cần xác định đúng interface và địa chỉ trước đọc đường đi.",
+    "route": "Xác nhận đường nào còn thiếu thay vì suy từ ping nội bộ.",
+    "gateway": "Dữ liệu cấp phát và đường quản trị phải rõ trước change được duyệt.",
+    "verify": "Route xuất hiện chưa chứng minh TCP hay dịch vụ hoạt động đầu cuối."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Office public IP khớp banned IP và có failed attempts; reachability theo nguồn phù hợp Fail2ban.",
+  "explanation": "Đã khớp nguồn bị chặn; lỗi xác thực, policy và thời hạn ban cần kiểm tra riêng.",
   "commandId": "fail2ban-log",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Ban không xác nhận credential hợp lệ.",
+    "supported": "Phù hợp với lỗi theo nguồn; cần đọc auth log trước khi unban.",
+    "over": "Nguồn tin cậy không loại bỏ policy hoặc lý do bị ban."
   }
 }

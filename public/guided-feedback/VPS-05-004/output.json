@@ -2,11 +2,11 @@
   "correctIds": [
     "ro"
   ],
-  "explanation": "Đọc đúng mount và option của nó.",
+  "explanation": "ro là mount option read-only, không phải kiểm tra integrity hoặc dung lượng của root.",
   "commandId": "findmnt",
   "optionFeedback": {
-    "ro": "Đúng theo P1.",
-    "safe": "Option ro không chứng minh integrity.",
-    "block": "Output nói về /data, không đo dung lượng /."
+    "safe": "Read-only không kiểm tra nội dung dữ liệu.",
+    "block": "Đây là mount /data và không có số đo dung lượng /.",
+    "ro": "Đúng source và option được findmnt in."
   }
 }

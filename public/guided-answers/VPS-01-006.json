@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Source IP is on Fail2ban ban list.",
-  "recommended_next_checks": "Check auth failures, source IP ownership, firewall state.",
-  "resolution_guidance": "After identity/policy verification, apply approved unban or safe remediation.",
-  "verification": "SSH works from authorized source; abusive attempts investigated.",
-  "escalate_when": "Suspected attack or ban policy ownership unclear.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "IP 198.51.100.14 đang bị jail sshd ban; auth log có failed login. Cần xác nhận đây là IP hiện tại của khách và liên hệ theo timestamp.",
+  "recommended_next_checks": "Xác minh IP public, account/nguồn login và log dẫn đến ban; đối chiếu với policy của dịch vụ.",
+  "resolution_guidance": "Unban hoặc sửa client theo quy trình được phép; giữ Fail2ban và xử lý username/key sai nếu đó là nguồn failed login.",
+  "verification": "SSH từ nguồn được phép hoạt động và không lặp failed login/ban bất thường trong khoảng theo dõi.",
+  "escalate_when": "Chuyển security khi nghi nguồn tấn công, nhiều user dùng chung IP hoặc chưa rõ owner của ban policy.",
+  "production_warning": "Không tắt jail toàn bộ hoặc unban dựa duy nhất vào việc khách nhận một IP là của mình.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

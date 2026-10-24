@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Auth failure và rotation cùng thời gian; nghi credential agent chưa đồng bộ, cần audit key ID.",
+  "explanation": "Audit hỗ trợ lệch reference; chưa chứng minh tác vụ sau cập nhật sẽ thành công.",
   "commandId": "panel-backup-task",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Có key ID lệch cụ thể để điều tra bằng metadata.",
+    "over": "Key ID đủ đối chiếu; đưa secret vào ticket gây lộ credential.",
+    "ignore": "Audit lệch reference là bằng chứng, retry không đổi credential."
   }
 }

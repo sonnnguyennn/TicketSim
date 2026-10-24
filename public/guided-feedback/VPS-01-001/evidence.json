@@ -6,9 +6,9 @@
   "explanation": "Hai phép đọc hỗ trợ việc SSH chưa nhận kết nối, nhưng chưa giải thích nguyên nhân dịch vụ dừng.",
   "commandId": "ss-ltnp",
   "optionFeedback": {
-    "inactive": "systemctl ghi inactive (dead), nên nhận định về trạng thái dịch vụ được hỗ trợ.",
-    "noport": "Bảng ss không có dòng LISTEN ở cổng 22.",
     "why": "Chưa có kết quả sshd -t hoặc log lỗi cấu hình.",
-    "disk": "df bổ sung cho thấy còn khoảng 12G, không phải đầy block space."
+    "disk": "df bổ sung cho thấy còn khoảng 12G, không phải đầy block space.",
+    "inactive": "systemctl ghi inactive (dead), nên nhận định về trạng thái dịch vụ được hỗ trợ.",
+    "noport": "Bảng ss không có dòng LISTEN ở cổng 22."
   }
 }

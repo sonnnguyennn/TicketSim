@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Kiểm tra quyền lợi trước, không nhầm nó với IPAM assignment.",
   "commandId": "billing-invoice",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Cho IP guest hiện có, không xác nhận addon đã thanh toán/active.",
+    "direct": "Đọc trạng thái addon của order.",
+    "wrong1": "Cho tiến trình cấp IP, không thay trạng thái billing."
   }
 }

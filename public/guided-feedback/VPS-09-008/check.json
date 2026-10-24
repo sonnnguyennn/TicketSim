@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Lịch chạy khác với hash binary hoặc ảnh chụp process.",
   "commandId": "crontab-read",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Liệt kê lịch chạy dưới root.",
+    "wrong1": "Định danh binary, không đọc lịch chạy lại.",
+    "wrong2": "Ảnh chụp process không liệt kê cấu hình scheduler."
   }
 }

@@ -4,8 +4,8 @@
   ],
   "explanation": "Không phản hồi là triệu chứng; trạng thái nguồn và lý do mất kết nối phải được kiểm tra riêng.",
   "optionFeedback": {
-    "symptom": "Đây là điều khách quan sát được; chưa phân biệt máy tắt với lỗi đường mạng.",
     "other": "Khách không báo một dịch vụ riêng lẻ hoặc xác nhận SSH vẫn hoạt động.",
-    "cause": "Mất kết nối cũng có thể do shutdown có chủ đích; lời báo chưa chứng minh lỗi host."
+    "cause": "Mất kết nối cũng có thể do shutdown có chủ đích; lời báo chưa chứng minh lỗi host.",
+    "symptom": "Đây là điều khách quan sát được; chưa phân biệt máy tắt với lỗi đường mạng."
   }
 }

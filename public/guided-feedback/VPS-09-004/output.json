@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Account tồn tại và được cấp sudo, chưa rõ tính hợp lệ; cần audit creation/login.",
+  "explanation": "Đã quan sát quyền sudo; tính hợp lệ vẫn cần change record, owner và security review.",
   "commandId": "sudoers-read",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Có thể cắt automation hợp lệ và làm mất chứng cứ.",
+    "ignore": "Account database không chứa phê duyệt của owner.",
+    "supported": "Không tự gán danh tính người tạo hoặc xóa account trước khi giữ dữ liệu."
   }
 }

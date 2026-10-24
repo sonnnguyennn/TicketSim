@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Đo trong cửa sổ lỗi, thay đổi có quyền, rồi đo lại dưới tải tương đương.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Giúp phân biệt nghẽn ở ứng dụng, cơ sở dữ liệu hoặc mạng.",
+    "verify": "Dịch vụ active hoặc khỏe ngoài cao điểm chưa đủ.",
+    "act": "Không tăng thời gian chờ chỉ để che nguyên nhân chưa rõ."
   }
 }

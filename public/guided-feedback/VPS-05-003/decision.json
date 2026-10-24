@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận retention/backup, rà nguồn log; vacuum archived journal trong phạm vi được duyệt. Xác minh: df và journal usage giảm, log cần thiết vẫn còn và app ghi được.",
+  "explanation": "Cần quyền, yêu cầu lưu giữ và nguồn tăng; vacuum không xử lý mọi file hoặc active journal như nhau.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Giữ log còn cần và chỉ áp công cụ được duyệt sau đánh giá nguồn tăng.",
+    "unsafe": "Xóa rộng có thể mất log quan trọng hoặc làm ảnh hưởng service.",
+    "close": "Cần đo lại dung lượng, kiểm tra log tiếp tục ghi và nguồn tăng trưởng."
   }
 }

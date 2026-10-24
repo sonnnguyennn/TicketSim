@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Giữ cùng đích/path và so nhiều kích thước; phép ICMP giúp điều tra nhưng không thay toàn bộ kiểm tra TCP.",
   "commandId": "ping",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "-s chọn payload, -M do đặt chính sách không phân mảnh trong phép ping này.",
+    "wrong1": "Phép nhỏ hơn là đối chứng, không thử payload 1472 cần xác định ngưỡng.",
+    "wrong2": "Tracepath gợi PMTU theo đường UDP, không gửi đúng gói ICMP DF payload 1472 được hỏi."
   }
 }

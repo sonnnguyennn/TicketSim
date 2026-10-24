@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Ngắt/giữ NIC restored VM ở mạng cách ly qua đội ảo hóa, xác nhận owner và IP plan trước restore test. Xác minh: Production IP hoạt động ổn, restored VM dùng isolated network/IP riêng và dữ liệu restore được kiểm chứng.",
+  "explanation": "Cách ly đúng clone qua đội có quyền rồi dùng mạng test riêng.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Làm gián đoạn dịch vụ thật và chưa sửa kế hoạch clone.",
+    "close": "Boot không xác minh xung đột hoặc dịch vụ khách.",
+    "safe": "Giữ production và ranh giới restore test."
   }
 }

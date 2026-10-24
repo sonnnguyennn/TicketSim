@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Người dùng khác nhau có thể dùng cache khác nhau; chưa xác định mọi authoritative server đều thống nhất.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Cần so resolver và TTL theo nguồn khách dùng.",
+    "other": "Lời khách chưa cung cấp trạng thái service.",
+    "cause": "Chưa hỏi mọi NS để xác minh."
   }
 }

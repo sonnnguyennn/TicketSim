@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: api container exit code 1 và log import module appconfig; cần đối chiếu release/dependency.",
+  "explanation": "Lỗi import hướng tới bản ứng dụng; chưa quy hỏng Docker daemon.",
   "commandId": "docker-logs",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Docker vẫn liệt kê và đọc log; chưa có bằng chứng daemon hỏng.",
+    "ignore": "Mã lỗi chung không sửa module thiếu trong image.",
+    "supported": "Log xác định import thất bại; manifest và release cần được đối chiếu."
   }
 }

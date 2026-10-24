@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác nhận mốc và quyền trước, xin hold sau, kiểm tra trạng thái thật cuối.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Biết rủi ro và thời gian còn lại.",
+    "verify": "Quyết định duyệt cần được áp trong hệ thống.",
+    "act": "Support không tự bỏ deletion task."
   }
 }

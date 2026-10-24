@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Valid future cancellation request subject to identity/policy.",
-  "recommended_next_checks": "Verify owner and cancellation scope/data retention.",
-  "resolution_guidance": "Schedule cancellation per approved process; explain backup deadline.",
-  "verification": "Confirmed cancellation date; no unintended immediate deletion.",
-  "escalate_when": "Billing identity dispute.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Khách xin hủy cuối kỳ; service Active tới 15/11, policy hỗ trợ nhưng chưa có request.",
+  "recommended_next_checks": "Xác minh owner, ngày hiệu lực, phạm vi data/backup retention và request state.",
+  "resolution_guidance": "Ghi request end-of-term đúng mốc, cho khách thời hạn export/backup; không terminate sớm.",
+  "verification": "Có request/date được duyệt, dịch vụ không bị xóa sớm và billing không gia hạn ngoài ý muốn.",
+  "escalate_when": "Owner tranh chấp hoặc cần ngoại lệ policy.",
+  "production_warning": "Không xóa VM/backup ngay chỉ vì khách xin hủy cuối kỳ.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

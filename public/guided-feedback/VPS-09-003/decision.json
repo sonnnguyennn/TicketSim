@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đối chiếu target port và AVC với admin, chọn boolean/policy hẹp theo runbook được duyệt; kiểm tra lại ở Enforcing. Xác minh: Ứng dụng gọi backend được khi Enforcing, không có AVC liên quan và policy audit rõ.",
+  "explanation": "Admin hoặc security chọn policy hẹp cho truy cập dự kiến và thử lại trong Enforcing.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể che sai target và bỏ bảo vệ trên phạm vi rộng.",
+    "close": "Yêu cầu là ứng dụng chạy an toàn trong Enforcing.",
+    "safe": "Chỉ đổi boolean hoặc rule khi đúng kiến trúc, backend và phạm vi được duyệt."
   }
 }

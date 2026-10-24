@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Chưa đồng nhất pending với thanh toán thất bại.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Khách nói đã trả; cần kiểm chứng thay vì bác bỏ.",
+    "cause": "Còn có khả năng event thiếu hoặc xử lý chậm.",
+    "symptom": "Cần đối chiếu hai hệ thống."
   }
 }

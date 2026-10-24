@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "is-active trả trạng thái unit; sau đó còn phải đọc listener và firewall phù hợp.",
   "commandId": "systemctl-status",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Rule của một zone không đọc trạng thái của unit sshd.",
+    "direct": "Lệnh đọc trạng thái sshd mà không đổi dịch vụ.",
+    "wrong1": "Listener trong guest không xác nhận unit sshd đang active."
   }
 }

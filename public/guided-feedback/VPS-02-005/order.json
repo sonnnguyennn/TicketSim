@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Quan sát address family, xác nhận cấp phát rồi change có quyền; xác minh đúng IPv4 bị lỗi.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Cần tìm lớp lệch trước khi áp một địa chỉ.",
+    "verify": "IPv6 tiếp tục tốt không thay thế phép xác minh IPv4.",
+    "act": "Thay đổi đúng dữ liệu đã được đối chiếu và giữ đường quản trị."
   }
 }

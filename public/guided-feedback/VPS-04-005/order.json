@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Đúng cgroup và khoảng đo trước change; sau đó so workload tương đương thay vì chỉ nhìn host.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Counter phải gắn với đúng container và cửa sổ ảnh hưởng.",
+    "verify": "CPU snapshot sau giờ cao điểm chưa xác minh sự cố đã hết.",
+    "act": "Giữ ngân sách tài nguyên và đánh giá tác động các workload khác."
   }
 }

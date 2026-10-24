@@ -6,7 +6,7 @@
   "commandId": "nginx-test",
   "optionFeedback": {
     "test": "-t kiểm tra cấu hình Nginx thay vì thay đổi trạng thái service.",
-    "restart": "Restart tác động dịch vụ nhưng không giải quyết cú pháp đang sai.",
-    "disk": "df đo dung lượng filesystem, không kiểm tra cấu trúc file nginx.conf."
+    "restart": "Status xác nhận unit failed, không kiểm tra file cấu hình có hợp lệ hay không.",
+    "disk": "Log có thể chứa lỗi trước đó; nginx -t kiểm tra trực tiếp cấu hình hiện tại."
   }
 }

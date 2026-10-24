@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đối chiếu IPv4 được panel cấp với profile guest rồi khôi phục có console, approval và rollback. Xác minh: IPv4 xuất hiện, route IPv4 đúng và TCP/22 từ client thành công.",
+  "explanation": "Dùng cấp phát đúng VPS và profile thực, giữ console/rollback; gán IP đoán có thể gây xung đột và mất quản trị.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "SSH IPv4 mà khách yêu cầu vẫn chưa được khôi phục.",
+    "safe": "Đúng địa chỉ, đúng interface và có đường phục hồi nếu thay đổi lỗi.",
+    "unsafe": "Có thể xung đột IP hoặc vi phạm cấp phát; không phải dữ liệu được xác minh."
   }
 }

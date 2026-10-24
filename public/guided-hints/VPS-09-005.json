@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Provider báo spam từ public IP VPS.",
-    "Đọc P1 (PANEL: abuse notice) và P2 (ss -tunap); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Security xác nhận nguồn traffic, containment được phê duyệt và provider thấy spike dừng."
+    "Thông báo của provider không tự xác định process hoặc nội dung spam.",
+    "So IP và thời gian với socket, PID, owner và mail log.",
+    "Giữ bằng chứng rồi phối hợp abuse và security để containment; không xóa file để thử."
   ]
 }

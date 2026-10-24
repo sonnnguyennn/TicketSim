@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Cần đúng volume ID, kiểm tra snapshot và quyền đội host; tránh để app ghi vào thư mục/data trên disk OS thay thế.",
+  "explanation": "Cần đúng volume ID, kiểm tra snapshot và quyền đội host; tránh để app ghi vào thư mục /data trên disk OS thay thế.",
   "optionFeedback": {
     "safe": "Giữ nguyên volume, đối chiếu ID/snapshot và phối hợp đúng đội có quyền host.",
-    "unsafe": "Có thể ghi dữ liệu lên sai disk hoặc phá dữ liệu nếu thao tác nhầmvolume.",
-    "close": "Task có warning và app còn thiếuvolume; trạng thái Completed chưa giải quyết triệu chứng."
+    "unsafe": "Có thể ghi dữ liệu lên sai disk hoặc phá dữ liệu nếu thao tác nhầm volume.",
+    "close": "Task có warning và app còn thiếu volume; trạng thái Completed chưa giải quyết triệu chứng."
   }
 }

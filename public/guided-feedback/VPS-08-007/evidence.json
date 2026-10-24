@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Negative answer và trạng thái panel chưa đánh giá toàn bộ chính sách mail.",
   "commandId": "panel-rdns",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "Không có PTR mới hoặc kết quả kiểm tra sau thay đổi.",
+    "p1": "Chưa có PTR ở điểm hỏi.",
+    "p2": "Mục quản lý của provider chưa đặt giá trị."
   }
 }

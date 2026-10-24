@@ -5,8 +5,8 @@
   "explanation": "Đọc trạng thái sshd là bước kiểm tra dịch vụ. Listener cần được kiểm tra riêng bằng ss.",
   "commandId": "systemctl-status",
   "optionFeedback": {
-    "service": "status đọc trạng thái unit sshd mà không khởi động hoặc dừng dịch vụ.",
-    "disk": "df đo dung lượng filesystem, không đọc trạng thái dịch vụ SSH.",
-    "dns": "dig hỏi bản ghi DNS của example.com; không kiểm tra sshd trong VPS."
+    "disk": "ss đọc listener TCP, không báo unit sshd đang active hay inactive.",
+    "dns": "Journal ghi sự kiện trước đó; cần status để biết trạng thái hiện tại.",
+    "service": "status đọc trạng thái unit sshd mà không khởi động hoặc dừng dịch vụ."
   }
 }

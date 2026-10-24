@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Persistent journal consumes significant space.",
-  "recommended_next_checks": "Review log volume source, retention and journald config.",
-  "resolution_guidance": "Adjust approved journal retention/vacuum in lab with backup policy.",
-  "verification": "Space recovered and log generation normal.",
-  "escalate_when": "Evidence retention/security requirements.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Journal chiếm8G gồm active và archived; root dùng94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
+  "recommended_next_checks": "Đọc nguồn log theo unit/time, cấu hình journald và yêu cầu lưu giữ/security; xác minh filesystem chứa journal.",
+  "resolution_guidance": "Được owner/policy phê duyệt thì dùng retention/vacuum phù hợp cho archived journal và sửa nguồn tăng; không xóa cả /var/log.",
+  "verification": "Dung lượng đủ, log mới vẫn được ghi và tốc độ tăng phù hợp; không chỉ nhìn exit status của vacuum.",
+  "escalate_when": "Chuyển security/owner khi cần giữ bằng chứng, có retention đặc biệt hoặc nguồn log chưa rõ.",
+  "production_warning": "Tổng disk-usage không phải dung lượng chắc chắn có thể vacuum; không dọn log đang cần điều tra.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

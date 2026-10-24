@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Chỉ một domain trên VPS báo cảnh báo certificate.",
-    "Đọc P1 (openssl s_client -connect 198.51.100.20:443 -servername shop.example.com) và P2 (nginx -T); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Kết nối SNI tới domain trả chain hợp lệ bao phủ shop.example.com và trang đúng."
+    "Một IP có thể phục vụ nhiều chứng chỉ nhờ SNI.",
+    "So chứng chỉ được gửi cho shop.example.com với server_name và danh mục chứng chỉ.",
+    "CN api.example.com chưa chứng minh chứng chỉ thiếu SAN cho shop.example.com; cần đọc SAN và cấu hình đang chạy."
   ]
 }

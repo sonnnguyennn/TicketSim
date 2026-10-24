@@ -2,11 +2,11 @@
   "correctIds": [
     "ww"
   ],
-  "explanation": "Không tự sửa tên trước khi ghi nhận kết quả.",
+  "explanation": "ww và www là hai tên riêng trong DNS, dù chỉ khác một ký tự.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "ww": "Đúng: giữ nguyên hostname được báo.",
-    "www": "Tên www khác ww; nên đối chiếu cả hai.",
-    "disk": "Disk không giải thích NXDOMAIN."
+    "ww": "Hỏi trực tiếp tên khách đã nhập.",
+    "www": "Tên dự kiến hữu ích để so, nhưng chưa kiểm tra đúng tên khách đang lỗi.",
+    "disk": "Dung lượng guest không phân giải hostname."
   }
 }

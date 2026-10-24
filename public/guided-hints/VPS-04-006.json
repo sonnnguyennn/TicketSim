@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Daemon lớn dần rồi crash.",
-    "Đọc P1 (ps -o pid,rss,etime,comm -p 1200) và P2 (journalctl -k -b); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: RSS ổn định qua uptime/tải đại diện, không còn OOM và service đáp ứng."
+    "Một RSS cao không chứng minh tăng dần; cần các mẫu theo uptime và tải.",
+    "Đối chiếu PID/RSS, OOM log, các mốc lịch sử và giới hạn systemd/cgroup.",
+    "MemoryMax=infinity chỉ nói không đặt ngưỡng ở unit này; không nghĩa VPS có RAM vô hạn hoặc không có giới hạn cấp khác."
   ]
 }

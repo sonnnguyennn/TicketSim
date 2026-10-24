@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Brute-force attempts seen; compromise not confirmed.",
-  "recommended_next_checks": "Inspect Accepted authentication and admin changes.",
-  "resolution_guidance": "Recommend approved hardening and monitoring; no destructive action.",
-  "verification": "No unauthorized sessions; controls working.",
-  "escalate_when": "Confirmed breach indicators.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Có Failed password cho invalid user admin; mẫu last hiện các phiên ops đã biết. Chưa xác nhận đăng nhập trái phép, cũng chưa chứng minh hệ thống sạch tuyệt đối.",
+  "recommended_next_checks": "Thu IP nguồn và thời gian; rà Accepted, thay đổi key, account, sudo và truy cập automation trong cửa sổ phù hợp.",
+  "resolution_guidance": "Áp dụng hardening và monitoring theo policy được duyệt; không tự chặn rộng hoặc tắt đường quản trị.",
+  "verification": "Xác minh các phiên và key được giải thích, biện pháp kiểm soát hoạt động; báo rõ phạm vi log đã kiểm tra.",
+  "escalate_when": "Chuyển security nếu có Accepted lạ, thay đổi đặc quyền hoặc thiếu dữ liệu quan trọng.",
+  "production_warning": "Không dùng số lần Failed để kết luận xâm nhập hoặc vài dòng last để chứng nhận hệ thống sạch.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

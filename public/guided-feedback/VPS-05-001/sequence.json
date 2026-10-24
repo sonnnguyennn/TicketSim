@@ -5,12 +5,12 @@
     "approve",
     "verify"
   ],
-  "explanation": "Kiểm tra → khoanh vùng → hành động được duyệt → xác minh.",
+  "explanation": "Đo đúng tài nguyên và nơi tăng trước đề xuất dọn có phép; cuối cùng phải kiểm tra cả ứng dụng ghi.",
   "commandId": "df-h",
   "optionFeedback": {
-    "measure": "Tránh nhầm tài nguyên hoặc mount.",
-    "locate": "Chỉ xem kích thước chưa đủ để xóa.",
-    "approve": "Giữ dữ liệu và bằng chứng cần thiết.",
-    "verify": "Xác minh triệu chứng đã hết."
+    "measure": "Tránh xử lý nhầm mount hoặc nhầm block với inode.",
+    "locate": "Biết dữ liệu nào đang chiếm dung lượng trước chọn biện pháp.",
+    "approve": "Dữ liệu quan trọng cần được giữ theo policy trước dọn.",
+    "verify": "Dung lượng có lại mới là một phần; chức năng ghi phải được xác minh."
   }
 }

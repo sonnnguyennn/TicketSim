@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Cần so cùng tên ở host và container trước chọn lớp sửa.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Host lookup thành công và chưa hỏi authoritative.",
+    "symptom": "Đúng khác biệt cần tái kiểm tra.",
+    "other": "Khách đã nêu host hoạt động."
   }
 }

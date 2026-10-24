@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác minh DNS A/AAAA, vhost và SAN; deploy cert bao phủ domain và mapping đúng sau phê duyệt. Xác minh: Kết nối SNI tới domain trả chain hợp lệ bao phủ shop.example.com và trang đúng.",
+  "explanation": "Đối chiếu hostname, IP, SAN và ánh xạ trước khi triển khai chứng chỉ theo quyền.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "So A/AAAA, cấu hình runtime và chứng chỉ đúng hostname; chuẩn bị cách hoàn tác.",
+    "unsafe": "Client có thể kết nối sai server mà không được cảnh báo.",
+    "close": "Khách dùng shop.example.com; phải kiểm tra đúng hostname này."
   }
 }

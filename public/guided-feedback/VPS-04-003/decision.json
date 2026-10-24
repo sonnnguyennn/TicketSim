@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đối chiếu thời gian OOM, RAM/cgroup limit và Java heap; thay cấu hình hoặc capacity theo owner. Xác minh: Không còn OOM khi chạy workload tương đương, ứng dụng vẫn ổn định.",
+  "explanation": "Heap chỉ là một phần bộ nhớ process; phải so tổng nhu cầu và limit với owner.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Còn overhead JVM, native memory, OS và process khác; có thể làm OOM nặng hơn.",
+    "close": "App còn kết thúc dưới workload và chưa có xác minh không OOM lặp.",
+    "safe": "Tránh cấu hình heap vượt ngân sách bộ nhớ và lặp OOM."
   }
 }

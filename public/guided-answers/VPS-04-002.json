@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Memory pressure with active swapping likely causes slowness.",
-  "recommended_next_checks": "ps -eo pid,comm,rss --sort=-rss | head; journalctl -k",
-  "resolution_guidance": "Identify RAM-heavy process; tune or resize with approval.",
-  "verification": "Swap activity drops; application stable.",
-  "escalate_when": "Memory leak, repeated OOM.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Available RAM thấp và các mẫu interval có swap in/out; phù hợp áp lực bộ nhớ. Chưa xác định process hoặc leak.",
+  "recommended_next_checks": "Thu RSS/cgroup/traffic theo thời gian, log OOM và tốc độ si/so ở dòng interval; không kết luận từ swap đã dùng riêng lẻ.",
+  "resolution_guidance": "Cùng owner giảm/tối ưu workload hoặc lập capacity change có phép khi dữ liệu hỗ trợ; không tắt swap để thử.",
+  "verification": "Ở tải tương đương, available đủ, swap activity không bất thường và độ trễ ứng dụng đạt mục tiêu.",
+  "escalate_when": "Chuyển đội ứng dụng/capacity khi áp lực RAM lặp lại, nghi leak hoặc có OOM.",
+  "production_warning": "Không dùng CPU rảnh làm bằng chứng tài nguyên đủ; thay swap/reboot có thể làm tình trạng nặng hơn.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

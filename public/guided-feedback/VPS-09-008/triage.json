@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Process xuất hiện lại là triệu chứng, chưa chứng minh binary độc hại.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không mô tả process tự xuất hiện lại.",
+    "cause": "Automation hợp lệ cũng có thể khởi động lại process.",
+    "symptom": "Cần xem cron, supervisor và owner."
   }
 }

@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "So kích thước và bằng chứng tunnel/TCP trước change; sau đó xác minh cả lưu lượng lớn lẫn nhỏ.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Đo đúng path giúp xác định giả thuyết trước khi đổi interface.",
+    "verify": "Kiểm tra chức năng bị lỗi và tránh tạo hồi quy cho lưu lượng đang tốt.",
+    "act": "MTU/MSS thuộc cấu hình có tác động rộng, cần đúng phạm vi và rollback."
   }
 }

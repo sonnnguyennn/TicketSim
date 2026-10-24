@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Reinstall main disk sẽ xóa nội dung hiện có và chưa có backup gần đây; phải dừng trước khi có phương án dữ liệu.",
+  "explanation": "Đây là nguy cơ mất dữ liệu đã nêu rõ; cần dừng trước thao tác và thống nhất phương án phục hồi.",
   "commandId": "panel-backup-status",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Main disk có nguy cơ mất nội dung còn backup gần đây không được tìm thấy.",
+    "over": "Cảnh báo ghi đè toàn main disk không có ngoại lệ giữ các thư mục này.",
+    "ignore": "Dữ liệu quan trọng vẫn cần được bảo vệ và owner hiểu rõ phạm vi mất."
   }
 }

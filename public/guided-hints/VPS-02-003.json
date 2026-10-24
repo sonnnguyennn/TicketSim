@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS chạy sau migration nhưng không thấy IPv4 ở guest.",
-    "Đọc P1 (ip -br addr) và P2 (nmcli device status); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Guest có IPv4, route đúng và TCP từ ngoài vào hoạt động."
+    "Interface UP và có địa chỉ IPv4 là hai thông tin khác nhau.",
+    "So ip -br addr với trạng thái NetworkManager của đúng device.",
+    "Device disconnected chưa xác định provider không cấp IP; kiểm tra MAC/profile/cấp phát và giữ console trước change."
   ]
 }

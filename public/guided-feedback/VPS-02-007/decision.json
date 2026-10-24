@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu source IP, timestamp, TCP probe cùng port và capture giới hạn tại guest; chuyển đội mạng/edge khi cần. Xác minh: TCP/22 thành công từ các ISP từng lỗi ở nhiều thời điểm.",
+  "explanation": "Cần nguồn/thời gian và capture có giới hạn để xác định SYN đến/đi; phải tuân quyền và tránh ghi dữ liệu nhạy cảm.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Đội network có thể đối chiếu edge/upstream với bằng chứng guest cùng cửa sổ.",
+    "unsafe": "Thay đổi rộng chưa định vị đường lỗi, có thể tạo gián đoạn mới.",
+    "close": "Cấu hình không xác minh kết nối của các ISP đang timeout."
   }
 }

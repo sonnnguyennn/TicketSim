@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "vmstat cho wa trong các dòng interval; tránh kết luận từ dòng trung bình từ boot.",
   "commandId": "vmstat",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Process CPU lifetime không cho tỷ lệ iowait của guest theo khoảng đo.",
+    "direct": "Lấy ba báo cáo, trong đó các dòng sau đầu phản ánh khoảng một giây.",
+    "wrong1": "Cờ -d chỉ in thống kê thiết bị, không có cột CPU wa cần đọc."
   }
 }

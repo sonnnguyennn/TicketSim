@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "SMTP tăng là thông báo cần đối chiếu, chưa phải kết luận malware.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không mô tả lưu lượng mail đi ra tăng đột biến.",
+    "cause": "Ứng dụng mail hợp lệ cũng có thể chạy bằng Python.",
+    "symptom": "Cần đúng IP và khoảng thời gian trong thông báo để điều tra."
   }
 }

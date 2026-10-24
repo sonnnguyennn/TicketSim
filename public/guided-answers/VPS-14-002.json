@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Payment exists, event-to-provision synchronization incomplete.",
-  "recommended_next_checks": "Verify transaction and webhook/event log.",
-  "resolution_guidance": "Escalate reconciliation then safe task resume.",
-  "verification": "Provisioning begins once and order status consistent.",
-  "escalate_when": "Billing integration team.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Invoice Paid nhưng provisioner chờ event; audit ghi settled payment và webhook delivery failed.",
+  "recommended_next_checks": "So payment/order IDs, event delivery, retry history và resource đã tạo.",
+  "resolution_guidance": "Billing/provisioning reconcile rồi resume có kiểm tra trùng; không thu tiền lại.",
+  "verification": "Order được cấp một lần, IP/VM ready và khách sử dụng được.",
+  "escalate_when": "Payment integration hoặc queue cần đội quản lý.",
+  "production_warning": "Không tạo VM thứ hai thủ công hoặc yêu cầu trả tiền lại khi đã Paid.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

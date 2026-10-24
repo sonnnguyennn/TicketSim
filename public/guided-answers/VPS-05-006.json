@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Process holds unlinked file open so disk blocks not yet freed.",
-  "recommended_next_checks": "Confirm PID/service owner; retention and log rotation approach.",
-  "resolution_guidance": "Coordinate graceful reopen/restart of affected service if authorized.",
-  "verification": "lsof shows no deleted large handle; df free space rises.",
-  "escalate_when": "Critical service cannot be restarted.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "PID2300 còn mở app.log đã unlink khoảng5GiB; đây là ứng viên giải thích block chưa được trả. Cần so đúng filesystem và thời gian.",
+  "recommended_next_checks": "Xác nhận PID/service/owner, cách app hỗ trợ reopen/rotation và retention; tránh lộ secret trong command line.",
+  "resolution_guidance": "Phối hợp owner đóng handle qua reopen hoặc graceful restart đã duyệt, có kế hoạch gián đoạn; không kill -9 mù.",
+  "verification": "lsof không còn handle liên quan, df có dung lượng trở lại và app ghi/phục vụ đúng.",
+  "escalate_when": "Chuyển owner ứng dụng nếu service critical không thể restart hoặc chưa rõ cách reopen an toàn.",
+  "production_warning": "Không xóa thêm dữ liệu hay kill mọi process Java chỉ vì một file deleted còn mở.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

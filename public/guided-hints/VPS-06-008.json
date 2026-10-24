@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Shutdown đã yêu cầu nhưng VM kẹt Stopping 20 phút.",
-    "Đọc P1 (PANEL: lifecycle) và P2 (PANEL: QEMU event); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Đội hạ tầng xác nhận VM state ổn định và filesystem/ứng dụng kiểm tra sau recovery."
+    "Stopping là chuyển trạng thái chưa hoàn tất, không phải xác nhận đã tắt.",
+    "So thời gian gửi ACPI với console, tác vụ và disk I/O.",
+    "Không có phản hồi ACPI không cho phép hard stop an toàn; chuyển host team cùng owner đánh giá dữ liệu."
   ]
 }

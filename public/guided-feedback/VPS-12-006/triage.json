@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Cần so order với guest trước gán nguyên nhân.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Chưa đọc ownership hay lịch sử migration.",
+    "symptom": "Đúng chênh lệch khách đang hỏi.",
+    "other": "Khách nói về địa chỉ cấp phát, chưa có DNS evidence."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Reinstall is destructive and no recent backup visible.",
-  "recommended_next_checks": "Verify desired OS, service ID, data retention and backup.",
-  "resolution_guidance": "Do not reinstall before informed approval and backup plan.",
-  "verification": "After authorized reinstall verify OS, access and network.",
-  "escalate_when": "Unclear data backup, ownership or reinstatement policy.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Reinstall sẽ ghi đè main disk và chưa có backup gần đây/restore test trong hồ sơ. Yêu cầu Ubuntu chưa đủ để chấp thuận mất dữ liệu.",
+  "recommended_next_checks": "Xác nhậnserviceID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
+  "resolution_guidance": "Dừng trước reinstall; thống nhất migration hoặc backup/restoretest và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
+  "verification": "Nếu được duyệt về sau, kiểm traOS, đăng nhập, mạng và dữ liệu/dịch vụ theo phạm vi migration; không coiOS boot là dữ liệu đã phục hồi.",
+  "escalate_when": "Chuyển owner/admin/backup khi dữ liệu chưa được sao lưu, quyền không rõ hoặc cần phương ánmigration thay reinstall.",
+  "production_warning": "Reinstall ghi đè disk là thay đổi phá hủy; không hứa giữ/home hoặc database nếu không có quy trình đã kiểm chứng.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

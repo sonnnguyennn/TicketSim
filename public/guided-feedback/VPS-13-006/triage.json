@@ -4,8 +4,8 @@
   ],
   "explanation": "Ticket mô tả phạm vi host so với Internet; chưa đủ để quy lỗi cho DNS hay application.",
   "optionFeedback": {
+    "cause": "Chưa đọc route, forwarding hoặc NAT; nhiều lớp có thể gây cùng triệu chứng.",
     "symptom": "Đây là phạm vi cần kiểm tra ở đường đi qua host.",
-    "other": "Lỗi xác thực database không được khách nêu và không mô tả đường mạng ra Internet.",
-    "cause": "Chưa đọc route, forwarding hoặc NAT; nhiều lớp có thể gây cùng triệu chứng."
+    "other": "Lỗi xác thực database không được khách nêu và không mô tả đường mạng ra Internet."
   }
 }

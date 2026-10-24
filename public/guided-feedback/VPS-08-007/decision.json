@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đối chiếu IP gửi và hostname forward; yêu cầu provider/IP owner đặt PTR theo policy. Xác minh: PTR của IP gửi trỏ hostname đúng, forward A khớp và mail provider chấp nhận thử gửi.",
+  "explanation": "IP owner hoặc provider quản lý reverse zone; domain owner quản lý forward DNS, nên cần phối hợp.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể phá forward DNS mà không tạo được reverse DNS.",
+    "close": "PTR còn thiếu và mail provider chưa được thử lại.",
+    "safe": "Dùng đúng IP và hostname được duyệt trước khi thay đổi."
   }
 }

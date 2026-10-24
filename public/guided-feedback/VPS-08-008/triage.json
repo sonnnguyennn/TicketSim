@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Khác biệt giữa resolver và status gợi ý so validation; chưa thể chẩn đoán DS sai.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "SERVFAIL có nhiều nguyên nhân; cần kiểm tra chain validation.",
+    "symptom": "Cần so cùng tên, thời điểm và validator.",
+    "other": "Không phải lỗi DNS SERVFAIL đang được báo."
   }
 }

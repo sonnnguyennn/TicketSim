@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Kiểm tra partition layout, filesystem type và backup; lập change plan grow đúng lớp với quyền và rollback. Xác minh: lsblk và df phản ánh dung lượng dự kiến, filesystem khỏe và dữ liệu đọc được.",
+  "explanation": "Thay partition/filesystem có rủi ro dữ liệu; đúng layout/type, backup và quyền phải rõ trước.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Không bỏ qua lớp partition đang nhỏ và dùng công cụ đúng filesystem.",
+    "unsafe": "Có thể tác động dữ liệu hoặc boot; cần kế hoạch đã duyệt.",
+    "close": "Khách vẫn chỉ có filesystem20G dùng cho dữ liệu."
   }
 }

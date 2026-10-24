@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Cần các phép đo so được với nhau, rồi chuyển bằng chứng và xác minh lại đúng đường cũ.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Trước khi quy lỗi một lớp, phải biết các phép đo cùng đích và thời điểm.",
+    "verify": "Một phép thử từ Tokyo không xác minh phục hồi đường bị lỗi.",
+    "act": "Đội có telemetry và quyền mới chọn thay đổi routing/ACL nếu cần."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Journal của đúng unit giúp giữ thông báo và timestamp để so với PID/limit.",
   "commandId": "journalctl-service",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Đọc log myapp thay vì đo DNS hoặc routing.",
+    "wrong1": "Giới hạn FD của PID không chứa thông báo lỗi của ứng dụng.",
+    "wrong2": "Số descriptor đang mở không đọc log Too many open files."
   }
 }

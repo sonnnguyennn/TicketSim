@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Mỗi IP family cần được kiểm tra DNS và reachability riêng.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "A và AAAA là hai loại record riêng.",
+    "symptom": "Cần xem AAAA record và endpoint IPv6.",
+    "other": "Lời khách nói về website và IPv6, không phải tài khoản SSH."
   }
 }

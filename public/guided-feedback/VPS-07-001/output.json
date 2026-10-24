@@ -2,11 +2,11 @@
   "correctIds": [
     "stopped"
   ],
-  "explanation": "Có thể giải thích triệu chứng mà chưa biết nguyên nhân ban đầu.",
+  "explanation": "Hai kết quả giải thích refused tại thời điểm đo nhưng chưa cho biết lý do Nginx dừng.",
   "commandId": "ss-ltnp",
   "optionFeedback": {
-    "stopped": "Đúng với P1/P2.",
-    "reason": "Vẫn cần log/ngữ cảnh.",
-    "disk": "Không có bằng chứng disk."
+    "reason": "Cần log hoặc sự kiện liên quan, không suy từ inactive.",
+    "disk": "Chưa có phép đo dung lượng hoặc log ENOSPC.",
+    "stopped": "Service state và listener cùng phù hợp triệu chứng refused."
   }
 }

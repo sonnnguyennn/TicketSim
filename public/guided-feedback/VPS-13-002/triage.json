@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Cần phân biệt bên trong container với đường qua VPS IP.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đúng phạm vi cần kiểm tra publish/proxy.",
+    "other": "Khách xác nhận bên trong hoạt động.",
+    "cause": "Chưa kiểm tra host mapping hoặc đường proxy."
   }
 }

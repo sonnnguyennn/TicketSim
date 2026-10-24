@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "So các lớp trước, xử lý gateway đúng quyền rồi xác minh cả console và guest.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Tránh quy lỗi guest từ một màn hình đen.",
+    "verify": "Console phục hồi không tự chứng minh app đã ổn.",
+    "act": "Đội hạ tầng console có quyền và dữ liệu để điều tra đúng lớp."
   }
 }

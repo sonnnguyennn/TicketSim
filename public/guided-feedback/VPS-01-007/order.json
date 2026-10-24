@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Cổng thực tế, ý định cấu hình và policy cần thống nhất trước hướng client và kiểm tra login.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Xác định những lớp đã được kiểm tra trước khi đưa hướng xử lý.",
+    "verify": "Đường mạng và xác thực phải được kiểm tra sau hướng dẫn.",
+    "act": "Hành động dựa trên cấu hình có chủ đích, không tự đổi port."
   }
 }

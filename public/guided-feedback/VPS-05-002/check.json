@@ -2,11 +2,11 @@
   "correctIds": [
     "inode"
   ],
-  "explanation": "Đừng dừng lại ở df -h khi còn GB.",
+  "explanation": "Cờ -i thay thống kê block bằng inode; cần cùng mount để so hợp lý.",
   "commandId": "df-i",
   "optionFeedback": {
-    "inode": "Đúng: -i chuyển sang inode.",
-    "blocks": "df -h chỉ đo block space.",
-    "route": "Route không liên quan."
+    "inode": "Cho Inodes/IUsed/IFree/IUse% của filesystem này.",
+    "blocks": "df -h đọc dung lượng block, không cho số inode còn lại.",
+    "route": "Tổng byte thư mục không cho quota inode toàn filesystem."
   }
 }

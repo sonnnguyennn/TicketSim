@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Disk I/O saturation suspected.",
-  "recommended_next_checks": "iotop -o (if installed); df -h; host metrics.",
-  "resolution_guidance": "Investigate IO-heavy tasks and storage health.",
-  "verification": "I/O latency normal and application responsive.",
-  "escalate_when": "Node storage contention or disk health issue.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Các mẫu interval có iowait cao và độ trễ đọc/ghi vda cao; nghi vấn nghẽn hoặc contention I/O. Chưa xác định workload hay lỗi vật lý.",
+  "recommended_next_checks": "Đo process I/O, queue/throughput và latency nhiều mẫu, đối chiếu host metrics/health và baseline cùng cửa sổ.",
+  "resolution_guidance": "Cùng owner điều chỉnh workload được xác nhận; chuyển storage nếu có dấu hiệu node/thiết bị hoặc phạm vi vượt quyền guest.",
+  "verification": "Độ trễ I/O và ứng dụng trở về mức mục tiêu dưới workload tương đương, không chỉ utilization giảm.",
+  "escalate_when": "Chuyển storage/node khi có error, nhiều VM bị ảnh hưởng hoặc độ trễ bất thường ngoài guest.",
+  "production_warning": "Không xóa dữ liệu hay khẳng định ổ vật lý hỏng chỉ từ iowait, await hoặc %util.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VM chậm dù process trong guest idle.",
-    "Đọc P1 (top -b -n1 | head) và P2 (PANEL: host metrics); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Steal time giảm, latency khách bình thường và node metrics ổn."
+    "Process idle không có nghĩa guest nhận đủ thời gian CPU.",
+    "Đọc tỷ lệ st trong guest rồi đối chiếu số liệu node cùng thời điểm.",
+    "st cao và nhiều VM cùng báo CPU ready hỗ trợ giả thuyết contention; đội hạ tầng cần kiểm tra trend và capacity."
   ]
 }

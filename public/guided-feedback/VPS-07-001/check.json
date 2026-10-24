@@ -2,11 +2,11 @@
   "correctIds": [
     "nginx"
   ],
-  "explanation": "Kiểm tra service trước khi thay đổi.",
+  "explanation": "Đọc trạng thái service trước, rồi đối chiếu listener và log.",
   "commandId": "systemctl-nginx",
   "optionFeedback": {
-    "nginx": "Đúng: xem web service.",
-    "inode": "Không trực tiếp kiểm tra web service.",
-    "dig": "Không giải thích local curl refused."
+    "dig": "Log giúp điều tra lý do dừng, không trực tiếp đọc state hiện tại.",
+    "nginx": "Lệnh status đọc state của Nginx.",
+    "inode": "Socket có thể tồn tại hoặc vắng mặt, nhưng không trực tiếp đọc state của unit Nginx."
   }
 }

@@ -6,7 +6,7 @@
   "commandId": "top",
   "optionFeedback": {
     "direct": "Phần đầu top có dòng tổng CPU, bao gồm st của VM.",
-    "wrong1": "df -i đo inode, không đo thời gian CPU bị lấy khỏi VM.",
-    "wrong2": "dig đo truy vấn DNS, không phản ánh CPU scheduling của VM."
+    "wrong1": "CPU lifetime của từng process không cho cột steal time của guest.",
+    "wrong2": "Metric node là lớp hạ tầng, câu hỏi cần phép đo steal trong guest."
   }
 }

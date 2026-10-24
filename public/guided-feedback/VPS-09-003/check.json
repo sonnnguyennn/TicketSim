@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Mode khác với log AVC và listener của backend.",
   "commandId": "getenforce",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Đọc log denial, không thay truy vấn mode hiện tại.",
+    "wrong2": "Đọc socket, không đọc SELinux mode.",
+    "direct": "In Enforcing, Permissive hoặc Disabled."
   }
 }

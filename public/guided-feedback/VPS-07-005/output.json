@@ -5,8 +5,8 @@
   "explanation": "So thời gian xác nhận cert đang phục vụ đã hết hạn; trạng thái chưa deploy giải thích vì sao gia hạn chưa có tác dụng tại endpoint.",
   "commandId": "hostnamectl",
   "optionFeedback": {
-    "supported": "Ngày kiểm tra sau notAfter, và inventory ghi cert mới chưa cài vào Nginx.",
     "over": "Inventory không phản ánh chắc chắn cert được load ở từng vhost/endpoint.",
-    "ignore": "Service đang chạy vẫn có thể dùng cert đã hết hạn."
+    "ignore": "Service đang chạy vẫn có thể dùng cert đã hết hạn.",
+    "supported": "Ngày kiểm tra sau notAfter, và inventory ghi cert mới chưa cài vào Nginx."
   }
 }

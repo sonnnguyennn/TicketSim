@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận ExecStart/venv và manifest; sửa dependency trong đúng môi trường hoặc rollback release được duyệt. Xác minh: Service ổn định qua nhiều chu kỳ và healthcheck endpoint thành công.",
+  "explanation": "Owner ứng dụng cần kiểm tra release/manifest và đúng interpreter, rồi áp change hoặc rollback được phép.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Nhắm đúng môi trường triển khai và giữ khả năng quay lại bản trước.",
+    "unsafe": "Có thể sai môi trường, ảnh hưởng package hệ thống và chưa có quyền/change plan.",
+    "close": "Restart loop không phải trạng thái khỏe hay request thành công."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "All inodes used despite available disk blocks.",
-  "recommended_next_checks": "Find directories with many small files (cache/temp) safely.",
-  "resolution_guidance": "Coordinate deletion/archiving of known temporary files.",
-  "verification": "Inodes available and file creation works.",
-  "escalate_when": "Unknown data owner or inode leak.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Block space còn nhưng inode đã hết. Nhiều file nhỏ là hướng cần khoanh vùng; chưa xác định thư mục/file nào được phép dọn.",
+  "recommended_next_checks": "Đếm theo thư mục và loại file trên đúng filesystem, xác định owner/retention và nguồn tăng; không dựa chỉ vào file lớn.",
+  "resolution_guidance": "Với owner phê duyệt, archive/dọn dữ liệu hết hạn đã phân loại và xử lý nguồn sinh file; đánh giá layout/capacity nếu nhu cầu hợp lệ.",
+  "verification": "Inode còn khả dụng và ứng dụng tạo file kiểm tra thành công; nguồn tạo file không tăng bất thường.",
+  "escalate_when": "Chuyển owner dữ liệu/filesystem khi chưa rõ file cần giữ hoặc cần thay đổi layout/inode capacity.",
+  "production_warning": "Không xóa ngẫu nhiên hoặc hứa tăng GB sẽ tự tăng inode đúng nhu cầu trên mọi filesystem.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

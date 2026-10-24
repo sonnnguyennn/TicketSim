@@ -5,8 +5,8 @@
   "explanation": "Trạng thái tác vụ thuộc hệ thống backup, không phải trạng thái service SSH hoặc dung lượng filesystem của guest.",
   "commandId": "panel-backup-task",
   "optionFeedback": {
-    "direct": "Đây là bản ghi trạng thái của chính tác vụ backup khách đang hỏi.",
     "wrong1": "Lệnh đo dung lượng filesystem chứa / trong guest; không cho biết trạng thái tác vụ ở kho backup.",
-    "wrong2": "Danh sách điểm khôi phục cho biết các bản đã có, không thay thế trạng thái lần backup vừa thất bại."
+    "wrong2": "Danh sách điểm khôi phục cho biết các bản đã có, không thay thế trạng thái lần backup vừa thất bại.",
+    "direct": "Đây là bản ghi trạng thái của chính tác vụ backup khách đang hỏi."
   }
 }

@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: App container healthy nhưng DB query thất bại.",
-    "Đọc P1 (docker compose ps) và P2 (docker compose logs db --tail 10); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: db stable, query representative thành công, không OOM và dữ liệu integrity được xác nhận."
+    "Mỗi service trong stack có trạng thái riêng.",
+    "Dùng compose ps --all để thấy cả service đã dừng; đọc log db và memory limit.",
+    "DB Exited, memory allocation error và OOMKilled true hỗ trợ điều tra RAM; host snapshot chưa cho peak và data integrity vẫn phải kiểm tra."
   ]
 }

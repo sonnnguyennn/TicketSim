@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Ngày mua và policy cho thấy cần review; chưa có kết luận eligible hay số tiền.",
+  "explanation": "Chỉ bên có quyền sau review mới xác nhận đủ điều kiện và số tiền.",
   "commandId": "panel-lifecycle-policy",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Ngày mua và policy chưa là quyết định refund.",
+    "over": "Policy nêu không automatic approval.",
+    "ignore": "Chưa có decision nghĩa là cần tiếp nhận review, không tự từ chối."
   }
 }

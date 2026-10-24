@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Các phép đo phải cùng đích/cổng và có nguồn/thời điểm; một lệnh guest riêng không mô tả các path đó.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Port cấu hình của daemon không so các mạng nguồn đang timeout.",
+    "wrong2": "Một điểm ping không thay các TCP probe từ Tokyo và hai ISP đang lỗi.",
+    "direct": "Tác vụ panel cho kết quả TCP/22 từ Tokyo và hai ISP."
   }
 }

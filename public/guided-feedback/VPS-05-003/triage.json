@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Cần đo và phân loại log trước khi chọn retention, không mặc định mọi log có thể xóa.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Cần policy/owner để biết dữ liệu nào được dọn.",
+    "symptom": "Đúng lo ngại khách nêu cần xác nhận bằng số đo.",
+    "other": "Không phải triệu chứng dung lượng log."
   }
 }

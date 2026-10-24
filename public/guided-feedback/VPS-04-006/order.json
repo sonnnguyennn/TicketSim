@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Cần chuỗi mẫu theo thời gian và tải trước sửa app/capacity, rồi xác minh đủ uptime.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Đúng timeline giúp kiểm tra xu hướng và nguyên nhân thay thế.",
+    "verify": "Cần đủ cửa sổ tái hiện để đánh giá memory growth đã được kiểm soát.",
+    "act": "Không chỉ reboot để làm số RSS tạm thấp."
   }
 }

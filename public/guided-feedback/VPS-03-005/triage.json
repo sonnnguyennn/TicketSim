@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Giữ triệu chứng startup của ứng dụng/database trước khi chọn lỗi dữ liệu hoặc nguyên nhân khác.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không có báo cáo DNS theo client trong ticket.",
+    "cause": "Không khởi động chưa chứng minh nội dung dữ liệu bị hỏng.",
+    "symptom": "Đúng lời khách; cần kiểm tra service/dependency sau boot."
   }
 }

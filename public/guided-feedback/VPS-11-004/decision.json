@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Mở storage/capacity incident, xem retention và active chain trước cleanup hoặc mở rộng. Xác minh: Datastore headroom đạt policy, snapshot mới hoàn tất và restore test theo quy trình.",
+  "explanation": "Storage phải đánh giá chain và retention trước cleanup hoặc mở rộng.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Đúng quyền trên kho dùng chung, bảo vệ các VM liên quan.",
+    "unsafe": "Kích thước không nói snapshot còn bị chain phụ thuộc hay không.",
+    "close": "Retry không thêm dung lượng hoặc xác nhận bản mới thành công."
   }
 }

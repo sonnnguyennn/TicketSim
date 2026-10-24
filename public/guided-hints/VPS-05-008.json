@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Disk đã resize nhưng filesystem /data vẫn báo hết chỗ.",
-    "Đọc P1 (lsblk) và P2 (vgs); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: lvs và df -h /data phản ánh dung lượng dự kiến, mount và ứng dụng vẫn đọc/ghi được."
+    "Dung lượng disk, chỗ trống trong VG và dung lượng filesystem là các lớp khác nhau.",
+    "So lsblk/vgs với lvs và df -hT /data để biết chỗ đang dừng ở đâu.",
+    "VG còn khoảng50G nhưng LV/filesystem30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
   ]
 }

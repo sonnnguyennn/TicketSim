@@ -5,8 +5,8 @@
   "explanation": "MTR cung cấp mẫu phản hồi theo đường đi; hãy đọc tỷ lệ ở đích và ghi rõ số lần gửi.",
   "commandId": "mtr",
   "optionFeedback": {
+    "wrong2": "Bộ đếm NIC guest không đo đường từ client qua các hop tới VPS.",
     "direct": "Lệnh tạo báo cáo 20 chu kỳ tới đúng địa chỉ VPS.",
-    "wrong1": "free đo bộ nhớ của máy chạy lệnh, không đo phản hồi từ VPS Singapore.",
-    "wrong2": "Trạng thái Nginx không đo đường SSH từ mạng khách."
+    "wrong1": "Ping đo phản hồi đích, không báo loss và latency theo các hop như MTR."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Provisioner cannot allocate IPv4.",
-  "recommended_next_checks": "Check IP pool capacity and task identity.",
-  "resolution_guidance": "Escalate IPAM allocation, retry only idempotently.",
-  "verification": "VPS receives IP and customer can log in.",
-  "escalate_when": "IPAM/provider allocation.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Provisioning failed vì pool sg-02 không còn IPv4; thanh toán không đồng nghĩa VPS đã ready.",
+  "recommended_next_checks": "So order/task ID, pool capacity và yêu cầu đang chờ; kiểm tra retry đã xử lý trước đó chưa.",
+  "resolution_guidance": "Chuyển IPAM/provisioning capacity; báo phương án và ETA chỉ khi được xác nhận.",
+  "verification": "Cấp phát hoàn tất một lần, IP đúng và khách truy cập được VPS.",
+  "escalate_when": "Pool cạn hoặc task cần đội cấp phát/provider xử lý.",
+  "production_warning": "Không lấy IP ngoài pool hoặc tạo VM ngẫu nhiên bên ngoài order.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

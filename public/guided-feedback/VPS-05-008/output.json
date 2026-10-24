@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: VG còn extents, LV /data vẫn 30G và filesystem gần đầy; cần xác nhận mapping cùng backup trước change.",
+  "explanation": "Free extents nằm ở VG chưa được cấp vào LV; filesystem cần mở bằng công cụ đúng loại sau đó.",
   "commandId": "lvm-report",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "vgs có VFree còn lvs/df vẫn30G.",
+    "over": "Disk là lớp dưới, không đồng kích thước LV và filesystem.",
+    "ignore": "df đo bên trong filesystem; vgs riêng đang có free49.99g."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Thời gian chờ chưa cho biết task đã bắt đầu hay bị treo.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Cần owner và tiến độ job đang giữ lock.",
+    "symptom": "Cần kiểm tra task và tiến độ.",
+    "other": "Khách chưa xác nhận reinstall hoàn tất."
   }
 }

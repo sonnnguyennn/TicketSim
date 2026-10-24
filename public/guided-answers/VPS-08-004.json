@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Configured DNS resolver inaccessible or not functioning.",
-  "recommended_next_checks": "nmcli dev show | grep DNS; cat /etc/resolv.conf",
-  "resolution_guidance": "Repair resolver or networking in approved profile.",
-  "verification": "dig succeeds and application DNS works.",
-  "escalate_when": "Provider resolver outage.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "HTTP theo IP trả 200, còn DNS query bị timeout. Nghi resolver hoặc đường tới resolver; chưa xác nhận record của domain sai.",
+  "recommended_next_checks": "Đọc resolv.conf và DNS trong network profile; thử resolver đang cấu hình, đối chiếu kết nối mạng và trạng thái provider.",
+  "resolution_guidance": "Admin sửa resolver hoặc network trong đúng profile theo policy và quyền hạn, với phương án rollback và console nếu phải đổi mạng.",
+  "verification": "dig nhận câu trả lời hợp lệ và ứng dụng dùng domain hoạt động; thử đúng hostname khách báo.",
+  "escalate_when": "Chuyển network hoặc resolver provider nếu đường tới DNS hay service của provider lỗi.",
+  "production_warning": "Không đổi DNS ngẫu nhiên hoặc ghi đè file do network manager quản lý khi chưa biết policy.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

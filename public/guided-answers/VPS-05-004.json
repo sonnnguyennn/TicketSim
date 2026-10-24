@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Volume remounted read-only after I/O errors.",
-  "recommended_next_checks": "Check dmesg, SMART/provider disk health, backup status.",
-  "resolution_guidance": "Stop writes and escalate storage integrity; controlled repair offline.",
-  "verification": "Volume mounted normally after verified repair, data checked.",
-  "escalate_when": "Always escalate suspected physical/storage I/O errors.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "/data hiện ro trên vdb1 và kernel có I/O error của vdb. Chưa xác nhận trình tự remount hay nguyên nhân vật lý cụ thể từ hai mẫu.",
+  "recommended_next_checks": "Giữ device/timestamp, kiểm tra backup và health/telemetry storage của provider; xác nhận incident đã được tiếp nhận.",
+  "resolution_guidance": "Hạn chế tác vụ ghi và chuyển storage đánh giá recovery có kế hoạch; không remount rw hoặc repair volume đang dùng.",
+  "verification": "Sau recovery được duyệt, kiểm tra kernel/mount, dữ liệu ứng dụng và phép ghi an toàn; incident mở chưa phải resolved.",
+  "escalate_when": "Chuyển storage khi có I/O error hoặc nghi integrity; host/thiết bị nằm ngoài quyền guest support.",
+  "production_warning": "Không lấy ro làm bảo đảm dữ liệu an toàn hoặc ép rw để tiếp tục ghi khi storage còn lỗi.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

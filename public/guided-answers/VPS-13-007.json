@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "DB container failed due to memory allocation issue.",
-  "recommended_next_checks": "Check container resources, MariaDB settings, available RAM.",
-  "resolution_guidance": "Resolve DB resource issue before app restart.",
-  "verification": "Database and app healthchecks pass.",
-  "escalate_when": "Production database/data safety.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "API Up nhưng DB Exited; InnoDB allocation error, OOMKilled true và limit 1 GiB hỗ trợ điều tra bộ nhớ. Chưa xác nhận nguyên nhân duy nhất.",
+  "recommended_next_checks": "So memory timeline, limit, DB settings, host headroom và integrity/backup của volume DB.",
+  "resolution_guidance": "DB/infra owner lập recovery/tuning có phê duyệt; bảo vệ volume trước restart/change.",
+  "verification": "DB integrity/query và API functional tests đạt dưới tải phù hợp, không tái OOM.",
+  "escalate_when": "Production database, dữ liệu hoặc host capacity cần DB/infra cùng xử lý.",
+  "production_warning": "Không xóa DB volume hoặc restart loop để bỏ lỗi allocation.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

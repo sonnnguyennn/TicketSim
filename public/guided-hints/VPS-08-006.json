@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: IPv4 tới site được nhưng IPv6 client thất bại.",
-    "Đọc P1 (dig +short example.com A) và P2 (dig +short example.com AAAA); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: DNS authoritative và validating resolver trả AAAA đúng nếu có IPv6; client IPv6 tải site hoặc không còn AAAA lỗi."
+    "IPv4 thành công không kiểm tra IPv6.",
+    "So A và AAAA với allocation trong panel và authoritative DNS.",
+    "Không đoán IPv6 hoặc sửa firewall để chữa một AAAA record chưa đúng đích."
   ]
 }

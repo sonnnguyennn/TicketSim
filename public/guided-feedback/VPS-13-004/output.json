@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: OOMKilled true và memory gần 512 MiB; nguyên nhân cấp phát/tải/leak chưa được định vị.",
+  "explanation": "Bộ nhớ là hướng có căn cứ, nhưng cần đo timeline và giới hạn để chọn change.",
   "commandId": "docker-stats",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Snapshot mới không bác bỏ sự kiện kill trước đó.",
+    "supported": "Chưa thể gán leak hoặc hứa tăng RAM là đủ.",
+    "over": "Chưa biết host headroom, workload hoặc lỗi khác."
   }
 }

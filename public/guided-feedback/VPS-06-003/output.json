@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Có console và template CentOS Stream 9; chưa có bằng chứng hợp lệ để thay credential.",
+  "explanation": "Hạ tầng có thể hỗ trợ recovery nhưng danh tính vẫn đang được kiểm tra; không tiến hành reset khi chưa được ủy quyền.",
   "commandId": "os-release",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Availability của console không kiểm tra credential của user.",
+    "supported": "Console và OS là điều kiện kỹ thuật; ownership pending vẫn chặn thao tác đặc quyền.",
+    "over": "Quyền kỹ thuật truy cập panel không thay cho authorization của chủ VPS."
   }
 }

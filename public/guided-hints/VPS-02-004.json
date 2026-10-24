@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: HTTPS ngoài VPS không tới được, còn local curl thành công.",
-    "Đọc P1 (ss -ltnp) và P2 (firewall-cmd --list-all); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: HTTPS từ client ngoài trả nội dung mong đợi, rule còn hiệu lực."
+    "Một request local không đi qua toàn bộ đường từ Internet vào VPS.",
+    "Đọc listener 443 và zone firewalld; xác nhận zone nào áp dụng cho traffic của client.",
+    "Có listener 443 nhưng zone đang đọc chưa liệt kê HTTPS. Đây là giả thuyết firewall, chưa loại trừ edge hoặc rule khác."
   ]
 }

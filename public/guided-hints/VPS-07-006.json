@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Website trả 503 ngay sau deploy.",
-    "Đọc P1 (curl -I http://127.0.0.1) và P2 (systemctl status app); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: App ổn định và URL trả nội dung đúng dưới request thực."
+    "503 chưa chứng minh DNS hoặc Nginx syntax sai.",
+    "So HTTP local, app state và journal sau deploy.",
+    "Log thiếu APP_CONFIG: kiểm tra môi trường release, không lặp restart."
   ]
 }

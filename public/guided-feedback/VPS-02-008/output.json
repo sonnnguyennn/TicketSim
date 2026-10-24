@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Kích thước lớn bị giới hạn còn kích thước nhỏ qua được; nghi PMTU/MSS trên path VPN, cần thêm phép đo TCP và chiều ngược.",
+  "explanation": "Có dấu hiệu giới hạn kích thước trên path; cần phép TCP và cấu hình tunnel để kết nối với upload bị treo.",
   "commandId": "ping",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Một gói nhỏ qua được không chứng minh gói lớn hoặc TCP với MSS khác đi qua.",
+    "supported": "Hai kích thước khác nhau cho kết quả khác, phù hợp hướng điều tra này.",
+    "over": "1200 là payload ping thành công, không tự là MTU đúng cho interface public."
   }
 }

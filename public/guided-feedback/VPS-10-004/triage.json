@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Lời khách cho biết độ trễ và ảnh chụp process; nguyên nhân ở host vẫn cần đo.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đây là khác biệt khách quan sát cần kiểm tra.",
+    "other": "Khách báo độ trễ toàn VM, chưa có kết quả DNS.",
+    "cause": "Một ảnh chụp process chưa đo được host."
   }
 }

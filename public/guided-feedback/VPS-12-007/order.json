@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Đối chiếu policy/owner trước, cấp quyền phù hợp sau, kiểm tra authorization cuối.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Định vị thiếu quyền không cần lộ secret.",
+    "verify": "Không dùng reboot production làm phép thử mù.",
+    "act": "Đúng người cấp quyền cần thiết, không admin mặc định."
   }
 }

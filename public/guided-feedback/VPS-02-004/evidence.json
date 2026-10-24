@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Ghi riêng listener và danh sách rule, không gộp thành khẳng định mọi lớp mạng đã thông.",
   "commandId": "firewall-list",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Không có https hoặc 443/tcp trong danh sách đó.",
+    "over": "Không có telemetry hoặc phép thử edge trong hai kết quả.",
+    "p1": "Đúng dòng LISTEN trong ss."
   }
 }

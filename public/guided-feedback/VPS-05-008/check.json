@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "lsblk giúp thấy mapping và kích thước block device, còn vgs/lvs/df đọc các lớp chuyên biệt.",
   "commandId": "lsblk",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Hiển thị vdb, partition và LV cùng mountpoint.",
+    "wrong1": "vgs cho free extents của VG, không vẽ cây disk, partition và LV.",
+    "wrong2": "df đo filesystem /data, không phân biệt kích thước disk vdb và LV."
   }
 }

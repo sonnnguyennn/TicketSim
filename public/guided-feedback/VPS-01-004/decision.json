@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận active zone, listener và phép thử TCP từ client; chỉ mở SSH theo policy khi được duyệt. Xác minh: TCP/22 và đăng nhập từ client được phép, rule còn hiệu lực sau reload.",
+  "explanation": "Chỉ sửa rule hẹp đúng zone/policy khi có quyền; giữ console để tránh mất đường quản trị.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Mở rộng bề mặt truy cập vượt nhu cầu TCP/22 và không được bằng chứng yêu cầu.",
+    "close": "Ping không xác minh SSH hoặc đăng nhập của khách.",
+    "safe": "Các phép đọc xác định rule nào có thể tác động và liệu có listener thực hay chưa."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu panel allocation, IPAM owner, gateway và active sessions; chuyển provisioning/network lập change có console/rollback. Xác minh: IPAM, panel, guest IP/route và client reachability khớp kế hoạch được duyệt.",
+  "explanation": "Network change cần bảo vệ đường quản trị và phụ thuộc dịch vụ.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Đúng quyền, có gateway đích và rollback trước can thiệp.",
+    "unsafe": "Có thể mất kết nối hoặc gây trùng IP do chưa đủ cấu hình.",
+    "close": "Khách cần địa chỉ đúng order, không chỉ một IP bất kỳ."
   }
 }

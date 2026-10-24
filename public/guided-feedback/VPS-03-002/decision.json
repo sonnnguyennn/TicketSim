@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Kiểm tra namei/getfacl và owner mục tiêu; thay quyền hẹp theo owner approval, tránh world-writable. Xác minh: webapp ghi được file thử và quyền vẫn theo least privilege.",
+  "explanation": "Xác định đúng process/path/policy trước, rồi cấp quyền hẹp cho ứng dụng theo owner approval.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Tránh cấp write cho người dùng không liên quan và không bỏ sót policy khác.",
+    "unsafe": "World-writable và recursive có thể làm lộ hoặc cho sửa dữ liệu không cần thiết.",
+    "close": "Có account không xác minh thao tác ghi đã thành công."
   }
 }

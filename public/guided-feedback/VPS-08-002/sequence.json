@@ -5,12 +5,12 @@
     "confirm",
     "verify"
   ],
-  "explanation": "Không thay đổi DNS trước khi xác nhận ý định của khách.",
+  "explanation": "Giữ đúng tên, so dữ liệu, hỏi ý định rồi xác minh sau sửa.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "exact": "Giữ nguyên chuỗi để tránh che lỗi gõ tên.",
-    "compare": "Hai hostname cần được so sánh riêng.",
-    "confirm": "Chưa tự đổi zone.",
-    "verify": "DNS phân giải không tự chứng minh web hoạt động."
+    "exact": "Tránh kiểm tra nhầm ww thành www.",
+    "compare": "So kết quả trước khi kết luận typo.",
+    "confirm": "Owner quyết định typo hay alias cần tạo.",
+    "verify": "DNS đúng chưa bảo đảm website trả đúng nội dung."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu source/time, rà Accepted events, key/account changes và policy; chuyển security nếu có dấu hiệu thành công. Xác minh: Không có access trái phép trong log/audit được đối chiếu, monitoring và biện pháp approved hoạt động.",
+  "explanation": "Rà đăng nhập thành công và thay đổi quyền theo policy; tránh thay đổi rộng khi chưa có căn cứ.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể chặn khách hợp lệ và mất đường quản trị.",
+    "close": "Cần kiểm tra cửa sổ và phạm vi phù hợp trước khi kết luận.",
+    "safe": "Giám sát theo policy; chuyển security nếu có dấu hiệu đăng nhập thành công hoặc dữ liệu mâu thuẫn."
   }
 }

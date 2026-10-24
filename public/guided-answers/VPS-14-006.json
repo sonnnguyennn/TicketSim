@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Data retention deadline approaching; policy-limited action.",
-  "recommended_next_checks": "Confirm identity, renewal status and retention rules.",
-  "resolution_guidance": "Escalate retention exception before deadline; advise authorized backup.",
-  "verification": "Approved retention/renewal recorded and data preserved.",
-  "escalate_when": "Billing management / policy owner.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Dịch vụ hết hạn 20/10, xóa lịch 25/10, hold false; backup 19/10 chưa xác minh restore.",
+  "recommended_next_checks": "Xác minh owner, renewal, retention job, policy và khả năng backup trước deadline.",
+  "resolution_guidance": "Chuyển billing/lifecycle on-call xin ngoại lệ hold có audit; chỉ hứa thời hạn đã được duyệt và áp.",
+  "verification": "Kiểm tra hold/renewal, deadline mới, data/backup status và khách xác nhận phương án.",
+  "escalate_when": "Cần policy owner hoặc quyết định khẩn trước deletion.",
+  "production_warning": "Không tự hủy job xóa hoặc hứa giữ dữ liệu vô hạn; backup chưa thử không bảo đảm restore.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

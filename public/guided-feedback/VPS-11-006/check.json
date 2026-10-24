@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Created của backup khác thời gian job restore hoàn tất.",
   "commandId": "panel-restore-points",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Đây là mốc sự cố, không phải tuổi backup.",
+    "wrong2": "Kết quả boot/validation không cho thời gian tạo backup.",
+    "direct": "Đọc mốc tạo đúng bản đã restore."
   }
 }

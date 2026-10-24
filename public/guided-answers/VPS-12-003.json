@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Provisioning delivered wrong OS template.",
-  "recommended_next_checks": "Validate service and deployment history, customer data state.",
-  "resolution_guidance": "Plan authorized rebuild/replace and customer communication.",
-  "verification": "OS matches order and service functional.",
-  "escalate_when": "Provisioning/template team.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Order AlmaLinux 9 nhưng guest Ubuntu 24.04; audit xác nhận image áp khác template đặt.",
+  "recommended_next_checks": "So đúng order/VM/task, dữ liệu khách đã tạo và khả năng backup hoặc migration.",
+  "resolution_guidance": "Provisioning cùng owner lập phương án migration/rebuild có backup, approval và kế hoạch dịch vụ.",
+  "verification": "OS đúng order, dữ liệu theo kế hoạch và dịch vụ được kiểm tra từ client.",
+  "escalate_when": "Cần sửa template/provisioning hoặc thay đổi disk production.",
+  "production_warning": "Không tự reinstall hoặc xóa VM chỉ vì OS sai.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

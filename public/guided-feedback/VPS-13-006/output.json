@@ -5,8 +5,8 @@
   "explanation": "Forwarding bị tắt có thể ngăn egress bridge; vẫn cần kiểm tra NAT/firewall và yêu cầu policy trước thay đổi.",
   "commandId": "sysctl-read",
   "optionFeedback": {
-    "supported": "Hai lớp khác nhau: route hướng gói tới host, forwarding quyết định host có chuyển gói đi tiếp.",
     "over": "Bật forwarding không tự chứng minh rule NAT và filter đã đúng.",
-    "ignore": "Default route mới đưa gói tới host; host vẫn phải được phép chuyển tiếp sang mạng ngoài."
+    "ignore": "Default route mới đưa gói tới host; host vẫn phải được phép chuyển tiếp sang mạng ngoài.",
+    "supported": "Hai lớp khác nhau: route hướng gói tới host, forwarding quyết định host có chuyển gói đi tiếp."
   }
 }

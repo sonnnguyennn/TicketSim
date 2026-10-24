@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Container không resolve domain còn host resolve được.",
-    "Đọc P1 (docker exec api getent hosts example.com) và P2 (getent hosts example.com); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Container resolve domain qua resolver được cấp và app kết nối endpoint, host vẫn bình thường."
+    "Lookup thành công trên host chưa kiểm tra đường DNS của container.",
+    "So hai lệnh getent, rồi xem resolv.conf và query tới resolver container.",
+    "Container dùng 127.0.0.11 và query timeout; getent rỗng riêng nó chưa định nguyên nhân. Đối chiếu Docker network và upstream trước đổi DNS."
   ]
 }

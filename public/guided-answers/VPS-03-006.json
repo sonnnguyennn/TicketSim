@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Application exits due to missing Python dependency.",
-  "recommended_next_checks": "Confirm runtime/virtualenv and deployment package manifest.",
-  "resolution_guidance": "Restore dependency in correct environment or rollback release.",
-  "verification": "App remains active and healthcheck passes.",
-  "escalate_when": "Third-party app managed by customer.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "custom-app auto-restart và báo thiếu module requests. Unit dùng /opt/custom/venv/bin/python; dependency trong môi trường này cần đối chiếu.",
+  "recommended_next_checks": "So ExecStart, venv, release manifest và thay đổi deploy; kiểm tra package trong đúng interpreter với owner ứng dụng.",
+  "resolution_guidance": "Khôi phục dependency đúng venv hoặc rollback release theo quy trình được duyệt, giữ cấu hình/dependency có thể tái lập.",
+  "verification": "Service không restart lặp lại qua thời gian đại diện và endpoint/healthcheck thành công.",
+  "escalate_when": "Chuyển owner/vendor khi ứng dụng do khách quản lý hoặc cần sửa manifest/build của phần mềm.",
+  "production_warning": "Không cài package vào system Python hay lặp restart production trước khi xác nhận môi trường và quyền.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

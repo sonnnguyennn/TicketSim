@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Lệnh journalctl này đo tổng journal, không đo mọi file dưới /var/log.",
   "commandId": "journal-disk-usage",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "df đọc mức sử dụng toàn filesystem, không tách dung lượng journal archived/active.",
+    "wrong2": "du đo thư mục log, có thể gồm file khác và không thay journalctl --disk-usage.",
+    "direct": "Đúng phép đọc dung lượng journal hiện chiếm."
   }
 }

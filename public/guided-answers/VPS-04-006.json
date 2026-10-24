@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Gradual memory growth suggests leak/retention; not proven yet.",
-  "recommended_next_checks": "Compare historical RSS, app heap and traffic.",
-  "resolution_guidance": "Escalate application diagnosis, temporary mitigation only with approval.",
-  "verification": "Stable memory profile across expected uptime.",
-  "escalate_when": "App vendor/developer intervention.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Có chuỗi RSS tăng và OOM kill myapp; retention/leak là giả thuyết cần profile theo workload, chưa có bằng chứng đoạn code cụ thể.",
+  "recommended_next_checks": "Đối chiếu RSS KiB, heap/native/cache, traffic và deploy qua thời gian; đọc parent cgroup/VM limits ngoài MemoryMax.",
+  "resolution_guidance": "Chuyển owner/developer phân tích vòng đời bộ nhớ; giảm tải hoặc capacity tạm chỉ theo kế hoạch có quyền.",
+  "verification": "RSS và độ trễ ổn định qua uptime/tải đại diện, không OOM, ứng dụng trả đúng.",
+  "escalate_when": "Chuyển vendor/developer khi cần heap/code analysis hoặc ứng dụng do khách quản lý.",
+  "production_warning": "Không tắt OOM killer hoặc coi MemoryMax=infinity là toàn bộ hệ thống không có giới hạn.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

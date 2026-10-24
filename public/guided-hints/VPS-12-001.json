@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Đã thanh toán nhưng VPS vẫn Provisioning.",
-    "Đọc P1 (PANEL: provisioning task) và P2 (PANEL: IPAM); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: IPAM cấp IP hợp lệ, provision task hoàn tất, panel và guest/network khớp."
+    "Thanh toán xong chưa chứng minh VM và IP sẵn sàng.",
+    "So trạng thái provisioning task với lỗi IPAM của đúng pool.",
+    "Pool sg-02 có 0 IPv4 trống và 14 yêu cầu chờ. Cần đội cấp phát/capacity, không tự lấy IP ngoài pool."
   ]
 }

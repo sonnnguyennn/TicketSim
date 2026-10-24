@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đọc resolv.conf và DNS từ NetworkManager, thử trực tiếp resolver đã cấu hình trước khi sửa. Xác minh: Resolver được cấu hình trả A record và truy cập site theo domain hoạt động.",
+  "explanation": "Tìm nguồn cấu hình DNS và đường tới resolver; file có thể được NetworkManager hoặc systemd-resolved quản lý.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Xác định đúng đích và owner cấu hình trước khi thay đổi.",
+    "unsafe": "Có thể bị tự ghi đè hoặc vi phạm policy, và chưa biết lỗi có nằm ở cấu hình không.",
+    "close": "Tên miền mà khách cần dùng vẫn chưa được phân giải và truy cập."
   }
 }

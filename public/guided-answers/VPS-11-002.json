@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Requested point-in-time restore is unavailable.",
-  "recommended_next_checks": "Confirm RPO, snapshot schedule, external backups.",
-  "resolution_guidance": "Explain feasible restore point before any restore.",
-  "verification": "Customer accepts selected point and data verification.",
-  "escalate_when": "Business-critical data loss or recovery exceptions.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Chưa có restore point đúng 22/10 08:00 UTC; bản 20/10 00:00 UTC sớm hơn 56 giờ.",
+  "recommended_next_checks": "Tìm backup ngoài hệ thống, snapshot và log ứng dụng; xác nhận múi giờ và mốc cần khôi phục.",
+  "resolution_guidance": "Giải thích lựa chọn khả thi; owner chọn mốc sau khi hiểu dữ liệu có thể thiếu. Thử restore riêng trước production.",
+  "verification": "Đối chiếu dữ liệu và mốc đã thống nhất; chỉ restore production sau approval.",
+  "escalate_when": "Cần backup team hoặc phục hồi dữ liệu nghiệp vụ quan trọng vượt nguồn hiện có.",
+  "production_warning": "Không ghi đè production bằng bản cũ chỉ để khách thử.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

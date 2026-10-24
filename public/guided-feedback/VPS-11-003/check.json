@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "tar -t liệt kê; không giải nén đè dữ liệu.",
   "commandId": "tar-list",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Tính hash nhưng không thử đọc cấu trúc tar.",
+    "wrong2": "Tên và kích thước không chứng minh archive đọc trọn.",
+    "direct": "-t đọc danh sách, -f chọn archive cần đọc."
   }
 }

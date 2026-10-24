@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Console nêu điểm dừng; fstab nêu định danh được yêu cầu.",
   "commandId": "fstab-read",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Đây là lỗi trực tiếp trên console.",
+    "p2": "Định danh này cần so với thiết bị thực.",
+    "over": "Không có xác nhận owner hay ứng dụng cho phép bỏ volume."
   }
 }

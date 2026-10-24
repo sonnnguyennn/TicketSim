@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác nhận mapping và khả năng phục hồi trước grow; đo lại ở tất cả lớp và chức năng.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Cần biết lớp còn nhỏ và loại filesystem trước chọn công cụ.",
+    "verify": "Số GB tăng chưa tự kiểm chứng dữ liệu và chức năng sau change.",
+    "act": "Phải tạo chỗ ở lớp dưới trước khi filesystem dùng thêm dung lượng."
   }
 }

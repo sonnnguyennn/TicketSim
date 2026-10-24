@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Recursive resolver appears to retain old cached answer.",
-  "recommended_next_checks": "Compare TTL and authoritative records across resolvers.",
-  "resolution_guidance": "Allow TTL expiration; review client resolver caching.",
-  "verification": "Caches converge to current authoritative answer.",
-  "escalate_when": "Authoritative inconsistency persisting.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Một authoritative server và 9.9.9.9 trả IP mới, còn 1.1.1.1 trả IP cũ với TTL 120. Cache chưa hết hạn là một giả thuyết, nhưng chưa kiểm tra mọi authoritative server.",
+  "recommended_next_checks": "Hỏi từng authoritative server, so serial, record, TTL và mốc thay đổi; đo resolver mà khách bị ảnh hưởng đang dùng.",
+  "resolution_guidance": "Nếu authority thống nhất, giữ dịch vụ cũ và theo dõi cache theo TTL; nếu NS bất nhất, chuyển owner sửa đúng zone.",
+  "verification": "Các NS thống nhất, resolver khách hội tụ và domain phục vụ đúng site mới.",
+  "escalate_when": "Chuyển DNS provider hoặc owner nếu NS bất nhất, hoặc cache vẫn khác sau khoảng thời gian phù hợp.",
+  "production_warning": "Không xóa endpoint cũ khi client còn dùng cache; không hứa mọi người cập nhật đồng thời.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

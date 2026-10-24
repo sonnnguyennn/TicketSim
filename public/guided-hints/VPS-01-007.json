@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: SSH tới port 22 bị từ chối dù console VPS còn hoạt động.",
-    "Đọc P1 (ss -ltnp) và P2 (grep -E \"^Port\" /etc/ssh/sshd_config); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: TCP/2222 và xác thực từ client được phép thành công."
+    "Connection refused ở cổng 22 không chứng minh mọi cổng SSH đều dừng.",
+    "So listener TCP với Port trong file cấu hình; file trên đĩa chưa chứng minh daemon đã nạp.",
+    "Có listener và cấu hình 2222 nhưng còn phải đối chiếu ý định chủ VPS, zone/edge và thử client trên cổng đó."
   ]
 }

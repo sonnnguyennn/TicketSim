@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Reinstall vẫn chưa đổi OS sau 40 phút.",
-    "Đọc P1 (PANEL: task) và P2 (PANEL: task queue); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Snapshot hoàn tất/được xử lý có duyệt, reinstall task chỉ chạy khi điều kiện dữ liệu đạt và OS kiểm tra lại."
+    "Chờ lock khác task đã bắt đầu ghi image.",
+    "So task queue với tiến độ và last_progress của snapshot.",
+    "Snapshot 76%, mới tiến triển 2 phút trước; backup chưa verified và owner còn pending. Không force unlock để reinstall."
   ]
 }

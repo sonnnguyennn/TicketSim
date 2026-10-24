@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Tải đỉnh là bối cảnh cần so timestamp, chưa tự là nguyên nhân.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Khách nói restart, không phải chỉ đường truy cập.",
+    "cause": "Chưa có trend hoặc phân tích phân bổ bộ nhớ.",
+    "symptom": "Cần tìm sự kiện dừng và telemetry cùng thời điểm."
   }
 }

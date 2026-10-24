@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Default route is missing in simulated guest network.",
-  "recommended_next_checks": "nmcli connection show; ip route get 1.1.1.1",
-  "resolution_guidance": "Confirm correct gateway and restore NetworkManager profile via console.",
-  "verification": "Default route exists; TCP external connectivity verified.",
-  "escalate_when": "Gateway unconfirmed, host network issue.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Guest có IPv4 và route subnet nhưng chưa có default route trong bảng được đọc; route get tới 1.1.1.1 báo không có đường.",
+  "recommended_next_checks": "Đối chiếu gateway được panel cấp, NetworkManager profile và policy routing nếu có; không đoán gateway từ subnet.",
+  "resolution_guidance": "Qua console, đề xuất khôi phục profile/route đúng cấp phát sau phê duyệt, có kế hoạch hoàn tác; không down phiên quản trị duy nhất.",
+  "verification": "Route phù hợp xuất hiện và kết nối TCP tới ngoài hoạt động; kiểm tra lại dịch vụ khách cần dùng từ client.",
+  "escalate_when": "Chuyển network khi gateway/cấp phát chưa rõ hoặc vẫn lỗi sau khi guest có route đúng.",
+  "production_warning": "Không đổi mạng qua phiên SSH duy nhất khi chưa có console và phương án khôi phục.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Lệnh kết nối cho biết client có tin host key hay không; không bỏ qua cảnh báo trong khi thử.",
   "commandId": "ssh-vvv",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Fingerprint đọc trong guest; câu hỏi cần thấy cảnh báo mà client đang nhận.",
+    "wrong2": "Lịch sử reinstall là bối cảnh, không hiện thông báo SSH trên client.",
+    "direct": "Đúng client/địa chỉ đang có vấn đề, giữ cơ chế kiểm tra host key mặc định."
   }
 }

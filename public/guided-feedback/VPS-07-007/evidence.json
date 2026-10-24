@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Chỉ ghi CN và virtual host đã thấy; chưa suy ra danh sách SAN.",
   "commandId": "nginx-dump",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Cần đối chiếu virtual host được nạp và nơi triển khai chứng chỉ.",
+    "over": "Không có quyền hạn hay bằng chứng cho việc giảm xác thực.",
+    "p1": "Đây là subject đã quan sát, chưa phải danh sách SAN."
   }
 }

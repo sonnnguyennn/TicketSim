@@ -6,8 +6,8 @@
   "explanation": "Hai quan sát là tác vụ thất bại và quota đích bị vượt; chưa có kiểm tra restore.",
   "commandId": "backup-log",
   "optionFeedback": {
+    "over": "Không có kết quả xác minh hoặc thử khôi phục; failed không chứng minh bản mới dùng được.",
     "p1": "Trạng thái được ghi trực tiếp trong bản tác vụ.",
-    "p2": "target quota exceeded nói tới hạn mức ở kho lưu.",
-    "over": "Không có kết quả xác minh hoặc thử khôi phục; failed không chứng minh bản mới dùng được."
+    "p2": "target quota exceeded nói tới hạn mức ở kho lưu."
   }
 }

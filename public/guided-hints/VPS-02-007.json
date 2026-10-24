@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS tới được từ Nhật nhưng timeout từ hai ISP nội địa.",
-    "Đọc P1 (PANEL: probes) và P2 (sshd -T | grep port); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: TCP/22 thành công từ các ISP từng lỗi ở nhiều thời điểm."
+    "Đầu tiên xác nhận các nguồn cùng thử một IP và một cổng.",
+    "So TCP/22 từ các điểm đo với listener guest và cấu hình SSH.",
+    "Tokyo thành công còn hai ISP timeout, guest vẫn có listener; cần timeline, capture giới hạn và đội network/edge để định vị đường lỗi."
   ]
 }

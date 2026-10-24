@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Loại A dùng cho IPv4 của hostname; service guest không đọc record domain.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Panel cho IP cấp phát, không cho DNS đang trả.",
+    "wrong2": "Trạng thái SSH không cho biết A record của domain.",
+    "direct": "Trả A record theo resolver đang dùng."
   }
 }

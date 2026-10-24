@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Mapping cần được đọc trước khi đề xuất mở firewall.",
   "commandId": "docker-port",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "In rõ IP host của published port.",
+    "wrong1": "Thử local HTTP, không liệt kê toàn bộ mapping.",
+    "wrong2": "Route trong container không nói host binding."
   }
 }

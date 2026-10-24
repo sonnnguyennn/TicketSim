@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Potential duplicate invoice item with one actual service.",
-  "recommended_next_checks": "Check order/invoice IDs, adjustments and tax rules.",
-  "resolution_guidance": "Refer Billing for credit/correction; do not edit invoice manually.",
-  "verification": "Correct invoice and customer confirmation.",
-  "escalate_when": "Billing team.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Hai invoice line cùng VPS-100 nhưng một VM/order quantity 1; ledger một charge amount 2 plan.",
+  "recommended_next_checks": "So invoice/order/payment IDs, adjustments, tax và số tiền settled, không đồng nhất line với số charge.",
+  "resolution_guidance": "Billing đối soát và sửa invoice/credit/refund theo policy có audit; support không tự sửa số tiền.",
+  "verification": "Hóa đơn, ledger, resource count khớp và khách xác nhận kết quả.",
+  "escalate_when": "Billing reconciliation bắt buộc khi cần điều chỉnh số tiền hay refund.",
+  "production_warning": "Không xóa VM để làm khớp hóa đơn hoặc tự refund một line chưa kiểm tra ledger.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

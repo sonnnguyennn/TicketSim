@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Severe memory pressure coincides with disconnections; exact SSH impact needs validation.",
-  "recommended_next_checks": "vmstat 1 5; uptime; journalctl -u sshd",
-  "resolution_guidance": "Investigate job memory, set resource limits or capacity plan with owner.",
-  "verification": "No OOM events during job, sessions remain stable.",
-  "escalate_when": "Production outage, repeated OOM, infrastructure resource cap.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Có OOM kill python3, available thấp và PSI bộ nhớ tăng; sự ảnh hưởng trực tiếp tới phiên SSH chưa được xác định.",
+  "recommended_next_checks": "Lập timeline job/SSH/OOM, đo RAM/PSI và process theo thời gian; kiểm tra thêm client/network nếu không tương quan.",
+  "resolution_guidance": "Phối hợp owner workload đề xuất tối ưu, giới hạn hoặc capacity theo bằng chứng; giữ console khi VPS có nguy cơ mất quản trị.",
+  "verification": "Qua các lần chạy job đại diện, không còn OOM bất thường, memory stall giảm và phiên SSH từ nguồn khách ổn định.",
+  "escalate_when": "Chuyển đội ứng dụng/capacity khi OOM lặp lại; chuyển hạ tầng nếu VPS mất ổn định hoặc nghi hạn mức ngoài guest.",
+  "production_warning": "Không tự xóa job hay reboot để che triệu chứng; log OOM của python3 không phải bằng chứng sshd bị kill.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "vNIC attached to wrong host bridge.",
-  "recommended_next_checks": "Compare VM XML/network intent and host bridge/VLAN mapping.",
-  "resolution_guidance": "Network/virtualization team correct bridge under change control.",
-  "verification": "Gateway reachable, correct isolation confirmed.",
-  "escalate_when": "Host networking access required.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Host interface gắn br-storage trong khi inventory yêu cầu br-public/public-vlan-12. Có mismatch cần network/virtualization review; chưa chứng minh guest firewall sai.",
+  "recommended_next_checks": "So MAC, VM XML, bridge/VLAN mapping và network/gateway cấp phát; giữ console trước change.",
+  "resolution_guidance": "Đội host/network sửa attachment theo intent và change được duyệt, có rollback và kiểm tra isolation.",
+  "verification": "Guest tới gateway, đúng subnet/isolation và dịch vụ từ client hoạt động.",
+  "escalate_when": "Chuyển host network/virtualization vì cần quyền bridge/VLAN và cấu hình domain.",
+  "production_warning": "Không tự chuyển bridge đang chạy hoặc đổi IP ngẫu nhiên để che mismatch host.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

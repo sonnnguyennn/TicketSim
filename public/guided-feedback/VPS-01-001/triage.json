@@ -4,8 +4,8 @@
   ],
   "explanation": "Kết nối bị từ chối trước bước xác thực; cần kiểm tra dịch vụ và listener trước khi xét mật khẩu.",
   "optionFeedback": {
-    "auth": "Lỗi xác thực thường có Permission denied; ticket này báo Connection refused.",
     "refused": "Connection refused mô tả thất bại khi mở kết nối, trước khi xác thực user.",
-    "dns": "Không có thông báo lỗi phân giải tên trong ticket; Connection refused thuộc bước kết nối."
+    "dns": "Không có thông báo lỗi phân giải tên trong ticket; Connection refused thuộc bước kết nối.",
+    "auth": "Lỗi xác thực thường có Permission denied; ticket này báo Connection refused."
   }
 }

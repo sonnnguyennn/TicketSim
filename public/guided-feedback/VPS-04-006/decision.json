@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu RSS/cgroup theo thời gian cùng tải và deployment; chuyển đội ứng dụng phân tích heap, đánh giá capacity có kiểm soát. Xác minh: RSS ổn định qua uptime/tải đại diện, không còn OOM và service đáp ứng.",
+  "explanation": "Cần trend gắn với traffic/deploy và giới hạn; biện pháp giảm tải tạm phải có phép và không thay chẩn đoán.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể làm cả VPS kẹt hoặc che dấu hiệu mà không sửa nguồn sử dụng RAM.",
+    "close": "Bộ nhớ giảm khi process mới lên chưa kiểm chứng qua uptime từng gây lỗi.",
+    "safe": "Dữ liệu cho phép phân biệt workload hợp lệ với vòng đời object bất thường."
   }
 }

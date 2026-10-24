@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Cảnh báo nhắc đến file nào và quyền octal bao nhiêu?",
-    "Đối chiếu ssh -i với ls -l của cùng private key trên client.",
-    "0644 cho phép người khác đọc file; kiểm tra quyền key trên client rồi thử SSH lại, không đổi sshd trong guest."
+    "Cảnh báo UNPROTECTED PRIVATE KEY FILE xuất phát từ SSH client.",
+    "Xem owner và mode của đúng file ~/.ssh/lab_key trên client.",
+    "Mode 0644 cho group/others đọc được key. Giới hạn quyền file của mình rồi thử lại; không gửi nội dung key cho support."
   ]
 }

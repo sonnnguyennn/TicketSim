@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Kiểm tra vhost/Host header, xác nhận deploy path rồi đề xuất chỉnh root và reload có duyệt sau nginx -t. Xác minh: Host đúng trả nội dung /start mong đợi từ client, Nginx config test và log sạch.",
+  "explanation": "Xác nhận Host/vhost/release rồi test config và reload đúng quyền.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "URL khách vẫn 404; tồn tại file chưa đủ.",
+    "safe": "Dùng nginx-t, rollback và kiểm tra URL sau reload.",
+    "unsafe": "Có thể mất dữ liệu, chưa giải quyết mapping."
   }
 }

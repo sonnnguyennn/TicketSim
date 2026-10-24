@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Cấu hình host attachment khác route guest và inventory mong muốn.",
   "commandId": "virsh-domiflist",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Inventory mô tả intent, không xác minh actual attachment.",
+    "direct": "Đọc Source bridge của interface domain.",
+    "wrong1": "Guest route không chỉ bridge host thực đang gắn."
   }
 }

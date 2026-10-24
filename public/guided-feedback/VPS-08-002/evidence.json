@@ -3,12 +3,12 @@
     "ww",
     "www"
   ],
-  "explanation": "Tách kết quả DNS của từng tên.",
+  "explanation": "Kết quả tên cụ thể không chứng minh web health hoặc mọi provider.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "ww": "Đúng từ P1.",
-    "www": "Đúng từ P2.",
-    "down": "Chưa có kiểm tra HTTP.",
-    "provider": "Không được chứng minh."
+    "ww": "Resolver không tìm thấy tên này trong phép hỏi.",
+    "www": "A record cho tên www có câu trả lời.",
+    "down": "Chưa gửi request HTTP để kiểm tra.",
+    "provider": "Hai truy vấn không đo mọi provider hay resolver."
   }
 }

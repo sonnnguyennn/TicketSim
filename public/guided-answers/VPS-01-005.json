@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Saved host key differs from newly installed server host key.",
-  "recommended_next_checks": "Verify ED25519 fingerprint using trusted VM console.",
-  "resolution_guidance": "After fingerprint validation, remove stale known_hosts entry and reconnect.",
-  "verification": "Received key matches console fingerprint, SSH login succeeds.",
-  "escalate_when": "Fingerprint differs or unexpected reinstall.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Client không chấp nhận host key hiện nhận; panel có reinstall gần đây. Chưa có bằng chứng fingerprint phía client đã khớp console.",
+  "recommended_next_checks": "Xác nhận đúng VPS/IP và rebuild được phép; lấy fingerprint public host key từ console tin cậy rồi so với client.",
+  "resolution_guidance": "Khi fingerprint khớp, cập nhật riêng entry cũ của đúng host trong known_hosts theo quyền của client và kết nối lại.",
+  "verification": "Key client nhận khớp fingerprint đã xác minh và account được phép đăng nhập vào đúng VPS.",
+  "escalate_when": "Chuyển security/quản trị khi rebuild không được dự kiến, fingerprint lệch hoặc chưa có kênh console tin cậy.",
+  "production_warning": "Không tắt kiểm tra host key hoặc xóa toàn bộ known_hosts chỉ để bỏ cảnh báo.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

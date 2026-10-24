@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Task history khác danh sách VM hiện có.",
   "commandId": "panel-provision-task",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Ghi các lần completed của order.",
+    "wrong1": "Liệt kê resource nhưng không giải thích số lần task đã chạy.",
+    "wrong2": "Mapping billing không thay execution history."
   }
 }

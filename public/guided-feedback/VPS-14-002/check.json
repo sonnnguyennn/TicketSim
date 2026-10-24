@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Invoice và provision state là hai phép đọc khác nhau.",
   "commandId": "billing-invoice",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Có hoặc chưa có VM không xác nhận invoice Paid.",
+    "direct": "Cho trạng thái thanh toán hóa đơn.",
+    "wrong1": "Cho bước cấp phát, không thay billing ledger."
   }
 }

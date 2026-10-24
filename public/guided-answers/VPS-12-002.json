@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Panel sync/status appears stale compared with host.",
-  "recommended_next_checks": "Check sync jobs/API errors, no assumption of actual power off.",
-  "resolution_guidance": "Refresh/reconcile backend state via approved workflow.",
-  "verification": "Panel and hypervisor show consistent state.",
-  "escalate_when": "Panel backend team.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Panel Stopped từ 50 phút trước không khớp host running; worker backlog hỗ trợ lỗi đồng bộ trạng thái.",
+  "recommended_next_checks": "Đối chiếu timestamp, sync task/error và kiểm tra guest từ client; không suy mọi ứng dụng khỏe từ running.",
+  "resolution_guidance": "Giữ VM đang phục vụ, chuyển control-plane xử lý worker/reconcile theo quy trình.",
+  "verification": "Panel phản ánh host đúng và kết nối/dịch vụ khách vẫn hoạt động.",
+  "escalate_when": "Worker lỗi hoặc quyền backend ngoài phạm vi support.",
+  "production_warning": "Không start/reboot một VM đang running chỉ vì nhãn panel cũ.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

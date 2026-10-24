@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "SSH server listens on custom TCP/2222, not default 22.",
-  "recommended_next_checks": "sshd -t; firewall-cmd --list-ports",
-  "resolution_guidance": "Confirm intended port and instruct client ssh -p 2222 if allowed.",
-  "verification": "Successful SSH login on intended port from permitted source.",
-  "escalate_when": "Provider network ACL blocks custom SSH port.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Bảng listener và cấu hình đang được kiểm tra cùng chỉ TCP/2222, không thấy listener 22. Chưa xác nhận SSH từ client tới 2222 hoạt động.",
+  "recommended_next_checks": "Xác nhận cổng dự định với owner; đọc sshd -t/-T, active zone và edge ACL rồi thử TCP/2222 từ client.",
+  "resolution_guidance": "Hướng client dùng ssh -p 2222 nếu đó là cấu hình được phép. Nếu phải đổi cổng, cần console, phê duyệt và kế hoạch tránh mất truy cập.",
+  "verification": "TCP và login bằng account được phép tới đúng cổng thành công từ nguồn khách.",
+  "escalate_when": "Chuyển network/security khi edge ACL hoặc policy chặn cổng riêng; chuyển quản trị guest khi cấu hình được parse khác runtime.",
+  "production_warning": "Không đổi port qua phiên SSH duy nhất hoặc xem một dòng Port trên đĩa là bằng chứng cấu hình đã được nạp.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

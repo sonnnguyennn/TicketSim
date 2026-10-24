@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "AAAA points to unreachable/not-assigned IPv6 target.",
-  "recommended_next_checks": "curl -4I and curl -6I; authoritative records.",
-  "resolution_guidance": "Correct/remove inappropriate AAAA after approval.",
-  "verification": "IPv6 clients use working endpoint or no broken AAAA.",
-  "escalate_when": "IPv6 rollout/provider network required.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "A record trả IPv4, còn AAAA trỏ tới IPv6 không có trong allocation của VPS. Mismatch cần DNS owner xác minh; chưa đo toàn bộ reachability qua IPv6.",
+  "recommended_next_checks": "Hỏi authoritative A và AAAA, so allocation với ý định domain; thử IPv4 và IPv6 tới đúng hostname hoặc endpoint.",
+  "resolution_guidance": "Owner sửa hoặc xóa AAAA không dùng, hoặc duyệt quy trình triển khai IPv6; không đổi firewall hay đoán IP.",
+  "verification": "Client IPv6 nhận đích hợp lệ và tải được site; hoặc AAAA sai đã được gỡ tại đúng authority và theo dõi cache theo TTL.",
+  "escalate_when": "Chuyển DNS hoặc network owner nếu việc cấp phát IPv6, rollout hay quyền domain ngoài phạm vi.",
+  "production_warning": "Không coi A record hoạt động là IPv6 đã đúng; không gán IPv6 tùy ý để khớp DNS.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

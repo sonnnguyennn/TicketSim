@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Log mô tả lỗi từng thời điểm; limits mô tả ngưỡng process, không giải thích FD nào tăng.",
   "commandId": "ps-process",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "Hai output chưa có phân tích vòng đời FD hoặc đánh giá capacity.",
+    "p1": "Thông báo này là EMFILE của process.",
+    "p2": "Đúng các cột trong limits; cần giữ đúng PID."
   }
 }

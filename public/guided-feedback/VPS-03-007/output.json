@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: App có EMFILE, limit 1024 và gần chạm giới hạn; chưa chứng minh leak hay chỉ tải tăng hợp lệ.",
+  "explanation": "Có bằng chứng áp lực FD gần giới hạn; cần chuỗi mẫu và phân loại FD để phân biệt tải hợp lệ với leak.",
   "commandId": "ps-process",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Thời điểm log và lần đếm khác nhau; FD có thể đã đóng bớt.",
+    "supported": "Log có EMFILE, còn count hiện tại gần soft limit nhưng không phải trend.",
+    "over": "Có thể chỉ trì hoãn leak hoặc làm tăng tiêu thụ tài nguyên."
   }
 }

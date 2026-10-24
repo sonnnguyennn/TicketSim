@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Backend response is slow enough to exceed proxy timeout.",
-  "recommended_next_checks": "Check backend metrics, DB dependencies and slow requests.",
-  "resolution_guidance": "Address backend bottleneck; do not just increase timeouts blindly.",
-  "verification": "Normal peak traffic yields healthy latency and no 504.",
-  "escalate_when": "App/database capacity or performance team.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Proxy timeout khi đọc header, một yêu cầu health tới backend mất 31,4 giây; độ trễ và số lỗi 504 tăng lúc cao điểm. Đường xử lý backend chậm, chưa xác định nút thắt cụ thể.",
+  "recommended_next_checks": "Thu request ID, trace, p95/p99, hàng đợi và metrics tài nguyên, dependency cùng giờ cao điểm; so với timeout proxy.",
+  "resolution_guidance": "Phối hợp chủ ứng dụng và cơ sở dữ liệu xử lý nút thắt theo quy trình thay đổi; chỉ chỉnh timeout sau khi đánh giá SLA và tác động.",
+  "verification": "Dưới tải cao điểm đại diện, độ trễ đạt SLA, không còn 504 và backend ổn định trong cửa sổ theo dõi.",
+  "escalate_when": "Chuyển nhóm ứng dụng, cơ sở dữ liệu hoặc capacity nếu vấn đề thuộc code, dependency hoặc tài nguyên ngoài quyền.",
+  "production_warning": "Không tăng timeout vô hạn hoặc restart proxy lặp lại khi chưa khoanh vùng nguyên nhân.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

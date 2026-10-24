@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Hành vi phụ thuộc mode hướng đến AVC, nhưng chưa cho phép bỏ policy.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Cần đọc denial của đúng request để xác định lớp lỗi.",
+    "other": "Không khớp với sự thay đổi hành vi theo SELinux mode.",
+    "cause": "Cần sửa policy hoặc kiến trúc đúng phạm vi, không bỏ bảo vệ rộng."
   }
 }

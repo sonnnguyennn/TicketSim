@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Một số người dùng còn tới server cũ sau đổi DNS.",
-    "Đọc P1 (dig @authoritative.example shop.example.com A) và P2 (dig @1.1.1.1 shop.example.com A); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Các authoritative thống nhất và resolver từng lỗi hội tụ về IP mới sau TTL."
+    "Một authoritative server trả IP mới chưa đại diện cho mọi nameserver.",
+    "So IP và TTL từ resolver khách dùng, rồi hỏi các authoritative NS.",
+    "Giữ server cũ khi client còn dùng IP cũ; chỉ chờ TTL sau khi xác nhận zone đã thống nhất."
   ]
 }

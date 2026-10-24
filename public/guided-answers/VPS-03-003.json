@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Nginx configuration contains syntax error.",
-  "recommended_next_checks": "Review recent diff, backup current config.",
-  "resolution_guidance": "Fix unmatched brace; nginx -t; reload/start after approval.",
-  "verification": "Syntax test passes and expected HTTP response returns.",
-  "escalate_when": "Unknown config source or automated deploy overwrites.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Unit nginx failed và nginx -t báo dấu } không mong đợi ở nginx.conf dòng 45. Lỗi cú pháp cấu hình đã được xác định; chưa biết ai tạo thay đổi.",
+  "recommended_next_checks": "Đọc vài dòng quanh dòng 45, lịch sử thay đổi, file include và cấu hình dự kiến; kiểm tra bản cấu hình cũ trước khi áp sửa.",
+  "resolution_guidance": "Owner hoặc admin sửa dấu ngoặc theo cấu trúc Nginx đã xác minh, chạy nginx -t đạt rồi mới start/reload theo quy trình có quyền.",
+  "verification": "nginx -t thành công, service và listener hoạt động, rồi thử đúng URL từ client; xác nhận chức năng web và theo dõi log.",
+  "escalate_when": "Chuyển owner cấu hình hoặc quản trị hệ thống khi thay đổi ngoài phạm vi support, không có bản rollback hoặc Nginx vẫn lỗi sau sửa cú pháp.",
+  "production_warning": "Không khởi động lại liên tục khi nginx -t còn lỗi; không suy website đã phục hồi chỉ từ cấu hình hợp lệ.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

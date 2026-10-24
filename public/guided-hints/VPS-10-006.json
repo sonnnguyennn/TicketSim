@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Dữ liệu có vẻ cũ sau khi admin restore snapshot.",
-    "Đọc P1 (PANEL: activity) và P2 (stat /srv/app/data.db); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Owner đối chiếu bản ghi theo mốc, integrity test và RPO được báo rõ."
+    "Restore hoàn tất lúc 10:14 không có nghĩa dữ liệu mới tới 10:14.",
+    "So thời điểm tạo snapshot, mtime file và bản backup mới hơn.",
+    "Backup mới hơn chưa thử restore; cần đối chiếu giao dịch với owner trước khi ghi đè production."
   ]
 }

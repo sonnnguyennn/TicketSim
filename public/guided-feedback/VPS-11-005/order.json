@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác định nguồn trước, change có quyền sau, rồi kiểm tra nội dung.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Biết đúng nguồn trước reattach/restore.",
+    "verify": "Tên vdb xuất hiện chưa chứng minh dữ liệu đầy đủ.",
+    "act": "Chỉ thao tác sau kiểm định nguồn và bảo vệ hiện trạng."
   }
 }

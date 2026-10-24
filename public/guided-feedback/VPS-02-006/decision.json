@@ -4,8 +4,8 @@
   ],
   "explanation": "Đội mạng cần các đường đo có thể đối chiếu theo nguồn và thời gian; đổi route guest trước khi định vị có thể tạo sự cố mới.",
   "optionFeedback": {
+    "close": "Khách vẫn gặp lỗi trên đường khác; phải xác minh từ chính mạng bị ảnh hưởng.",
     "safe": "Giữ được đường và cửa sổ bị ảnh hưởng để so với probe khác và telemetry.",
-    "unsafe": "Chưa có bằng chứng route/firewall guest sai, và thay đổi có thể mất truy cập.",
-    "close": "Khách vẫn gặp lỗi trên đường khác; phải xác minh từ chính mạng bị ảnh hưởng."
+    "unsafe": "Chưa có bằng chứng route/firewall guest sai, và thay đổi có thể mất truy cập."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Unknown scheduled persistence mechanism; compromise suspected.",
-  "recommended_next_checks": "Check authorized automation inventory; preserve binary and cron evidence.",
-  "resolution_guidance": "Do not delete immediately; security team forensic/containment procedure.",
-  "verification": "Unexpected task removed via approved incident recovery, integrity verified.",
-  "escalate_when": "Security incident response.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Root cron chạy agent mỗi năm phút, process dưới root hiện diện và hash khác inventory. Có thể là automation hoặc persistence chưa được duyệt; chưa khẳng định VPS bị xâm nhập.",
+  "recommended_next_checks": "Giữ cron, binary và hash, metadata version, process ancestry và timeline; so owner, change record và inventory được duyệt.",
+  "resolution_guidance": "Security xác định nguồn và containment hoặc recovery theo incident runbook; không xóa binary trước khi giữ bằng chứng.",
+  "verification": "Scheduler và binary được giải thích hoặc xử lý theo kế hoạch, monitoring không thấy process xuất hiện lại và integrity được đánh giá.",
+  "escalate_when": "Chuyển security incident response cùng binary, thời gian, hash và quyền root liên quan.",
+  "production_warning": "Không xóa hay reboot để thử; hash khác hoặc process chạy lại chưa tự chứng minh ý định độc hại.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

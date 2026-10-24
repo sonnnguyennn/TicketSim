@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "getenforce chỉ đọc chế độ, không chuyển mode.",
   "commandId": "getenforce",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Trả Enforcing/Permissive/Disabled để đối chiếu với lúc app lỗi.",
+    "wrong1": "AVC nêu thao tác bị từ chối; không trả mode SELinux hiện tại.",
+    "wrong2": "Label file không cho biết SELinux đang Enforcing hay Permissive."
   }
 }

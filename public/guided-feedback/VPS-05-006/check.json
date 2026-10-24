@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "df đo filesystem; sau đó lsof mới giúp kiểm tra file đã unlink còn mở.",
   "commandId": "df-h",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Cho mức dung lượng hiện tại để so với thời điểm trước xóa.",
+    "wrong1": "lsof tìm file đã unlink còn mở, không cho Use% của filesystem /.",
+    "wrong2": "du chỉ tính file còn truy cập theo đường dẫn, không thay mức dùng block của df."
   }
 }

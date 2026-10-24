@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Giữ hiện tượng process/app tự kết thúc; kernel/service có thể giữ dấu vết mà giao diện không hiện.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không có lỗi certificate trong ticket.",
+    "cause": "OOM kill có thể chấm dứt process trước khi app ghi lỗi riêng.",
+    "symptom": "Đúng báo cáo, chưa nói có OOM hay lỗi code."
   }
 }

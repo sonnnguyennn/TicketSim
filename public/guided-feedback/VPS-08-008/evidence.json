@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Query bình thường và +cd so đường checking, chưa xác định key hay DS sai.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Resolver không hoàn tất query này.",
+    "p2": "Kết quả khác đi khi yêu cầu Checking Disabled.",
+    "over": "Chưa đủ bằng chứng DS, key, signature hoặc quyền thay đổi."
   }
 }

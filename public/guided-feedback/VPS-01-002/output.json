@@ -2,11 +2,11 @@
   "correctIds": [
     "missing"
   ],
-  "explanation": "Lệnh trả về tình trạng username, không phải mật khẩu.",
+  "explanation": "Không có entry nghĩa là lần tra này không tìm được account admin; id và thông tin account được cấp giúp xác minh tiếp.",
   "commandId": "getent-passwd",
   "optionFeedback": {
-    "missing": "Đúng với dữ liệu fixture.",
-    "password": "Chưa thể đánh giá mật khẩu của user không tồn tại.",
-    "port": "Output về account không kiểm tra port."
+    "password": "Kết quả tra account không kiểm tra mật khẩu.",
+    "port": "getent không đo kết nối mạng tới SSH, còn client đã tới bước xác thực.",
+    "missing": "Đúng với kết quả trống; chưa có entry để xác nhận account này."
   }
 }

@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Không đọc nhầm đơn vị RSS hoặc biến tên process OOM thành nguyên nhân leak.",
   "commandId": "journal-boot",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Đây là sự kiện chấm dứt process, chưa giải thích nguồn tăng RAM.",
+    "over": "Không có dữ liệu code/heap trong hai phép đọc.",
+    "p1": "Đúng các cột ps; xấp xỉ830MiB, không phải850000byte."
   }
 }

@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Public IP không phản hồi trong traffic spike.",
-    "Đọc P1 (PANEL: mitigation) và P2 (PANEL: upstream); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Upstream route khôi phục được duyệt, client từ nhiều nguồn tới dịch vụ và monitoring ổn."
+    "Firewall trong guest không gỡ được null-route ở upstream.",
+    "So thời điểm mất kết nối, mitigation, route và biểu đồ traffic.",
+    "Mitigation được kích hoạt chưa chứng minh toàn bộ traffic độc hại; gỡ chặn phải theo policy của provider."
   ]
 }

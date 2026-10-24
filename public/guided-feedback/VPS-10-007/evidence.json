@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Hai khoảng gần nhau là dữ kiện, không phải bằng chứng tự sửa bridge.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Monitor ghi cửa sổ rớt gói.",
+    "over": "Chưa có rule hoặc packet capture chứng minh.",
+    "p1": "Panel ghi cửa sổ migration."
   }
 }

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Giữ bằng chứng, xác nhận change record/owner, rà auth và sudo logs; chuyển security để containment được duyệt. Xác minh: Owner/security xác nhận nguồn account, quyền được xử lý theo incident và không còn access trái phép.",
+  "explanation": "Giữ bằng chứng, xác minh owner và change rồi chuyển security nếu cần containment.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "So change record để xác minh nguồn tạo và quyền trước khi thay đổi account.",
+    "unsafe": "Có thể cắt công việc hợp lệ và cản điều tra.",
+    "close": "Có entry không đồng nghĩa được phê duyệt."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Mốc backup cách incident 60 giờ; các đơn sau 20/10 có thể thiếu, cần app/order log để lượng hóa.",
+  "explanation": "Khoảng thời gian chỉ gợi phạm vi có thể thiếu; cần dữ liệu thực và log đã kiểm chứng.",
   "commandId": "panel-restore-points",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Chưa biết giao dịch phát sinh và khả năng replay.",
+    "ignore": "Boot không xác nhận nội dung DB đầy đủ.",
+    "supported": "Chưa biến 60 giờ thành số đơn hoặc mất vĩnh viễn."
   }
 }

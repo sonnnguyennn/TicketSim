@@ -4,8 +4,8 @@
   ],
   "explanation": "Khách báo successful login, không chỉ thử mật khẩu; cần xác minh quyền và bảo toàn dữ liệu liên quan.",
   "optionFeedback": {
-    "symptom": "Một phiên quyền root có thể ảnh hưởng rộng nên cần xác minh authorization.",
     "other": "Failed login khác Accepted publickey và không mô tả điều khách đang hỏi.",
-    "cause": "IP nguồn không đủ gán danh tính và chưa biết đây có phải automation được duyệt."
+    "cause": "IP nguồn không đủ gán danh tính và chưa biết đây có phải automation được duyệt.",
+    "symptom": "Một phiên quyền root có thể ảnh hưởng rộng nên cần xác minh authorization."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Listener và cấu hình đều chỉ TCP/2222; cần xác nhận cấu hình hiệu lực, firewall và kết nối từ client.",
+  "explanation": "Cần xác nhận cổng dự định và đường/policy từ client; có listener không tự chứng minh đăng nhập được.",
   "commandId": "sshd-effective",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Kết nối tới đúng listener có cơ sở, nhưng cần quyền và xác minh đầu cuối.",
+    "over": "Chưa có phép thử TCP hoặc xác thực từ client.",
+    "ignore": "File chưa chứng minh daemon đã nạp; chính listener là bằng chứng runtime cần giữ."
   }
 }

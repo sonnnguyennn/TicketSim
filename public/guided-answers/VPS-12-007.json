@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "API token lacks permission for requested mutation.",
-  "recommended_next_checks": "Check account role and documented token scopes.",
-  "resolution_guidance": "Issue least-privilege authorized token/scope, not admin token by default.",
-  "verification": "Reboot API works with appropriate owner authorization.",
-  "escalate_when": "Identity/API authorization policy.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "API 403; token chỉ có read:vm, trong khi reboot cần reboot:vm. Token và VM cùng owner.",
+  "recommended_next_checks": "Xác minh identity, resource owner, matrix của endpoint và policy; không thu token secret trong ticket.",
+  "resolution_guidance": "Owner cấp token quyền tối thiểu qua quy trình IAM hoặc chuyển đội authorization.",
+  "verification": "Kiểm tra quyền theo quy trình; chỉ thử mutation thực khi owner đã duyệt tác động và thời điểm.",
+  "escalate_when": "Quyền hoặc ownership tranh chấp, matrix không rõ hoặc cần IAM quyết định.",
+  "production_warning": "Không cấp admin:* mặc định hoặc tự reboot production để kiểm tra token.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

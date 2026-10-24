@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: OS boot sau restore nhưng data disk biến mất.",
-    "Đọc P1 (PANEL: restore job) và P2 (lsblk); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Đúng data volume gắn/mount, checksum hoặc app integrity và owner xác nhận dữ liệu."
+    "OS boot không chứng minh data disk riêng đã được khôi phục.",
+    "So Included disks với lsblk và volume inventory.",
+    "Job chỉ có vda; vol-72 còn available nhưng chưa attach, snapshot riêng chưa thử restore. Không tạo filesystem lên disk phỏng đoán."
   ]
 }

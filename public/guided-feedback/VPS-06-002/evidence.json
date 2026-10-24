@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Phân biệt trạng thái máy ảo với tải process; cả hai chưa tự đưa ra quyết định reboot.",
   "commandId": "top",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "top liệt kê process backup nổi bật tại thời điểm đo.",
+    "over": "Không có integrity check hoặc bản ghi dữ liệu mất trong các phép đo này.",
+    "p1": "Đây là trạng thái nguồn được quản lý bởi panel."
   }
 }

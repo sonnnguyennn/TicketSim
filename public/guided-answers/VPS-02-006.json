@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "End-to-end loss observed on this test path; location of loss unknown.",
-  "recommended_next_checks": "Repeat at other times, from other sources, reverse path if permitted.",
-  "resolution_guidance": "Record timestamps/source/target and escalate route/path evidence.",
-  "verification": "End-to-end tests normal from affected source.",
-  "escalate_when": "Sustained loss, multiple users affected.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Từ mạng khách, MTR và ping đều ghi khoảng 25% phản hồi ICMP bị mất tới đích trong mẫu; điểm đo Singapore mở được TCP/22. Chưa xác định hop hay bên chịu trách nhiệm.",
+  "recommended_next_checks": "Lặp lại phép đo cùng thời điểm từ mạng khách và điểm đối chứng; kiểm tra TCP/22, traceroute theo nguồn và log/network metrics của guest, host, provider.",
+  "resolution_guidance": "Thu timestamp, địa chỉ nguồn, đích và kết quả nhiều mẫu để chuyển network/provider; chỉ thay cấu hình khi đã xác định lớp lỗi và có quyền.",
+  "verification": "SSH từ mạng khách kết nối ổn định ở nhiều cửa sổ; đo lại loss, latency và ứng dụng TCP từ đúng nguồn bị ảnh hưởng.",
+  "escalate_when": "Chuyển network/provider khi loss ở đích lặp lại theo nguồn hoặc cần telemetry ngoài VPS; đính kèm phép đo và phạm vi.",
+  "production_warning": "Không quy lỗi một router trung gian từ ICMP loss một hop; không hứa khắc phục chỉ vì phép thử gần VPS thành công.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

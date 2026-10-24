@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "App not healthy after deploy, proxy returns 503.",
-  "recommended_next_checks": "Read app logs and deployment diff, healthcheck.",
-  "resolution_guidance": "Rollback/fix app deployment after change approval.",
-  "verification": "App healthcheck and public endpoints stable.",
-  "escalate_when": "Software owner/deployment pipeline.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "App chưa khỏe sau deploy:503, auto-restart và journal thiếu APP_CONFIG. Chưa có bằng chứng Nginx syntax sai.",
+  "recommended_next_checks": "So unit environment, deploy diff, config và readiness với owner; bảo vệ secret.",
+  "resolution_guidance": "App owner sửa đúng config/runtime hoặc rollback theo runbook/change.",
+  "verification": "Không còn restart loop, readiness và public URL tốt trong cửa sổ theo dõi.",
+  "escalate_when": "Chuyển deployment/app owner nếu thiếu config/secret hoặc quyền rollback.",
+  "production_warning": "Không dán secret vào ticket hoặc reload proxy lặp lại để che startup failure.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

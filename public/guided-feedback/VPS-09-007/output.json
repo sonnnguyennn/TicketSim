@@ -5,8 +5,8 @@
   "explanation": "Đã có truy cập thành công và thiếu đối chiếu quyền; cần security xác minh, chưa thể kết luận actor hay phạm vi xâm nhập.",
   "commandId": "last-logins",
   "optionFeedback": {
-    "supported": "Hai nguồn khớp sự kiện, nhưng inventory và log chưa xác nhận người/key có được phê duyệt.",
-    "over": "IP không định danh actor; kết thúc phiên không loại bỏ key, persistence hay hành động trước đó.",
-    "ignore": "Accepted là xác thực đã được chấp nhận, khác Failed publickey."
+    "ignore": "Accepted là xác thực đã được chấp nhận, khác Failed publickey.",
+    "supported": "Giữ log và xác minh quyền truy cập trước khi quy kết actor.",
+    "over": "IP không định danh actor; kết thúc phiên không loại bỏ key, persistence hay hành động trước đó."
   }
 }

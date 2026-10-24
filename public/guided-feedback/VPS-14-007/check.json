@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Đọc invoice trước đối chiếu resource và payment.",
   "commandId": "billing-invoice",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Cho dịch vụ thực, không cho các dòng invoice.",
+    "wrong2": "Cho quantity đặt, không cho các dòng tính phí.",
+    "direct": "Liệt kê các dòng tính phí theo service."
   }
 }

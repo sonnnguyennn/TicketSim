@@ -6,9 +6,9 @@
   "explanation": "Đã có trạng thái lỗi và vị trí parser báo lỗi; chưa có audit người sửa hay kết quả HTTP sau xử lý.",
   "commandId": "systemctl-nginx",
   "optionFeedback": {
-    "failed": "systemctl status ghi Active: failed.",
-    "line": "nginx -t báo unexpected } rồi test failed.",
     "cause": "Kết quả không có thông tin audit danh tính người sửa.",
-    "fixed": "Chưa có start/reload hay phép thử request sau sửa."
+    "fixed": "Chưa có start/reload hay phép thử request sau sửa.",
+    "failed": "systemctl status ghi Active: failed.",
+    "line": "nginx -t báo unexpected } rồi test failed."
   }
 }

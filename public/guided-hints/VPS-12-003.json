@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách đặt AlmaLinux nhưng boot ra Ubuntu.",
-    "Đọc P1 (PANEL: ordered OS) và P2 (cat /etc/os-release); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Owner xác nhận OS đúng, dữ liệu giữ/restore theo plan và service hoạt động."
+    "Tên OS trên order không thay thế thông tin bên trong VM.",
+    "So ordered OS với /etc/os-release và image audit.",
+    "Image Ubuntu khác order AlmaLinux. Reinstall có thể ghi đè disk, cần backup, owner và kế hoạch trước."
   ]
 }

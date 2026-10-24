@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Hai trạng thái giúp khoanh chuỗi service, chưa xác định nội dung dữ liệu.",
   "commandId": "systemctl-service",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "over": "Hai status không kiểm tra tính toàn vẹn của database.",
+    "p1": "Đúng thông báo được status hiển thị trong journal của unit.",
+    "p2": "Đúng dòng Active của unit database."
   }
 }

@@ -4,8 +4,8 @@
   ],
   "explanation": "Thay đổi ở host có thể ảnh hưởng mọi container; cần admin đúng quyền kiểm tra Docker networking và rollback.",
   "optionFeedback": {
-    "safe": "Đúng phạm vi host, bao gồm quyền, ảnh hưởng và kế hoạch khôi phục cấu hình nếu change không đạt.",
     "unsafe": "Thay đổi rộng có thể làm lộ dịch vụ, chưa tuân thủ policy hay giới hạn tác động.",
-    "close": "Route tồn tại chưa đáp ứng yêu cầu container ra Internet."
+    "close": "Route tồn tại chưa đáp ứng yêu cầu container ra Internet.",
+    "safe": "Đúng phạm vi host, bao gồm quyền, ảnh hưởng và kế hoạch khôi phục cấu hình nếu change không đạt."
   }
 }

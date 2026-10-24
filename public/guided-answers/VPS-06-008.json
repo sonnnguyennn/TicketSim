@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Guest did not complete graceful ACPI shutdown.",
-  "recommended_next_checks": "Check guest console, system logs, active writes, backup jobs.",
-  "resolution_guidance": "Escalate for controlled shutdown; do not force power-off without approval.",
-  "verification": "VM transitions cleanly without data corruption.",
-  "escalate_when": "Host hypervisor, storage operations in-flight.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Shutdown chưa hoàn tất: ACPI đã gửi nhưng không có completion sau 20 phút. Write latency cao là tín hiệu cần điều tra, chưa xác định nguyên nhân trong guest/host.",
+  "recommended_next_checks": "Thu timeline, console, guest/system logs, active writes và backup jobs; đối chiếu host task/storage metrics.",
+  "resolution_guidance": "Chuyển virtualization/storage và owner đánh giá recovery. Chỉ đội có quyền quyết định thao tác cưỡng bức sau khi làm rõ rủi ro dữ liệu.",
+  "verification": "VM đạt trạng thái ổn định; kiểm tra filesystem, dữ liệu và ứng dụng sau recovery, không hứa không có corruption từ state panel.",
+  "escalate_when": "Chuyển host/storage khi task không tiến triển, I/O cao hoặc cần quyết định mất nguồn có nguy cơ dữ liệu.",
+  "production_warning": "virsh destroy tương tự ngắt nguồn; không dùng để kết thúc Stopping khi chưa có quyền và đánh giá active writes.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

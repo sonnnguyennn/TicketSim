@@ -4,8 +4,8 @@
   ],
   "explanation": "Phân biệt current với maximum trước khi lập change; cần đội ảo hóa xác nhận hotplug hoặc downtime, không tự reboot production.",
   "optionFeedback": {
+    "close": "Plan đúng chưa giải quyết việc guest chỉ dùng được 2 CPU.",
     "safe": "Đội có quyền host đánh giá khả năng áp cấu hình; phía guest vẫn cần kiểm tra CPU offline và affinity.",
-    "unsafe": "Có gián đoạn mà chưa bảo đảm host cấp CPU mới; thiếu phê duyệt và kế hoạch.",
-    "close": "Plan đúng chưa giải quyết việc guest chỉ dùng được 2 CPU."
+    "unsafe": "Có gián đoạn mà chưa bảo đảm host cấp CPU mới; thiếu phê duyệt và kế hoạch."
   }
 }

@@ -5,8 +5,8 @@
   "explanation": "inactive mô tả trạng thái hiện tại; log hoặc kiểm tra cấu hình mới giúp xác định lý do dừng.",
   "commandId": "systemctl-status",
   "optionFeedback": {
-    "stopped": "Đây chính là trạng thái inactive mà systemctl báo.",
     "cause": "Dòng trạng thái không có lỗi cú pháp hay nguyên nhân dừng.",
-    "host": "Một unit inactive không phải trạng thái nguồn của VPS; console vẫn sử dụng được."
+    "host": "Một unit inactive không phải trạng thái nguồn của VPS; console vẫn sử dụng được.",
+    "stopped": "Đây chính là trạng thái inactive mà systemctl báo."
   }
 }

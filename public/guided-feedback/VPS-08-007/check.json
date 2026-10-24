@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "dig -x chọn reverse query cho IP, không phải forward A.",
   "commandId": "dig-ptr",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Nginx không đọc reverse DNS của IP gửi SMTP.",
+    "direct": "Hỏi PTR theo địa chỉ IP.",
+    "wrong1": "Hỏi forward A, không kiểm tra PTR."
   }
 }

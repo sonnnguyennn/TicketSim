@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Thời điểm mitigation và route không mô tả nội dung traffic hay trạng thái guest.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Đây là thời điểm control plane đã ghi.",
+    "p2": "Provider báo route chặn ở lớp mạng phía trước guest.",
+    "over": "Route upstream nằm ngoài cấu hình và quyền của guest."
   }
 }

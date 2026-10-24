@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách quên mật khẩu root.",
-    "Đọc P1 (PANEL: console) và P2 (PANEL: OS template); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Owner đăng nhập được qua kênh an toàn sau recovery và audit ghi thay đổi."
+    "Quên mật khẩu không đồng nghĩa dịch vụ SSH hoặc VPS bị hỏng.",
+    "Kiểm tra có console và image nào, nhưng đừng đồng nhất truy cập panel với quyền reset.",
+    "Ownership review còn pending; chuyển quy trình xác minh trước khi khôi phục credential."
   ]
 }

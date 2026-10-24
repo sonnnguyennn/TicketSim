@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Container có thể chịu quota riêng; cần đọc đúng cgroup và metric dưới tải.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không có lỗi route trong báo cáo của workload.",
+    "cause": "Quota áp riêng cho container có thể chặn dùng thêm CPU host.",
+    "symptom": "Đúng khác biệt giữa trải nghiệm container và tài nguyên host."
   }
 }

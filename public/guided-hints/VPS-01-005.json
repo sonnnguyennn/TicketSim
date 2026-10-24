@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: SSH từ client dừng ở cảnh báo host key changed sau reinstall.",
-    "Đọc P1 (ssh root@192.0.2.25) và P2 (PANEL: rebuild history); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Fingerprint khớp qua kênh tin cậy và SSH đăng nhập tới đúng host."
+    "Host key xác thực máy chủ, khác private key dùng đăng nhập tài khoản.",
+    "Đối chiếu lịch sử rebuild với fingerprint lấy trực tiếp từ console đã xác minh đúng VPS.",
+    "Fingerprint từ console phải khớp key mà client nhận; chỉ khi khớp mới sửa entry cũ trong known_hosts."
   ]
 }

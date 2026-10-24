@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Nhận diện clone trước rồi mới đối chiếu production.",
   "commandId": "panel-ip-allocation",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Đây là địa chỉ production, không phải clone được hỏi.",
+    "wrong2": "ARP ghi địa chỉ đang được phát trên mạng, không thay cấu hình IP gán cho NIC clone.",
+    "direct": "Đọc đúng NIC của VM restore."
   }
 }

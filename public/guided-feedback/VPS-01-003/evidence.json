@@ -3,12 +3,12 @@
     "warning",
     "mode"
   ],
-  "explanation": "Giới hạn kết luận ở client key.",
+  "explanation": "Hai phép đọc cùng chỉ vào quyền file key phía client, chưa kiểm tra cấu hình account ở server.",
   "commandId": "ssh-key-login",
   "optionFeedback": {
-    "warning": "Đúng từ P1.",
-    "mode": "Đúng từ P2.",
-    "password": "Chưa có phép thử mật khẩu.",
-    "daemon": "Không có output trạng thái guest."
+    "warning": "Thông báo Permissions 0644 và ignored chỉ ra key chưa được client chấp nhận.",
+    "mode": "Đây là bằng chứng độc lập về quyền đọc của group/others.",
+    "password": "Bài chưa kiểm tra mật khẩu; khách còn báo password login bị tắt.",
+    "daemon": "Cảnh báo file key local không kiểm tra trạng thái daemon remote."
   }
 }

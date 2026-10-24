@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận yêu cầu public/private và owner; đề xuất publish hoặc reverse proxy có bảo vệ theo change. Xác minh: Đúng endpoint từ client vào được theo policy, port khác không lộ và app trả nội dung.",
+  "explanation": "Mở public là thay đổi bề mặt truy cập, không chỉ sửa lỗi kết nối.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Chọn interface, ACL/TLS và kiểm tra đúng endpoint.",
+    "unsafe": "Có thể lộ ứng dụng vốn chỉ dành cho nội bộ/proxy.",
+    "close": "Khách vẫn không truy cập được đường cần dùng."
   }
 }

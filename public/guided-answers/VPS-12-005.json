@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Reinstall blocked by existing lock/job.",
-  "recommended_next_checks": "Verify snapshot task integrity, expected duration and owner.",
-  "resolution_guidance": "Escalate task queue/lock management; do not force unlock blindly.",
-  "verification": "Reinstall completes with explicit authorization and verified OS.",
-  "escalate_when": "Panel job orchestration.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Reinstall chờ lock của snapshot đang có tiến độ; backup verification và owner confirmation chưa đủ.",
+  "recommended_next_checks": "Đọc job owner, last_progress, thời gian dự kiến và safety gate trước đánh giá task kẹt.",
+  "resolution_guidance": "Theo dõi snapshot; chuyển orchestration nếu thật sự kẹt. Chỉ reinstall sau backup/owner được xác nhận.",
+  "verification": "Task được xử lý đúng, reinstall chỉ chạy có approval, đúng OS và dữ liệu theo kế hoạch.",
+  "escalate_when": "Cần hủy job/lock hoặc can thiệp queue ngoài quyền support.",
+  "production_warning": "Không force unlock/hủy snapshot để ghi OS khi dữ liệu chưa được bảo vệ.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

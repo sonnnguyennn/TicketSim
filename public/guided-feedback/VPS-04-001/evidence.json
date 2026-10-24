@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Ghi đúng cách đo giúp tránh biến %CPU lifetime thành số đo tức thời giống top.",
   "commandId": "ps-cpu",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p2": "Đó là tỷ lệ CPU time theo lifetime của process trong phép ps.",
+    "over": "Không có kiểm tra file/job owner hoặc hành vi bảo mật trong hai output.",
+    "p1": "us là CPU user trong dòng tổng của top."
   }
 }

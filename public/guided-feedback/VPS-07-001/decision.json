@@ -2,11 +2,11 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Mô phỏng không thực hiện thao tác start thật.",
+  "explanation": "Xem lý do dừng, kiểm tra config và quyền; sau start cần thử HTTP ở guest và client.",
   "commandId": "curl-head",
   "optionFeedback": {
-    "safe": "Đúng: xử lý kèm xác minh.",
-    "instant": "Không điều tra/kiểm chứng.",
-    "reinstall": "Quá rủi ro và không có cơ sở."
+    "safe": "Vừa điều tra nguyên nhân vừa xác minh đúng triệu chứng website.",
+    "instant": "Chưa xác minh nguyên nhân, quyền hoặc HTTP sau hành động.",
+    "reinstall": "Tác động phá hủy rộng, không cần thiết từ bằng chứng service dừng."
   }
 }

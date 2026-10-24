@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Connection đã tới bước xác thực hay chưa?",
-    "Kiểm tra tên user trong debug SSH và cơ sở dữ liệu account.",
-    "Đối chiếu ssh -vvv với getent passwd admin; xác nhận user hợp lệ với khách."
+    "Permission denied khác với không mở được kết nối TCP.",
+    "Đối chiếu username admin trong lệnh SSH với kết quả getent passwd admin.",
+    "getent không trả entry và id báo không có user admin; hãy xác nhận account được phép với khách, không tự tạo account."
   ]
 }

@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Đối chiếu timeline, chuyển xử lý có quyền rồi xác minh cùng giao thức từ client.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Ghi nguồn/timestamp trước khi suy luận.",
+    "verify": "VM Running chưa đủ xác nhận kết nối.",
+    "act": "Tránh tự sửa guest hoặc host thiếu căn cứ."
   }
 }

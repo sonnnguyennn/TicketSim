@@ -5,8 +5,8 @@
   "explanation": "Cần tìm nguyên nhân và xác nhận quyền quản trị dịch vụ; sau thay đổi phải kiểm tra lại từ phía client.",
   "commandId": "journalctl-unit",
   "optionFeedback": {
-    "restart": "Restart là thay đổi dịch vụ và có thể ảnh hưởng phiên đang dùng; trạng thái hiện tại chưa giải thích vì sao dừng.",
     "logs": "Chuỗi này bổ sung bằng chứng, giữ quyền thao tác và xác minh đúng triệu chứng khách báo.",
-    "ignore": "Đổi mật khẩu không xử lý việc dịch vụ chưa nhận kết nối TCP."
+    "ignore": "Đổi mật khẩu không xử lý việc dịch vụ chưa nhận kết nối TCP.",
+    "restart": "Restart là thay đổi dịch vụ và có thể ảnh hưởng phiên đang dùng; trạng thái hiện tại chưa giải thích vì sao dừng."
   }
 }

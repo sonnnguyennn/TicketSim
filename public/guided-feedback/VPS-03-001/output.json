@@ -2,11 +2,11 @@
   "correctIds": [
     "stopped"
   ],
-  "explanation": "Trạng thái không thay cho phân tích nguyên nhân.",
+  "explanation": "Đây là trạng thái daemon hiện tại, không phải chẩn đoán vì sao website dừng.",
   "commandId": "systemctl-nginx",
   "optionFeedback": {
-    "stopped": "Đúng theo P1.",
-    "why": "Cần log và ngữ cảnh để tìm nguyên nhân.",
-    "off": "Panel vẫn báo VM running."
+    "stopped": "inactive (dead) có nghĩa unit không có service đang chạy.",
+    "why": "Cần log hoặc lịch thay đổi để giải thích nguyên nhân.",
+    "off": "Một unit inactive không mô tả trạng thái nguồn của VPS."
   }
 }

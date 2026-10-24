@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Máy đã chạy nhưng thiếu IPv4; cần kiểm tra thiết bị/profile/cấp phát, không kết luận từ nhãn running.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không phù hợp với việc địa chỉ IPv4 chưa có.",
+    "cause": "Thiếu địa chỉ trong guest còn có thể do profile, MAC hoặc DHCP.",
+    "symptom": "Đúng phạm vi báo cáo; trạng thái nguồn không bảo đảm IP đã cấu hình."
   }
 }

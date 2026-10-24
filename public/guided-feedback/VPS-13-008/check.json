@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Log giúp bám triệu chứng thay vì chỉ suy từ tag.",
   "commandId": "docker-logs",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Cho thay đổi release, không thay log lỗi cụ thể.",
+    "direct": "Đọc log đúng container api.",
+    "wrong1": "Cho image ID, không cho thông báo lỗi ứng dụng."
   }
 }

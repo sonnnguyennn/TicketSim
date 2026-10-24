@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Phải đọc cảnh báo thao tác trước khi xem xét điều kiện backup và quyền.",
   "commandId": "panel-reinstall-confirmation",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Cảnh báo nêu main disk sẽ bị ghi đè.",
+    "wrong1": "Danh sáchbackup cho biết khả năng có bản sao, không mô tả phạm vi reinstall.",
+    "wrong2": "Template đích không xác định dữ liệu nào được giữ trong quá trình reinstall."
   }
 }

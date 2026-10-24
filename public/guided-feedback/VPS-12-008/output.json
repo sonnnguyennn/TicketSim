@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Task complete hai lần và hai VM ID; nghi idempotency issue, không được tự xóa VM.",
+  "explanation": "Bằng chứng hỗ trợ cấp phát trùng, cần đối soát và bảo vệ dữ liệu chứ chưa xóa VM.",
   "commandId": "panel-provision-task",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Thiếu log login không chứng minh emptiness hoặc quyền xóa.",
+    "ignore": "Có hai VM ID và hai resource thực, không chỉ nhãn UI.",
+    "supported": "Cần điều tra process retry/idempotency và xác nhận VM cần giữ."
   }
 }

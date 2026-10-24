@@ -3,12 +3,12 @@
     "inactive",
     "port"
   ],
-  "explanation": "Chỉ nêu output đã thấy.",
+  "explanation": "Tách trạng thái và listener khỏi giả thuyết nguyên nhân hoặc lỗi upstream.",
   "commandId": "systemctl-nginx",
   "optionFeedback": {
-    "inactive": "Đúng từ P1.",
-    "port": "Đúng từ P2.",
-    "config": "P1/P2 không xác nhận lỗi cấu hình; cần nginx -t và log.",
-    "upstream": "Không có bằng chứng upstream."
+    "inactive": "systemctl ghi trạng thái hiện tại.",
+    "port": "ss không liệt kê cổng 80.",
+    "config": "Config test bổ sung thành công; inactive không chứng minh syntaxerror.",
+    "upstream": "Chưa có bằng chứng ISP, còn localcurl cũng refused."
   }
 }

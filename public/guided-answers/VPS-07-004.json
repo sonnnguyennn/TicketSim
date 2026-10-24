@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Proxy cannot connect to backend TCP/3000.",
-  "recommended_next_checks": "ss -ltnp | grep :3000; systemctl status backend",
-  "resolution_guidance": "Investigate/start backend or correct upstream address with approval.",
-  "verification": "Backend health and public HTTP work.",
-  "escalate_when": "Backend is third-party managed.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Nginx active nhưng upstream 127.0.0.1:3000 refused. Chưa phân biệt backend dừng với target sai.",
+  "recommended_next_checks": "Đọc listener3000, backend unit/log và proxy_pass cùng thời điểm request.",
+  "resolution_guidance": "Owner/admin sửa đúng backend hoặc target theo change; start chỉ sau kiểm tra và quyền.",
+  "verification": "Backend health và URL công khai trả nội dung đúng, không còn502 trong cửa sổ kiểm tra.",
+  "escalate_when": "Chuyển app/backend owner nếu ngoài quyền hoặc dependency bên thứ ba.",
+  "production_warning": "Không restart proxy liên tục để che lỗi backend chưa được xác định.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

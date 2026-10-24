@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Published port is intentionally bound to host loopback.",
-  "recommended_next_checks": "Check security expectations, reverse proxy pattern.",
-  "resolution_guidance": "Expose through approved reverse proxy or deliberate bind change.",
-  "verification": "Public access only via intended endpoint.",
-  "escalate_when": "Change would expose insecure service.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Port publish ở 127.0.0.1:8080 và local HTTP 200; chưa biết binding loopback là chủ ý hay cấu hình sai.",
+  "recommended_next_checks": "Xác nhận reverse proxy/intended exposure, socket host và đường client; không quy riêng firewall.",
+  "resolution_guidance": "Owner duyệt proxy hoặc thay bind phù hợp TLS/ACL; giữ rollback.",
+  "verification": "Client dùng đúng public endpoint, local/backend và ranh giới truy cập vẫn đúng thiết kế.",
+  "escalate_when": "Thay bind có thể expose service chưa bảo vệ hoặc cần admin Docker host.",
+  "production_warning": "Mở firewall không tự đổi loopback binding; không public backend khi chưa review.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

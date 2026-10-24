@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "High CPU steal time suggests contention at hypervisor level.",
-  "recommended_next_checks": "Correlate host telemetry and other VPS incidents.",
-  "resolution_guidance": "Escalate to node team for workload redistribution/capacity.",
-  "verification": "Steal time and user latency normalize.",
-  "escalate_when": "Host node resource management required.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Guest có steal time 50% trong mẫu top và mẫu tiếp của vmstat; panel cũng cảnh báo contention trên node-4. Có bằng chứng nghi vấn tài nguyên node, chưa định danh tác nhân cụ thể.",
+  "recommended_next_checks": "Thu nhiều mẫu steal, latency ứng dụng và CPU ready của VM cùng timestamp; đối chiếu VM khác, lịch workload và capacity node.",
+  "resolution_guidance": "Chuyển đội node/virtualization đánh giá contention, placement hoặc capacity theo quyền và kế hoạch; tránh can thiệp process guest khi chưa có căn cứ.",
+  "verification": "Ở tải tương đương, steal và CPU ready giảm tới mức mục tiêu, ứng dụng đáp ứng từ phía khách; kiểm tra các VM liên quan.",
+  "escalate_when": "Chuyển đội hạ tầng vì CPU scheduling thuộc hypervisor/node; kèm số đo guest và cảnh báo panel cùng thời gian.",
+  "production_warning": "Không tự reboot, migrate hoặc quy lỗi một VM khác chỉ từ một mẫu steal time và cảnh báo node.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Guest has IPv6 but lacks IPv4 on target interface.",
-  "recommended_next_checks": "nmcli -f IP4,IP6 dev show enp0s3; check provisioning panel",
-  "resolution_guidance": "Verify IPv4 allocation and NetworkManager profile; restore using validated settings.",
-  "verification": "IPv4 assigned, IPv4 route and TCP/22 work.",
-  "escalate_when": "IPv4 address not provisioned to node.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Guest có IPv6 nhưng không có IPv4 trên enp0s3; panel đã cấp IPv4 192.0.2.25/24. Chưa xác định vì sao guest chưa có địa chỉ.",
+  "recommended_next_checks": "Đối chiếu vNIC/MAC, profile IPv4, DHCP nếu dùng và thông tin cấp phát. Xem đúng renderer mạng của image.",
+  "resolution_guidance": "Khôi phục địa chỉ/profile đúng allocation sau phê duyệt qua console; giữ rollback, không đoán IPv4 khác.",
+  "verification": "IPv4 và route đúng xuất hiện; SSH TCP/22 và xác thực từ client dùng IPv4 thành công.",
+  "escalate_when": "Chuyển network/virtualization khi dữ liệu cấp phát không được áp vào vNIC/node hoặc mapping không khớp.",
+  "production_warning": "Không xem IPv6 tốt là IPv4 đã được khôi phục; không gán địa chỉ chưa được cấp.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

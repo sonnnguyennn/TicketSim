@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: PTR lookup NXDOMAIN và panel chưa đặt rDNS; cần xác nhận IP gửi thực, forward A và quyền provider.",
+  "explanation": "Bằng chứng ủng hộ tình trạng thiếu PTR; cần đối chiếu hostname forward và quyền provider, chưa thể hứa mọi điều kiện mail đều đạt.",
   "commandId": "panel-rdns",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Thiếu PTR không có nghĩa A record sai.",
+    "supported": "Cần so forward A và policy provider trước khi yêu cầu đặt PTR.",
+    "over": "A record của khách không tự tạo reverse zone hoặc PTR."
   }
 }

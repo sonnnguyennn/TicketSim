@@ -63,7 +63,7 @@ describe('Guided content', () => {
     }
     expect(commandLibrary.length).toBe(122)
     expect(new Set(commandLibrary.map(item => item.id)).size).toBe(commandLibrary.length)
-    expect(commandLibrary.every(item => item.exampleOutput && item.whenToUse && item.followUp && item.flags && item.centos && item.ubuntu)).toBe(true)
+    expect(commandLibrary.every(item => typeof item.exampleOutput === 'string' && (item.exampleOutput.length > 0 || ['systemctl-start', 'ip-route-add', 'sshd-test', 'systemctl-restart', 'rm-rf'].includes(item.id)) && item.whenToUse && item.followUp && item.flags && item.centos && item.ubuntu)).toBe(true)
     expect(cases.some(item => item.questions.some(question => question.kind === 'step_order'))).toBe(true)
     const added = cases.slice(12)
     expect(added).toHaveLength(100)

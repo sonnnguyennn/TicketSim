@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Client private key permissions are too open.",
-  "recommended_next_checks": "Inspect which key is being offered; check permissions.",
-  "resolution_guidance": "On own lab client, chmod 600 ~/.ssh/lab_key; retry.",
-  "verification": "ssh -i key succeeds without exposing private key.",
-  "escalate_when": "Still denied after client key check.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "SSH client bỏ qua private key vì mode 0644 cho người khác đọc. Chưa kiểm tra được các nguyên nhân xác thực ở server.",
+  "recommended_next_checks": "Đối chiếu -i với đúng file key, owner và mode; nếu sửa quyền xong vẫn lỗi, thu debug đã che thông tin nhạy cảm và kiểm tra public key được phép.",
+  "resolution_guidance": "Chủ file hoặc người có quyền trên client có thể giới hạn private key, chẳng hạn chmod 600 cho file thuộc sở hữu của mình, rồi thử lại.",
+  "verification": "Không còn cảnh báo quyền key và user được phép đăng nhập thành công; không gửi private key để xác minh.",
+  "escalate_when": "Chuyển đội quản trị SSH khi vẫn bị từ chối sau kiểm tra client hoặc cần sửa authorized_keys/policy server.",
+  "production_warning": "Không mở password login, restart server hoặc gửi private key chỉ để né lỗi quyền file local.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

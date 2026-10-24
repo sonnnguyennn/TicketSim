@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Thu iostat/latency nhiều ngày, đối chiếu schedule và yêu cầu owner điều chỉnh backup nếu xác nhận; chuyển hạ tầng khi device latency bất thường. Xác minh: Trong cửa sổ backup mới app đạt latency mục tiêu và bản backup vẫn hoàn tất, kiểm tra restore riêng.",
+  "explanation": "Cần dữ liệu nhiều cửa sổ và yêu cầu backup để chọn lịch/throttle an toàn, có owner.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Giữ cả mục tiêu hiệu năng và yêu cầu bảo vệ dữ liệu trước change.",
+    "unsafe": "Có thể mất khả năng phục hồi và chưa xác nhận đây là nguyên nhân duy nhất.",
+    "close": "Task completed không xác minh độ trễ khách trong cửa sổ ảnh hưởng."
   }
 }

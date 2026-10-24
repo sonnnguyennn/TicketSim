@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Tìm lỗi và compatibility trước, change được duyệt sau, kiểm tra chức năng cuối.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Biết đúng artifact và giới hạn rollback.",
+    "verify": "Container Up không xác nhận release đã đáp ứng.",
+    "act": "Quyết định có tính đến schema/data hiện tại."
   }
 }

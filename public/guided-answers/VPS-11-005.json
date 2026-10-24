@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Restore job included OS disk but not separate data disk.",
-  "recommended_next_checks": "Review backup disk inclusion policy and backup manifest.",
-  "resolution_guidance": "Identify correct data backup; plan separate restore without overwriting.",
-  "verification": "Data disk restored and checksums/data verified.",
-  "escalate_when": "Storage backup operator.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Job restore chỉ gồm vda; guest chưa thấy vdb. vol-72 còn available, có snapshot riêng chưa thử restore.",
+  "recommended_next_checks": "Đối chiếu volume ID, scope backup, attachment, owner và integrity của nguồn dữ liệu.",
+  "resolution_guidance": "Bảo vệ hiện trạng; storage reattach hoặc restore đúng disk sau kế hoạch được owner duyệt.",
+  "verification": "Kiểm tra disk/mount, checksum hoặc dữ liệu ứng dụng và mốc khôi phục.",
+  "escalate_when": "Cần storage/backup operator xử lý volume hoặc đánh giá tính toàn vẹn.",
+  "production_warning": "Không format disk đoán hoặc restore lại OS để tìm data disk.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

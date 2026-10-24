@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: VM off theo panel và host; nguyên nhân dừng và an toàn khởi động lại còn cần incident review.",
+  "explanation": "State tắt khớp giữa hai nguồn; quyền và điều kiện start vẫn cần incident review.",
   "commandId": "virsh-dominfo",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Tình trạng storage vẫn đang được đánh giá.",
+    "supported": "Chưa biết nguyên nhân và storage consistency sau outage.",
+    "over": "Không có kết quả kiểm tra dữ liệu để khẳng định."
   }
 }

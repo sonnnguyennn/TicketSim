@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Container DNS resolution fails while host resolver succeeds.",
-  "recommended_next_checks": "docker inspect network settings; /etc/resolv.conf in container.",
-  "resolution_guidance": "Repair Docker resolver/network settings after cause verified.",
-  "verification": "Container resolves approved domain and app works.",
-  "escalate_when": "Docker engine or upstream DNS issue.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Host có NSS entry, container không trả entry; query bổ sung tới 127.0.0.11 timeout. Lỗi được khoanh ở resolver/path của container.",
+  "recommended_next_checks": "So resolv.conf, NSS, Docker network, embedded DNS và upstream reachability theo cùng hostname/timestamp.",
+  "resolution_guidance": "Owner/infra sửa đúng lớp DNS/network được xác minh theo change, không đổi toàn host theo suy đoán.",
+  "verification": "Lookup và endpoint ứng dụng trong container hoạt động; host/container khác không bị ảnh hưởng.",
+  "escalate_when": "Cần quyền Docker engine hoặc lỗi upstream/path ngoài container.",
+  "production_warning": "getent rỗng không tự là NXDOMAIN; không restart mọi container hoặc thay DNS toàn host để thử.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

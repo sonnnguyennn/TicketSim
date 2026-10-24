@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Document root does not point to deployed content.",
-  "recommended_next_checks": "Check site-specific Nginx server block and file existence.",
-  "resolution_guidance": "Correct vhost root/rewrite after config review, test and reload.",
-  "verification": "Expected URL returns correct content.",
-  "escalate_when": "App router or reverse proxy configuration ambiguous.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "URL /start trả 404, file có ở /srv/myapp/public còn config disk dùng /var/www/html. Nghi root/vhost không khớp release; cần xác nhận config runtime.",
+  "recommended_next_checks": "So Host/server_name, root/location/rewrite, config đang load và quyền đọc release.",
+  "resolution_guidance": "Owner/admin sửa đúng server block, nginx-t và reload có duyệt/rollback; không xóa root để thử.",
+  "verification": "URL khách qua đúng hostname trả nội dung release mong muốn.",
+  "escalate_when": "Chuyển site/app owner nếu router, nhiều vhost hoặc config runtime chưa rõ.",
+  "production_warning": "Không xóa document root hay reinstall khi chưa biết dữ liệu/site đang sử dụng.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

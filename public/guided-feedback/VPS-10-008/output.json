@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Guest time sai đáng kể và NTP inactive; đây là giả thuyết mạnh cho TLS failure, cần thử cert chain sau đồng bộ.",
+  "explanation": "Guest chưa xác nhận đồng bộ; lỗi TLS còn cần so giờ chuẩn và xem kết quả kiểm tra chứng chỉ.",
   "commandId": "date-utc",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "NTP inactive làm hướng kiểm tra có cơ sở.",
+    "over": "Không có phép so hai đồng hồ cùng thời điểm.",
+    "ignore": "VM vẫn có clock và dịch vụ đồng bộ riêng."
   }
 }

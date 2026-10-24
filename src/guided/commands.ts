@@ -1,4 +1,5 @@
 import type { CommandDoc } from './types'
+import { commandRevisions } from './commandRevisions'
 import { additionalCommands } from './moreCommands'
 
 const examples: Record<string, [string, string, string, string[]]> = {
@@ -60,4 +61,4 @@ export const commandLibrary: CommandDoc[] = [
   doc('getenforce', 'Security', 'getenforce', 'Xem SELinux mode.', 'Enforcing cho biết policy đang áp dụng.', 'Không dùng setenforce 0 làm cách sửa lâu dài.', 'Không có flag trong ví dụ.', 'guest', 'read', 'user'),
   doc('docker-ps', 'Docker', 'docker ps -a', 'Xem container đang chạy và đã dừng.', 'STATUS hỗ trợ phân biệt container stopped/restarting.', 'Quyền Docker tương đương quyền mạnh trên host; chỉ dùng khi được cấp.', '-a gồm container đã dừng.', 'guest', 'privileged_read', 'sudo'),
   ...additionalCommands,
-]
+].map(card => ({ ...card, ...commandRevisions[card.id] }))

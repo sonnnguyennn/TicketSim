@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: TLS trong VM lỗi dù host có giờ đúng.",
-    "Đọc P1 (timedatectl) và P2 (date -u); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: timedatectl synchronized, UTC đúng, TLS chain/hostname kiểm tra lại từ guest."
+    "Giờ host đúng không tự bảo đảm đồng hồ guest chính xác.",
+    "Đọc timedatectl và date -u của guest; xác định OS cùng dịch vụ đồng bộ đang dùng.",
+    "NTP inactive và synchronized: no cần so với nguồn UTC tin cậy trước khi định lượng sai lệch hoặc quy lỗi TLS."
   ]
 }

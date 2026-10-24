@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Xác nhận mục đích rescue và disk trước change, rồi kiểm tra OS và dịch vụ.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Biết rescue còn cần và disk đã đủ điều kiện boot chưa.",
+    "verify": "Chỉ đổi trạng thái panel chưa đủ hoàn tất ticket.",
+    "act": "Tháo ISO hoặc đổi boot có thể ảnh hưởng recovery."
   }
 }

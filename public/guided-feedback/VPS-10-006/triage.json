@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Dữ liệu trông cũ là triệu chứng; cần đối chiếu mốc và bản ghi cụ thể.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Chưa so backup hay log giao dịch.",
+    "symptom": "Đó là điều khách thấy trong ứng dụng.",
+    "other": "Khách báo nội dung cũ, không báo lỗi boot."
   }
 }

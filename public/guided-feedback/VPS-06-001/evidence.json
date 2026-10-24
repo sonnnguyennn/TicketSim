@@ -6,8 +6,8 @@
   "explanation": "Power state mô tả hiện tại; event log bổ sung sự kiện trước đó, chưa xác nhận ý định của owner.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "p1": "Đây là trạng thái máy ảo được panel ghi nhận.",
     "p2": "Event log có thời điểm và loại yêu cầu shutdown.",
-    "over": "Không có cảnh báo host hoặc lỗi phần cứng trong hai mục được hỏi."
+    "over": "Không có cảnh báo host hoặc lỗi phần cứng trong hai mục được hỏi.",
+    "p1": "Đây là trạng thái máy ảo được panel ghi nhận."
   }
 }

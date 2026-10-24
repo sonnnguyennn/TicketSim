@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Sự khác nhau theo nguồn giúp chọn phép kiểm tra ban và ACL trước khi quy lỗi toàn dịch vụ.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Máy trong văn phòng vẫn có thể gửi credential sai hoặc bị lạm dụng.",
+    "symptom": "Mạng di động vẫn dùng được; cần so đường đi và IP nguồn.",
+    "other": "Không khớp với việc mạng di động vẫn SSH được."
   }
 }

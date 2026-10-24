@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Application startup depends on failed database service.",
-  "recommended_next_checks": "journalctl -u mariadb -b -n 80; systemctl list-dependencies myapp",
-  "resolution_guidance": "Fix database root cause first; then application startup.",
-  "verification": "Database healthy, application active, endpoint passes.",
-  "escalate_when": "DB corruption or data restoration required.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "myapp có dependency failure, MariaDB failed và journal báo không thấy /var/lib/mysql. Chưa xác định mount thiếu, sai đường dẫn hay dữ liệu bị mất.",
+  "recommended_next_checks": "Đọc unit/dependency của myapp, cấu hình datadir, mount/volume và backup cùng owner database trước mọi khởi tạo.",
+  "resolution_guidance": "Khôi phục đúng điều kiện dữ liệu/service được xác minh và phê duyệt; chỉ đưa app lên sau database sẵn sàng.",
+  "verification": "MariaDB nhận kết nối hợp lệ, app hoạt động ổn định và endpoint truy xuất đúng dữ liệu.",
+  "escalate_when": "Chuyển owner database/storage nếu volume thiếu, nghi mất dữ liệu/corruption hoặc cần restore.",
+  "production_warning": "Không khởi tạo database rỗng hoặc tạo datadir mới khi chưa kiểm tra mount, dữ liệu và backup.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

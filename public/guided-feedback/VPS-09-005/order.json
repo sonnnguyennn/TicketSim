@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Giữ bằng chứng trước, containment có quyền sau, rồi đối chiếu provider và monitoring.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Cần xác định nguồn, thời gian và phê duyệt.",
+    "verify": "Vẫn cần đánh giá nguyên nhân và phạm vi, không chỉ một socket.",
+    "act": "Không mở lại traffic hoặc xóa file trước đánh giá."
   }
 }

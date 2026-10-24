@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Network interruption correlates with migration event.",
-  "recommended_next_checks": "Review migration mode, switching/ARP convergence, host bridge.",
-  "resolution_guidance": "Escalate migration network path to virtualization team.",
-  "verification": "Planned migration meets service interruption targets.",
-  "escalate_when": "Infra escalation.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Packet loss 08:00:04–08:00:35 gần trùng migration 08:00:00–08:00:36 và có cảnh báo bridge learning delay. Nghi đường mạng lúc di chuyển, chưa định danh thiết bị hoặc cấu hình lỗi.",
+  "recommended_next_checks": "Thu migration mode, log bridge/vNIC ở node-4/node-7, switch/ARP và capture có giới hạn cùng thời điểm.",
+  "resolution_guidance": "Chuyển network/virtualization điều tra và tạm hoãn migration thêm theo policy; chỉ thử thay đổi trong kế hoạch duyệt.",
+  "verification": "Trong migration thử có giám sát, TCP từ client duy trì theo SLA, loss và cảnh báo bridge không lặp lại.",
+  "escalate_when": "Chuyển hạ tầng khi cần quyền host/switch hoặc nhiều VM bị ảnh hưởng.",
+  "production_warning": "Không tự đổi bridge, tắt firewall guest hoặc ép migration để kiểm tra giả thuyết.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác nhận port được chủ VPS dự định, kiểm tra sshd -t và firewall/ACL rồi hướng client dùng ssh -p 2222. Xác minh: TCP/2222 và xác thực từ client được phép thành công.",
+  "explanation": "Hướng client đúng cổng sau khi đối chiếu cấu hình/policy; không đổi lại cổng trên phiên quản trị duy nhất.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Khách vẫn chưa kết nối và xác thực từ nguồn được phép.",
+    "safe": "Dùng cổng được dự định và xác minh kết nối, tránh đổi service không cần thiết.",
+    "unsafe": "Sai thao tác có thể cắt phiên quản trị; cần console và kế hoạch nếu thật sự phải đổi."
   }
 }

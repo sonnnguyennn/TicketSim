@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VPS tới IP công cộng được nhưng không resolve domain.",
-    "Đọc P1 (curl -I http://198.51.100.20) và P2 (dig example.com A); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: dig và ứng dụng phân giải tên thành công bằng resolver hợp lệ."
+    "Một phản hồi HTTP 200 theo IP không kiểm tra DNS.",
+    "Đọc resolver được cấu hình rồi thử truy vấn tới resolver đó.",
+    "Timeout khác NXDOMAIN: chưa có bằng chứng A record bị thiếu."
   ]
 }

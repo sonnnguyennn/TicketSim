@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "DNSSEC validation problem suspected; not yet pinpointed.",
-  "recommended_next_checks": "Check DS/DNSKEY/RRSIG chain and registrar changes.",
-  "resolution_guidance": "Fix signed zone/DS mismatch with authoritative owner; avoid disabling validation.",
-  "verification": "Validating resolvers return correct answers.",
-  "escalate_when": "DNS provider/registrar DNSSEC coordination.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Query validating trả SERVFAIL nhưng +cd trả NOERROR; validator khác cũng trả SERVFAIL. Nghi DNSSEC validation, chưa xác định DS, DNSKEY, RRSIG hay thời gian sai.",
+  "recommended_next_checks": "Thu DS ở parent, DNSKEY và RRSIG từ authoritative server, thời gian hoặc key rollover và status ở nhiều validator.",
+  "resolution_guidance": "DNS owner, provider và registrar phối hợp sửa chain sau khi kiểm chứng, có kế hoạch thay đổi và rollback; không xóa DS để thử.",
+  "verification": "Validator trả record đúng và chain hợp lệ sau TTL; client dùng DNS bình thường truy cập được site.",
+  "escalate_when": "Chuyển DNSSEC owner hoặc registrar nếu thiếu dữ liệu chain hay quyền tại parent hoặc zone.",
+  "production_warning": "Không tắt DNSSEC validation ở client hoặc xóa DS khi chưa xác định thành phần sai.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

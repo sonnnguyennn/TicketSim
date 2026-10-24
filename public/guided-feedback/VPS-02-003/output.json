@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Thiết bị có mặt nhưng chưa gắn profile IPv4 hoạt động; cần xem cấp phát và MAC/profile.",
+  "explanation": "Link tồn tại nhưng chưa có connection đang dùng; cần so dữ liệu cấp phát và profile thay vì quy lỗi provider.",
   "commandId": "nmcli-device-status",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Hai lệnh guest không đọc IPAM hoặc dữ liệu cấp phát của provider.",
+    "ignore": "UP là trạng thái link, không cấp địa chỉ IPv4 thay profile.",
+    "supported": "Tập trung lớp guest chưa có IPv4 nhưng giữ khả năng mapping thay đổi sau migration."
   }
 }

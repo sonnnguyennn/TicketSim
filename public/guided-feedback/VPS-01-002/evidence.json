@@ -3,12 +3,12 @@
     "reached",
     "missing"
   ],
-  "explanation": "Không đồng nhất Permission denied với sai mật khẩu.",
+  "explanation": "Các kết quả hỗ trợ việc kết nối tới xác thực và chưa tìm thấy user admin; không xác nhận mật khẩu sai.",
   "commandId": "ssh-vvv",
   "optionFeedback": {
-    "reached": "Đúng từ debug SSH.",
-    "missing": "Đúng từ getent.",
-    "firewall": "Không phù hợp với việc đã tới xác thực.",
-    "wrongpw": "Chưa có bằng chứng về một account hợp lệ."
+    "missing": "getent không có output và id báo không có user admin.",
+    "firewall": "Không phù hợp với việc kết nối này đã tới bước xác thực.",
+    "wrongpw": "Account admin còn chưa được nhận diện, và không có kiểm tra mật khẩu riêng.",
+    "reached": "Debug có phương thức xác thực rồi Permission denied."
   }
 }

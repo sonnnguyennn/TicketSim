@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Guest nghe 443 nhưng firewalld zone được hỏi không cho thấy HTTPS; cần test từ client và xác nhận zone.",
+  "explanation": "Rule guest là hướng kiểm tra, nhưng thiếu service/port trong zone chưa bao quát toàn bộ policy áp dụng.",
   "commandId": "firewall-list",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Có listener nhưng đường client và zone áp dụng vẫn chưa được kiểm tra đủ.",
+    "over": "Listener chỉ ở guest; edge nằm ngoài phép đọc này.",
+    "ignore": "Client bên ngoài còn đi qua guest policy, edge và các đường mạng khác."
   }
 }

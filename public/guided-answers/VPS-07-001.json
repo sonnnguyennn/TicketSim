@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Web server stopped and HTTP port unbound.",
-  "recommended_next_checks": "journalctl -u nginx -n 50",
-  "resolution_guidance": "Start web server after finding reason and verifying config.",
-  "verification": "curl -I localhost and external URL succeed.",
-  "escalate_when": "Service crashes after restart.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Nginx hiện dừng và guest không có listener cổng 80; local curl bị từ chối kết nối. Config syntax test thành công, lý do service dừng vẫn chưa rõ.",
+  "recommended_next_checks": "Đọc journal Nginx và thời điểm dừng; đối chiếu change/workload và quyền quản lý service.",
+  "resolution_guidance": "Admin được phép start sau khi xem log/config và đánh giá tác động; không coi service active là web đã sửa xong.",
+  "verification": "Kiểm tra listener cổng 80, local HTTP và URL khách từ client; xác nhận nội dung đúng, không chỉ cổng mở.",
+  "escalate_when": "Chuyển admin/app owner nếu service dừng lại, log không rõ hoặc ngoài phạm vi quản lý.",
+  "production_warning": "Không reinstall hoặc restart toàn VPS chỉ vì một service dừng; thay đổi cần đúng quyền.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

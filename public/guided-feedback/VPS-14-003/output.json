@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Service còn Active và policy cho hủy cuối kỳ; chưa có lệnh hủy được phê duyệt.",
+  "explanation": "Khả năng hỗ trợ không đồng nghĩa request đã được áp.",
   "commandId": "panel-lifecycle-policy",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Policy cho end-of-term, có thể ghi lịch theo quy trình.",
+    "supported": "Còn phải xác nhận request và kế hoạch dữ liệu.",
+    "over": "Ngày hiệu lực tương lai chưa đến."
   }
 }

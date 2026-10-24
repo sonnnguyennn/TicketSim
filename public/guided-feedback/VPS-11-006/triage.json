@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Nội dung giao dịch khác trạng thái boot hoặc service.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Khách không báo lỗi khởi động.",
+    "cause": "Chưa đánh giá backup, log và nguồn khác.",
+    "symptom": "Cần đối chiếu thời gian và order IDs."
   }
 }

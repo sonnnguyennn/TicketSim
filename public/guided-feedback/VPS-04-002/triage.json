@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "CPU chỉ là một tài nguyên; bộ nhớ và I/O có thể làm tác vụ chờ khi CPU user không cao.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Tác vụ có thể chờ swap hoặc I/O mà không dùng nhiều CPU.",
+    "symptom": "Đúng lời khách, chưa xác định tài nguyên còn lại nào bị áp lực.",
+    "other": "Không phải phạm vi theo nguồn khách mô tả."
   }
 }

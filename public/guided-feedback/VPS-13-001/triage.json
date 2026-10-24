@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Offline là triệu chứng; cần kiểm tra container và log để định lớp lỗi.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đây là điều khách cần kiểm tra.",
+    "other": "Khách chưa cung cấp VM state.",
+    "cause": "Chưa đọc trạng thái daemon, container hoặc log ứng dụng."
   }
 }

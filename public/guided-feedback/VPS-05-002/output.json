@@ -2,11 +2,11 @@
   "correctIds": [
     "full"
   ],
-  "explanation": "Nhiều file nhỏ có thể làm cạn inode.",
+  "explanation": "Filesystem có thể còn GB nhưng không còn inode để tạo thêm đối tượng mới.",
   "commandId": "df-i",
   "optionFeedback": {
-    "full": "Đúng: tạo file mới có thể thất bại.",
-    "blocks": "df -h lại cho thấy 45%.",
-    "ram": "Đây là chỉ số inode."
+    "blocks": "df -h còn45%; không đồng inode với GB.",
+    "ram": "df -i không đo RAM.",
+    "full": "Đúng IFree0/IUse%100 của df -i."
   }
 }

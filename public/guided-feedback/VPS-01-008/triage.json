@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Cần lưu sự trùng thời gian mà chưa biến nó thành khẳng định nguyên nhân.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "cause": "Lời khách chưa có process bị kill hay log nguyên nhân kết thúc phiên.",
+    "symptom": "Đúng mô tả khách, cần timeline để đối chiếu các lớp.",
+    "other": "Đây là lỗi danh tính host khác với phiên đang dùng bị rớt."
   }
 }

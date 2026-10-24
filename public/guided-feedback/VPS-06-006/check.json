@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Nguồn boot và boot order thuộc cấu hình VM, cần đọc trước thao tác guest.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Mục này ghi Rescue ISO mounted.",
+    "wrong1": "Inventory disk không cho biết ISO đang được ưu tiên.",
+    "wrong2": "Lịch sử recovery cho biết ai dùng rescue, không xác nhận ISO hiện còn gắn."
   }
 }

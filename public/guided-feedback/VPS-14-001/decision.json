@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Xác minh invoice/payment event và account owner; hướng dẫn quy trình billing hoặc chuyển billing team. Xác minh: Billing xác nhận trạng thái hợp lệ, panel cập nhật và guest service được kiểm tra riêng.",
+  "explanation": "Xác minh owner và payment trước, không bypass policy hoặc thu dữ liệu thẻ.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "close": "Còn cần xác nhận kết quả billing và dịch vụ khách.",
+    "safe": "Chuyển billing khi cần đối soát hoặc quyết định khôi phục.",
+    "unsafe": "Vượt quyền hoặc đưa thông tin thanh toán nhạy cảm vào kênh hỗ trợ."
   }
 }

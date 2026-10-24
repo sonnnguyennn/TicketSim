@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Snapshot target datastore gần đầy và task thất bại; không suy ra guest disk đầy.",
+  "explanation": "Hai nguồn cùng chỉ tới kho host; chưa cấp quyền xóa snapshot.",
   "commandId": "panel-backup-task",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Task nêu rõ datastore và kho đang gần đầy.",
+    "supported": "Không trộn dung lượng host với guest khi xử lý.",
+    "over": "Chưa biết chain, retention hoặc quyền của VM khác."
   }
 }

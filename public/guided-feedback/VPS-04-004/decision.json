@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Tìm process I/O, đối chiếu host metrics và disk health; chuyển storage team nếu có dấu hiệu node. Xác minh: await và độ trễ ứng dụng trở lại baseline dưới tải tương đương.",
+  "explanation": "Cần tìm nguồn I/O và bằng chứng hạ tầng theo cùng thời gian; xóa dữ liệu không phải chẩn đoán hiệu năng.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "unsafe": "Có thể mất dữ liệu và chưa biết process nào tạo tải.",
+    "close": "Bằng chứng wa/độ trễ và triệu chứng khách vẫn chưa được xử lý.",
+    "safe": "Giúp phân biệt workload guest với contention hoặc lỗi lớp storage."
   }
 }

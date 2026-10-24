@@ -5,8 +5,8 @@
   "explanation": "Loại truy vấn NS dùng để đối chiếu nameserver; nó khác kiểm tra HTTP hoặc route của VPS.",
   "commandId": "dig-ns",
   "optionFeedback": {
-    "dig": "Truy vấn loại NS trả nameserver của zone từ resolver được dùng.",
     "curl": "curl hỏi HTTP của máy local; không cho biết domain ủy quyền DNS ở đâu.",
-    "route": "Bảng route của guest không chứa delegation của domain."
+    "route": "Bảng route của guest không chứa delegation của domain.",
+    "dig": "Truy vấn loại NS trả nameserver của zone từ resolver được dùng."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "top cho dòng CPU tổng và process, giúp chọn PID cần điều tra tiếp.",
   "commandId": "top",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Load average không cho tỷ lệ CPU user tại thời điểm đang đo.",
+    "direct": "Lấy phần đầu top để xem mức CPU và các dòng process đầu.",
+    "wrong1": "ps xếp theo tỷ lệ CPU lifetime của process, không cho dòng CPU user tổng của mẫu top."
   }
 }

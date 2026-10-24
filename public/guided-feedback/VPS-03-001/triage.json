@@ -2,10 +2,10 @@
   "correctIds": [
     "vm"
   ],
-  "explanation": "Phân biệt VM state và application state.",
+  "explanation": "VM được báo running mới là một lớp; các service và HTTP cần phép kiểm tra riêng.",
   "optionFeedback": {
-    "vm": "Đúng: chưa nói web service hoạt động.",
-    "nginx": "Panel VM state không kiểm tra service.",
-    "http": "Chưa có kiểm tra HTTP."
+    "http": "Chưa có request HTTP từ client trong trạng thái nguồn VM.",
+    "vm": "Đúng phạm vi thông tin panel cung cấp, không phải kiểm tra website.",
+    "nginx": "Trạng thái VM không đọc unit Nginx."
   }
 }

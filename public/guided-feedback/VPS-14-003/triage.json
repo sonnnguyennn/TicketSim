@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Giữ khác biệt giữa yêu cầu theo kỳ và xóa ngay.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Khác với end of cycle.",
+    "cause": "Hủy cuối kỳ không cấp quyền xóa trước ngày hiệu lực.",
+    "symptom": "Đúng thời điểm khách yêu cầu."
   }
 }

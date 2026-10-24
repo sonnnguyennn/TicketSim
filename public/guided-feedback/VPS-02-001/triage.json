@@ -2,10 +2,10 @@
   "correctIds": [
     "outside"
   ],
-  "explanation": "Xác định phạm vi trước khi chọn lớp cần kiểm tra.",
+  "explanation": "Khách còn tới subnet nội bộ; cần điều tra đường ra mạng ngoài trước khi gọi đây là mất mọi kết nối.",
   "optionFeedback": {
-    "all": "Khách vẫn tới được cùng subnet.",
-    "outside": "Đúng với lời khách.",
-    "ssh": "Ticket không giới hạn ở SSH."
+    "ssh": "Ticket không nêu lỗi xác thực; phạm vi là các đích IP công cộng.",
+    "all": "Không đúng vì máy cùng subnet vẫn tới được.",
+    "outside": "Đây là khác biệt phạm vi mà ticket nêu."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Dòng PORTS giúp phân biệt port container với mapping của host.",
   "commandId": "docker-ps",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong2": "Đọc socket host, không trực tiếp hiển thị metadata PORTS của web.",
+    "direct": "In đúng tên và cột ports cần đọc.",
+    "wrong1": "Kiểm tra listener trong container, không in host mapping của Docker."
   }
 }

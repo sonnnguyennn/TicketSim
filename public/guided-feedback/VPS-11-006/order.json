@@ -4,10 +4,10 @@
     "act",
     "verify"
   ],
-  "explanation": "Điều tra → quyết định có kiểm soát → xác minh; escalation cũng là một quyết định hợp lệ.",
+  "explanation": "Mốc và nguồn trước, thử phục hồi sau, đối chiếu nghiệp vụ cuối.",
   "optionFeedback": {
-    "evidence": "Đúng ở đầu: thu thập và giới hạn kết luận.",
-    "verify": "Đúng ở cuối: đo lại triệu chứng sau xử lý hoặc escalation.",
-    "act": "Đúng sau khi bằng chứng và quyền đã được xác nhận."
+    "evidence": "Xác định nguồn và khoảng trống trước can thiệp.",
+    "verify": "Cần kiểm tra nghiệp vụ, không chỉ boot.",
+    "act": "Không thử ghi đè production trước khi biết kết quả."
   }
 }

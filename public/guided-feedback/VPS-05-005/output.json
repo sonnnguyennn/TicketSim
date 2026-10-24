@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Disk lớn hơn partition và filesystem; cần kiểm tra layout/FS trước khi chọn quy trình grow.",
+  "explanation": "Disk đã lớn hơn, nhưng partition/filesystem chưa được mở tương ứng; phải biết layout/type trước change.",
   "commandId": "df-h",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "df đo filesystem thật, khác kích thước thiết bị disk.",
+    "supported": "Cả lsblk và df cho kích thước lớp trên nhỏ hơn disk.",
+    "over": "Công cụ XFS không áp cho mọi filesystem, và còn giới hạn partition bên dưới."
   }
 }

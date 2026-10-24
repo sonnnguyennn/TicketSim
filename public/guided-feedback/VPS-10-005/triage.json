@@ -4,8 +4,8 @@
   ],
   "explanation": "Khách báo thiếu thiết bị/dữ liệu sau chuyển node; phải xác định lớp attachment trước khi xử lý filesystem.",
   "optionFeedback": {
-    "symptom": "Đây là thay đổi quan sát được, chưa nói dữ liệu đã mất vĩnh viễn.",
     "other": "Cảnh báo cert không giải thích volume block biến mất khỏi guest.",
-    "cause": "Không thấy thiết bị cũng có thể do attachment bị bỏ qua."
+    "cause": "Không thấy thiết bị cũng có thể do attachment bị bỏ qua.",
+    "symptom": "Đây là thay đổi quan sát được, chưa nói dữ liệu đã mất vĩnh viễn."
   }
 }

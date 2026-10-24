@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "lsblk hiển thị cây block device; df đọc filesystem ở lớp khác.",
   "commandId": "lsblk",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "direct": "Cho thấy vda và vda1 riêng để so dung lượng.",
+    "wrong1": "df cho filesystem /, không tách dung lượng vda và partition vda1.",
+    "wrong2": "vgs đọc volume group LVM, không liệt kê block tree vda/vda1 được hỏi."
   }
 }

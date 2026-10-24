@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: VM Running nhưng web console đen.",
-    "Đọc P1 (PANEL: VM state) và P2 (PANEL: console gateway); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Gateway websocket kết nối và console hiển thị; guest/service xác minh riêng."
+    "Màn hình đen không tự chứng minh kernel crash.",
+    "So VM state với lỗi websocket và sức khỏe console gateway.",
+    "Heartbeat QEMU chỉ nói process VM có mặt; kiểm tra guest qua đường khác và chuyển đội control-plane."
   ]
 }

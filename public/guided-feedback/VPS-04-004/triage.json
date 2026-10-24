@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Cần xét thời gian chờ tài nguyên khác; task đang chờ I/O không nhất thiết dùng nhiều CPU user.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "symptom": "Đây là điểm cần đối chiếu với I/O hoặc loại chờ khác.",
+    "other": "Không có triệu chứng tên miền riêng trong lời khách.",
+    "cause": "CPU user và độ trễ storage là hai đại lượng khác."
   }
 }

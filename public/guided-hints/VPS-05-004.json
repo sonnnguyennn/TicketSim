@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Đọc option ro/rw của đúng mount /data.",
-    "Kết hợp findmnt với thông báo kernel về device vdb.",
-    "Mount ro và Buffer I/O error là dấu hiệu cần bảo vệ dữ liệu; chưa tự kết luận ổ vật lý nào hỏng."
+    "Read-only không giống Permission denied; đầu tiên xem đúng mount của /data.",
+    "So thiết bị từ findmnt với tên device trong kernel I/O error.",
+    "ro cùng I/O error là rủi ro integrity, chưa biết ổ vật lý nào hỏng. Không remount rw; kiểm tra backup và mở incident storage."
   ]
 }

@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Log hệ thống chiếm phần lớn ổ đĩa.",
-    "Đọc P1 (journalctl --disk-usage) và P2 (df -h /); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: df và journal usage giảm, log cần thiết vẫn còn và app ghi được."
+    "journalctl --disk-usage tính cả active và archived journal.",
+    "So dung lượng journal với filesystem chứa chúng, rồi xem nguồn log nào phát nhiều.",
+    "Vacuum chỉ tác động archived journal đủ điều kiện; không coi tổng8G là phần chắc chắn có thể giải phóng."
   ]
 }

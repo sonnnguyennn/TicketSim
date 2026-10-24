@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Kiểm tra image digest, release manifest và owner; đề xuất redeploy dependency đúng theo change. Xác minh: Container stable, app endpoint trả đúng và log không còn import error.",
+  "explanation": "Dependency thuộc build/deploy của ứng dụng; giữ volume dữ liệu.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Đối chiếu digest/manifest, giữ rollback rồi kiểm tra endpoint.",
+    "unsafe": "Volume dữ liệu không cung cấp module bị thiếu trong image.",
+    "close": "Container tồn tại không chứng minh ứng dụng khởi động và đáp ứng."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Nginx daemon is stopped.",
-  "recommended_next_checks": "journalctl -u nginx -n 50; nginx -t",
-  "resolution_guidance": "Start Nginx if permitted after checking stop cause.",
-  "verification": "Nginx active and localhost/external HTTP works.",
-  "escalate_when": "Service repeatedly stops.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Nginx inactive và chưa thấy listener HTTP/80. Cấu hình kiểm tra qua, nhưng chưa xác định lý do service dừng.",
+  "recommended_next_checks": "Đọc journal/lịch thay đổi của Nginx và kiểm tra cấu hình đang dùng; đối chiếu upstream nếu HTTP còn lỗi sau start.",
+  "resolution_guidance": "Chỉ đề xuất start khi đã rà nguyên nhân, cấu hình và quyền theo hợp đồng quản trị VPS; không tự reboot.",
+  "verification": "Nginx active, có listener phù hợp và HTTP đúng nội dung từ local lẫn client bên ngoài.",
+  "escalate_when": "Chuyển quản trị ứng dụng nếu service dừng lặp lại, upstream lỗi hoặc không có quyền guest.",
+  "production_warning": "Một unit active hay cổng LISTEN không đủ để báo website đã phục hồi.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

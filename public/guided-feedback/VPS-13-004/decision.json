@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đo trend, request và host headroom; owner chỉnh workload/limit trong change có rollback. Xác minh: Qua peak representative container không OOM, memory có headroom và API ổn.",
+  "explanation": "Thay limit cần dữ liệu tải, capacity và owner chứ không bỏ giới hạn mù.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Giữ rollback và kiểm tra dưới tải tương đương.",
+    "unsafe": "Có thể đẩy OOM ra toàn host và làm gián đoạn lớn hơn.",
+    "close": "Chưa trải qua tải đã gây restart hoặc kiểm tra app."
   }
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Virtual disk grew, partition/filesystem remain smaller.",
-  "recommended_next_checks": "lsblk -f; findmnt /; partition layout and free extents.",
-  "resolution_guidance": "With backup/approval, use correct partition+filesystem grow procedure.",
-  "verification": "lsblk and df show expected size and filesystem healthy.",
-  "escalate_when": "LVM, encryption, nonstandard partition layout.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Virtual disk vda đã40G, partition vda1 và filesystem / còn20G. Root dùng XFS theo findmnt.",
+  "recommended_next_checks": "Xác nhận toàn bộ layout, khoảng trống, boot/partition type, backup và mapping root; không mặc định có thể áp một lệnh grow chung.",
+  "resolution_guidance": "Với kế hoạch/phê duyệt phù hợp, mở partition theo layout rồi mở filesystem bằng công cụ XFS; không format hoặc bỏ bước backup.",
+  "verification": "lsblk và df phản ánh dung lượng dự kiến, root mount đúng và dữ liệu/app hoạt động sau change.",
+  "escalate_when": "Chuyển storage khi có LVM/encryption/layout lạ, lỗi integrity hoặc không có khả năng phục hồi đã xác minh.",
+  "production_warning": "Không sửa partition hoặc format production chỉ vì disk đã tăng; lựa chọn công cụ phụ thuộc loại filesystem.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách yêu cầu đổi VPS sang Ubuntu nhưng có dữ liệu quan trọng.",
-    "Đọc P1 (PANEL: OS reinstall confirmation) và P2 (PANEL: backup list); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Sau change được duyệt, OS đúng và dữ liệu được restore/test theo kế hoạch; không chỉ nhìn panel Completed."
+    "Cài lại OS không chỉ là đổi package manager.",
+    "Đọc phạm vi ghi đè và danh sách backup trước khi đề xuất thao tác.",
+    "Không có backup gần đây và chưa có restore test: cần phương án dữ liệu, không chỉ câu đồng ý chung."
   ]
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "A là record IPv4; AAAA được hỏi bằng phép riêng.",
   "commandId": "dig-a",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "Đọc IPv6, không phải A record đang được hỏi.",
+    "wrong2": "Thay đổi service không đọc DNS và chưa được cấp quyền.",
+    "direct": "Đọc đích IPv4 được DNS trả về."
   }
 }

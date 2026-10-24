@@ -5,8 +5,8 @@
   "explanation": "journalctl -k -b chọn log kernel của boot hiện tại; -p err lọc từ mức lỗi trở lên.",
   "commandId": "journal-boot",
   "optionFeedback": {
+    "wrong2": "Mount option ro cần biết, nhưng không hiển thị log kernel mức lỗi.",
     "direct": "Lệnh đọc đúng kernel và boot đang gặp vấn đề storage.",
-    "wrong1": "DNS không mô tả lỗi block device hoặc filesystem lúc boot.",
-    "wrong2": "Một HTTP request không đọc được nguyên nhân filesystem/boot bị lỗi."
+    "wrong1": "Unit fsck failed là tín hiệu boot, không đọc thông báo kernel EXT4 của boot này."
   }
 }

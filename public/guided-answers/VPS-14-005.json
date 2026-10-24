@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Billing addon active but IP assignment pending.",
-  "recommended_next_checks": "Check IP policy, justification/approval and IPAM capacity.",
-  "resolution_guidance": "Escalate IPAM/operations, then configure via approved workflow.",
-  "verification": "Second IP appears in panel/guest and routes correctly.",
-  "escalate_when": "IP allocation team.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Addon IPv4 active nhưng allocation pending manual review; pool free đã reserved.",
+  "recommended_next_checks": "So order, review case, owner, policy, pool assignment và thời gian xử lý được xác nhận.",
+  "resolution_guidance": "Chuyển IPAM/operations hoàn tất đúng quy trình; rồi lập network change cho IP được cấp.",
+  "verification": "IPv4 thứ hai có trong IPAM/panel/guest, route đúng và client thử thành công theo policy.",
+  "escalate_when": "Cần IPAM phê duyệt hoặc quản lý pool.",
+  "production_warning": "Không gán IP bất kỳ hoặc đổi IP đang dùng để thử addon.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Số đo thời gian chờ là bằng chứng hiệu năng, không phải kết quả chẩn đoán phần cứng.",
   "commandId": "iostat",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Đúng cột wa ở hai mẫu sau dòng đầu.",
+    "p2": "Các cột riêng đọc/ghi của iostat cho số đo này.",
+    "over": "Không có SMART/hosterror hoặc kiểm tra vật lý trong hai output."
   }
 }

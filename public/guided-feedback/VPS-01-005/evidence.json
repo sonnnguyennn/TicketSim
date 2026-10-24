@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Hai quan sát đúng không tự động chứng minh mọi mắt xích trong root cause.",
+  "explanation": "Hai nguồn xác nhận cảnh báo và sự kiện, chưa xác nhận key mạng khớp console.",
   "commandId": "panel-rebuild",
   "optionFeedback": {
-    "p1": "Đúng theo P1 trong bài này.",
-    "p2": "Đúng theo P2 trong bài này.",
-    "over": "Chưa được P1/P2 chứng minh."
+    "p1": "Kết quả kết thúc bằng Host key verification failed.",
+    "p2": "Lịch sử rebuild cung cấp thời điểm để đối chiếu.",
+    "over": "Không có kết quả so fingerprint client-console trong hai nguồn này."
   }
 }

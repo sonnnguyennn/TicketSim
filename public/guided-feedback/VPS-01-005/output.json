@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Reinstall có thể giải thích key đổi, nhưng phải đối chiếu fingerprint qua console đáng tin cậy.",
+  "explanation": "Cần so key client nhận với fingerprint console của đúng VPS; một fingerprint độc lập chưa hoàn tất việc so khớp.",
   "commandId": "panel-rebuild",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Có thể nhầm VPS/IP hoặc có vấn đề trên đường; sự kiện không thay thế fingerprint.",
+    "ignore": "IP reachability không xác thực danh tính host ở đầu kia.",
+    "supported": "Reinstall có thể giải thích thay đổi, nhưng chỉ so khớp tin cậy mới xác minh danh tính."
   }
 }

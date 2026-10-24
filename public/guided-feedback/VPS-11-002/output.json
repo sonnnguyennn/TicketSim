@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Không có restore point đúng thời điểm được yêu cầu trong panel; cần tìm nguồn khác trước cam kết.",
+  "explanation": "Backup cũ không tự chứa thay đổi xảy ra sau khi nó được tạo.",
   "commandId": "panel-restore-points",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "supported": "Hai mốc cách 56 giờ, nên restore bản cũ có thể thiếu thay đổi mới.",
+    "over": "Chưa có nguồn chứa các thay đổi sau mốc backup.",
+    "ignore": "Mới nhất trong kho vẫn có thể sớm hơn mốc yêu cầu."
   }
 }

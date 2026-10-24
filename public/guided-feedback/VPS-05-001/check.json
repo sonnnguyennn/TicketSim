@@ -2,11 +2,11 @@
   "correctIds": [
     "df"
   ],
-  "explanation": "Bắt đầu bằng phép đọc tài nguyên liên quan.",
+  "explanation": "df đo filesystem, còn du giúp phân loại nơi chiếm dữ liệu sau đó.",
   "commandId": "df-h",
   "optionFeedback": {
-    "df": "Đúng: kiểm tra dung lượng filesystem.",
-    "memory": "RAM khác với disk block.",
-    "route": "Route không giải thích lỗi ghi file."
+    "route": "Inode là giới hạn số entry, không phải số block còn trống theo df -h.",
+    "df": "Cho Size/Used/Avail/Use% của filesystem chứa đường /.",
+    "memory": "du định vị dữ liệu trong /var, không cho dung lượng trống của filesystem /."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Deleted file 5G còn open bởi PID 2300 là ứng viên giải thích block chưa được giải phóng.",
+  "explanation": "File vẫn được mở có thể tiếp tục chiếm block đến khi handle đóng; cần đúng service và cách đóng có kiểm soát.",
   "commandId": "lsof-deleted",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "over": "Có thể làm mất công việc/dữ liệu và ảnh hưởng service khác.",
+    "ignore": "Tên file mất nhưng handle mở vẫn có thể giữ storage của file.",
+    "supported": "nlink0 cùng process/FD cho thấy file đã unlink nhưng vẫn được giữ."
   }
 }

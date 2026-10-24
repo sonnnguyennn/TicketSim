@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Không thể tạo file, báo Read-only file system.",
-    "Đọc P1 (findmnt -no OPTIONS /) và P2 (journalctl -k -b -p err); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Sau recovery được duyệt, kiểm tra filesystem, kernel log và phép ghi ứng dụng an toàn."
+    "Read-only file system khác Permission denied do mode của một file.",
+    "Đọc mount options của / và log kernel cùng boot để xem thiết bị nào có lỗi.",
+    "Root ro và lỗi EXT4 cần bảo toàn dữ liệu, backup và đội storage; chưa biết lỗi nằm ở metadata hay phần cứng."
   ]
 }

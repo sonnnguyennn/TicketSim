@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Boot blocked by failed mount for /data, possibly stale UUID.",
-  "recommended_next_checks": "lsblk -f; journalctl -xb; compare fstab UUID.",
-  "resolution_guidance": "Back up settings and correct mount only after verifying disk.",
-  "verification": "Normal boot, mount successful, SSH restored.",
-  "escalate_when": "Data disk missing/corrupt.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Guest dừng ở mount /data. UUID deadbeef trong fstab không có trong blkid; vol-72 đang gắn nhưng cần xác nhận đúng volume.",
+  "recommended_next_checks": "So UUID, volume ID, attachment và dữ liệu mong đợi; đọc boot journal và kiểm tra backup.",
+  "resolution_guidance": "Sửa fstab chỉ sau khi xác minh đúng volume và được phê duyệt. Chuyển storage nếu attachment hoặc integrity chưa rõ; giữ rollback.",
+  "verification": "Guest boot bình thường, /data mount đúng volume, dữ liệu đọc được và app dùng đúng path.",
+  "escalate_when": "Chuyển storage/virtualization khi thiếu disk, mapping không rõ hoặc có lỗi I/O/integrity.",
+  "production_warning": "Không format hoặc xóa entry /data chỉ để boot; có thể mất dữ liệu hoặc làm app ghi vào OS disk.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

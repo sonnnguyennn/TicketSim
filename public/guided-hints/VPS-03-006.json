@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Custom daemon restart liên tục và không phục vụ request.",
-    "Đọc P1 (systemctl status custom-app) và P2 (journalctl -u custom-app -n 30); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: Service ổn định qua nhiều chu kỳ và healthcheck endpoint thành công."
+    "Auto-restart là phản ứng của service manager, chưa phải nguyên nhân ứng dụng thoát.",
+    "Tìm exception trong journal và interpreter/venv ở ExecStart.",
+    "Unit dùng /opt/custom/venv/bin/python; dependency phải khớp môi trường/deploy này, không tự cài vào system Python."
   ]
 }

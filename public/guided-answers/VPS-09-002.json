@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Office source IP temporarily blocked by Fail2ban.",
-  "recommended_next_checks": "Confirm office IP ownership and auth failure reason.",
-  "resolution_guidance": "Follow policy for unblock/credentials correction.",
-  "verification": "Legitimate login succeeds and abuse policy remains in force.",
-  "escalate_when": "Repeated attack from same shared address.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "IP ra Internet của văn phòng là .60, khớp danh sách và sự kiện Ban của jail sshd. Chưa đọc lỗi xác thực hoặc thời hạn ban.",
+  "recommended_next_checks": "Rà IP nguồn, timestamp, lỗi xác thực, credential ở client và policy unban.",
+  "resolution_guidance": "Admin hoặc security duyệt unban đúng IP nếu phù hợp; sửa nguyên nhân credential ở client và giữ policy Fail2ban.",
+  "verification": "Đăng nhập hợp lệ từ văn phòng thành công, không tái diễn lỗi xác thực hay ban sau phép thử, và biện pháp bảo vệ vẫn hiệu lực.",
+  "escalate_when": "Chuyển security nếu IP dùng chung bị lạm dụng, ban lặp lại không rõ lý do hoặc việc xử lý ngoài quyền.",
+  "production_warning": "Không tắt Fail2ban hoặc whitelist rộng chỉ vì nguồn là văn phòng.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đối chiếu payment ID, webhook và order queue; chuyển billing/provisioning reconcile idempotent. Xác minh: Một order tạo đúng một VM, panel Active và invoice không bị charge trùng.",
+  "explanation": "Reconcile dùng payment/order ID và kiểm tra đã xử lý để tránh cấp trùng.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Giữ nguyên payment, order và kết quả task để retry an toàn.",
+    "unsafe": "Có thể tạo cả charge và resource trùng.",
+    "close": "VPS pending chưa đáp ứng yêu cầu sử dụng."
   }
 }

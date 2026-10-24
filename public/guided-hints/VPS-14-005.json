@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Hãy mô tả triệu chứng khách báo trước khi suy luận: Khách trả tiền IPv4 bổ sung nhưng chỉ thấy một IP.",
-    "Đọc P1 (BILLING: addon) và P2 (PANEL: IP allocation); ghi điều mỗi output thật sự chứng minh.",
-    "Sau khi đã có bằng chứng, cân nhắc quyền thao tác và xác minh: IP được phê duyệt/cấp đúng owner, panel/guest route khớp và client reachability kiểm tra."
+    "Addon Active không tự xác nhận có địa chỉ mới.",
+    "So addon với manual review, ownership và pool capacity.",
+    "Ownership đã xác minh nhưng pool assignment pending; ba IP trống đều reserved cho yêu cầu đã duyệt. Không tự chọn một IP."
   ]
 }

@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Container exited due to application import error.",
-  "recommended_next_checks": "Inspect image/tag, env, deployment change.",
-  "resolution_guidance": "Fix deployment/image according to owner; avoid blind restart loop.",
-  "verification": "Container healthy and endpoint responds.",
-  "escalate_when": "App code maintained by customer.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "api đã Exited(1); log Python không import được appconfig, manifest ghi dependency này thiếu trong release v2.0.",
+  "recommended_next_checks": "So image digest, manifest, runtime và lần deploy; xác nhận app owner cùng rollback đã biết.",
+  "resolution_guidance": "Owner sửa build/dependency rồi redeploy được duyệt, giữ volume và cấu hình cần thiết.",
+  "verification": "Container ổn định, không còn import error và endpoint chức năng đáp ứng từ client.",
+  "escalate_when": "Ứng dụng do khách/vendor quản lý hoặc cần change deployment ngoài quyền support.",
+  "production_warning": "Không xóa volume hoặc restart loop để chữa module thiếu trong image.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

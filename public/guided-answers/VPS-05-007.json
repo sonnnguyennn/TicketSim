@@ -1,10 +1,10 @@
 {
-  "expected_diagnosis": "Filesystem check failed; integrity may be compromised.",
-  "recommended_next_checks": "Check backups, snapshot and disk health from rescue console.",
-  "resolution_guidance": "Escalate offline repair/recovery; avoid in-place fsck on mounted filesystem.",
-  "verification": "Filesystem mounts cleanly; application data verified.",
-  "escalate_when": "Storage integrity incident.",
-  "production_warning": "Không áp dụng lệnh chỉnh sửa trên VPS khách hàng khi chưa có quyền, backup và kế hoạch rollback.",
+  "expected_diagnosis": "Kernel ghi lỗi EXT4 trên /dev/vda1, unit kiểm tra filesystem thất bại và filesystem gốc đang ro. VPS vào rescue; chưa biết mức toàn vẹn dữ liệu hoặc nguyên nhân storage bên dưới.",
+  "recommended_next_checks": "Bảo toàn hiện trạng, thu log boot và lỗi I/O, xác nhận mapping volume, snapshot/backup đã kiểm định và mức mất dữ liệu owner chấp nhận.",
+  "resolution_guidance": "Chuyển storage/recovery để lập phương án kiểm tra hoặc sửa offline trên đúng volume theo quyền và có bản phục hồi; không chạy fsck ghi trên filesystem đang mount.",
+  "verification": "Boot từ đúng volume, mount theo trạng thái mong đợi, dữ liệu và ứng dụng được kiểm tra sau recovery; đối chiếu kernel log không còn lỗi mới.",
+  "escalate_when": "Chuyển storage/node khi có lỗi I/O, health chưa rõ, không có backup đáng tin cậy hoặc cần can thiệp filesystem ngoài quyền support.",
+  "production_warning": "Không ép reboot, format hay chạy repair trên filesystem đang mount; bản backup có timestamp chưa chứng minh khôi phục được dữ liệu mới hơn.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

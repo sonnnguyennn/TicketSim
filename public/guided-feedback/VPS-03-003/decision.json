@@ -5,8 +5,8 @@
   "explanation": "Xem diff hoặc bản tốt giúp sửa đúng thay đổi; chỉ start/reload sau test qua và có quyền, rồi kiểm tra HTTP.",
   "commandId": "nginx-test",
   "optionFeedback": {
+    "restart": "Cú pháp sai vẫn khiến lần khởi động tiếp theo thất bại.",
     "review": "Giữ bản cũ, kiểm tra thay đổi và xác minh ở tầng request thay vì chỉ nhìn unit.",
-    "delete": "Nginx không tự khôi phục cấu hình ứng dụng khi xóa file; có thể mất vhost và đường dẫn.",
-    "restart": "Cú pháp sai vẫn khiến lần khởi động tiếp theo thất bại."
+    "delete": "Nginx không tự khôi phục cấu hình ứng dụng khi xóa file; có thể mất vhost và đường dẫn."
   }
 }

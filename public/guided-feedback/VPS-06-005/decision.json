@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Bước tiếp theo: Đối chiếu volume attachment/UUID, backup và owner; chuyển storage nếu volume thiếu, chỉ sửa fstab theo change có rollback. Xác minh: Sau recovery được duyệt, boot bình thường, /data mount đúng volume và dữ liệu đọc được.",
+  "explanation": "Xác nhận volume, backup và quyền trước change; chuyển storage nếu thiếu disk hoặc nghi lỗi dữ liệu.",
   "optionFeedback": {
-    "safe": "Đúng: dùng bằng chứng, quyền và phạm vi thay đổi phù hợp.",
-    "unsafe": "Thiếu bằng chứng, quyền hoặc bảo vệ dịch vụ/dữ liệu.",
-    "close": "Một chẩn đoán hợp lý chưa thay thế xác minh sau hành động."
+    "safe": "Đúng định danh và rollback là điều kiện trước thay đổi mount.",
+    "unsafe": "Có thể mất dữ liệu hoặc để app ghi vào sai disk.",
+    "close": "Guest còn emergency mode, chưa xác minh mount hoặc dữ liệu."
   }
 }

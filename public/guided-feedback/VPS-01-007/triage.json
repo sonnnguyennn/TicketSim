@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "VPS còn đường quản trị console; chưa biết SSH có dùng cổng khác hoặc policy nào áp dụng.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Ticket nói về cổng SSH và console, không có lỗi DNS.",
+    "cause": "Chưa đọc listener nên không thể loại trừ SSH đang dùng cổng khác.",
+    "symptom": "Đây là phạm vi hai đường truy cập khách mô tả."
   }
 }

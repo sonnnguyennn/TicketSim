@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Phân biệt bằng chứng với giả thuyết: Có dấu hiệu quota throttling; cần đối chiếu CPU limit, lưu lượng và latency cùng thời gian.",
+  "explanation": "Có dấu hiệu quota có liên quan; cần tốc độ tăng counter và latency cùng tải, không diễn giải counter thành phần trăm CPU.",
   "commandId": "docker-stats",
   "optionFeedback": {
-    "supported": "Đúng: cách diễn giải bám các output đã quan sát.",
-    "over": "Kết luận này đòi thêm bằng chứng hoặc vượt phạm vi output.",
-    "ignore": "Các output có thông tin hữu ích; cần đọc đúng giới hạn."
+    "ignore": "Cgroup có thể giới hạn api dù host còn tài nguyên.",
+    "supported": "Các counter tích lũy và snapshot chỉ tạo giả thuyết, cần khoảng đo phù hợp.",
+    "over": "Quota container khác tổng CPU host; khách còn báo host có headroom."
   }
 }

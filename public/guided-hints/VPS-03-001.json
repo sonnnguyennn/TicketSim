@@ -1,7 +1,7 @@
 {
   "hints": [
-    "Panel báo VM running có chứng minh web service đang chạy không?",
-    "Kiểm tra systemctl status nginx và listener :80.",
-    "Sau đó xem log, kiểm tra config và xác minh HTTP từ localhost rồi bên ngoài."
+    "VM Running không nói Nginx hay ứng dụng web đang hoạt động.",
+    "Đọc systemctl status nginx rồi tìm listener HTTP trong ss -ltnp.",
+    "Nginx inactive và chưa thấy TCP/80; cần log/config và quyền trước start, sau đó thử HTTP chứ không chỉ nhìn service."
   ]
 }

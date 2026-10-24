@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Tách lời khách hàng khỏi giả thuyết kỹ thuật.",
+  "explanation": "Thay mode làm thay hành vi là đầu mối policy, nhưng vẫn cần AVC đúng thao tác và thời điểm.",
   "optionFeedback": {
-    "symptom": "Đúng: mô tả điều khách quan sát, chưa khẳng định nguyên nhân.",
-    "other": "Điều này không được khách báo hoặc không phù hợp phạm vi hiện tại.",
-    "cause": "Lời khách mô tả hiện tượng, chưa đủ xác định nguyên nhân."
+    "other": "Không có triệu chứng đường mạng trong lời khách.",
+    "cause": "Permissive bỏ thực thi policy, không phải bằng chứng thay đổi đó an toàn.",
+    "symptom": "Đúng sự khác biệt khách đã quan sát, chưa chỉ ra label/policy cụ thể."
   }
 }

@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Đọc output tại đúng ngữ cảnh trước khi khẳng định nguyên nhân.",
+  "explanation": "Journal đúng unit và cửa sổ tạo timeline job; cần timezone/ngày của case khớp metric.",
   "commandId": "journalctl-service",
   "optionFeedback": {
-    "direct": "Đúng: đây là phép đọc fixture P1 tại đúng ngữ cảnh.",
-    "wrong1": "Lệnh này không đo dấu hiệu cần xác nhận trong câu hỏi.",
-    "wrong2": "Phép này có thể hữu ích ở tình huống khác, nhưng không trả lời câu hỏi này."
+    "wrong1": "I/O cùng giờ không cho mốc backup-agent bắt đầu hoặc kết thúc.",
+    "wrong2": "Lịch dự kiến không xác nhận backup-agent đã chạy trong khoảng được hỏi.",
+    "direct": "Chọn đúng unit và khoảng giờ cần đối chiếu theo ngữ cảnh UTC của bài."
   }
 }
