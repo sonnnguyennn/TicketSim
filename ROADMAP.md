@@ -17,6 +17,7 @@ Phase A đưa Guided thành luồng học mặc định: Kho ticket → Học ti
 | Phase 5D — Objective Exam expansion | Đã triển khai 20/112 | Thêm 14 case đủ fixture điều tra, sáu quyết định chấm khách quan; Legacy Exam và prose vẫn tự đối chiếu. Stateful giữ 6. |
 | Phase 5E — Independent review expansion | Đã triển khai 20/112 | Thêm 14 tình huống mới với bằng chứng và ba câu hỏi khác bài Guided; Mastered vẫn đòi lượt đầu đúng toàn bộ sau 24 giờ. |
 | Phase 4 — Learning experience | Hoàn thành ở mức ứng dụng | Beginner/Normal/Independent lưu trong v5; Command Library luôn truy cập được; Review Mistakes nhóm lỗi theo kiến thức và mở bài ôn liên quan. Mastered chỉ tính lượt đầu của biến thể độc lập. |
+| Phase B — Guided content overhaul | Hoàn thành trong phạm vi nội dung | 112 case được agent rà và biên soạn lại; 122 thẻ lệnh được kiểm tra, 60 thẻ sửa; audit và browser representative đạt. Chưa có kiểm duyệt SME độc lập. |
 
 ## Độ phủ hiện tại
 
@@ -32,14 +33,13 @@ Stateful **6/112** (`VPS-01-001`, `VPS-02-001`, `VPS-03-001`, `VPS-05-001`, `VPS
 
 ## Phase B — Kiểm duyệt nội dung Guided
 
-B1: lớp biên soạn riêng theo case và 14 mẫu đại diện đã tích hợp, giữ nguyên ID/key/progress. B2 rà đủ112 và122 thẻ lệnh; B3 chốt audit/regression. Xem [QA Phase B](Phase_B_Content_QA.md).
+B1 tạo lớp biên soạn riêng và 14 mẫu; B2 áp dụng cho 112 case và kiểm tra 122 thẻ lệnh; B3 chốt audit, regression, tài liệu. Giữ nguyên source ticket, ID/key/gate, progress v5 và các chế độ nâng cao đang ẩn. Xem [QA Phase B](Phase_B_Content_QA.md).
 
 Đã hoàn thành Batch 3–7 theo [kế hoạch phủ 112](Guided_112_Batch_Plan.md). Mỗi batch có QA, test/build và commit riêng; [QA Batch 7](Phase_5C_Batch_7_QA.md) ghi kết quả mới nhất.
 
-1. Rà 112 Guided theo chuẩn ngắn, tự nhiên và sát ticket VPS Support; kiểm định câu hỏi, feedback, mục đích lệnh và cách đọc output.
-2. Rà kỹ thuật sâu các output gốc ngắn, trường hợp chưa đủ bằng chứng và tình huống L2/L3; biên soạn bản Guided thay thế khi cần, giữ nguyên 224 source probe.
-3. Kiểm tra end-to-end thêm từng ticket, gồm câu sai, gợi ý, refresh, điều hướng và mobile. QA Phase A hiện chỉ bao phủ các đường đi đại diện.
-4. Giữ phân biệt Completed/Mastered. Mở rộng Stateful/Exam/Review cần quyết định sản phẩm riêng sau Guided; không nằm trong Phase A/B hiện tại.
+1. Đề nghị chuyên gia VPS Support độc lập rà các case L2/L3 và 101 fixture Guided thay thế trước khi dùng làm tài liệu đào tạo chính thức.
+2. Kiểm tra tương tác end-to-end thêm các ticket ngoài 15 đường đại diện, gồm câu sai, gợi ý, refresh và mobile.
+3. Mở rộng Objective Exam, Stateful hoặc bài ôn biến thể sau khi có dữ liệu và phạm vi sản phẩm phù hợp; Phase B không mở thêm các chế độ này.
 
 Quyết định phạm vi và hướng dẫn tác giả nội dung nằm trong [living spec](TicketSim_UX_Learning_Redesign_Spec.md). Repository Git đã được khởi tạo; mỗi phase có commit riêng. Xem [QA 5B](Milestone_5B_QA.md) và [QA batch 30](Phase_2_Guided_QA.md).
 

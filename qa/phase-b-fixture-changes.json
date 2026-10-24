@@ -26,6 +26,236 @@
     ]
   },
   {
+    "ticketId": "VPS-01-002",
+    "probeId": "P1",
+    "beforeCommand": "ssh -vvv admin@192.0.2.25",
+    "command": "ssh -vvv admin@192.0.2.25",
+    "before": "Authentications that can continue: publickey,password; Permission denied",
+    "after": "debug1: Authentications that can continue: publickey,password\nadmin@192.0.2.25: Permission denied (publickey,password).",
+    "reason": "Tách debug và lỗi xác thực thành các dòng SSH hợp lý thay câu ghép bằng dấu chấm phẩy.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/getent.1.html",
+      "https://man.openbsd.org/ssh.1"
+    ]
+  },
+  {
+    "ticketId": "VPS-01-002",
+    "probeId": "P2",
+    "beforeCommand": "getent passwd admin",
+    "command": "getent passwd admin",
+    "before": "no entry",
+    "after": "",
+    "reason": "no entry là chú thích, không phải stdout getent; thay chuỗi rỗng.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/getent.1.html",
+      "https://man.openbsd.org/ssh.1"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-001",
+    "probeId": "P1",
+    "beforeCommand": "ip -4 addr show dev enp0s3",
+    "command": "ip -4 addr show dev enp0s3",
+    "before": "inet 10.10.20.25/24",
+    "after": "2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet 10.10.20.25/24 brd 10.10.20.255 scope global enp0s3",
+    "reason": "Thêm header interface/scope dạng ip -4 addr.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ip-route.8.html",
+      "https://man7.org/linux/man-pages/man8/ip-address.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-001",
+    "probeId": "G2",
+    "beforeCommand": "ip -br link show dev enp0s3",
+    "command": "ip -br link show dev enp0s3",
+    "before": "enp0s3 UP",
+    "after": "enp0s3           UP             08:00:27:12:34:56 <BROADCAST,MULTICAST,UP,LOWER_UP>",
+    "reason": "ip -br link có linkaddress và flags, bổ sung dạng đầy đủ.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ip-route.8.html",
+      "https://man7.org/linux/man-pages/man8/ip-address.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-001",
+    "probeId": "P2",
+    "beforeCommand": "ss -ltnp",
+    "command": "ss -ltnp",
+    "before": "no :80 listener",
+    "after": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process",
+    "reason": "no :80 listener là mô tả; dùng bảng ss không có listener.",
+    "references": [
+      "https://nginx.org/en/docs/switches.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-001",
+    "probeId": "P1",
+    "beforeCommand": "df -h /",
+    "command": "df -h /",
+    "before": "/dev/vda1 20G 20G 0 100% /",
+    "after": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
+    "reason": "Thêm headerdf, giữrootfull.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/df.1.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-001",
+    "probeId": "P2",
+    "beforeCommand": "du -xhd1 /var",
+    "command": "du -xhd1 /var",
+    "before": "13G /var/log",
+    "after": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
+    "reason": "du-xhd1 bao gồm total/var; thêm hàng còn lại để output không chỉ là mô tả.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/df.1.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-001",
+    "probeId": "G1",
+    "beforeCommand": "df -i /",
+    "command": "df -i /",
+    "before": "IUse% 42%",
+    "after": "Filesystem      Inodes  IUsed  IFree IUse% Mounted on\n/dev/vda1      1310720 550502 760218   42% /",
+    "reason": "Thay IUse%trơ bằng bảngdfinode42%.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/df.1.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-002",
+    "probeId": "P1",
+    "beforeCommand": "df -h /",
+    "command": "df -h /",
+    "before": "Use% 45%",
+    "after": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G 9.0G   11G  45% /",
+    "reason": "Thay Use45%prose bằng bảngdf-h.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/df.1.html",
+      "https://www.gnu.org/software/findutils/manual/html_mono/find.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-002",
+    "probeId": "P2",
+    "beforeCommand": "df -i /",
+    "command": "df -i /",
+    "before": "IUse% 100%",
+    "after": "Filesystem      Inodes   IUsed IFree IUse% Mounted on\n/dev/vda1      1048576 1048576     0  100% /",
+    "reason": "Thay IUse100%prose bằng bảnginodeIFree0.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/df.1.html",
+      "https://www.gnu.org/software/findutils/manual/html_mono/find.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-07-001",
+    "probeId": "P1",
+    "beforeCommand": "systemctl status nginx",
+    "command": "systemctl status nginx",
+    "before": "inactive (dead)",
+    "after": "Active: inactive (dead)",
+    "reason": "Đưa trạngthái vào dòngActive đúng kiểu systemctl thayfragment thiếu nhãn.",
+    "references": [
+      "https://nginx.org/en/docs/",
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-07-001",
+    "probeId": "P2",
+    "beforeCommand": "ss -ltnp",
+    "command": "ss -ltnp",
+    "before": "no :80 listener",
+    "after": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=730,fd=3))",
+    "reason": "no :80 listener là mô tả; thay bảngss vớiSSHlistener, không cóHTTP.",
+    "references": [
+      "https://nginx.org/en/docs/",
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-002",
+    "probeId": "P1",
+    "beforeCommand": "dig ww.example.com A",
+    "command": "dig ww.example.com A",
+    "before": "status: NXDOMAIN",
+    "after": ";; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 10421",
+    "reason": "Định dạng NXDOMAIN như headerdig thật.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-002",
+    "probeId": "P2",
+    "beforeCommand": "dig www.example.com A",
+    "command": "dig www.example.com A",
+    "before": "198.51.100.20",
+    "after": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 10422\n;; ANSWER SECTION:\nwww.example.com. 300 IN A 198.51.100.20",
+    "reason": "dig không+short phải có A record, không chỉ bareIP.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-002",
+    "probeId": "G1",
+    "beforeCommand": "dig example.com A",
+    "command": "dig example.com A",
+    "before": "status: NOERROR; ANSWER: 198.51.100.20",
+    "after": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 10423\n;; ANSWER SECTION:\nexample.com. 300 IN A 198.51.100.20",
+    "reason": "Thay mô tả status/ANSWER bằng header vàA record.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-002",
+    "probeId": "G2",
+    "beforeCommand": "dig ww.example.com NS",
+    "command": "dig ww.example.com NS",
+    "before": "status: NXDOMAIN",
+    "after": ";; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 10424",
+    "reason": "Định dạng NXDOMAIN như headerdig.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-01-003",
+    "probeId": "P1",
+    "beforeCommand": "ssh -i ~/.ssh/lab_key lab@192.0.2.25",
+    "command": "ssh -i ~/.ssh/lab_key lab@192.0.2.25",
+    "before": "WARNING: UNPROTECTED PRIVATE KEY FILE! permissions 0644",
+    "after": "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\nPermissions 0644 for '/home/lab/.ssh/lab_key' are too open.\nThis private key will be ignored.\nLoad key \"/home/lab/.ssh/lab_key\": bad permissions\nlab@192.0.2.25: Permission denied (publickey).",
+    "reason": "Thay dòng ghép cảnh báo bằng các dòng SSH client gồm ignored/bad permissions.",
+    "references": [
+      "https://man.openbsd.org/ssh.1",
+      "https://man7.org/linux/man-pages/man1/ls.1.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-01-003",
+    "probeId": "P2",
+    "beforeCommand": "ls -l ~/.ssh/lab_key",
+    "command": "ls -l ~/.ssh/lab_key",
+    "before": "-rw-r--r-- lab lab",
+    "after": "-rw-r--r-- 1 lab lab 2602 Oct 22 10:00 /home/lab/.ssh/lab_key",
+    "reason": "Bổ sung trường ls -l thật, giữ mode/owner của key.",
+    "references": [
+      "https://man.openbsd.org/ssh.1",
+      "https://man7.org/linux/man-pages/man1/ls.1.html"
+    ]
+  },
+  {
     "ticketId": "VPS-03-003",
     "probeId": "P2",
     "beforeCommand": "nginx -t",
@@ -35,6 +265,19 @@
     "reason": "Thêm prefix nginx [emerg] và dòng test failed đúng dạng stderr kiểm tra cấu hình.",
     "references": [
       "https://nginx.org/en/docs/switches.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-004",
+    "probeId": "P2",
+    "beforeCommand": "dmesg | tail",
+    "command": "dmesg | tail",
+    "before": "Buffer I/O error on dev vdb",
+    "after": "[8921.410235] Buffer I/O error on dev vdb, logical block 49152, async page read",
+    "reason": "Thêm dạng dmesg kernel timestamp/block/read operation thay dòng mô tả I/O đơn.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/findmnt.8.html",
+      "https://man7.org/linux/man-pages/man8/e2fsck.8.html"
     ]
   },
   {
@@ -50,6 +293,488 @@
     ]
   },
   {
+    "ticketId": "VPS-01-004",
+    "probeId": "P2",
+    "beforeCommand": "firewall-cmd --list-all",
+    "command": "firewall-cmd --list-all",
+    "before": "services: cockpit dhcpv6-client; ports:",
+    "after": "public\n  target: default\n  icmp-block-inversion: no\n  interfaces:\n  sources:\n  services: cockpit dhcpv6-client\n  ports:\n  protocols:\n  forward: no\n  masquerade: no\n  forward-ports:\n  source-ports:\n  icmp-blocks:\n  rich rules:",
+    "reason": "Dấu chấm phẩy trong source là mô tả; thay khung firewalld zone và các mục service/ports không đổi.",
+    "references": [
+      "https://firewalld.org/documentation/man-pages/firewall-cmd.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-01-006",
+    "probeId": "P2",
+    "beforeCommand": "journalctl -u fail2ban -n 20",
+    "command": "journalctl -u fail2ban -n 20",
+    "before": "Ban 198.51.100.14",
+    "after": "Oct 22 10:03:11 vps fail2ban-server[731]: [sshd] Ban 198.51.100.14",
+    "reason": "Thêm timestamp/process và jail vào journal Ban thay dòng mô tả trơ.",
+    "references": [
+      "https://github.com/fail2ban/fail2ban/wiki/Commands",
+      "https://man.openbsd.org/sshd.8"
+    ]
+  },
+  {
+    "ticketId": "VPS-01-007",
+    "probeId": "P1",
+    "beforeCommand": "ss -ltnp",
+    "command": "ss -ltnp",
+    "before": "LISTEN 0 128 0.0.0.0:2222",
+    "after": "State  Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0      128          0.0.0.0:2222      0.0.0.0:*",
+    "reason": "Bổ sung header/peer endpoint của ss, giữ listener2222.",
+    "references": [
+      "https://man.openbsd.org/sshd.8",
+      "https://man7.org/linux/man-pages/man8/ss.8.html",
+      "https://firewalld.org/documentation/man-pages/firewall-cmd.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-01-007",
+    "probeId": "G1",
+    "beforeCommand": "sshd -T | grep port",
+    "command": "sshd -T | grep port",
+    "before": "port 2222",
+    "after": "port 2222\ngatewayports no",
+    "reason": "grep port còn nhận gatewayports; bổ sung dòng thực và giải thích giới hạn -T.",
+    "references": [
+      "https://man.openbsd.org/sshd.8",
+      "https://man7.org/linux/man-pages/man8/ss.8.html",
+      "https://firewalld.org/documentation/man-pages/firewall-cmd.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-002",
+    "probeId": "P1",
+    "beforeCommand": "ping -c 2 1.1.1.1",
+    "command": "ping -c 2 1.1.1.1",
+    "before": "2 received",
+    "after": "--- 1.1.1.1 ping statistics ---\n2 packets transmitted, 2 received, 0% packet loss, time 1001ms\nrtt min/avg/max/mdev = 12.000/12.500/13.000/0.500 ms",
+    "reason": "2 received được thay bằng thống kê ping có transmitted/received.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ping.8.html",
+      "https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-002",
+    "probeId": "P2",
+    "beforeCommand": "dig example.com A",
+    "command": "dig example.com A",
+    "before": "connection timed out; no servers could be reached",
+    "after": ";; communications error to 192.0.2.53#53: timed out\n;; no servers could be reached",
+    "reason": "Chuẩn hóa timeout thành dòng dig communications error với resolver mẫu.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ping.8.html",
+      "https://bind9.readthedocs.io/en/latest/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-003",
+    "probeId": "P1",
+    "beforeCommand": "ip -br addr",
+    "command": "ip -br addr",
+    "before": "lo UNKNOWN 127.0.0.1/8; enp0s3 UP",
+    "after": "lo               UNKNOWN        127.0.0.1/8 ::1/128\nenp0s3           UP",
+    "reason": "Bỏ dấu chấm phẩy giữa các interface, dùng từng dòng brief.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ip-address.8.html",
+      "https://networkmanager.dev/docs/api/latest/nmcli.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-003",
+    "probeId": "P2",
+    "beforeCommand": "nmcli device status",
+    "command": "nmcli device status",
+    "before": "enp0s3 ethernet disconnected --",
+    "after": "DEVICE  TYPE      STATE         CONNECTION\nenp0s3  ethernet  disconnected  --",
+    "reason": "Thêm header nmcli device status, giữ disconnected.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ip-address.8.html",
+      "https://networkmanager.dev/docs/api/latest/nmcli.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-004",
+    "probeId": "P1",
+    "beforeCommand": "ss -ltnp",
+    "command": "ss -ltnp",
+    "before": "LISTEN 0 511 0.0.0.0:443",
+    "after": "State  Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0      511          0.0.0.0:443       0.0.0.0:*",
+    "reason": "Hoàn thiện cột ss listener/peer, giữ bind443.",
+    "references": [
+      "https://firewalld.org/documentation/man-pages/firewall-cmd.html",
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-004",
+    "probeId": "P2",
+    "beforeCommand": "firewall-cmd --list-all",
+    "command": "firewall-cmd --list-all",
+    "before": "services: ssh; ports:",
+    "after": "public\n  target: default\n  icmp-block-inversion: no\n  interfaces:\n  sources:\n  services: ssh\n  ports:\n  protocols:\n  forward: no\n  masquerade: no\n  forward-ports:\n  source-ports:\n  icmp-blocks:\n  rich rules:",
+    "reason": "Thay services:semicolon bằng khung output zone firewalld.",
+    "references": [
+      "https://firewalld.org/documentation/man-pages/firewall-cmd.html",
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-005",
+    "probeId": "P1",
+    "beforeCommand": "ip -6 addr show dev enp0s3",
+    "command": "ip -6 addr show dev enp0s3",
+    "before": "inet6 2001:db8:100::25/64",
+    "after": "2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    inet6 2001:db8:100::25/64 scope global\n       valid_lft forever preferred_lft forever",
+    "reason": "Bổ sung dạng ip -6 addr với interface và scope.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ip-address.8.html",
+      "https://networkmanager.dev/docs/api/latest/nmcli.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-005",
+    "probeId": "P2",
+    "beforeCommand": "ip -4 addr show dev enp0s3",
+    "command": "ip -4 addr show dev enp0s3",
+    "before": "no inet lines",
+    "after": "2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500",
+    "reason": "no inet lines là mô tả; thay header interface không có inet.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ip-address.8.html",
+      "https://networkmanager.dev/docs/api/latest/nmcli.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-007",
+    "probeId": "P2",
+    "beforeCommand": "sshd -T | grep port",
+    "command": "sshd -T | grep port",
+    "before": "port 22",
+    "after": "port 22\ngatewayports no",
+    "reason": "grep port còn khớp gatewayports, bổ sung dòng tương ứng.",
+    "references": [
+      "https://man.openbsd.org/sshd.8",
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-007",
+    "probeId": "G1",
+    "beforeCommand": "ss -ltnp",
+    "command": "ss -ltnp",
+    "before": "LISTEN 0 128 0.0.0.0:22 users:((\"sshd\",pid=881,fd=3))",
+    "after": "State  Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0      128          0.0.0.0:22        0.0.0.0:* users:((\"sshd\",pid=881,fd=3))",
+    "reason": "Chuẩn hóa header/peer của ss listener, giữport/pid.",
+    "references": [
+      "https://man.openbsd.org/sshd.8",
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-002",
+    "probeId": "P1",
+    "beforeCommand": "ls -ld /srv/app/uploads",
+    "command": "ls -ld /srv/app/uploads",
+    "before": "drwxr-xr-x root root",
+    "after": "drwxr-xr-x 2 root root 4096 Oct 22 09:00 /srv/app/uploads",
+    "reason": "ls -ld có linkcount/size/time/path; bổ sung metadata không đổi modeowner.",
+    "references": [
+      "https://man7.org/linux/man-pages/man7/path_resolution.7.html",
+      "https://www.gnu.org/software/coreutils/manual/html_node/What-information-is-listed.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-002",
+    "probeId": "P2",
+    "beforeCommand": "id webapp",
+    "command": "id webapp",
+    "before": "uid=1001(webapp) gid=1001(webapp)",
+    "after": "uid=1001(webapp) gid=1001(webapp) groups=1001(webapp)",
+    "reason": "Bổ sung trường groups của id, giữUIDGID.",
+    "references": [
+      "https://man7.org/linux/man-pages/man7/path_resolution.7.html",
+      "https://www.gnu.org/software/coreutils/manual/html_node/What-information-is-listed.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-004",
+    "probeId": "P2",
+    "beforeCommand": "ausearch -m AVC -ts recent",
+    "command": "ausearch -m AVC -ts recent",
+    "before": "avc: denied { write } for comm=\"httpd\" name=\"uploads\"",
+    "after": "type=AVC msg=audit(1792663200.123:411): avc:  denied  { write } for  pid=1412 comm=\"httpd\" name=\"uploads\" scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:default_t:s0 tclass=dir permissive=0",
+    "reason": "Thay cụm AVC thiếu metadata bằng dòng audit có context/class/permissive để nhận biết đúng bằng chứng.",
+    "references": [
+      "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/index"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-005",
+    "probeId": "P1",
+    "beforeCommand": "systemctl status myapp",
+    "command": "systemctl status myapp",
+    "before": "Dependency failed for myapp.service",
+    "after": "○ myapp.service - myapp.service\n     Loaded: loaded (/etc/systemd/system/myapp.service; enabled)\n     Active: inactive (dead)\nOct 22 08:00:04 vps systemd[1]: Dependency failed for myapp.service.",
+    "reason": "Đưa Dependency failed vào status/journal có unit, không giả làm Active field.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html",
+      "https://mariadb.com/kb/en/what-to-do-if-mariadb-doesnt-start/"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-005",
+    "probeId": "G1",
+    "beforeCommand": "journalctl -u mariadb -b -n 80 --no-pager",
+    "command": "journalctl -u mariadb -b -n 80 --no-pager",
+    "before": "mariadb.service: Failed to start due to missing /var/lib/mysql directory",
+    "after": "Oct 22 08:00:03 vps mariadbd[701]: Can't change dir to '/var/lib/mysql/' (Errcode: 2 \"No such file or directory\")",
+    "reason": "Thay lời mô tả failed due to missing directory bằng dạng lỗi MariaDB Errcode2 thực.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html",
+      "https://mariadb.com/kb/en/what-to-do-if-mariadb-doesnt-start/"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-006",
+    "probeId": "P1",
+    "beforeCommand": "systemctl status custom-app",
+    "command": "systemctl status custom-app",
+    "before": "activating (auto-restart), Result: exit-code",
+    "after": "Active: activating (auto-restart) (Result: exit-code)",
+    "reason": "Chuẩn hóa Active line của status auto-restart.",
+    "references": [
+      "https://docs.python.org/3/library/venv.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-006",
+    "probeId": "P2",
+    "beforeCommand": "journalctl -u custom-app -n 30",
+    "command": "journalctl -u custom-app -n 30",
+    "before": "ModuleNotFoundError: No module named requests",
+    "after": "ModuleNotFoundError: No module named 'requests'",
+    "reason": "Thêm dấu nháy module đúng dạng Python exception.",
+    "references": [
+      "https://docs.python.org/3/library/venv.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-006",
+    "probeId": "G1",
+    "beforeCommand": "systemctl cat custom-app",
+    "command": "systemctl cat custom-app",
+    "before": "ExecStart=/opt/custom/venv/bin/python /opt/custom/app.py",
+    "after": "# /etc/systemd/system/custom-app.service\n[Unit]\nDescription=Custom application\n[Service]\nExecStart=/opt/custom/venv/bin/python /opt/custom/app.py\nRestart=on-failure",
+    "reason": "Đưa ExecStart vào unit file hợp lệ gồm section và Restart=on-failure.",
+    "references": [
+      "https://docs.python.org/3/library/venv.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-001",
+    "probeId": "P1",
+    "beforeCommand": "top -b -n1 | head -n 8",
+    "command": "top -b -n1 | head -n 8",
+    "before": "%Cpu(s): 98.5 us, 1.0 sy",
+    "after": "top - 08:00:00 up 1 day,  2:00,  1 user,  load average: 1.20, 0.80, 0.50\nTasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st\nMiB Mem : 2048.0 total, 800.0 free, 900.0 used, 348.0 buff/cache\nMiB Swap: 0.0 total, 0.0 free, 0.0 used. 1000.0 avail Mem\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n 2601 app       20   0  210000  80000  10000 R  97.4   3.8  20:00.00 python3",
+    "reason": "Thay hai trường CPUtrơ bằng 8dòngtop đúng phần head, giữus98.5.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/top.1.html",
+      "https://man7.org/linux/man-pages/man1/ps.1.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-001",
+    "probeId": "P2",
+    "beforeCommand": "ps -eo pid,comm,%cpu --sort=-%cpu | head",
+    "command": "ps -eo pid,comm,%cpu --sort=-%cpu | head",
+    "before": "2601 python3 97.4",
+    "after": "  PID COMMAND         %CPU\n 2601 python3         97.4\n    1 systemd          0.1",
+    "reason": "Bổ sung headerps, giữPIDpython397.4.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/top.1.html",
+      "https://man7.org/linux/man-pages/man1/ps.1.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-002",
+    "probeId": "P1",
+    "beforeCommand": "free -h",
+    "command": "free -h",
+    "before": "Mem 1.0Gi total 40Mi available; Swap 512Mi 490Mi used",
+    "after": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       944Mi        20Mi         2Mi        60Mi        40Mi\nSwap:          512Mi       490Mi        22Mi",
+    "reason": "Đổi Memprose thành bảng free-h.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/free.1.html",
+      "https://man7.org/linux/man-pages/man8/vmstat.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-002",
+    "probeId": "P2",
+    "beforeCommand": "vmstat 1 3",
+    "command": "vmstat 1 3",
+    "before": "si 280 so 310",
+    "after": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b   swpd  free buff cache  si  so bi bo in cs us sy id wa st\n 1  1 501760 20480 1024 60416   4   5  4  5 50 80 10 5 70 15 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0",
+    "reason": "vmstat1 3 phải cóheader+3dòng, thay prose si/so bằng báo cáo.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/free.1.html",
+      "https://man7.org/linux/man-pages/man8/vmstat.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-003",
+    "probeId": "G1",
+    "beforeCommand": "free -h",
+    "command": "free -h",
+    "before": "Mem: 2.0Gi total 80Mi available; Swap: 1.0Gi total 920Mi used",
+    "after": "               total        used        free      shared  buff/cache   available\nMem:           2.0Gi       1.8Gi        40Mi         4Mi       160Mi        80Mi\nSwap:          1.0Gi       920Mi       104Mi",
+    "reason": "Chuẩn hóa free-h từ Memprose, giữavailable80Mi/swap920Mi.",
+    "references": [
+      "https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html",
+      "https://man7.org/linux/man-pages/man1/free.1.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-004",
+    "probeId": "P1",
+    "beforeCommand": "vmstat 1 3",
+    "command": "vmstat 1 3",
+    "before": "us 5 sy 4 id 15 wa 76",
+    "after": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 1  2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0",
+    "reason": "Thay prose us/wa bằng ba dòngvmstat đúng commandcount.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/iostat.8.html",
+      "https://man7.org/linux/man-pages/man8/vmstat.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-004",
+    "probeId": "P2",
+    "beforeCommand": "iostat -xz 1 2",
+    "command": "iostat -xz 1 2",
+    "before": "vda %util 99.0 await 180.0",
+    "after": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   20.00   0.00 71.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 20.00 128.00 10.00 1280.00 0.00 0.00 20.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 20.00 0.62 45.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   76.00   0.00 15.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 180.00 128.00 20.00 2560.00 0.00 0.00 180.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 5.00 180.00 18.90 99.00",
+    "reason": "Thay vda%util/await prose bằng hai báo cáo iostat hiện đại có r_await/w_await, không dùng cột aggregateawait cũ.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/iostat.8.html",
+      "https://man7.org/linux/man-pages/man8/vmstat.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-005",
+    "probeId": "P1",
+    "beforeCommand": "cat /sys/fs/cgroup/cpu.stat",
+    "command": "docker exec api cat /sys/fs/cgroup/cpu.stat",
+    "before": "nr_periods 1400; nr_throttled 760",
+    "after": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
+    "reason": "Commandgốc không chỉ container; đổi docker exec api cat cùng file và giữ sourceimmutable. Output dùng từng dòngcgroupv2.",
+    "references": [
+      "https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html",
+      "https://docs.docker.com/engine/containers/resource_constraints/",
+      "https://docs.docker.com/reference/cli/docker/container/stats/"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-005",
+    "probeId": "P2",
+    "beforeCommand": "docker stats --no-stream",
+    "command": "docker stats --no-stream",
+    "before": "api CPU 99.8%",
+    "after": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT   MEM %   NET I/O       BLOCK I/O   PIDS\nabc123def456   api    99.8%   220MiB / 512MiB     42.97%  12MB / 10MB   0B / 0B     8",
+    "reason": "Thay apiCPUprose bằng bảng dockerstats chuẩn.",
+    "references": [
+      "https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html",
+      "https://docs.docker.com/engine/containers/resource_constraints/",
+      "https://docs.docker.com/reference/cli/docker/container/stats/"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-003",
+    "probeId": "P1",
+    "beforeCommand": "journalctl --disk-usage",
+    "command": "journalctl --disk-usage",
+    "before": "Archived and active journals take up 8.0G",
+    "after": "Archived and active journals take up 8.0G in the file system.",
+    "reason": "Hoàn thiện dòngdiskusage journal chuẩn.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-003",
+    "probeId": "P2",
+    "beforeCommand": "df -h /",
+    "command": "df -h /",
+    "before": "Use% 94%",
+    "after": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.2G  94% /",
+    "reason": "Thay Use94% bằng bảngdf đúng dạng.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-005",
+    "probeId": "P1",
+    "beforeCommand": "lsblk",
+    "command": "lsblk",
+    "before": "vda 40G; vda1 20G",
+    "after": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
+    "reason": "Thay semicolonprose bằng bảnglsblkdefault có MAJ:MIN/RM/RO.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/lsblk.8.html",
+      "https://man7.org/linux/man-pages/man8/xfs_growfs.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-005",
+    "probeId": "P2",
+    "beforeCommand": "df -h /",
+    "command": "df -h /",
+    "before": "/dev/vda1 20G 12G 8G",
+    "after": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  12G  8.0G  60% /",
+    "reason": "Thêm headerdf/use/mount hợp lệ, giữ20G.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/lsblk.8.html",
+      "https://man7.org/linux/man-pages/man8/xfs_growfs.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-006",
+    "probeId": "P1",
+    "beforeCommand": "df -h /",
+    "command": "df -h /",
+    "before": "Use% 95%",
+    "after": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
+    "reason": "Thay Use95%prose bằng dfheader.",
+    "references": [
+      "https://lsof.readthedocs.io/en/stable/manpage/",
+      "https://man7.org/linux/man-pages/man2/unlink.2.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-006",
+    "probeId": "P2",
+    "beforeCommand": "lsof +L1",
+    "command": "lsof +L1",
+    "before": "java 2300 /var/log/app.log (deleted) 5G",
+    "after": "COMMAND  PID USER   FD   TYPE DEVICE   SIZE/OFF NLINK NODE NAME\njava    2300 app    12w   REG  252,1 5368709120     0  511 /var/log/app.log (deleted)",
+    "reason": "Thay java deleted5G prose bằng bảnglsof cóFD/nlink/sizebytes.",
+    "references": [
+      "https://lsof.readthedocs.io/en/stable/manpage/",
+      "https://man7.org/linux/man-pages/man2/unlink.2.html"
+    ]
+  },
+  {
     "ticketId": "VPS-05-007",
     "probeId": "P2",
     "beforeCommand": "systemctl --failed",
@@ -60,6 +785,67 @@
     "references": [
       "https://www.freedesktop.org/software/systemd/man/latest/systemd-fsck@.service.html",
       "https://man7.org/linux/man-pages/man8/e2fsck.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-004",
+    "probeId": "P2",
+    "beforeCommand": "dig example.com A",
+    "command": "dig example.com A",
+    "before": "connection timed out; no servers could be reached",
+    "after": ";; connection timed out; no servers could be reached",
+    "reason": "Giữ nguyên timeout nhưngthêm prefix;; đúngkiểu dig.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-005",
+    "probeId": "P1",
+    "beforeCommand": "dig @authoritative.example shop.example.com A",
+    "command": "dig @authoritative.example shop.example.com A",
+    "before": "198.51.100.20",
+    "after": "shop.example.com. 300 IN A 198.51.100.20",
+    "reason": "dig không+short: dùng A record thaybareIP.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-005",
+    "probeId": "P2",
+    "beforeCommand": "dig @1.1.1.1 shop.example.com A",
+    "command": "dig @1.1.1.1 shop.example.com A",
+    "before": "203.0.113.10 TTL 120",
+    "after": "shop.example.com. 120 IN A 203.0.113.10",
+    "reason": "Thay IP TTL120 dạngmô tả bằng A record cóTTL đúngcột.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-007",
+    "probeId": "P1",
+    "beforeCommand": "dig -x 198.51.100.20",
+    "command": "dig -x 198.51.100.20",
+    "before": "status: NXDOMAIN",
+    "after": ";; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 51231",
+    "reason": "NXDOMAINdạngheaderdigthaymôtảstatus.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility"
+    ]
+  },
+  {
+    "ticketId": "VPS-01-008",
+    "probeId": "P2",
+    "beforeCommand": "free -h",
+    "command": "free -h",
+    "before": "Mem: 1.0Gi total, 64Mi available; Swap: 0B",
+    "after": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       900Mi        24Mi         2Mi       100Mi        64Mi\nSwap:             0B          0B          0B",
+    "reason": "Thay dòng mô tả Mem/swap bằng bảng free -h, giữ available64Mi và swap0.",
+    "references": [
+      "https://www.kernel.org/doc/html/latest/accounting/psi.html",
+      "https://man7.org/linux/man-pages/man1/free.1.html"
     ]
   },
   {
@@ -89,6 +875,71 @@
     ]
   },
   {
+    "ticketId": "VPS-02-008",
+    "probeId": "P1",
+    "beforeCommand": "ping -M do -s 1472 198.51.100.20",
+    "command": "ping -M do -s 1472 198.51.100.20",
+    "before": "Frag needed and DF set",
+    "after": "PING 198.51.100.20 (198.51.100.20) 1472(1500) bytes of data.\nFrom 10.8.0.1 icmp_seq=1 Frag needed and DF set (mtu = 1400)",
+    "reason": "Thay dòng Frag needed đơn bằng outputping nêu payload/gói/ICMPMTU.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ping.8.html",
+      "https://man7.org/linux/man-pages/man8/tracepath.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-02-008",
+    "probeId": "P2",
+    "beforeCommand": "ping -M do -s 1200 198.51.100.20",
+    "command": "ping -M do -s 1200 198.51.100.20",
+    "before": "2 packets received",
+    "after": "PING 198.51.100.20 (198.51.100.20) 1200(1228) bytes of data.\n1208 bytes from 198.51.100.20: icmp_seq=1 ttl=52 time=31.2 ms\n1208 bytes from 198.51.100.20: icmp_seq=2 ttl=52 time=31.4 ms\n--- 198.51.100.20 ping statistics ---\n2 packets transmitted, 2 received, 0% packet loss",
+    "reason": "Thay2packetsreceived bằng echo và thốngkêping cho payload1200.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ping.8.html",
+      "https://man7.org/linux/man-pages/man8/tracepath.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-007",
+    "probeId": "P2",
+    "beforeCommand": "cat /proc/1234/limits",
+    "command": "cat /proc/1234/limits",
+    "before": "Max open files 1024 1024 files",
+    "after": "Limit                     Soft Limit           Hard Limit           Units\nMax open files            1024                 1024                 files",
+    "reason": "Bổ sung header và cột limits đúng dạng /proc/PID/limits.",
+    "references": [
+      "https://man7.org/linux/man-pages/man5/proc_pid_limits.5.html",
+      "https://man7.org/linux/man-pages/man2/getrlimit.2.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-03-008",
+    "probeId": "P2",
+    "beforeCommand": "journalctl -k -b -p err",
+    "command": "journalctl -k -b -p err",
+    "before": "EXT4-fs error detected",
+    "after": "Oct 22 07:14:02 vps kernel: EXT4-fs error (device vda1): ext4_find_entry: inode #2",
+    "reason": "EXT4-fs error detected là tóm tắt; dùng dòng kernel cùng device/timestamp của extra hiện có.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/e2fsck.8.html",
+      "https://man7.org/linux/man-pages/man8/findmnt.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-006",
+    "probeId": "P1",
+    "beforeCommand": "ps -o pid,rss,etime,comm -p 1200",
+    "command": "ps -o pid,rss,etime,comm -p 1200",
+    "before": "1200 850000 09:00:00 myapp",
+    "after": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
+    "reason": "Thêmheaderps; giữ850000KiB vàelapsed9h.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/ps.1.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html"
+    ]
+  },
+  {
     "ticketId": "VPS-04-007",
     "probeId": "G1",
     "beforeCommand": "vmstat 1 2",
@@ -99,6 +950,46 @@
     "references": [
       "https://man7.org/linux/man-pages/man8/vmstat.8.html",
       "https://man7.org/linux/man-pages/man1/top.1.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-008",
+    "probeId": "P1",
+    "beforeCommand": "journalctl -u backup-agent --since \"02:00\" --until \"02:30\"",
+    "command": "journalctl -u backup-agent --since \"02:00\" --until \"02:30\"",
+    "before": "backup started 02:00; finished 02:20",
+    "after": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
+    "reason": "Bỏ prose chấm phẩy, dùng hai dòng journalstarted/finished cótimestamp.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/iostat.8.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-04-008",
+    "probeId": "P2",
+    "beforeCommand": "iostat -xz 1 2",
+    "command": "iostat -xz 1 2",
+    "before": "vda await 95.0 during backup",
+    "after": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           8.00  0.00    4.00    5.00   0.00 83.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 5.00 128.00 10.00 1280.00 0.00 0.00 5.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 5.00 0.15 20.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           8.00  0.00    4.00   50.00   0.00 38.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 95.00 128.00 20.00 2560.00 0.00 0.00 95.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 2.00 95.00 9.69 90.00",
+    "reason": "Thay during backup prose bằng hai báo cáo iostat với r_await/w_await; quan hệ với backup nằm ở explanation.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/iostat.8.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-05-008",
+    "probeId": "P1",
+    "beforeCommand": "lsblk",
+    "command": "lsblk",
+    "before": "NAME          SIZE TYPE MOUNTPOINTS\nvdb            80G disk\n└─vdb1         80G part\n  └─vgdata-lvdata 30G lvm /data",
+    "after": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
+    "reason": "Hoàn thiện outputlsblkdefault có MAJ:MIN/RM/RO, giữlayout80/30.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/vgs.8.html",
+      "https://man7.org/linux/man-pages/man8/lvextend.8.html",
+      "https://man7.org/linux/man-pages/man8/xfs_growfs.8.html"
     ]
   },
   {
@@ -114,6 +1005,109 @@
     ]
   },
   {
+    "ticketId": "VPS-07-008",
+    "probeId": "P2",
+    "beforeCommand": "curl -s -o /dev/null -w \"%{time_total}\" http://127.0.0.1:3000/health",
+    "command": "curl -s -o /dev/null -w \"%{time_total}\" http://127.0.0.1:3000/health",
+    "before": "31.4",
+    "after": "31.400000",
+    "reason": "Định dạng curl time_total là số giây thập phân; giữ giá trị 31,4 giây với fixture 31.400000.",
+    "references": [
+      "https://nginx.org/en/docs/",
+      "https://curl.se/docs/manpage.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-008",
+    "probeId": "P1",
+    "beforeCommand": "dig @1.1.1.1 signed.example.test A",
+    "command": "dig @1.1.1.1 signed.example.test A",
+    "before": "status: SERVFAIL",
+    "after": ";; ->>HEADER<<- opcode: QUERY, status: SERVFAIL, id: 19819",
+    "reason": "SERVFAILdạngheaderdig.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility",
+      "https://www.rfc-editor.org/rfc/rfc6605.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-008",
+    "probeId": "P2",
+    "beforeCommand": "dig @1.1.1.1 signed.example.test A +cd",
+    "command": "dig @1.1.1.1 signed.example.test A +cd",
+    "before": "status: NOERROR",
+    "after": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19820",
+    "reason": "NOERRORdạngheaderdig;khôngbịaAanswer.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility",
+      "https://www.rfc-editor.org/rfc/rfc6605.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-08-008",
+    "probeId": "G2",
+    "beforeCommand": "dig @ns1.signed.example.test signed.example.test DNSKEY +dnssec",
+    "command": "dig @ns1.signed.example.test signed.example.test DNSKEY +dnssec",
+    "before": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 21044\n;; ANSWER SECTION:\nsigned.example.test. 3600 IN DNSKEY 257 3 13 AwEAAa... ",
+    "after": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 21044\n;; ANSWER SECTION:\nsigned.example.test. 3600 IN DNSKEY 257 3 13 GojIhhXUN/u4v54ZQqGSnyhWJwaubCvTmeexv7bR6edbkrSqQpF64cYbcB7wNcP+e+MAnLr+Wi9xMWyQLc8NAA==",
+    "reason": "ThayAwEAAa...placeholdervàkeyformatkhôngđúngalgorithm13bằngpublictestkeyRFC6605section6.1.",
+    "references": [
+      "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility",
+      "https://www.rfc-editor.org/rfc/rfc6605.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-06-005",
+    "probeId": "G1",
+    "beforeCommand": "blkid",
+    "command": "blkid",
+    "before": "/dev/vda1: UUID=\"f2b1-root\" TYPE=\"ext4\"\n/dev/vdb1: UUID=\"cafe1234\" TYPE=\"ext4\"",
+    "after": "/dev/vda1: UUID=\"f2b1d098-6d41-4af5-9b31-6c6a1d08c201\" TYPE=\"ext4\"\n/dev/vdb1: UUID=\"cafe1234-4265-4e01-9310-71aa58e0b100\" TYPE=\"ext4\"",
+    "reason": "f2b1-root/cafe1234 không có dạng UUID ext4; thay bằng UUID 36 ký tự, vẫn không khớp deadbeef.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/blkid.8.html",
+      "https://man7.org/linux/man-pages/man5/fstab.5.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-10-002",
+    "probeId": "P1",
+    "beforeCommand": "ip -br link",
+    "command": "ip -br link",
+    "before": "lo UNKNOWN",
+    "after": "lo UNKNOWN 00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>",
+    "reason": "ip-br-link mặc định có link address/flags; bổ sung phần lo thực tế, không thêm NIC.",
+    "references": [
+      "https://libvirt.org/manpages/virsh.html",
+      "https://man7.org/linux/man-pages/man8/ip-link.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-10-003",
+    "probeId": "P1",
+    "beforeCommand": "virsh domiflist vm-102",
+    "command": "virsh domiflist vm-102",
+    "before": "vnet4 bridge br-storage",
+    "after": "Interface Type Source Model MAC\n-------------------------------------------------------\nvnet4 bridge br-storage virtio 52:54:00:ab:10:02",
+    "reason": "Dòng vnet4 bridge br-storage thiếu header/model/MAC; bổ sung bảng domiflist hợp lý, giữ source bridge.",
+    "references": [
+      "https://libvirt.org/manpages/virsh.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-10-004",
+    "probeId": "P2",
+    "beforeCommand": "PANEL: host metrics",
+    "command": "PANEL: host metrics",
+    "before": "node hypervisor saturation",
+    "after": "node=node-4 metric=cpu_ready state=high window=2026-10-22T09:00:00Z/2026-10-22T09:20:00Z",
+    "reason": "Thay cụm mô tả node saturation không phải output panel bằng bản ghi metric có node và cửa sổ đo.",
+    "references": [
+      "https://libvirt.org/manpages/virsh.html",
+      "https://man7.org/linux/man-pages/man1/top.1.html"
+    ]
+  },
+  {
     "ticketId": "VPS-10-005",
     "probeId": "P1",
     "beforeCommand": "lsblk",
@@ -124,6 +1118,44 @@
     "references": [
       "https://libvirt.org/manpages/virsh.html",
       "https://man7.org/linux/man-pages/man8/lsblk.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-10-008",
+    "probeId": "G1",
+    "beforeCommand": "cat /etc/os-release",
+    "command": "cat /etc/os-release",
+    "before": "ID=ubuntu\nVERSION_ID=\"24.04\"",
+    "after": "ID=\"centos\"\nVERSION_ID=\"9\"",
+    "reason": "Đổi Ubuntu sang CentOS Stream 9 theo guest_os gốc; giữ dạng /etc/os-release.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html",
+      "https://chrony-project.org/documentation.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-10-008",
+    "probeId": "G2",
+    "beforeCommand": "systemctl status systemd-timesyncd",
+    "command": "systemctl status chronyd",
+    "before": "● systemd-timesyncd.service - Network Time Synchronization\n   Active: inactive (dead)",
+    "after": "● chronyd.service - NTP client/server\n     Loaded: loaded (/usr/lib/systemd/system/chronyd.service; disabled)\n     Active: inactive (dead)",
+    "reason": "Đổi systemd-timesyncd Ubuntu sang chronyd CentOS trong lệnh và output Guided.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html",
+      "https://chrony-project.org/documentation.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-09-005",
+    "probeId": "P2",
+    "beforeCommand": "ss -tunap",
+    "command": "ss -tunap",
+    "before": "ESTAB 0 0 198.51.100.20:45000 203.0.113.25:25 users:((\"python3\",pid=1802,fd=9))",
+    "after": "Netid State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\ntcp ESTAB 0 0 198.51.100.20:45000 203.0.113.25:25 users:((\"python3\",pid=1802,fd=9))",
+    "reason": "ss-tunap có Netid khi chọnTCP/UDP; bổ sung header/tcp,giữ nguyên socket.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
     ]
   },
   {
@@ -150,6 +1182,114 @@
     "references": [
       "https://www.openssh.com/manual.html",
       "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-13-001",
+    "probeId": "P1",
+    "beforeCommand": "docker ps -a",
+    "command": "docker ps -a",
+    "before": "api Exited (1) 2 minutes ago",
+    "after": "CONTAINER ID   IMAGE      COMMAND            CREATED         STATUS                     PORTS   NAMES\na4c21d02f881   api:v2.0   \"python app.py\"    5 minutes ago   Exited (1) 2 minutes ago           api",
+    "reason": "Thay câu api Exited bằng bảng docker ps -a, giữ container/exit status.",
+    "references": [
+      "https://docs.docker.com/reference/cli/docker/container/ls/"
+    ]
+  },
+  {
+    "ticketId": "VPS-13-001",
+    "probeId": "P2",
+    "beforeCommand": "docker logs api --tail 20",
+    "command": "docker logs api --tail 20",
+    "before": "ModuleNotFoundError: appconfig",
+    "after": "ModuleNotFoundError: No module named 'appconfig'",
+    "reason": "Dùng dạng thông báo Python missing module chuẩn cho cùng appconfig.",
+    "references": [
+      "https://docs.python.org/3/library/exceptions.html#ModuleNotFoundError"
+    ]
+  },
+  {
+    "ticketId": "VPS-13-005",
+    "probeId": "P2",
+    "beforeCommand": "getent hosts example.com",
+    "command": "getent hosts example.com",
+    "before": "93.184.215.14",
+    "after": "93.184.215.14  example.com",
+    "reason": "getent hosts entry cần IP và hostname, source chỉ IP; thêm example.com không thay đổi kết quả lookup.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/getent.1.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-13-007",
+    "probeId": "P1",
+    "beforeCommand": "docker compose ps",
+    "command": "docker compose ps --all",
+    "before": "NAME   IMAGE       SERVICE   STATUS\napi    api:v2.0    api       Up 2 minutes\ndb     mariadb:11  db        Exited (1) 2 minutes ago",
+    "after": "NAME   IMAGE        COMMAND                  SERVICE   CREATED         STATUS                     PORTS\napi    api:v2.0     \"python app.py\"          api       5 minutes ago   Up 2 minutes\ndb     mariadb:11   \"docker-entrypoint.sh\"   db        5 minutes ago   Exited (1) 2 minutes ago",
+    "reason": "Compose ps mặc định chỉ running; dùng--all và bảng đủ cột để hiện db Exited, không alias lệnh cũ sai.",
+    "references": [
+      "https://docs.docker.com/reference/cli/docker/compose/ps/"
+    ]
+  },
+  {
+    "ticketId": "VPS-13-007",
+    "probeId": "G2",
+    "beforeCommand": "free -h",
+    "command": "free -h",
+    "before": "Mem:  4.0Gi  2.7Gi  400Mi  100Mi  900Mi  700Mi\nSwap: 0B 0B 0B",
+    "after": "               total        used        free      shared  buff/cache   available\nMem:           4.0Gi       2.7Gi       400Mi       100Mi       900Mi       700Mi\nSwap:             0B          0B          0B",
+    "reason": "Thêm header free -h, giữ các số liệu RAM/Swap cũ.",
+    "references": [
+      "https://man7.org/linux/man-pages/man1/free.1.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-11-005",
+    "probeId": "P2",
+    "beforeCommand": "lsblk",
+    "command": "lsblk",
+    "before": "vda 30G, no vdb",
+    "after": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  30G  0 disk\n└─vda1 252:1    0  30G  0 part /",
+    "reason": "Thay mô tả vda 30G, no vdb bằng bảng device, giữ bằng chứng vda-only.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/lsblk.8.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-11-007",
+    "probeId": "P1",
+    "beforeCommand": "journalctl -u backup-agent -n 30",
+    "command": "journalctl -u backup-agent -n 30",
+    "before": "Authentication failed: key rejected",
+    "after": "Oct 22 01:35:11 vm-117 backup-agent[2140]: Authentication failed: key rejected",
+    "reason": "Thêm prefix đúng dạng journal cho cùng event key rejected, timestamp nhất quán rotation audit.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-12-003",
+    "probeId": "P2",
+    "beforeCommand": "cat /etc/os-release",
+    "command": "cat /etc/os-release",
+    "before": "ID=ubuntu VERSION_ID=24.04",
+    "after": "ID=ubuntu\nVERSION_ID=\"24.04\"",
+    "reason": "Sửa ID và VERSION_ID từ cùng dòng thành new line assignment s, giữ Ubuntu 24.04.",
+    "references": [
+      "https://www.freedesktop.org/software/systemd/man/latest/os-release.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-12-006",
+    "probeId": "P2",
+    "beforeCommand": "ip -4 addr",
+    "command": "ip -4 addr",
+    "before": "2: ens3    inet 203.0.113.40/24 brd 203.0.113.255 scope global ens3",
+    "after": "2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000\n    inet 203.0.113.40/24 brd 203.0.113.255 scope global ens3\n       valid_lft forever preferred_lft forever",
+    "reason": "Chuỗi gốc gộp header và inet; sửa dạng ip addr thật, giữ 203.0.113.40/24.",
+    "references": [
+      "https://man7.org/linux/man-pages/man8/ip-address.8.html"
     ]
   }
 ]

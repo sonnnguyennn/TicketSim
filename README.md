@@ -9,6 +9,7 @@ Yêu cầu Node.js 20.19+ (hoặc 22.12+, 24+) và npm.
 ```bash
 npm install
 npm run prepare-data
+npm run audit:content
 npm run dev
 npm test -- --run
 npm run build
@@ -34,9 +35,9 @@ Engine chấm điểm, quyền thao tác, escalation và quy tắc Mastered khô
 
 ## Dữ liệu và an toàn
 
-`scripts/guided-content.mjs` là nguồn nội dung Guided. Sau khi sửa, chạy `npm run prepare-data`; không sửa trực tiếp JSON sinh ra trong `src/data/` và `public/`. Script xác thực schema, giữ nguyên 112 ticket và tách câu hỏi công khai khỏi feedback, gợi ý và đáp án. Tách file là rào chắn học tập của UI local, không phải bảo mật trước người có quyền đọc build.
+`scripts/guided-content.mjs` nhập lớp tác giả theo từng case trong `scripts/content/phase-b-*.mjs`. Lớp này biên soạn nội dung; khung cũ giữ ID, key, loại câu và điều kiện bằng chứng. Xem [hướng dẫn tác giả](scripts/content/README.md). Sau khi sửa, chạy `npm run prepare-data` và `npm run audit:content`; không sửa trực tiếp JSON sinh ra trong `src/data/` và `public/`. Script xác thực schema, giữ nguyên 112 ticket và tách câu hỏi công khai khỏi feedback, gợi ý và đáp án. Tách file là rào chắn học tập của UI local, không phải bảo mật trước người có quyền đọc build.
 
-VPS-07-007 có một output `nginx -T` gốc mang câu chú thích “missing” không phải stdout thật. Guided dùng fixture thay thế đã biên soạn trong cùng file nguồn; Practice và 112 ticket gốc không đổi. Xem [QA batch 30](Phase_2_Guided_QA.md).
+Các output gốc sai định dạng hoặc vượt quá dữ kiện được sửa riêng ở lớp Guided, có lý do và tham khảo trong [báo cáo fixture](Phase_B_Fixture_Changes.md). Đáp án Guided nằm riêng trong `public/guided-answers/`; Practice/Legacy và 112 ticket gốc không đổi. Output là mẫu biên soạn hoặc trích đoạn, không phải kết quả chạy trên VPS thật.
 
 Terminal **chỉ trả đúng output JSON đã biên soạn cho command/alias và trạng thái của ticket**. Command chưa có fixture không tạo output và không tính sai; thao tác thay đổi hệ thống chỉ đi qua action mô phỏng có điều kiện. Không có shell, SSH, VirtualBox hay kết nối VPS thật. Các thẻ command và ví dụ output chỉ là tài liệu tham khảo. Đối với một sự cố thực, service active/route xuất hiện/incident được mở chưa đủ để kết luận yêu cầu khách hàng đã được giải quyết.
 
@@ -44,9 +45,9 @@ Tiến độ lưu ở `localStorage` phiên bản 5 và có thể xuất/nhập 
 
 ## QA và giới hạn hiện tại
 
-Phase B đang triển khai: B1 có lớp nội dung riêng theo case và 14 mẫu đại diện cho 14 topic. Xem [QA Phase B](Phase_B_Content_QA.md); các mốc kiểm thử Phase A bên dưới là lịch sử.
+Phase B đã rà soát và biên soạn lại nội dung của cả 112 Guided; 122 thẻ Command Library được kiểm tra, trong đó 60 thẻ có sửa đổi. Audit theo ID, báo cáo trùng lặp và 101 thay đổi fixture chỉ dành cho Guided nằm trong [QA Phase B](Phase_B_Content_QA.md). QA này do agent thực hiện; chưa có vòng kiểm duyệt độc lập của chuyên gia con người.
 
-Xem [QA Phase A](Phase_A_Guided_First_QA.md) cho các luồng đã kiểm tra, ảnh desktop/mobile và giới hạn. Phase B sẽ kiểm duyệt nội dung của 112 Guided; Phase A chỉ đổi cách sử dụng, không viết lại hàng loạt câu hỏi/feedback.
+Xem [QA Phase A](Phase_A_Guided_First_QA.md) cho các luồng đã kiểm tra và ảnh desktop/mobile ở mốc trước. Phase B bổ sung kiểm tra browser qua một bài đầy đủ cho mỗi topic, bao gồm L0–L3; chưa có kiểm thử tương tác trọn vẹn riêng cho từng ticket trong 112 ticket.
 
 Guided phủ 112/112; Objective Exam và bài biến thể 20/112; Stateful 6/112. Một số output gốc rất ngắn và vẫn được giữ nguyên. State transitions là tình huống cố định, không dự đoán trạng thái Linux thật, không mô phỏng đầy đủ network propagation, ứng dụng phía sau hay integrity storage. Xem [QA Phase 5E](Phase_5E_QA.md), [QA Phase 5D](Phase_5D_QA.md), [QA Batch 7](Phase_5C_Batch_7_QA.md) và [roadmap](ROADMAP.md).
 

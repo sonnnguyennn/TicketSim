@@ -5,114 +5,114 @@ Các ghi chú dưới đây là rà soát từng case bởi agent, không phải
 | ID | Topic | Level | Trạng thái | Kiểm tra kỹ thuật | Biên tập |
 |---|---|---|---|---|---|
 | VPS-01-001 | Lỗi kết nối SSH | L0 | Đã rà soát và sửa | Đối chiếu systemctl/ss; tách trạng thái unit, listener và xác thực. Không thay đáp án hay điều kiện quyền. | Viết lại đủ sáu câu, từng lựa chọn, ba hint và note; giải thích command theo triệu chứng refused. |
-| VPS-01-002 | Lỗi kết nối SSH | L0 | Chờ rà soát |  |  |
-| VPS-02-001 | Lỗi kết nối mạng | L0 | Chờ rà soát |  |  |
-| VPS-03-001 | Lỗi hệ thống và service | L0 | Chờ rà soát |  |  |
-| VPS-05-001 | Ổ đĩa và filesystem | L0 | Chờ rà soát |  |  |
-| VPS-05-002 | Ổ đĩa và filesystem | L0 | Chờ rà soát |  |  |
-| VPS-07-001 | Website/HTTP | L0 | Chờ rà soát |  |  |
-| VPS-08-002 | Tên miền/DNS | L0 | Chờ rà soát |  |  |
-| VPS-01-003 | Lỗi kết nối SSH | L1 | Chờ rà soát |  |  |
+| VPS-01-002 | Lỗi kết nối SSH | L0 | Đã rà soát và sửa | getent không tìm account thường không có stdout; xác thực SSH không phân biệt riêng sai username/mật khẩu. Giữ key missing là không tìm thấy entry. | Viết lại năm câu và mọi feedback để tách transport, danh tính và mật khẩu. |
+| VPS-02-001 | Lỗi kết nối mạng | L0 | Đã rà soát và sửa | The question about route evidence is scoped to the address and route outputs. A later panel allocation probe can supply the assigned gateway, but it does not prove the guest applied it. | The six questions distinguish subnet reachability, default route, gateway allocation and policy routing. |
+| VPS-03-001 | Lỗi hệ thống và service | L0 | Đã rà soát và sửa | VM reachability, service state, listener state and HTTP response are separate layers. nginx -t validates configuration syntax but not runtime response or upstream health. | The questions use the web-service failure and local/external checks rather than generic remediation language. |
+| VPS-05-001 | Ổ đĩa và filesystem | L0 | Đã rà soát và sửa | Blocks, inodes, directory usage and journal active or archived usage are different measures. Thirteen GiB of logs is not equivalent to 1.2 GiB of journal data. | The questions protect customer writes while investigating the actual source of disk use. |
+| VPS-05-002 | Ổ đĩa và filesystem | L0 | Đã rà soát và sửa | Inode exhaustion differs from block exhaustion. A count of 850000 files does not itself identify a safe deletion path; adding GiB may not add inodes on every filesystem. | The questions require independent interpretation of both filesystem limits. |
+| VPS-07-001 | Website/HTTP | L0 | Đã rà soát và sửa | Thay mô tả no80listener bằngbảngss; configtest khôngchứngminhservicehealthy. | Ràmanualpilot,phânbiệtTCP/HTTP rõ. |
+| VPS-08-002 | Tên miền/DNS | L0 | Đã rà soát và sửa | NXDOMAIN là tên cụ thể; reviewed manualpilot và exactFQDN. | Không dùng fixture; giải thích ww/www và ý địnhowner. |
+| VPS-01-003 | Lỗi kết nối SSH | L1 | Đã rà soát và sửa | Đối chiếu OpenSSH về private key ownership/mode; phân biệt client với guest và tránh coi sửa mode là bảo đảm login. | Rà pilot L1, giữ năm key gốc; feedback giải thích cụ thể từng quyền và lớp kiểm tra. |
 | VPS-03-003 | Lỗi hệ thống và service | L1 | Đã rà soát và sửa | Đối chiếu nginx -t: test cú pháp/mở file, không tự sửa và không chứng minh HTTP. Giữ key gốc. | Rà cả pilot thủ công; viết lại năm prompt, toàn bộ feedback và giải thích mốc thay đổi. |
-| VPS-05-004 | Ổ đĩa và filesystem | L1 | Chờ rà soát |  |  |
+| VPS-05-004 | Ổ đĩa và filesystem | L1 | Đã rà soát và sửa | The observed read-only mount and error do not establish when or why the remount happened. Storage escalation documentation replaces an unrelated firewall reference. | The questions distinguish acknowledging an incident from confirming recovery. |
 | VPS-08-003 | Tên miền/DNS | L1 | Đã rà soát và sửa | Giữ phân biệt resolver-cache, edited zone và registrar; evidence chỉ hỏi hai nguồn đầu để tránh mâu thuẫn khi đã đọc G1. | Rà pilot thủ công; bỏ P1/P2/fixture khỏi prompt và feedback. |
-| VPS-01-004 | Lỗi kết nối SSH | L1 | Chờ rà soát |  |  |
-| VPS-01-005 | Lỗi kết nối SSH | L2 | Chờ rà soát |  |  |
-| VPS-01-006 | Lỗi kết nối SSH | L2 | Chờ rà soát |  |  |
-| VPS-01-007 | Lỗi kết nối SSH | L3 | Chờ rà soát |  |  |
-| VPS-02-002 | Lỗi kết nối mạng | L0 | Chờ rà soát |  |  |
-| VPS-02-003 | Lỗi kết nối mạng | L1 | Chờ rà soát |  |  |
-| VPS-02-004 | Lỗi kết nối mạng | L1 | Chờ rà soát |  |  |
-| VPS-02-005 | Lỗi kết nối mạng | L2 | Chờ rà soát |  |  |
-| VPS-02-007 | Lỗi kết nối mạng | L3 | Chờ rà soát |  |  |
-| VPS-03-002 | Lỗi hệ thống và service | L0 | Chờ rà soát |  |  |
-| VPS-03-004 | Lỗi hệ thống và service | L1 | Chờ rà soát |  |  |
-| VPS-03-005 | Lỗi hệ thống và service | L2 | Chờ rà soát |  |  |
-| VPS-03-006 | Lỗi hệ thống và service | L2 | Chờ rà soát |  |  |
-| VPS-04-001 | Hiệu năng VPS | L0 | Chờ rà soát |  |  |
-| VPS-04-002 | Hiệu năng VPS | L0 | Chờ rà soát |  |  |
-| VPS-04-003 | Hiệu năng VPS | L1 | Chờ rà soát |  |  |
-| VPS-04-004 | Hiệu năng VPS | L1 | Chờ rà soát |  |  |
-| VPS-04-005 | Hiệu năng VPS | L2 | Chờ rà soát |  |  |
-| VPS-05-003 | Ổ đĩa và filesystem | L1 | Chờ rà soát |  |  |
-| VPS-05-005 | Ổ đĩa và filesystem | L2 | Chờ rà soát |  |  |
-| VPS-05-006 | Ổ đĩa và filesystem | L2 | Chờ rà soát |  |  |
+| VPS-01-004 | Lỗi kết nối SSH | L1 | Đã rà soát và sửa | Sửa overclaim zone: --list-all không --zone đọc default zone, chưa chắc active zone; unitactive không chứng minh listener. | Năm câu tách ICMP/TCP/daemon/policy, thay đáp án đóng sớm bằng nhầm lẫn ping. |
+| VPS-01-005 | Lỗi kết nối SSH | L2 | Đã rà soát và sửa | Phân biệt hostkey/userkey và reinstall/fingerprint trust; không tuyên bố mismatch đã được xác minh bằng một fingerprint đơn. | Sáu câu riêng về trust chain và cập nhật entry hẹp; không dùng filler nguyên nhân. |
+| VPS-01-006 | Lỗi kết nối SSH | L2 | Đã rà soát và sửa | Giữ điều kiện IP ownership/auth timeline, không đồng nhất ban với attacker/hợp lệ; log Ban định dạng journal. | Sáu câu riêng về nguồn, jail, auth và policy thay đóng ticket chung. |
+| VPS-01-007 | Lỗi kết nối SSH | L3 | Đã rà soát và sửa | sshd -T reports parsed configuration, not the port currently bound by a running daemon. The port grep can also match gatewayports; compare the listener and active firewall zone. | The six questions distinguish the configured port, live listener, client target and access policy. |
+| VPS-02-002 | Lỗi kết nối mạng | L0 | Đã rà soát và sửa | DNS query timeout means no response in the observed window, not a proven unreachable resolver. NXDOMAIN, ICMP reachability and HTTP are separate observations. | The questions compare IP access and hostname access and explain each command choice. |
+| VPS-02-003 | Lỗi kết nối mạng | L1 | Đã rà soát và sửa | A link-up interface, an assigned IPv4 address and an active NetworkManager connection are different facts. Do not assume Ubuntu uses NetworkManager by default. | The questions move from the guest observation to profile and allocation checks before a change. |
+| VPS-02-004 | Lỗi kết nối mạng | L1 | Đã rà soát và sửa | Local response and external timeout do not alone prove a guest firewall cause. Binding, active zone, upstream policy and TLS must be checked in their own scope. | The questions focus on the customer HTTPS path and the policy actually applied. |
+| VPS-02-005 | Lỗi kết nối mạng | L2 | Đã rà soát và sửa | The panel probe already reports an IPv4 allocation; the remaining unknown is why it is absent on the guest interface. An empty inet result is represented as an interface header, not narration in stdout. | The questions distinguish IPv6 success, panel allocation and guest IPv4 state. |
+| VPS-02-007 | Lỗi kết nối mạng | L3 | Đã rà soát và sửa | The source-dependent timeout does not identify an ISP, route peer or drop point. sshd -T is parsed configuration, while ss reports the runtime listener. | The questions require comparable TCP probes and network escalation evidence. |
+| VPS-03-002 | Lỗi hệ thống và service | L0 | Đã rà soát và sửa | id reports account identity, not necessarily the running process user. Mode 755 on uploads needs evaluation with parent path, ACL and mount properties. | The questions distinguish mode evidence from application identity and a narrow permission remedy. |
+| VPS-03-004 | Lỗi hệ thống và service | L1 | Đã rà soát và sửa | SELinux AVC data and context labels must be compared with intended access. permissive=0 records enforcing denial; the event alone does not prove a policy bug. | The questions check mode, AVC, context and intended write before proposing label or policy work. |
+| VPS-03-005 | Lỗi hệ thống và service | L2 | Đã rà soát và sửa | A failed database dependency and missing data path do not establish corruption. Confirm the unit dependency and mount before any database operation. | The questions treat database data as protected and preserve escalation to the owner. |
+| VPS-03-006 | Lỗi hệ thống và service | L2 | Đã rà soát và sửa | ModuleNotFoundError with a systemd ExecStart virtual environment points to a deployment or environment mismatch. Installing into system Python would not fix that environment. | The questions distinguish service restart behavior, Python runtime and virtual environment dependencies. |
+| VPS-04-001 | Hiệu năng VPS | L0 | Đã rà soát và sửa | ps percent CPU is process CPU time over elapsed lifetime; the top interval is a different sample. High python3 CPU alone does not indicate malicious activity. | The questions separate process measurement, guest-wide load and workload ownership. |
+| VPS-04-002 | Hiệu năng VPS | L0 | Đã rà soát và sửa | Available memory, swap used and vmstat swap in/out measure different things. The first vmstat report averages since boot; later reports are intervals. | The questions use numeric evidence to teach memory pressure without diagnosing a leak from a snapshot. |
+| VPS-04-003 | Hiệu năng VPS | L1 | Đã rà soát và sửa | The OOM kill is an observed event, while heap, native allocation and cgroup limit remain possible explanations. A unit result does not identify the underlying memory demand. | The questions retain PID and unit evidence and avoid prescribing a single RAM increase. |
+| VPS-04-004 | Hiệu năng VPS | L1 | Đã rà soát và sửa | Modern sysstat reports r_await and w_await. The first iostat report may average since boot; device utilization alone does not prove saturation on a multiqueue device. | The questions distinguish CPU iowait, device latency and physical device failure. |
+| VPS-04-005 | Hiệu năng VPS | L2 | Đã rà soát và sửa | Container cgroup statistics must be read in the api container scope. A period throttle counter is not CPU time percentage; NanoCpus of one billion sets a one-CPU quota. | The questions test namespace, quota and before/after counter measurement without host CPU overclaim. |
+| VPS-05-003 | Ổ đĩa và filesystem | L1 | Đã rà soát và sửa | journalctl --disk-usage includes active and archived journals. Vacuum targets archived files and cannot promise that all reported usage is freed. | The questions focus on retention and the source of logs, not a generic cleanup action. |
+| VPS-05-005 | Ổ đĩa và filesystem | L2 | Đã rà soát và sửa | Disk, partition and filesystem sizes must be checked separately. Growing XFS requires an appropriately enlarged underlying partition or volume first. | The questions use the 20-to-40 GiB change and require a bounded plan. |
+| VPS-05-006 | Ổ đĩa và filesystem | L2 | Đã rà soát và sửa | lsof +L1 identifies unlinked but open files. A five-GiB deleted file is a candidate, not a guarantee of five GiB freed until its owning process releases the handle. | The questions pair the process owner with graceful release and post-change filesystem verification. |
 | VPS-05-007 | Ổ đĩa và filesystem | L3 | Đã rà soát và sửa | Giữ phân biệt ro/backup với integrity; cấm fsck mounted-rw và chuyển storage. Kiểm tra tên unit và khung systemctl output. | Sáu câu và ba hint đi từ rescue tới bảo toàn/recovery; không chốt ổ vật lý hỏng. |
-| VPS-07-002 | Website/HTTP | L0 | Chờ rà soát |  |  |
-| VPS-07-004 | Website/HTTP | L1 | Chờ rà soát |  |  |
-| VPS-07-006 | Website/HTTP | L2 | Chờ rà soát |  |  |
-| VPS-07-007 | Website/HTTP | L3 | Chờ rà soát |  |  |
-| VPS-08-001 | Tên miền/DNS | L0 | Chờ rà soát |  |  |
-| VPS-08-004 | Tên miền/DNS | L1 | Chờ rà soát |  |  |
-| VPS-08-005 | Tên miền/DNS | L2 | Chờ rà soát |  |  |
-| VPS-08-007 | Tên miền/DNS | L3 | Chờ rà soát |  |  |
-| VPS-01-008 | Lỗi kết nối SSH | L3 | Chờ rà soát |  |  |
+| VPS-07-002 | Website/HTTP | L0 | Đã rà soát và sửa | Thu hẹp khẳng định thiếu index trong đáp án nguồn: directory forbidden chưa đủ chứng minh file thiếu. | Câu hỏi riêng về403/index/access. |
+| VPS-07-004 | Website/HTTP | L1 | Đã rà soát và sửa | Refused không phân biệt stopped với target sai. | Tách proxy/systemd/endpoint. |
+| VPS-07-006 | Website/HTTP | L2 | Đã rà soát và sửa | Không coi503 là Nginx syntax; giữ app config failure. | Deploy/readiness cụ thể. |
+| VPS-07-007 | Website/HTTP | L3 | Đã rà soát và sửa | CN không thay SAN; thu hẹp chẩn đoán mapping nguồn. | Viết lại toàn bộ lời dẫn, probe, câu hỏi, phản hồi và đáp án để loại bỏ từ bị dính; giữ bất định về SAN và cấu hình runtime. |
+| VPS-08-001 | Tên miền/DNS | L0 | Đã rà soát và sửa | Single resolver không đại diện toàn DNS; allocation không tự cập nhật domain. | Hai IP và cutover là trọng tâm riêng. |
+| VPS-08-004 | Tên miền/DNS | L1 | Đã rà soát và sửa | Timeout khácnegativeanswer,khôngclaimAabsent. | IPtestvsresolverpath riêng. |
+| VPS-08-005 | Tên miền/DNS | L2 | Đã rà soát và sửa | Không overclaim allauthoritative từsingleNS;TTL/recursive khácnhau. | Nguồnquery vàmốc cache cụthể. |
+| VPS-08-007 | Tên miền/DNS | L3 | Đã rà soát và sửa | PTRkhácA,đúngegressIPvàreversezoneowner. | Policyvàmailverificationkhôngquákếtluận. |
+| VPS-01-008 | Lỗi kết nối SSH | L3 | Đã rà soát và sửa | The kernel log identifies an OOM kill of a process; it does not prove sshd was killed or that memory pressure alone closed this specific session. | The six questions require a matching timeline, process identity and explicit uncertainty at L3. |
 | VPS-02-006 | Lỗi kết nối mạng | L2 | Đã rà soát và sửa | Đọc ICMP theo đích/nguồn, không quy router lỗi từ hop ICMP. Giữ phân biệt TCP reachability với SSH login. | Sáu câu tập trung phạm vi đường đi, số đo và escalation; bỏ cấu trúc hỏi chung. |
-| VPS-02-008 | Lỗi kết nối mạng | L3 | Chờ rà soát |  |  |
-| VPS-03-007 | Lỗi hệ thống và service | L3 | Chờ rà soát |  |  |
-| VPS-03-008 | Lỗi hệ thống và service | L3 | Chờ rà soát |  |  |
-| VPS-04-006 | Hiệu năng VPS | L2 | Chờ rà soát |  |  |
+| VPS-02-008 | Lỗi kết nối mạng | L3 | Đã rà soát và sửa | IPv4 ping payloads of 1472 and 1200 correspond to 1500 and 1228 bytes including basic IP and ICMP headers. Tracepath nonresponse alone does not establish a PMTU. | The questions preserve the packet-size hypothesis and require tunnel and TCP verification before a change. |
+| VPS-03-007 | Lỗi hệ thống và service | L3 | Đã rà soát và sửa | The FD count of 1008 below a limit of 1024 is a later snapshot, not proof of a code leak. Process limits differ from shell and system-wide counters. | The questions require PID and time alignment, FD categories and a safe owner-led remedy. |
+| VPS-03-008 | Lỗi hệ thống và service | L3 | Đã rà soát và sửa | A read-only remount and EXT4 errors support filesystem trouble but not the physical cause or data integrity. A snapshot is not automatically a recoverable backup. | The questions link mount state, kernel errors, timeline and storage recovery authority. |
+| VPS-04-006 | Hiệu năng VPS | L2 | Đã rà soát và sửa | ps RSS is in KiB; 850000 KiB is about 830 MiB. MemoryMax=infinity does not exclude parent cgroup or VM limits, and growth alone does not prove a leak. | The questions preserve units, process age and unknown cause. |
 | VPS-04-007 | Hiệu năng VPS | L3 | Đã rà soát và sửa | Sửa nhận định vmstat: báo cáo đầu là trung bình từ boot, cần dòng thứ hai để gọi là mẫu tiếp. Không định danh noisy neighbor. | Sáu câu kiểm tra sự khác nhau giữa process CPU/steal, scope host và escalation. |
-| VPS-04-008 | Hiệu năng VPS | L3 | Chờ rà soát |  |  |
-| VPS-05-008 | Ổ đĩa và filesystem | L3 | Chờ rà soát |  |  |
-| VPS-07-003 | Website/HTTP | L1 | Chờ rà soát |  |  |
+| VPS-04-008 | Hiệu năng VPS | L3 | Đã rà soát và sửa | The backup timeline correlates with I/O latency but does not prove it caused the symptom. A completed backup is not proof that restore works. | The questions separately verify application performance and backup recovery. |
+| VPS-05-008 | Ổ đĩa và filesystem | L3 | Đã rà soát và sửa | VG free space, logical volume size and filesystem free space are distinct. An XFS grow follows an authorized logical volume grow and needs layer-by-layer verification. | The questions preserve the measured disk, LV and filesystem sizes and their change order. |
+| VPS-07-003 | Website/HTTP | L1 | Đã rà soát và sửa | Thu hẹp source root mismatch thành giả thuyết cần runtime-vhost proof. | Riêng URL/Host/release, nhãn ngắn cân đối. |
 | VPS-07-005 | Website/HTTP | L2 | Đã rà soát và sửa | openssl x509-dates phải có cả notBefore/notAfter; so sánh mốc UTC; service active không xác minh cert deployment. | Bỏ thuật ngữ nội bộ trong 6 câu và ghi rõ SNI/deployment. |
-| VPS-07-008 | Website/HTTP | L3 | Chờ rà soát |  |  |
-| VPS-08-006 | Tên miền/DNS | L2 | Chờ rà soát |  |  |
-| VPS-08-008 | Tên miền/DNS | L3 | Chờ rà soát |  |  |
+| VPS-07-008 | Website/HTTP | L3 | Đã rà soát và sửa | curl time_total trả số giây dạng thập phân; tương quan với tải cao chưa chứng minh nguyên nhân. | Viết lại toàn bộ lời dẫn, probe, câu hỏi, phản hồi và đáp án để loại bỏ từ bị dính. |
+| VPS-08-006 | Tên miền/DNS | L2 | Đã rà soát và sửa | A/AAAA/allocation khácnhau;khôngsuy guestfirewall. | Táchfamily vàquyềndomain. |
+| VPS-08-008 | Tên miền/DNS | L3 | Đã rà soát và sửa | Algorithm13keyphảiECDSAP256,noellipsis;DNSKEY≠validchain. | GiữuncertainDSvskey/signature. |
 | VPS-06-001 | Quản lý VPS | L0 | Đã rà soát và sửa | Phân biệt nguồn VM, event và ý định owner; panel snapshot không đồng nghĩa hardware failure. | Viết lại 5 câu, 15 lựa chọn; bổ sung diễn giải khách và ngữ cảnh từng phép đọc. |
-| VPS-06-002 | Quản lý VPS | L0 | Chờ rà soát |  |  |
-| VPS-06-003 | Quản lý VPS | L1 | Chờ rà soát |  |  |
-| VPS-06-004 | Quản lý VPS | L1 | Chờ rà soát |  |  |
-| VPS-06-005 | Quản lý VPS | L2 | Chờ rà soát |  |  |
-| VPS-06-006 | Quản lý VPS | L2 | Chờ rà soát |  |  |
-| VPS-06-007 | Quản lý VPS | L3 | Chờ rà soát |  |  |
-| VPS-06-008 | Quản lý VPS | L3 | Chờ rà soát |  |  |
-| VPS-10-001 | Ảo hóa/hạ tầng | L0 | Chờ rà soát |  |  |
-| VPS-10-002 | Ảo hóa/hạ tầng | L0 | Chờ rà soát |  |  |
-| VPS-10-003 | Ảo hóa/hạ tầng | L1 | Chờ rà soát |  |  |
-| VPS-10-004 | Ảo hóa/hạ tầng | L1 | Chờ rà soát |  |  |
+| VPS-06-002 | Quản lý VPS | L0 | Đã rà soát và sửa | Không suy corruptDB/reboot từCPU snapshot; xác minh tác động backup và latency. | Viết riêng5câu và ngữ cảnh workload/owner. |
+| VPS-06-003 | Quản lý VPS | L1 | Đã rà soát và sửa | Console khôngphải authorization; recovery phụ thuộcOS và quyềnowner. | Tách điều kiệnkỹ thuật,identity và kết quảlogin. |
+| VPS-06-004 | Quản lý VPS | L1 | Đã rà soát và sửa | Cảnhbáoghiđè+thiếubackup; restoretest khác tồn tạiartifact. | Viết rõ yêu cầu vàinformed approval thay warningchung. |
+| VPS-06-005 | Quản lý VPS | L2 | Đã rà soát và sửa | Phân biệt UUID cũ với gắn sai volume; sửa dạng UUID ext4 trong blkid. | Câu hỏi về boot/mount giữ giới hạn kết luận. |
+| VPS-06-006 | Quản lý VPS | L2 | Đã rà soát và sửa | ISO/boot order không chứng minh mất disk; giữ thông tin REC-420 và health pending. | Phân biệt đường boot với quyền kết thúc recovery. |
+| VPS-06-007 | Quản lý VPS | L3 | Đã rà soát và sửa | Gateway502 và process heartbeat không xác minh kernel/app; escalation đúng control-plane. | Làm rõ bất định thay phán guest crash. |
+| VPS-06-008 | Quản lý VPS | L3 | Đã rà soát và sửa | ACPI delivered không bảo đảm dữ liệu đãflush; không hứa shutdown khôngcorruption. | Timeline/IOrisk và quyềnforce stop được hỏi riêng. |
+| VPS-10-001 | Ảo hóa/hạ tầng | L0 | Đã rà soát và sửa | Đã đối chiếu panel/host state và giới hạn integrity; start phụ thuộc incident review. | Tách trạng thái nguồn khỏi nguyên nhân, quyền và kết quả phục hồi. |
+| VPS-10-002 | Ảo hóa/hạ tầng | L0 | Đã rà soát và sửa | Phân biệt vNIC host, thiết bị guest và route; sửa ip-link output đủ trường thực tế. | Câu hỏi về guest/host rõ ngữ cảnh, không quy lỗi NetworkManager sớm. |
+| VPS-10-003 | Ảo hóa/hạ tầng | L1 | Đã rà soát và sửa | Actual/expected bridge phải gắn MAC/network intent; domiflist cần bảng đầy đủ. | Tách host attachment, guest route và inventory trong câu hỏi. |
+| VPS-10-004 | Ảo hóa/hạ tầng | L1 | Đã rà soát và sửa | Steal là thời gian guest chờ CPU host; ảnh chụp và cảnh báo chỉ hỗ trợ contention, không định danh VM gây tải. | Câu hỏi đi từ triệu chứng sang dữ kiện hai lớp và quyết định chuyển cấp. |
 | VPS-10-005 | Ảo hóa/hạ tầng | L2 | Đã rà soát và sửa | lsblk phải là bảng thiết bị; domblklist thiếu vdb không đồng nghĩa disk deleted; bảo vệ đúng ID và dữ liệu. | Câu hỏi phân biệt attachment, thiết bị và integrity, không dùng thuật ngữ nội bộ. |
-| VPS-10-006 | Ảo hóa/hạ tầng | L2 | Chờ rà soát |  |  |
-| VPS-10-007 | Ảo hóa/hạ tầng | L3 | Chờ rà soát |  |  |
-| VPS-10-008 | Ảo hóa/hạ tầng | L3 | Chờ rà soát |  |  |
-| VPS-09-001 | Bảo mật/abuse | L0 | Chờ rà soát |  |  |
-| VPS-09-002 | Bảo mật/abuse | L0 | Chờ rà soát |  |  |
-| VPS-09-003 | Bảo mật/abuse | L1 | Chờ rà soát |  |  |
-| VPS-09-004 | Bảo mật/abuse | L1 | Chờ rà soát |  |  |
-| VPS-09-005 | Bảo mật/abuse | L2 | Chờ rà soát |  |  |
-| VPS-09-006 | Bảo mật/abuse | L2 | Chờ rà soát |  |  |
+| VPS-10-006 | Ảo hóa/hạ tầng | L2 | Đã rà soát và sửa | Phân biệt snapshot creation, restore completion và mtime. Mtime không đo giao dịch; backup inventory chưa chứng minh restore được. | Tránh hứa phục hồi dữ liệu, tập trung timeline và xác minh nghiệp vụ. |
+| VPS-10-007 | Ảo hóa/hạ tầng | L3 | Đã rà soát và sửa | Tương quan timeline và bridge learning chưa định danh switch/ARP cause. Quyết định host/network thuộc đội hạ tầng. | Bài L3 có bốn nguồn panel, giới hạn quyền và điều kiện thử theo SLA. |
+| VPS-10-008 | Ảo hóa/hạ tầng | L3 | Đã rà soát và sửa | Source ghi host is Oct 22 trong stdout date -u; bỏ chú thích giả. Guest OS source là CentOS Stream 9, thay Ubuntu/timesyncd bằng chronyd và không khẳng định độ lệch khi thiếu host timestamp đồng thời. | Tập trung phân biệt trạng thái NTP, giờ guest và kết quả TLS thay vì kết luận sớm. |
+| VPS-09-001 | Bảo mật/abuse | L0 | Đã rà soát và sửa | Failed≠accepted,last không forensic đầy đủ. | Giữ uncertainty hai chiều vàphạm vi log. |
+| VPS-09-002 | Bảo mật/abuse | L0 | Đã rà soát và sửa | Source tạmthời/failedreason chưađượcproven; đãnarrow. | SourceIP/jail/policy vàretrylogin cụ thể. |
+| VPS-09-003 | Bảo mật/abuse | L1 | Đã rà soát và sửa | Mode≠denial;AVCconnectvàlistener cầncorrelation. | Policyhẹp,giữEnforcing,testrequestthực. |
+| VPS-09-004 | Bảo mật/abuse | L1 | Đã rà soát và sửa | Account tồn tại/sudo khác authorization, không suy actor từ tên. | Quyền và provenance riêng. |
+| VPS-09-005 | Bảo mật/abuse | L2 | Đã rà soát và sửa | SMTP socket/volume không chứng minh spam; sửa ssNetidcolumn. | Traffic/process/intent tách rõ. |
+| VPS-09-006 | Bảo mật/abuse | L2 | Đã rà soát và sửa | Guestvsupstreamscope,triggerkhôngtựchứngminhattack. | Escalationvàphục hồi cóđiềukiện. |
 | VPS-09-007 | Bảo mật/abuse | L3 | Đã rà soát và sửa | Phân biệt Accepted với failed; last không xác thực actor. Thay fingerprint rút gọn bằng dạng SHA256 hợp lệ 43 ký tự. | Viết rõ uncertain authorization và bảo toàn chứng cứ, không quy danh tính từ IP. |
-| VPS-09-008 | Bảo mật/abuse | L3 | Chờ rà soát |  |  |
-| VPS-13-001 | Docker (bổ sung) | L0 | Chờ rà soát |  |  |
-| VPS-13-002 | Docker (bổ sung) | L0 | Chờ rà soát |  |  |
-| VPS-13-003 | Docker (bổ sung) | L1 | Chờ rà soát |  |  |
-| VPS-13-004 | Docker (bổ sung) | L1 | Chờ rà soát |  |  |
-| VPS-13-005 | Docker (bổ sung) | L2 | Chờ rà soát |  |  |
+| VPS-09-008 | Bảo mật/abuse | L3 | Đã rà soát và sửa | Hash≠malice,cronpossibletriggernotfullattribution. | Scheduler/artifact/authorization táchbiệt. |
+| VPS-13-001 | Docker (bổ sung) | L0 | Đã rà soát và sửa | Chuẩn hóa docker ps và Python exception, không xem exit 1 là daemon corruption. | Câu riêng về api/appconfig; đúng label ngắn, giải thích ở feedback. |
+| VPS-13-002 | Docker (bổ sung) | L0 | Đã rà soát và sửa | Giữ rỗng stdout thật; EXPOSE khác publish, PortBindings không suy app health. | Ba lớp container–host–proxy có câu và distractor riêng. |
+| VPS-13-003 | Docker (bổ sung) | L1 | Đã rà soát và sửa | Sửa ý định không được chứng minh: loopback observed, không khẳng định intentionally bound; public khác local. | Câu hỏi dùng chính 127.0.0.1/200 và proxy. |
+| VPS-13-004 | Docker (bổ sung) | L1 | Đã rà soát và sửa | OOM event khác leak hoặc sole limit-cause; stats snapshot không peak. | Câu hỏi phân biệt event, usage, configuration và action. |
+| VPS-13-005 | Docker (bổ sung) | L2 | Đã rà soát và sửa | getent dùng NSS, không chỉ DNS; rỗng chưa NXDOMAIN; sửa host entry format thêm hostname. | Prompt dùng scope host/container và giới hạn kết luận. |
 | VPS-13-006 | Docker (bổ sung) | L2 | Đã rà soát và sửa | Tách route container, IPv4 forwarding, NAT và firewall; không cam kết bật ip_forward chữa mọi lớp. Kiểm tra Docker bridge docs và iptables/nftables forwarding caveat. | Viết lại đủ sáu câu theo đường đi gói và ranh giới quyền; hint tăng dần theo container→host→policy. |
-| VPS-13-007 | Docker (bổ sung) | L3 | Chờ rà soát |  |  |
-| VPS-13-008 | Docker (bổ sung) | L3 | Chờ rà soát |  |  |
+| VPS-13-007 | Docker (bổ sung) | L3 | Đã rà soát và sửa | Sửa Compose ps cần--all để show DB Exited; OOM snapshot không chứng minh host RAM sole cause; chuẩn hóa free header. | Tách API db dependency, không cho API Up=resolved. |
+| VPS-13-008 | Docker (bổ sung) | L3 | Đã rà soát và sửa | Tag không là immutable artifact; data migration unknown chặn cam kết rollback. | Các câu tách correlation, config error, release compatibility. |
 | VPS-11-001 | Sao lưu/khôi phục | L0 | Đã rà soát và sửa | Tách quota target khỏi dung lượng guest; không xem failed task hoặc catalog entry là backup đã kiểm chứng. Giữ nguyên output panel được biên soạn. | Viết lại đủ năm câu, 15 phương án/feedback, ba hint và toàn bộ giải thích phép kiểm tra; diễn giải backup bằng tiếng Việt. |
-| VPS-11-002 | Sao lưu/khôi phục | L0 | Chờ rà soát |  |  |
-| VPS-11-003 | Sao lưu/khôi phục | L1 | Chờ rà soát |  |  |
-| VPS-11-004 | Sao lưu/khôi phục | L1 | Chờ rà soát |  |  |
-| VPS-11-005 | Sao lưu/khôi phục | L2 | Chờ rà soát |  |  |
-| VPS-11-006 | Sao lưu/khôi phục | L2 | Chờ rà soát |  |  |
-| VPS-11-007 | Sao lưu/khôi phục | L3 | Chờ rà soát |  |  |
-| VPS-11-008 | Sao lưu/khôi phục | L3 | Chờ rà soát |  |  |
-| VPS-12-001 | Panel/provisioning | L0 | Chờ rà soát |  |  |
-| VPS-12-002 | Panel/provisioning | L0 | Chờ rà soát |  |  |
-| VPS-12-003 | Panel/provisioning | L1 | Chờ rà soát |  |  |
+| VPS-11-002 | Sao lưu/khôi phục | L0 | Đã rà soát và sửa | Tính 56 giờ; catalog không đủ cam kết PITR; tìm nguồn khác trước kết luận mất dữ liệu. | Tách restore với backup mới; câu hỏi dùng hai mốc thực. |
+| VPS-11-003 | Sao lưu/khôi phục | L1 | Đã rà soát và sửa | Một hash không là kiểm tra toàn vẹn đạt; output question không đòi kết luận baseline khi G1 chưa bắt buộc; tar -t không bảo đảm file data integrity. | Phân biệt file tồn tại, đọc được cấu trúc và so checksum. |
+| VPS-11-004 | Sao lưu/khôi phục | L1 | Đã rà soát và sửa | Kho host khác guest; active chains cần operator đánh giá. | Prompt dùng task và số 99,9%, feedback phân biệt các lớp storage. |
+| VPS-11-005 | Sao lưu/khôi phục | L2 | Đã rà soát và sửa | Thay lsblk pseudo-stdout bằng bảng; available/catalog chưa là kiểm tra toàn vẹn đạt. | Dùng scope vda/vdb và vol-72 cụ thể. |
+| VPS-11-006 | Sao lưu/khôi phục | L2 | Đã rà soát và sửa | 60 giờ không là số giao dịch mất; binlog pending chưa bảo đảm PITR; boot khác order integrity. | Câu hỏi xoay quanh timestamp và order thay nhãn RPO mơ hồ. |
+| VPS-11-007 | Sao lưu/khôi phục | L3 | Đã rà soát và sửa | Không thu secret; key ID hỗ trợ mismatch; chuẩn hóa prefix journal giữ key-rejected event. | Câu và feedback phân biệt metadata, secret, kết quả backup. |
+| VPS-11-008 | Sao lưu/khôi phục | L3 | Đã rà soát và sửa | Cùng IP panel chưa đủ nếu không network-active; giữ ARP/attachment và không tắt production. | Đặt lựa chọn quanh clone/production thay generic close. |
+| VPS-12-001 | Panel/provisioning | L0 | Đã rà soát và sửa | Billing success khác provisioning success; pool 0 không là guest profile issue. | Giải thích cấp phát cho L0, không đưa khách tới SSH trước VM ready. |
+| VPS-12-002 | Panel/provisioning | L0 | Đã rà soát và sửa | Panel timestamp khác host current; running không chứng minh guest services; giữ hypervisor context. | Câu hỏi tập trung mâu thuẫn 50 phút thay power action. |
+| VPS-12-003 | Panel/provisioning | L1 | Đã rà soát và sửa | os-release cần assignment mỗi dòng; sai OS không cho quyền reinstall. | Tách order–guest–audit và dữ liệu khách trong câu hỏi. |
 | VPS-12-004 | Panel/provisioning | L1 | Đã rà soát và sửa | Sửa cách diễn giải nproc: CPU sẵn dùng cho tiến trình, không đồng nhất tuyệt đối với CPU online của cả VM. Tách current/max vCPU và task pending; giữ nguyên đáp án và output. | Thay prompt chung bằng phép đối chiếu plan–guest–host; feedback mỗi lựa chọn nói đúng lớp dữ liệu. |
-| VPS-12-005 | Panel/provisioning | L2 | Chờ rà soát |  |  |
-| VPS-12-006 | Panel/provisioning | L2 | Chờ rà soát |  |  |
-| VPS-12-007 | Panel/provisioning | L3 | Chờ rà soát |  |  |
-| VPS-12-008 | Panel/provisioning | L3 | Chờ rà soát |  |  |
-| VPS-14-001 | Billing (bổ sung) | L0 | Chờ rà soát |  |  |
-| VPS-14-002 | Billing (bổ sung) | L0 | Chờ rà soát |  |  |
-| VPS-14-003 | Billing (bổ sung) | L1 | Chờ rà soát |  |  |
-| VPS-14-004 | Billing (bổ sung) | L1 | Chờ rà soát |  |  |
-| VPS-14-005 | Billing (bổ sung) | L2 | Chờ rà soát |  |  |
-| VPS-14-006 | Billing (bổ sung) | L2 | Chờ rà soát |  |  |
-| VPS-14-007 | Billing (bổ sung) | L3 | Chờ rà soát |  |  |
+| VPS-12-005 | Panel/provisioning | L2 | Đã rà soát và sửa | 40 phút không tự là hung job; progress 2 phút và safety gate phải giữ. | Lựa chọn phân biệt wait, stuck, authorized destructive action. |
+| VPS-12-006 | Panel/provisioning | L2 | Đã rà soát và sửa | IP mismatch chưa là cross-tenant; chuẩn hóa ip addr, giữ subnet/address gốc. | Phân biệt order/live/ownership/gateway trong từng câu. |
+| VPS-12-007 | Panel/provisioning | L3 | Đã rà soát và sửa | 403 không đồng nghĩa VM off; scope hẹp và owner đều cần; không reboot tự ý để verify. | Phân biệt tác vụ đọc/mutation, token metadata/secret. |
+| VPS-12-008 | Panel/provisioning | L3 | Đã rà soát và sửa | Không login record chưa là rỗng; retry completed twice hỗ trợ duplicate không chứng minh nguyên nhân code. | Các phương án quanh identity/data/billing khác nhau. |
+| VPS-14-001 | Billing (bổ sung) | L0 | Đã rà soát và sửa | Payment snapshot khác việc khách đã gửi tiền; không dùng reboot hoặc SSH để bypass billing hold. | Tách đình chỉ, hóa đơn và settlement bằng câu cụ thể. |
+| VPS-14-002 | Billing (bổ sung) | L0 | Đã rà soát và sửa | Settled event khác event delivery; reconciliation cần idempotency, không thu lại. | Câu hỏi gắn Paid/Waiting/pay-2202 thay generic state. |
+| VPS-14-003 | Billing (bổ sung) | L1 | Đã rà soát và sửa | End-of-term không là immediate deletion; policy không tự tạo request. | Câu hỏi tập trung mốc 15/11 và hậu quả dữ liệu. |
+| VPS-14-004 | Billing (bổ sung) | L1 | Đã rà soát và sửa | Không suy eligibility từ 7 ngày; không default approve/deny; request chưa gửi. | Phân biệt dữ kiện, điều khoản, quyết định. |
+| VPS-14-005 | Billing (bổ sung) | L2 | Đã rà soát và sửa | Free nhưng reserved không là available for all; addon active khác guest IP. | Câu hỏi phân biệt entitlement, review, assignment. |
+| VPS-14-006 | Billing (bổ sung) | L2 | Đã rà soát và sửa | Expired khác deleted; request khác applied hold; pending restore không bảo đảm dữ liệu. | Câu hỏi theo deadline và authority, không generic warning. |
+| VPS-14-007 | Billing (bổ sung) | L3 | Đã rà soát và sửa | Two lines khác double charge; g1 single charge 2 plan; tax/refund phải reconcile. | Dùng invoice/order/payment/VM để kiểm tra 4 khái niệm. |
 | VPS-14-008 | Billing (bổ sung) | L3 | Đã rà soát và sửa | Lý do abuse khác nonpayment; received khác approved; giữ ranh giới security-lead và không cam kết ETA hoặc resolved từ escalation. Các panel field là dữ liệu tình huống, không phải chính sách nhà cung cấp thật. | Bỏ lộ lý do abuse khỏi đáp án triage trước điều tra; dùng tiếng Việt cho đình chỉ, hồ sơ, chuyển cấp. |

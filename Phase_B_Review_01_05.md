@@ -1,69 +1,59 @@
-# Phase B — Review topics 01–05
+# Phase B review — VPS topics 01–05
 
-Rà soát bằng cách đọc từng source customer message, command/output, câu hỏi, key và feedback; không đánh đồng schema validation với technical/editorial review. Người thực hiện là agent nội dung, không có xác nhận SME con người.
+This review covers 40 Guided cases (VPS-01-001 through VPS-05-008). The case-specific authoring is in `scripts/content/phase-b-01-05.mjs`. All 40 have reviewed customer context, hints, initial and related probe explanations, option labels and feedback, a verification prompt, six answer fields and technical/editorial notes. The module preserves existing question IDs, option IDs, answer keys and evidence gates. The original ticket source is unchanged.
 
-## Batch B1 samples
+## Case review
 
-| ID | Topic | Level | Technical / editorial | Thay đổi |
-|---|---|---|---|---|
-| VPS-01-001 | SSH | L0 | Đã đọc và sửa từng case | Đối chiếu systemctl/ss; tách trạng thái unit, listener và xác thực. Không thay đáp án hay điều kiện quyền. |
-| VPS-02-006 | Network | L2 | Đã đọc và sửa từng case | Đọc ICMP theo đích/nguồn, không quy router lỗi từ hop ICMP. Giữ phân biệt TCP reachability với SSH login. |
-| VPS-03-003 | Linux System & Services | L1 | Đã đọc và sửa từng case | Đối chiếu nginx -t: test cú pháp/mở file, không tự sửa và không chứng minh HTTP. Giữ key gốc. |
-| VPS-04-007 | CPU, RAM & Performance | L3 | Đã đọc và sửa từng case | Sửa nhận định vmstat: báo cáo đầu là trung bình từ boot, cần dòng thứ hai để gọi là mẫu tiếp. Không định danh noisy neighbor. |
-| VPS-05-007 | Disk & Filesystem | L3 | Đã đọc và sửa từng case | Giữ phân biệt ro/backup với integrity; cấm fsck mounted-rw và chuyển storage. Kiểm tra tên unit và khung systemctl output. |
+| Case | Evidence and conclusion checked | Editorial or safety decision |
+| --- | --- | --- |
+| 01-001 | Inactive sshd and empty TCP listener table explain refusal, not why sshd stopped. | Read journal/config before authorized start; verify from client. |
+| 01-002 | `getent passwd admin` has empty stdout. | Distinguish missing account entry from a bad password. |
+| 01-003 | Private key is readable by group and others on the client. | Limit key permissions; do not promise that login then succeeds. |
+| 01-004 | Active service does not prove listener or applied firewall zone. | Compare active zone and TCP path before any rule change. |
+| 01-005 | Host key warning follows reinstall, but trust needs independent fingerprint comparison. | Never teach blind `known_hosts` removal. |
+| 01-006 | Fail2ban ban identifies one source IP, not whether it is malicious. | Confirm source ownership, auth timeline and policy before unban. |
+| 01-007 | Parsed sshd port and runtime listener have different meaning. | Confirm intended port and client command before policy advice. |
+| 01-008 | OOM event and memory pressure share a window; direct SSH cause remains unproved. | L3 asks for timeline and owner escalation, not a guessed RAM fix. |
+| 02-001 | Internal reachability plus absent default route supports route investigation; panel allocation is a separate fact. | Scope the early evidence question to address and route output. |
+| 02-002 | DNS query timeout is not NXDOMAIN, and IP reachability does not prove HTTP. | Inspect active resolver and profile before changing DNS. |
+| 02-003 | Link up, IPv4 assignment and NetworkManager profile state differ. | Verify renderer, MAC and allocation after migration. |
+| 02-004 | Local HTTPS response and external timeout do not isolate a firewall by themselves. | Check bind, active zone and upstream path before requesting a narrow rule. |
+| 02-005 | Panel allocates IPv4 while guest shows no `inet` address; IPv6 remains usable. | The `ip` fixture uses an interface header rather than narration as stdout. |
+| 02-006 | MTR and ping show 25% ICMP loss at destination from the customer source; a second source opens TCP/22. | Do not name a failed router; hand comparable samples to network. |
+| 02-007 | Tokyo TCP/22 works while two ISP probes time out; guest has listener. | Gather source/time/capture evidence before edge escalation. |
+| 02-008 | DF payload 1472 is too large on the tested VPN path, while 1200 succeeds. | PMTU/MSS remains a hypothesis for TCP upload; owner must authorize any change. |
+| 03-001 | Nginx service and listener are absent; configuration test and HTTP are separate checks. | Review log/config before start and test customer URL afterward. |
+| 03-002 | Upload directory mode 755 and account identity support a permission hypothesis. | Inspect process user, parent path, ACL and mount before a narrow change. |
+| 03-003 | `nginx -t` identifies a syntax error near line 45. | Fix with configuration owner, retest syntax, then runtime and HTTP. |
+| 03-004 | AVC and SELinux enforcing mode show denial, not necessarily a faulty policy. | Match path, label and intended write before remediation. |
+| 03-005 | App dependency and missing DB data path need mount/unit inspection; corruption is unproved. | Protect database data and use owner escalation. |
+| 03-006 | Restart loop and Python module error point to release environment mismatch. | Check virtualenv and manifest, avoid system Python installation. |
+| 03-007 | FD error occurred; 1008 open of 1024 is a later snapshot. | Trend FD classes and align PID/time before claiming a leak. |
+| 03-008 | Root filesystem is read only with EXT4 errors; underlying cause is unknown. | Stop writes and send storage/recovery evidence; no live repair. |
+| 04-001 | Process CPU and interval-wide CPU are different measures. | Attribute a workload with owner rather than assume abuse. |
+| 04-002 | Available RAM, swap used and swap activity are separate values. | Use interval samples and avoid a leak diagnosis from one snapshot. |
+| 04-003 | Kernel OOM kill is established; the memory demand or limit still needs investigation. | Preserve PID/cgroup scope before action. |
+| 04-004 | `vmstat` CPU `wa` differs from device-only `iostat -dx` output. | Do not treat iowait as proof of a failed disk. |
+| 04-005 | The api container cgroup has throttle counters and a one-CPU quota. | Query inside the container and compare counter deltas. |
+| 04-006 | RSS 850000 KiB is about 830 MiB; no code leak is established. | Check process trend and ancestor limits with owner. |
+| 04-007 | Guest steal samples and node contention warning support infrastructure escalation. | Do not name a noisy neighbor or self-migrate. |
+| 04-008 | I/O latency overlaps a backup window; causality and restore ability are unproved. | Verify customer performance and recovery separately. |
+| 05-001 | Block use, log directory use and journal use are different totals. | Locate candidates and protect customer writes. |
+| 05-002 | Inodes are exhausted while block capacity remains; file count alone is not a deletion plan. | Check ownership and filesystem type before remedy. |
+| 05-003 | Journal usage includes active and archived files; vacuum frees eligible archived data only. | Use retention policy and verify freed space. |
+| 05-004 | `/data` is read only and kernel reports I/O error; exact cause is unknown. | Preserve data and escalate to storage; acknowledging incident is not resolution. |
+| 05-005 | Disk size grew, but partition and XFS filesystem did not. | Grow each layer only with an authorized, checked plan. |
+| 05-006 | An unlinked open file can retain blocks until its process closes the handle. | Coordinate graceful release; recheck `df` afterward. |
+| 05-007 | Rescue boot, EXT4 errors and read-only root need recovery planning. | No `fsck` on mounted filesystem, reboot or format by support. |
+| 05-008 | VG free extents, LV size and filesystem size are distinct. | Preserve the correct volume order and verify each layer. |
 
-## Ghi nhận từng case
+## Focused checks
 
-### VPS-01-001
+- `node --check scripts/content/phase-b-01-05.mjs`: passed.
+- Import check: 40 case records, 223 question records, 40 six-field answer overrides, and no empty prompt, explanation, option label or feedback.
+- Applied all 40 edits to the existing Guided content in memory with `applyGuidedEdits`: passed; no unknown question or option ID.
+- Compared authored output changes to `review.fixtureChanges` for these cases: no undocumented fixture override found.
+- Reviewed the four source pseudo-outputs explicitly: 01-001/P2 and 03-001/P2 use a realistic empty `ss` table, 01-002/P2 uses empty stdout, and 02-005/P2 uses an interface header without `inet`.
+- Correct answer was strictly the longest label in 11/32, 9/32 and 13/32 single-choice questions for topics 01, 02 and 03 after label revision. This is a cue check, not a proof of assessment quality.
 
-Đối chiếu systemctl/ss; tách trạng thái unit, listener và xác thực. Không thay đáp án hay điều kiện quyền.
-
-Viết lại đủ sáu câu, từng lựa chọn, ba hint và note; giải thích command theo triệu chứng refused.
-
-Thay fixture Guided: P2: No listener on :22 là diễn giải, không phải stdout ss; thay bằng bảng không có listener.; G2: Bổ sung tiêu đề df cho mẫu cùng dung lượng, không đổi kết luận.
-
-Nguồn đối chiếu: [https://www.freedesktop.org/software/systemd/man/latest/systemctl.html](https://www.freedesktop.org/software/systemd/man/latest/systemctl.html), [https://man7.org/linux/man-pages/man8/ss.8.html](https://man7.org/linux/man-pages/man8/ss.8.html).
-
-### VPS-02-006
-
-Đọc ICMP theo đích/nguồn, không quy router lỗi từ hop ICMP. Giữ phân biệt TCP reachability với SSH login.
-
-Sáu câu tập trung phạm vi đường đi, số đo và escalation; bỏ cấu trúc hỏi chung.
-
-Thay fixture Guided: P1: Thay dòng mô tả Destination bằng bảng báo cáo MTR có Snt/Loss%.; P2: Thay câu 5 packets lost bằng thống kê ping transmitted/received chuẩn; tỷ lệ không đổi.
-
-Nguồn đối chiếu: [https://github.com/traviscross/mtr/blob/master/man/mtr.8.in](https://github.com/traviscross/mtr/blob/master/man/mtr.8.in), [https://man7.org/linux/man-pages/man8/ping.8.html](https://man7.org/linux/man-pages/man8/ping.8.html).
-
-### VPS-03-003
-
-Đối chiếu nginx -t: test cú pháp/mở file, không tự sửa và không chứng minh HTTP. Giữ key gốc.
-
-Rà cả pilot thủ công; viết lại năm prompt, toàn bộ feedback và giải thích mốc thay đổi.
-
-Thay fixture Guided: P2: Thêm prefix nginx [emerg] và dòng test failed đúng dạng stderr kiểm tra cấu hình.
-
-Nguồn đối chiếu: [https://nginx.org/en/docs/switches.html](https://nginx.org/en/docs/switches.html).
-
-### VPS-04-007
-
-Sửa nhận định vmstat: báo cáo đầu là trung bình từ boot, cần dòng thứ hai để gọi là mẫu tiếp. Không định danh noisy neighbor.
-
-Sáu câu kiểm tra sự khác nhau giữa process CPU/steal, scope host và escalation.
-
-Thay fixture Guided: G1: vmstat 1 2 phải có hai dòng số; thêm khoảng đo thứ hai và giải thích dòng since-boot.
-
-Nguồn đối chiếu: [https://man7.org/linux/man-pages/man8/vmstat.8.html](https://man7.org/linux/man-pages/man8/vmstat.8.html), [https://man7.org/linux/man-pages/man1/top.1.html](https://man7.org/linux/man-pages/man1/top.1.html).
-
-### VPS-05-007
-
-Giữ phân biệt ro/backup với integrity; cấm fsck mounted-rw và chuyển storage. Kiểm tra tên unit và khung systemctl output.
-
-Sáu câu và ba hint đi từ rescue tới bảo toàn/recovery; không chốt ổ vật lý hỏng.
-
-Thay fixture Guided: P2: Thay mô tả unit failed bằng bảng systemctl --failed, giữ unit và trạng thái.
-
-Nguồn đối chiếu: [https://www.freedesktop.org/software/systemd/man/latest/systemd-fsck@.service.html](https://www.freedesktop.org/software/systemd/man/latest/systemd-fsck@.service.html), [https://man7.org/linux/man-pages/man8/e2fsck.8.html](https://man7.org/linux/man-pages/man8/e2fsck.8.html).
-
-## Giới hạn
-
-Năm case B1 đã được biên soạn. 35 case còn lại chờ checkpoint B1 trước khi mở rộng. Đây là review kỹ thuật/editorial của agent bằng tài liệu và dữ liệu, không chạy VPS/command thật. Kiểm thử tích hợp do agent chính thực hiện.
+Full `npm test -- --run`, browser tests, `npm run build` and the final 112-case audit belong to the integrated Phase B pass after all three content modules are assembled. This file does not claim those gates have passed.
