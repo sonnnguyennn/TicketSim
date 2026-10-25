@@ -6,14 +6,17 @@ import { classifyGuidedCommand, emptyGuidedDraft, gradeSelection, objectiveScore
 import { commandLibrary } from './commands'
 import { CommandQuickLookup } from './CommandLibrary'
 import { mistakeIds } from './review'
+import { GUIDED_CONTENT_REVISION, revisedGuidedTicketIds } from './contentRevision'
 import type { GuidedAnswerKey, GuidedCase, GuidedQuestion } from './types'
 
 type Props = { ticket: Ticket; guidedCase: GuidedCase; progress: Progress; setProgress: React.Dispatch<React.SetStateAction<Progress>>; onBack: () => void; onOpenLibrary: (id?: string) => void }
 
 const contextLabel = (context: GuidedCase['probes'][number]['context']) => ({ guest: 'Guest', client: 'Client', panel: 'Panel', hypervisor: 'Hypervisor' })[context]
+const contentRevisionOf = (record: object): string | undefined => 'contentRevision' in record && typeof record.contentRevision === 'string' ? record.contentRevision : undefined
 
 export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onBack, onOpenLibrary }: Props) {
   const draft = progress.guidedDrafts[ticket.id] ?? emptyGuidedDraft()
+  const staleDraft = revisedGuidedTicketIds.has(ticket.id) && !!progress.guidedDrafts[ticket.id] && !draft.submitted && contentRevisionOf(draft) !== GUIDED_CONTENT_REVISION
   const input = draft.commandInput ?? ''
   const setInput = (commandInput: string) => update({ commandInput })
   const [hints, setHints] = useState<string[] | null>(null)
@@ -58,7 +61,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
 
   function update(patch: Partial<GuidedDraft> | ((current: GuidedDraft) => Partial<GuidedDraft>)) {
     setProgress(current => {
-      const previous = current.guidedDrafts[ticket.id] ?? emptyGuidedDraft()
+      const previous = current.guidedDrafts[ticket.id] ?? { ...emptyGuidedDraft(), contentRevision: GUIDED_CONTENT_REVISION }
       const changes = typeof patch === 'function' ? patch(previous) : patch
       return { ...current, guidedDrafts: { ...current.guidedDrafts, [ticket.id]: { ...previous, ...changes } } }
     })
@@ -107,25 +110,28 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
     } catch (cause) { if (generation === draftGeneration.current) setError(cause instanceof Error ? cause.message : 'Không tải được gợi ý') }
   }
   function submit() {
-    if (draft.submitted || !stageComplete(guidedCase, 'verify', draft)) return
+    if (staleDraft || draft.submitted || !stageComplete(guidedCase, 'verify', draft)) return
     setProgress(current => {
-      const previous = current.guidedDrafts[ticket.id] ?? emptyGuidedDraft()
+      const previous = current.guidedDrafts[ticket.id] ?? { ...emptyGuidedDraft(), contentRevision: GUIDED_CONTENT_REVISION }
       if (previous.submitted) return current
       const { score, total } = objectiveScore(guidedCase, previous)
       const outcomes = Object.fromEntries(guidedCase.questions.filter(question => question.kind !== 'short_answer').map(question => [question.id, previous.feedback[question.id]?.correct === true]))
       return {
         ...current,
         guidedDrafts: { ...current.guidedDrafts, [ticket.id]: { ...previous, submitted: true } },
-        guidedAttempts: [{ id: crypto.randomUUID(), ticketId: ticket.id, createdAt: new Date().toISOString(), responses: previous.responses, commands: previous.commands, hintLevel: previous.hintLevel, note: previous.note, score, total, independent: false, outcomes }, ...current.guidedAttempts],
+        guidedAttempts: [{ id: crypto.randomUUID(), ticketId: ticket.id, createdAt: new Date().toISOString(), responses: previous.responses, commands: previous.commands, hintLevel: previous.hintLevel, note: previous.note, score, total, independent: false, outcomes, contentRevision: GUIDED_CONTENT_REVISION }, ...current.guidedAttempts],
       }
     })
   }
   function restart() {
     if (!window.confirm('Bắt đầu lại bài học? Lượt đã nộp vẫn được giữ trong lịch sử.')) return
     draftGeneration.current += 1
-    update(emptyGuidedDraft())
+    const newDraft = { ...emptyGuidedDraft(), contentRevision: GUIDED_CONTENT_REVISION }
+    update(newDraft)
     setAnswer(null); setHints(null)
   }
+
+  if (staleDraft) return <div className="guided-page guided-focused"><div className="guided-topline"><button className="guided-back" onClick={onBack}><ArrowLeft size={16} /> Kho ticket</button><span>{ticket.id}</span></div><section className="guided-card"><h1>Nội dung ticket đã được sửa</h1><p>Bản đang làm dùng câu hỏi hoặc lệnh cũ. Lượt đã nộp vẫn được giữ nguyên trong lịch sử; để học bản mới, hãy bắt đầu lại bài này.</p><button className="primary-button" onClick={restart}>Bắt đầu bản mới</button></section></div>
 
   return <div className="guided-page guided-focused">
     <div className="guided-topline"><button className="guided-back" onClick={onBack}><ArrowLeft size={16} /> Kho ticket</button><span>{ticket.id} · L{ticket.difficulty}</span></div>
@@ -159,7 +165,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
         </form>
         <CommandQuickLookup />
       </section>}
-      {stage.id === 'verify' && <section className="guided-card"><h2>Tổng kết ticket</h2><p className="guided-muted">{guidedCase.verificationPrompt}</p><textarea aria-label="Ghi chú cuối ticket" rows={5} value={draft.note} onChange={event => update({ note: event.target.value })} placeholder={'Hiện tượng...\nBằng chứng...\nBước tiếp theo và xác minh...'} disabled={draft.submitted} />{!draft.submitted && draft.note.trim().length > 0 && draft.note.replace(/\s/g, '').length < 30 && <p className="guided-muted">Viết ít nhất 30 ký tự không tính khoảng trắng.</p>}{draft.submitted && <div className="guided-result"><h3>Đã hoàn thành · {score.score}/{score.total} câu đúng</h3><p>Đối chiếu ghi chú của bạn với đáp án bên dưới.</p>{mistakeIds(progress, guidedCase).length > 0 && <details className="guided-mistakes"><summary>Câu cần xem lại</summary><ul>{guidedCase.questions.filter(question => mistakeIds(progress, guidedCase).includes(question.id)).map(question => <li key={question.id}>{question.prompt}</li>)}</ul></details>}{answer && <div className="guided-model"><strong>Đáp án tham khảo</strong><p>{answer.expected_diagnosis}</p><p><b>Kiểm tra tiếp:</b> {answer.recommended_next_checks}</p><p><b>Hướng xử lý:</b> {answer.resolution_guidance}</p><p><b>Xác minh:</b> {answer.verification}</p><p><b>Khi cần chuyển cấp:</b> {answer.escalate_when}</p><p><b>Lưu ý xử lý:</b> {answer.production_warning}</p></div>}</div>}</section>}
+      {stage.id === 'verify' && <section className="guided-card"><h2>Tổng kết ticket</h2><p className="guided-muted">{guidedCase.verificationPrompt}</p><textarea aria-label="Ghi chú cuối ticket" rows={5} value={draft.note} onChange={event => update({ note: event.target.value })} placeholder={'Hiện tượng...\nBằng chứng...\nBước tiếp theo và xác minh...'} disabled={draft.submitted} />{!draft.submitted && draft.note.trim().length > 0 && draft.note.replace(/\s/g, '').length < 30 && <p className="guided-muted">Viết ít nhất 30 ký tự không tính khoảng trắng.</p>}{draft.submitted && <div className="guided-result"><h3>Đã hoàn thành · {score.score}/{score.total} câu đúng</h3>{savedAttempt && revisedGuidedTicketIds.has(ticket.id) && contentRevisionOf(savedAttempt) !== GUIDED_CONTENT_REVISION && <p>Lượt này thuộc nội dung trước D1; điểm và đáp án đã nộp được giữ nguyên, không so trực tiếp với câu hỏi hiện tại.</p>}<p>Đối chiếu ghi chú của bạn với đáp án bên dưới.</p>{mistakeIds(progress, guidedCase).length > 0 && <details className="guided-mistakes"><summary>Câu cần xem lại</summary><ul>{guidedCase.questions.filter(question => mistakeIds(progress, guidedCase).includes(question.id)).map(question => <li key={question.id}>{question.prompt}</li>)}</ul></details>}{answer && <div className="guided-model"><strong>Đáp án tham khảo</strong><p>{answer.expected_diagnosis}</p><p><b>Kiểm tra tiếp:</b> {answer.recommended_next_checks}</p><p><b>Hướng xử lý:</b> {answer.resolution_guidance}</p><p><b>Xác minh:</b> {answer.verification}</p><p><b>Khi cần chuyển cấp:</b> {answer.escalate_when}</p><p><b>Lưu ý xử lý:</b> {answer.production_warning}</p></div>}</div>}</section>}
       <details className="guided-hints"><summary><Lightbulb size={15} /> Gợi ý{draft.hintLevel > 0 ? ' · ' + draft.hintLevel + '/3 đã mở' : ''}</summary><button className="guided-secondary" onClick={revealHint} disabled={draft.hintLevel >= 3 || !hintReady}>{draft.hintLevel >= 3 ? 'Đã mở hết gợi ý' : draft.hintLevel ? 'Mở gợi ý tiếp' : 'Mở gợi ý'}</button>{!hintReady && <p>Thu thập thêm bằng chứng để mở gợi ý tiếp.</p>}{draft.hintLevel > 0 && hints && <ol>{hints.slice(0, draft.hintLevel).map(hint => <li key={hint}>{hint}</li>)}</ol>}</details>
       {stage.id === 'investigate' && remainingChecks > 0 && <p className="guided-step-note">Còn {remainingChecks} phép kiểm tra bắt buộc trước khi đọc bằng chứng.</p>}
       {error && <div className="notice error" role="alert">{error}</div>}

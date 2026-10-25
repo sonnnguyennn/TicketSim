@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Lịch sử thao tác cho biết có restore, nhưng không cho tuổi dữ liệu trong snapshot.",
+  "explanation": "Activity là lịch sử thao tác. Metadata cũng ghi mốc hoàn tất restore, nhưng câu hỏi này yêu cầu đúng loại nguồn lịch sử hoạt động.",
   "commandId": "panel-probes",
   "optionFeedback": {
     "wrong2": "mtime của một file không xác nhận thao tác panel.",
     "direct": "Ghi thao tác restore hoàn tất lúc 10:14.",
-    "wrong1": "Cho biết snapshot được tạo khi nào; mục hỏi sự kiện restore."
+    "wrong1": "Metadata cũng ghi restore completed lúc 10:14; nó phục vụ đối chiếu mốc tạo snapshot, còn câu hỏi yêu cầu mục activity."
   }
 }

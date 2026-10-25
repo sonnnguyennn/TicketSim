@@ -2,10 +2,10 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Khác biệt giữa resolver và status gợi ý so validation; chưa thể chẩn đoán DS sai.",
+  "explanation": "Cùng resolver 1.1.1.1 trả status khác khi có +cd; 9.9.9.9 cũng SERVFAIL. Đây là giả thuyết validation cần kiểm tra chain.",
   "optionFeedback": {
     "cause": "SERVFAIL có nhiều nguyên nhân; cần kiểm tra chain validation.",
-    "symptom": "Cần so cùng tên, thời điểm và validator.",
+    "symptom": "Hai phép hỏi tới cùng @1.1.1.1; khác biệt là cờ Checking Disabled, chưa xác định DS sai.",
     "other": "Không phải lỗi DNS SERVFAIL đang được báo."
   }
 }

@@ -6,7 +6,7 @@
   "commandId": "journalctl-unit",
   "optionFeedback": {
     "wrong2": "DNS của website không xác minh một phiên SSH root.",
-    "direct": "Đọc log sshd trong ngày để tìm Accepted, user, IP và timestamp.",
+    "direct": "Đọc sự kiện Accepted trong cửa sổ 09:00–09:30 UTC ngày 22/10/2026.",
     "wrong1": "Dung lượng ổ đĩa không cho biết key nào vừa được SSH chấp nhận."
   }
 }

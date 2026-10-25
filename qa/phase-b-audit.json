@@ -5,7 +5,7 @@
     "reviewed": 112,
     "questionPromptsRewritten": 620,
     "explanationsRewritten": 620,
-    "optionLabelsRewritten": 1730,
+    "optionLabelsRewritten": 1732,
     "optionFeedbackRewritten": 1876,
     "hintsRewritten": 336,
     "verificationPromptsRewritten": 112,
@@ -22,10 +22,10 @@
   "sourceTickets": 112,
   "guided": 112,
   "commands": 122,
-  "fixtureChanges": 101,
+  "fixtureChanges": 102,
   "choiceCues": {
     "singleChoiceQuestions": 448,
-    "correctStrictlyLongest": 175,
+    "correctStrictlyLongest": 176,
     "correctPositions": {
       "1": 160,
       "2": 130,
@@ -54,7 +54,7 @@
       },
       "01": {
         "questions": 32,
-        "correctStrictlyLongest": 11
+        "correctStrictlyLongest": 12
       },
       "02": {
         "questions": 32,

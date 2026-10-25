@@ -24,7 +24,7 @@ Phát hiện trùng chỉ là chỉ báo; không chứng minh chất lượng s�
 
 Feedback trùng nguyên văn: trước 25 nhóm (lớn nhất 100); sau 1 nhóm (lớn nhất 2).
 
-Trong 448 câu có một đáp án đúng đã rà soát (không gồm sắp xếp), 175 câu có nhãn đúng dài nhất duy nhất. Đây là chỉ báo cần đọc lại, không phải chứng nhận rằng phương án sai hợp lý. Phân bố vị trí đáp án đúng: {"1":160,"2":130,"3":158}. ID/key giữ nguyên; vị trí được xoay ổn định theo ID câu.
+Trong 448 câu có một đáp án đúng đã rà soát (không gồm sắp xếp), 176 câu có nhãn đúng dài nhất duy nhất. Đây là chỉ báo cần đọc lại, không phải chứng nhận rằng phương án sai hợp lý. Phân bố vị trí đáp án đúng: {"1":160,"2":130,"3":158}. ID/key giữ nguyên; vị trí được xoay ổn định theo ID câu.
 
 Feedback trùng sau sửa:
 

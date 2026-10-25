@@ -1311,3 +1311,40 @@ for (const content of guidedContent) if (objectiveVerification[content.id]) cont
 export const unreviewedGuidedContent = structuredClone(guidedContent)
 applyGuidedEdits(guidedContent, phaseBEdits)
 
+// D1 corrections to the reviewed Guided authoring layer. Keep question and
+// option IDs stable so previously submitted v5 attempts remain untouched.
+const d1 = Object.fromEntries(guidedContent.map(content => [content.id, content]))
+const d1Question = (id, questionId) => d1[id].questions.find(question => question.id === questionId)
+const d1Option = (id, questionId, optionId) => d1Question(id, questionId).options.find(option => option.id === optionId)
+
+// The authored incidents are on 2026-10-22 UTC. Relative dates would query a
+// different day when a learner opens the case later. The explicit UTC suffix
+// also avoids interpreting the fixture through the guest's local timezone.
+const backupWindow = 'journalctl -u backup-agent --since "2026-10-22 02:00:00 UTC" --until "2026-10-22 02:30:00 UTC"'
+const rootLoginWindow = 'journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC"'
+const sshDropWindow = 'journalctl -u sshd --since "2026-10-22 23:00:00 UTC" --until "2026-10-22 23:30:00 UTC" --no-pager'
+d1['VPS-04-008'].probeCommandOverrides = { ...d1['VPS-04-008'].probeCommandOverrides, P1: backupWindow }
+d1Option('VPS-04-008', 'check', 'direct').label = backupWindow
+d1Option('VPS-04-008', 'check', 'direct').feedback = 'Đọc đúng unit trong ngày 22/10/2026 và cửa sổ 02:00–02:30 UTC của sự cố.'
+d1['VPS-09-007'].probeCommandOverrides = { ...d1['VPS-09-007'].probeCommandOverrides, P1: rootLoginWindow }
+d1Option('VPS-09-007', 'check', 'direct').label = rootLoginWindow
+d1Option('VPS-09-007', 'check', 'direct').feedback = 'Đọc sự kiện Accepted trong cửa sổ 09:00–09:30 UTC ngày 22/10/2026.'
+d1['VPS-01-008'].extras[0].command = sshDropWindow
+d1['VPS-01-008'].extras[0].purpose = 'Đọc phiên SSH trong cửa sổ job ngày 22/10/2026 UTC.'
+phaseBEdits['VPS-01-008'].review.fixtureChanges.push({ probeId: 'G1', reason: 'Khóa ngày và timezone UTC của SSH journal theo incident 22/10/2026; không dùng yesterday biến đổi theo ngày chạy.' })
+d1Question('VPS-01-008', 'output').explanation = 'OOM kill python3, RAM thấp và session closed đều được quan sát; các mẫu chưa có timestamp chung để gắn chúng với cùng lần rớt SSH.'
+d1Option('VPS-01-008', 'output', 'supported').label = 'Có dấu hiệu áp lực RAM; liên hệ thời gian và tác động tới SSH còn cần xác minh.'
+d1Option('VPS-01-008', 'output', 'supported').feedback = 'Kernel nêu python3, còn free và PSI là ảnh chụp riêng; cần timeline có timestamp.'
+
+d1Question('VPS-02-006', 'check').prompt = 'Muốn báo cáo phản hồi ở từng hop tới VPS từ mạng khách, chọn phép kiểm tra nào?'
+d1Question('VPS-02-006', 'check').explanation = 'MTR hiển thị từng hop và đích. Ping cũng đo loss ở đích nhưng không cho báo cáo nhiều hop.'
+d1Option('VPS-02-006', 'check', 'wrong1').feedback = 'Ping đo loss tới endpoint và là phép đo hợp lệ; câu hỏi này yêu cầu thêm kết quả theo từng hop.'
+
+d1Question('VPS-08-008', 'triage').explanation = 'Cùng resolver 1.1.1.1 trả status khác khi có +cd; 9.9.9.9 cũng SERVFAIL. Đây là giả thuyết validation cần kiểm tra chain.'
+d1Option('VPS-08-008', 'triage', 'symptom').label = 'Cùng resolver trả SERVFAIL bình thường, NOERROR khi thêm +cd.'
+d1Option('VPS-08-008', 'triage', 'symptom').feedback = 'Hai phép hỏi tới cùng @1.1.1.1; khác biệt là cờ Checking Disabled, chưa xác định DS sai.'
+
+d1Question('VPS-10-006', 'check').prompt = 'Mục nào là lịch sử hoạt động panel ghi thao tác restore vừa hoàn tất?'
+d1Question('VPS-10-006', 'check').explanation = 'Activity là lịch sử thao tác. Metadata cũng ghi mốc hoàn tất restore, nhưng câu hỏi này yêu cầu đúng loại nguồn lịch sử hoạt động.'
+d1Option('VPS-10-006', 'check', 'wrong1').feedback = 'Metadata cũng ghi restore completed lúc 10:14; nó phục vụ đối chiếu mốc tạo snapshot, còn câu hỏi yêu cầu mục activity.'
+

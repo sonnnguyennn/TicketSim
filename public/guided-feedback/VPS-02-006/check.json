@@ -2,11 +2,11 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "MTR cung cấp mẫu phản hồi theo đường đi; hãy đọc tỷ lệ ở đích và ghi rõ số lần gửi.",
+  "explanation": "MTR hiển thị từng hop và đích. Ping cũng đo loss ở đích nhưng không cho báo cáo nhiều hop.",
   "commandId": "mtr",
   "optionFeedback": {
     "wrong2": "Bộ đếm NIC guest không đo đường từ client qua các hop tới VPS.",
     "direct": "Lệnh tạo báo cáo 20 chu kỳ tới đúng địa chỉ VPS.",
-    "wrong1": "Ping đo phản hồi đích, không báo loss và latency theo các hop như MTR."
+    "wrong1": "Ping đo loss tới endpoint và là phép đo hợp lệ; câu hỏi này yêu cầu thêm kết quả theo từng hop."
   }
 }

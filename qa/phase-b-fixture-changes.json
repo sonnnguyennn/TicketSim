@@ -849,6 +849,19 @@
     ]
   },
   {
+    "ticketId": "VPS-01-008",
+    "probeId": "G1",
+    "beforeCommand": "journalctl -u sshd --since \"yesterday 23:00\" --no-pager",
+    "command": "journalctl -u sshd --since \"2026-10-22 23:00:00 UTC\" --until \"2026-10-22 23:30:00 UTC\" --no-pager",
+    "before": "Oct 22 23:12:04 vps sshd[842]: pam_unix(sshd:session): session closed for user ops",
+    "after": "Oct 22 23:12:04 vps sshd[842]: pam_unix(sshd:session): session closed for user ops",
+    "reason": "Khóa ngày và timezone UTC của SSH journal theo incident 22/10/2026; không dùng yesterday biến đổi theo ngày chạy.",
+    "references": [
+      "https://www.kernel.org/doc/html/latest/accounting/psi.html",
+      "https://man7.org/linux/man-pages/man1/free.1.html"
+    ]
+  },
+  {
     "ticketId": "VPS-02-006",
     "probeId": "P1",
     "beforeCommand": "mtr -rw -c 20 203.0.113.20",
@@ -956,7 +969,7 @@
     "ticketId": "VPS-04-008",
     "probeId": "P1",
     "beforeCommand": "journalctl -u backup-agent --since \"02:00\" --until \"02:30\"",
-    "command": "journalctl -u backup-agent --since \"02:00\" --until \"02:30\"",
+    "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
     "before": "backup started 02:00; finished 02:20",
     "after": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
     "reason": "Bỏ prose chấm phẩy, dùng hai dòng journalstarted/finished cótimestamp.",
@@ -1162,7 +1175,7 @@
     "ticketId": "VPS-09-007",
     "probeId": "P1",
     "beforeCommand": "journalctl -u sshd --since today",
-    "command": "journalctl -u sshd --since today",
+    "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
     "before": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:AbCdEf123456",
     "after": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
     "reason": "Fingerprint mẫu ban đầu quá ngắn so với SHA256 fingerprint OpenSSH; thay chuỗi mẫu 43 ký tự.",

@@ -8654,9 +8654,9 @@
       {
         "id": "G1",
         "context": "guest",
-        "command": "journalctl -u sshd --since \"yesterday 23:00\" --no-pager",
+        "command": "journalctl -u sshd --since \"2026-10-22 23:00:00 UTC\" --until \"2026-10-22 23:30:00 UTC\" --no-pager",
         "output": "Oct 22 23:12:04 vps sshd[842]: pam_unix(sshd:session): session closed for user ops",
-        "purpose": "Đọc sự kiện của SSH service từ mốc thời gian được chọn.",
+        "purpose": "Đọc phiên SSH trong cửa sổ job ngày 22/10/2026 UTC.",
         "meaning": "Có session closed cho user ops; dòng này không nêu nguyên nhân đóng phiên.",
         "commandId": "journalctl-unit",
         "aliases": [],
@@ -8730,7 +8730,7 @@
           },
           {
             "id": "supported",
-            "label": "Có áp lực RAM cùng thời điểm."
+            "label": "Có dấu hiệu áp lực RAM; liên hệ thời gian và tác động tới SSH còn cần xác minh."
           },
           {
             "id": "over",
@@ -9002,7 +9002,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Muốn đo loss tới VPS từ mạng khách, chọn phép kiểm tra nào?",
+        "prompt": "Muốn báo cáo phản hồi ở từng hop tới VPS từ mạng khách, chọn phép kiểm tra nào?",
         "options": [
           {
             "id": "wrong2",
@@ -10442,7 +10442,7 @@
     "probes": [
       {
         "id": "P1",
-        "command": "journalctl -u backup-agent --since \"02:00\" --until \"02:30\"",
+        "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
         "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
         "context": "guest",
         "purpose": "Đọc log backup-agent trong cửa sổ02:00–02:30.",
@@ -10523,7 +10523,7 @@
           },
           {
             "id": "direct",
-            "label": "journalctl -u backup-agent --since \"02:00\" --until \"02:30\""
+            "label": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\""
           }
         ],
         "commandId": "journalctl-service",
@@ -11883,7 +11883,7 @@
           },
           {
             "id": "symptom",
-            "label": "Resolver khác nhau trả kết quả khác nhau."
+            "label": "Cùng resolver trả SERVFAIL bình thường, NOERROR khi thêm +cd."
           },
           {
             "id": "other",
@@ -14741,7 +14741,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Mục nào xác nhận VM vừa được restore?",
+        "prompt": "Mục nào là lịch sử hoạt động panel ghi thao tác restore vừa hoàn tất?",
         "options": [
           {
             "id": "wrong2",
@@ -16345,7 +16345,7 @@
     "probes": [
       {
         "id": "P1",
-        "command": "journalctl -u sshd --since today",
+        "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
         "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
         "context": "guest",
         "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -16422,7 +16422,7 @@
           },
           {
             "id": "direct",
-            "label": "journalctl -u sshd --since today"
+            "label": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\""
           },
           {
             "id": "wrong1",

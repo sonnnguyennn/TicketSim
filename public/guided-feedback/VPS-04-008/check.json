@@ -7,6 +7,6 @@
   "optionFeedback": {
     "wrong1": "I/O cùng giờ không cho mốc backup-agent bắt đầu hoặc kết thúc.",
     "wrong2": "Lịch dự kiến không xác nhận backup-agent đã chạy trong khoảng được hỏi.",
-    "direct": "Chọn đúng unit và khoảng giờ cần đối chiếu theo ngữ cảnh UTC của bài."
+    "direct": "Đọc đúng unit trong ngày 22/10/2026 và cửa sổ 02:00–02:30 UTC của sự cố."
   }
 }

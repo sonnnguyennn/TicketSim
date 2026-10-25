@@ -1438,6 +1438,26 @@ Swap:             0B          0B          0B
 
 Tham khảo: https://www.kernel.org/doc/html/latest/accounting/psi.html, https://man7.org/linux/man-pages/man1/free.1.html
 
+## VPS-01-008/G1
+
+Khóa ngày và timezone UTC của SSH journal theo incident 22/10/2026; không dùng yesterday biến đổi theo ngày chạy.
+
+Command trước: `journalctl -u sshd --since "yesterday 23:00" --no-pager`; sau: `journalctl -u sshd --since "2026-10-22 23:00:00 UTC" --until "2026-10-22 23:30:00 UTC" --no-pager`.
+
+Trước:
+
+```text
+Oct 22 23:12:04 vps sshd[842]: pam_unix(sshd:session): session closed for user ops
+```
+
+Sau:
+
+```text
+Oct 22 23:12:04 vps sshd[842]: pam_unix(sshd:session): session closed for user ops
+```
+
+Tham khảo: https://www.kernel.org/doc/html/latest/accounting/psi.html, https://man7.org/linux/man-pages/man1/free.1.html
+
 ## VPS-02-006/P1
 
 Thay dòng mô tả Destination bằng bảng báo cáo MTR có Snt/Loss%.
@@ -1618,7 +1638,7 @@ Tham khảo: https://man7.org/linux/man-pages/man8/vmstat.8.html, https://man7.o
 
 Bỏ prose chấm phẩy, dùng hai dòng journalstarted/finished cótimestamp.
 
-Command trước: `journalctl -u backup-agent --since "02:00" --until "02:30"`; sau: `journalctl -u backup-agent --since "02:00" --until "02:30"`.
+Command trước: `journalctl -u backup-agent --since "02:00" --until "02:30"`; sau: `journalctl -u backup-agent --since "2026-10-22 02:00:00 UTC" --until "2026-10-22 02:30:00 UTC"`.
 
 Trước:
 
@@ -1969,7 +1989,7 @@ Tham khảo: https://man7.org/linux/man-pages/man8/ss.8.html
 
 Fingerprint mẫu ban đầu quá ngắn so với SHA256 fingerprint OpenSSH; thay chuỗi mẫu 43 ký tự.
 
-Command trước: `journalctl -u sshd --since today`; sau: `journalctl -u sshd --since today`.
+Command trước: `journalctl -u sshd --since today`; sau: `journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC"`.
 
 Trước:
 

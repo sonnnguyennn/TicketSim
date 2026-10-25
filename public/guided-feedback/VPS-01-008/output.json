@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Áp lực bộ nhớ là hướng điều tra có bằng chứng, nhưng process được kernel ghi là python3 và session closed chưa nêu lý do.",
+  "explanation": "OOM kill python3, RAM thấp và session closed đều được quan sát; các mẫu chưa có timestamp chung để gắn chúng với cùng lần rớt SSH.",
   "commandId": "free-h",
   "optionFeedback": {
     "ignore": "Một dòng đóng phiên không giải thích vì sao; OOM và memory stall vẫn cần điều tra.",
-    "supported": "Giữ cả bằng chứng tài nguyên và giới hạn của log SSH.",
+    "supported": "Kernel nêu python3, còn free và PSI là ảnh chụp riêng; cần timeline có timestamp.",
     "over": "Tên process trong log là python3, không phải sshd; còn thiếu nhiều cửa sổ thời gian."
   }
 }
