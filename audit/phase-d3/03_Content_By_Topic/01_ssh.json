@@ -2995,21 +2995,21 @@
           "command": "firewall-cmd --list-all",
           "kind": "shell",
           "verification": "SOURCE_VERIFIED",
-          "purpose": "Đọc cấu hình runtime của firewalld zone được hỏi.",
-          "proves": "Đọc service/port của đúng active zone. Không có service ssh trong một zone chưa đủ chứng minh mọi đường tới cổng 22 bị chặn.",
-          "doesNotProve": "Ubuntu thường dùng UFW; nếu máy dùng firewalld thì dùng firewall-cmd như CentOS. UFW không có zone giống firewalld. Còn provider ACL và nftables cần đối chiếu.",
+          "purpose": "Đọc service, port và rule của một zone firewalld ở cấu hình runtime.",
+          "proves": "Kết quả chỉ mô tả zone được hỏi. Cần kiểm tra zone thực sự áp dụng cho interface/source trước khi suy luận về TCP/22; chưa chứng minh client kết nối được.",
+          "doesNotProve": "Default zone không nhất thiết là zone đang xử lý lưu lượng của interface/source. Ubuntu có thể dùng UFW; vẫn cần đối chiếu provider ACL, rule khác và listener.",
           "examples": [
             {
               "command": "firewall-cmd --list-all",
               "purpose": "Khi nghi firewall guest chặn cổng.",
               "expectedOutput": "public (active)\n  services: ssh dhcpv6-client",
-              "interpretation": "Đọc service/port của đúng active zone. Không có service ssh trong một zone chưa đủ chứng minh mọi đường tới cổng 22 bị chặn.",
+              "interpretation": "Kết quả chỉ mô tả zone được hỏi. Cần kiểm tra zone thực sự áp dụng cho interface/source trước khi suy luận về TCP/22; chưa chứng minh client kết nối được.",
               "outputIsExcerpt": true,
               "context": "guest"
             },
             {
               "command": "firewall-cmd --zone=public --list-all",
-              "purpose": "Đọc đúng zone gắn interface.",
+              "purpose": "Đọc zone public sau khi xác nhận interface/source đang sử dụng zone này.",
               "expectedOutput": "public (active)\n  services: ssh",
               "interpretation": "Zone public cho phép service ssh theo firewalld; provider ACL và listener còn cần kiểm tra.",
               "outputIsExcerpt": true,
@@ -3017,7 +3017,7 @@
             }
           ],
           "sourceUrls": [
-            "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/security_guide/sec-working_with_zones"
+            "https://firewalld.org/documentation/man-pages/firewall-cmd"
           ],
           "source": "src/guided/commands.ts (id firewall-list)"
         }
@@ -3160,21 +3160,21 @@
           "command": "firewall-cmd --list-all",
           "kind": "shell",
           "verification": "SOURCE_VERIFIED",
-          "purpose": "Đọc cấu hình runtime của firewalld zone được hỏi.",
-          "proves": "Đọc service/port của đúng active zone. Không có service ssh trong một zone chưa đủ chứng minh mọi đường tới cổng 22 bị chặn.",
-          "doesNotProve": "Ubuntu thường dùng UFW; nếu máy dùng firewalld thì dùng firewall-cmd như CentOS. UFW không có zone giống firewalld. Còn provider ACL và nftables cần đối chiếu.",
+          "purpose": "Đọc service, port và rule của một zone firewalld ở cấu hình runtime.",
+          "proves": "Kết quả chỉ mô tả zone được hỏi. Cần kiểm tra zone thực sự áp dụng cho interface/source trước khi suy luận về TCP/22; chưa chứng minh client kết nối được.",
+          "doesNotProve": "Default zone không nhất thiết là zone đang xử lý lưu lượng của interface/source. Ubuntu có thể dùng UFW; vẫn cần đối chiếu provider ACL, rule khác và listener.",
           "examples": [
             {
               "command": "firewall-cmd --list-all",
               "purpose": "Khi nghi firewall guest chặn cổng.",
               "expectedOutput": "public (active)\n  services: ssh dhcpv6-client",
-              "interpretation": "Đọc service/port của đúng active zone. Không có service ssh trong một zone chưa đủ chứng minh mọi đường tới cổng 22 bị chặn.",
+              "interpretation": "Kết quả chỉ mô tả zone được hỏi. Cần kiểm tra zone thực sự áp dụng cho interface/source trước khi suy luận về TCP/22; chưa chứng minh client kết nối được.",
               "outputIsExcerpt": true,
               "context": "guest"
             },
             {
               "command": "firewall-cmd --zone=public --list-all",
-              "purpose": "Đọc đúng zone gắn interface.",
+              "purpose": "Đọc zone public sau khi xác nhận interface/source đang sử dụng zone này.",
               "expectedOutput": "public (active)\n  services: ssh",
               "interpretation": "Zone public cho phép service ssh theo firewalld; provider ACL và listener còn cần kiểm tra.",
               "outputIsExcerpt": true,
@@ -3182,7 +3182,7 @@
             }
           ],
           "sourceUrls": [
-            "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/security_guide/sec-working_with_zones"
+            "https://firewalld.org/documentation/man-pages/firewall-cmd"
           ],
           "source": "src/guided/commands.ts (id firewall-list)"
         }
@@ -5340,21 +5340,21 @@
           "command": "firewall-cmd --list-all",
           "kind": "shell",
           "verification": "SOURCE_VERIFIED",
-          "purpose": "Đọc cấu hình runtime của firewalld zone được hỏi.",
-          "proves": "Đọc service/port của đúng active zone. Không có service ssh trong một zone chưa đủ chứng minh mọi đường tới cổng 22 bị chặn.",
-          "doesNotProve": "Ubuntu thường dùng UFW; nếu máy dùng firewalld thì dùng firewall-cmd như CentOS. UFW không có zone giống firewalld. Còn provider ACL và nftables cần đối chiếu.",
+          "purpose": "Đọc service, port và rule của một zone firewalld ở cấu hình runtime.",
+          "proves": "Kết quả chỉ mô tả zone được hỏi. Cần kiểm tra zone thực sự áp dụng cho interface/source trước khi suy luận về TCP/22; chưa chứng minh client kết nối được.",
+          "doesNotProve": "Default zone không nhất thiết là zone đang xử lý lưu lượng của interface/source. Ubuntu có thể dùng UFW; vẫn cần đối chiếu provider ACL, rule khác và listener.",
           "examples": [
             {
               "command": "firewall-cmd --list-all",
               "purpose": "Khi nghi firewall guest chặn cổng.",
               "expectedOutput": "public (active)\n  services: ssh dhcpv6-client",
-              "interpretation": "Đọc service/port của đúng active zone. Không có service ssh trong một zone chưa đủ chứng minh mọi đường tới cổng 22 bị chặn.",
+              "interpretation": "Kết quả chỉ mô tả zone được hỏi. Cần kiểm tra zone thực sự áp dụng cho interface/source trước khi suy luận về TCP/22; chưa chứng minh client kết nối được.",
               "outputIsExcerpt": true,
               "context": "guest"
             },
             {
               "command": "firewall-cmd --zone=public --list-all",
-              "purpose": "Đọc đúng zone gắn interface.",
+              "purpose": "Đọc zone public sau khi xác nhận interface/source đang sử dụng zone này.",
               "expectedOutput": "public (active)\n  services: ssh",
               "interpretation": "Zone public cho phép service ssh theo firewalld; provider ACL và listener còn cần kiểm tra.",
               "outputIsExcerpt": true,
@@ -5362,7 +5362,7 @@
             }
           ],
           "sourceUrls": [
-            "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/security_guide/sec-working_with_zones"
+            "https://firewalld.org/documentation/man-pages/firewall-cmd"
           ],
           "source": "src/guided/commands.ts (id firewall-list)"
         }

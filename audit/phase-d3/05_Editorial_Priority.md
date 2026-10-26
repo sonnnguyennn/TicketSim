@@ -6,7 +6,7 @@ Review all 620 keys against the evidence in the topic JSON packets. The automate
 
 ## P1: concrete editorial flags
 
-The triage rules flagged 0 clarity, 9 distractor, and 48 feedback candidates. The CSV records a text excerpt and authored location for each.
+The triage rules flagged 0 clarity, 6 distractor, and 46 feedback candidates. The CSV records a text excerpt and authored location for each.
 
 | First review | Topic | Level | Labels | Source |
 |---|---|---|---|---|
@@ -14,7 +14,6 @@ The triage rules flagged 0 clarity, 9 distractor, and 48 feedback candidates. Th
 | VPS-07-007/check | Web Server & HTTP | L3 | EDIT_DISTRACTORS | scripts/content/phase-b-06-10.mjs:466 |
 | VPS-04-008/check | CPU, RAM & Performance | L3 | EDIT_DISTRACTORS | scripts/content/phase-b-01-05.mjs:519 |
 | VPS-10-007/evidence | Virtualization | L3 | EDIT_FEEDBACK | scripts/content/phase-b-06-10.mjs:987 |
-| VPS-10-008/output | Virtualization | L3 | EDIT_DISTRACTORS | scripts/content/phase-b-06-10.mjs:1009 |
 | VPS-09-007/check | Security & Abuse | L3 | EDIT_DISTRACTORS | scripts/content/phase-b-06-10.mjs:158 |
 | VPS-13-007/evidence | Docker & Containers | L3 | EDIT_FEEDBACK | scripts/content/phase-b-11-14.mjs:1259 |
 | VPS-13-008/evidence | Docker & Containers | L3 | EDIT_FEEDBACK | scripts/content/phase-b-11-14.mjs:1429 |
@@ -54,10 +53,6 @@ The triage rules flagged 0 clarity, 9 distractor, and 48 feedback candidates. Th
 | VPS-11-004/evidence | Backup & Recovery | L1 | EDIT_FEEDBACK | scripts/content/phase-b-11-14.mjs:4676 |
 | VPS-12-003/evidence | Control Panel | L1 | EDIT_FEEDBACK | scripts/content/phase-b-11-14.mjs:3039 |
 | VPS-14-003/evidence | Billing & Lifecycle | L1 | EDIT_FEEDBACK | scripts/content/phase-b-11-14.mjs:819 |
-| VPS-03-001/triage | Linux System & Services | L0 | EDIT_DISTRACTORS | scripts/content/phase-b-01-05.mjs:542 |
-| VPS-05-002/output | Disk & Filesystem | L0 | EDIT_FEEDBACK | scripts/content/phase-b-01-05.mjs:285 |
-| VPS-05-002/evidence | Disk & Filesystem | L0 | EDIT_FEEDBACK | scripts/content/phase-b-01-05.mjs:286 |
-| VPS-07-001/evidence | Web Server & HTTP | L0 | EDIT_DISTRACTORS | scripts/content/phase-b-06-10.mjs:808 |
 | VPS-08-001/evidence | DNS & Domain | L0 | EDIT_FEEDBACK | scripts/content/phase-b-06-10.mjs:395 |
 | VPS-10-001/evidence | Virtualization | L0 | EDIT_FEEDBACK | scripts/content/phase-b-06-10.mjs:247 |
 | VPS-13-001/triage | Docker & Containers | L0 | EDIT_FEEDBACK | scripts/content/phase-b-11-14.mjs:1530 |
@@ -70,7 +65,7 @@ The triage rules flagged 0 clarity, 9 distractor, and 48 feedback candidates. Th
 
 ## P2: human review queue
 
-The 563 KEEP rows still need a human pass for multiple defensible options, command behavior, hint leakage, level calibration, and evidence sufficiency. Compare each question with its full case packet and Command Library card. Mark SME approval only after that pass.
+The 568 KEEP rows still need a human pass for multiple defensible options, command behavior, hint leakage, level calibration, and evidence sufficiency. Compare each question with its full case packet and Command Library card. Mark SME approval only after that pass.
 
 ## Command Editorial
 

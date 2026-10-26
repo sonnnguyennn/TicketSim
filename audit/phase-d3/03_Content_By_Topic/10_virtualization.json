@@ -5651,13 +5651,13 @@
         },
         {
           "id": "over",
-          "label": "Guest chắc chắn chậm đúng một ngày.",
-          "feedback": "Không có phép so hai đồng hồ cùng thời điểm."
+          "label": "Cờ synchronized: no cho biết guest đang lệch đúng 24 giờ.",
+          "feedback": "Cờ này không cho biết số giây lệch. Phải so giờ guest với nguồn UTC tin cậy ở cùng thời điểm."
         },
         {
           "id": "ignore",
-          "label": "Host đúng giờ nên guest chắc chắn đúng.",
-          "feedback": "VM vẫn có clock và dịch vụ đồng bộ riêng."
+          "label": "Giờ host đúng nên không cần đo lại giờ trong guest.",
+          "feedback": "Guest có đồng hồ và dịch vụ đồng bộ riêng; giờ host không thay thế phép đo trong guest."
         }
       ],
       "correctIds": [
@@ -5684,16 +5684,9 @@
         "overrides": []
       },
       "classification": [
-        "EDIT_DISTRACTORS"
+        "KEEP"
       ],
-      "findings": [
-        {
-          "label": "EDIT_DISTRACTORS",
-          "reason": "Có 2 phương án sai dùng khẳng định tuyệt đối hoặc hành động cực đoan; xem liệu có thể loại bằng văn phong thay vì bằng chứng.",
-          "evidence": "over: Guest chắc chắn chậm đúng một ngày. | ignore: Host đúng giờ nên guest chắc chắn đúng.",
-          "source": "scripts/content/phase-b-06-10.mjs:1009"
-        }
-      ],
+      "findings": [],
       "reviewStatus": "AUTOMATED_EDITORIAL_TRIAGE; SME_PENDING"
     },
     {

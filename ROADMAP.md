@@ -20,7 +20,7 @@ Phase A đưa Guided thành luồng học mặc định: Kho ticket → Học ti
 | Phase B — Guided content overhaul | Hoàn thành trong phạm vi nội dung | 112 case được agent rà và biên soạn lại; 122 thẻ lệnh được kiểm tra, 60 thẻ sửa; audit và browser representative đạt. Chưa có kiểm duyệt SME độc lập. |
 | Phase C/C2 — Independent content audit | Hoàn thành ở mức reasoned review | 112 ticket, 122 command, 620 câu hỏi và fixture được rà; source/lab/SOP là các mức xác minh riêng. |
 | Phase D1 — Correctness remediation | Hoàn thành ở mức source và regression | 19 findings được sửa theo [QA D1](Phase_D1_Correctness_QA.md); 23 ticket vẫn chờ SOP. |
-| Phase D2 — Command Knowledge System | Đã triển khai, verification còn chờ | 122 thẻ: 102 shell và 20 support task; flags/examples có cấu trúc, UX hai lớp, ledger và regression. 70 source-verified về cú pháp, 32 pending, 20 SOP-required, 0 lab-verified. Xem [QA D2](Phase_D2_Command_Knowledge_QA.md). |
+| Phase D2 — Command Knowledge System | Đã triển khai, verification còn chờ | 122 thẻ: 102 shell và 20 support task; flags/examples có cấu trúc, UX hai lớp, ledger và regression. Metadata hiện có 71 source-verified về cú pháp, 31 pending, 20 SOP-required, 0 lab-verified. Xem [QA D2](Phase_D2_Command_Knowledge_QA.md) cho mốc lịch sử và [ledger](Phase_D2_Command_Review_Ledger.csv) cho trạng thái hiện tại. |
 
 ## Độ phủ hiện tại
 
@@ -48,7 +48,7 @@ Quyết định phạm vi và hướng dẫn tác giả nội dung nằm trong [
 
 ## D3 — Xác minh vận hành
 
-Đối chiếu 32 thẻ lệnh còn pending với manual chính thức theo phiên bản, chạy lab cách ly cho output/exit status, và lấy SOP/owner sign-off cho 23 ticket và 20 tác vụ support trước khi dùng như quy trình sản xuất. Không mở rộng Stateful/Exam khi các gate này còn thiếu.
+Đối chiếu 31 thẻ lệnh còn pending với manual chính thức theo phiên bản, chạy lab cách ly cho output/exit status, và lấy SOP/owner sign-off cho 23 ticket và 20 tác vụ support trước khi dùng như quy trình sản xuất. Không mở rộng Stateful/Exam khi các gate này còn thiếu.
 
 [QA Phase 4](Phase_4_QA.md) ghi kiểm thử mức hỗ trợ và Review Mistakes tại thời điểm 42/112 Guided; hiện tại 112/112 Guided.
 

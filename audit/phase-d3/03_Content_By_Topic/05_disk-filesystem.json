@@ -1534,18 +1534,18 @@
       "options": [
         {
           "id": "blocks",
-          "label": "Block space cũng chắc chắn dùng100%.",
-          "feedback": "df -h còn45%; không đồng inode với GB."
+          "label": "Block space của filesystem cũng đã cạn.",
+          "feedback": "df -h / cho thấy còn 11G (Use% = 45%). Hết inode khác với hết block space."
         },
         {
           "id": "ram",
-          "label": "RAM của VPS đã dùng hết.",
-          "feedback": "df -i không đo RAM."
+          "label": "RAM khả dụng đã hết.",
+          "feedback": "df -i đếm inode của filesystem; muốn xem RAM dùng free -h."
         },
         {
           "id": "full",
-          "label": "Inode đã dùng hết trong mẫu.",
-          "feedback": "Đúng IFree0/IUse%100 của df -i."
+          "label": "Filesystem không còn inode khả dụng trong mẫu.",
+          "feedback": "df -i / ghi IFree = 0 và IUse% = 100%. Máy vẫn còn GB trống nhưng không cấp thêm inode để tạo file mới."
         }
       ],
       "correctIds": [
@@ -1572,16 +1572,9 @@
         "overrides": []
       },
       "classification": [
-        "EDIT_FEEDBACK"
+        "KEEP"
       ],
-      "findings": [
-        {
-          "label": "EDIT_FEEDBACK",
-          "reason": "2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn.",
-          "evidence": "ram: df -i không đo RAM. | full: Đúng IFree0/IUse%100 của df -i.",
-          "source": "scripts/content/phase-b-01-05.mjs:285"
-        }
-      ],
+      "findings": [],
       "reviewStatus": "AUTOMATED_EDITORIAL_TRIAGE; SME_PENDING"
     },
     {
@@ -1737,7 +1730,7 @@
         {
           "id": "inode",
           "label": "Inode khả dụng đã hết.",
-          "feedback": "df -i có IFree0 và IUse%100."
+          "feedback": "df -i / ghi IFree = 0, IUse% = 100%. Đây là bằng chứng cạn inode dù filesystem vẫn còn dung lượng block."
         },
         {
           "id": "which",
@@ -1752,7 +1745,7 @@
         {
           "id": "gb",
           "label": "Block space vẫn còn.",
-          "feedback": "df -h có Avail11G và Use%45."
+          "feedback": "df -h / cho thấy Avail = 11G, Use% = 45%. Kết quả này không phản ánh inode."
         }
       ],
       "correctIds": [
@@ -1780,16 +1773,9 @@
         "overrides": []
       },
       "classification": [
-        "EDIT_FEEDBACK"
+        "KEEP"
       ],
-      "findings": [
-        {
-          "label": "EDIT_FEEDBACK",
-          "reason": "2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn.",
-          "evidence": "inode: df -i có IFree0 và IUse%100. | gb: df -h có Avail11G và Use%45.",
-          "source": "scripts/content/phase-b-01-05.mjs:286"
-        }
-      ],
+      "findings": [],
       "reviewStatus": "AUTOMATED_EDITORIAL_TRIAGE; SME_PENDING"
     },
     {

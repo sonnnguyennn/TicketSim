@@ -119,7 +119,7 @@ const flagged = rows.filter(row => !row.classification.includes('KEEP'))
 const report = [
   '# D3-A — Guided assessment audit', '',
   '## Scope and method', '',
-  `Read-only export from authored Guided content at HEAD \`${head}\`. Covers ${guidedContent.length} tickets, ${cards.length} Command Library IDs, ${rows.length} scored questions, and ${Object.keys(guidedReferenceNotes).length} English reference notes. The 112 short-answer notes are excluded from the scored-question count.`, '',
+  `Read-only export from effective authored Guided content, using repository base HEAD \`${head}\` plus any working-tree edits. Covers ${guidedContent.length} tickets, ${cards.length} Command Library IDs, ${rows.length} scored questions, and ${Object.keys(guidedReferenceNotes).length} English reference notes. The 112 short-answer notes are excluded from the scored-question count.`, '',
   'The labels below are **deterministic editorial triage**, not case-by-case technical certification or SME approval. `KEEP` means no rule below fired; it does not establish that the key, distractors, evidence, or command semantics are correct. All 620 entries remain `SME_PENDING`. The full dataset gives the reviewer the exact prose, options, keys, probes, hints, final context, and authored source.', '',
   'Prior context: Phase C recorded 620 question reviews (612 `REVIEWED`, 8 then `FINDING_OPEN`); the 19 entries in its finding register are now `FIXED_VERIFIED` after D1. D2.2 then edited one complete Docker lesson, which is included in this export. Those earlier reviews are agent work and do not convert these entries into human SME sign-off.', '',
   'Rules: prompt >180 characters or option >155 → clarity; correct-option mean > wrong-option mean by ≥45 characters and ≥1.75×, or ≥2 extreme distractors → distractors; explanation <48 characters or ≥2 option feedback strings <34 → feedback; missing required probe or Command Library ID → technical. These thresholds find review candidates and can miss semantic faults.', '',
@@ -143,7 +143,7 @@ const report = [
   '- `03_Content_By_Topic/*.json`: full review packet; preserves case and question order.',
   '- `04_Command_Content_Conflicts.md`: verified structural conflicts and semantic comparison limits.',
   '- `05_Editorial_Priority.md`: prioritized review queues.', '',
-  '## Verification record — 2026-10-26', '',
+  '## D3-A historical verification record — 2026-10-26', '',
   '- Baseline Git: `8ec08f7` on `master`; working tree was clean before D3-A.',
   '- `npm run prepare-data`: PASS, 112 original tickets and 112 Guided cases generated.',
   '- `npm run audit:content`: PASS, 0 errors; 112 Guided, 122 cards, 620 scored prompts.',
@@ -162,7 +162,7 @@ fs.writeFileSync(path.join(out, '04_Command_Content_Conflicts.md'), [
   '## Commands needing Command Editorial verification', '',
   '| Command ID | Linked tickets | Verification | Next check |', '|---|---:|---|---|',
   ...pending.map(item => `| ${item.id} | ${item.tickets.length} | ${item.card.knowledge?.verification ?? 'UNSPECIFIED'} | Compare authored example and limitation against the ${item.card.knowledge?.kind === 'support_task' ? 'provider SOP' : 'official manual and isolated lab'} before publication. |`), '',
-  `Current authored Command Library metadata reports ${cardCounts.SOURCE_VERIFIED ?? 0} source-verified shell cards, ${cardCounts.PENDING ?? 0} pending shell cards, and ${cardCounts.INTERNAL_SOP_REQUIRED ?? 0} support tasks requiring SOP. README and the D2 ledger report 70/32/20; \`getent-passwd\` is now SOURCE_VERIFIED in authored metadata while the older ledger still says PENDING. Reconcile that ledger before citing its counts. No lab verification is established by source metadata.`, '',
+  `Current authored Command Library metadata reports ${cardCounts.SOURCE_VERIFIED ?? 0} source-verified shell cards, ${cardCounts.PENDING ?? 0} pending shell cards, and ${cardCounts.INTERNAL_SOP_REQUIRED ?? 0} support tasks requiring SOP. Historical D2 QA reported 70/32/20; \`getent-passwd\` was subsequently changed to SOURCE_VERIFIED in authored metadata. Compare the synchronized D2 ledger for the current count. No lab verification is established by source metadata.`, '',
 ].join('\n'))
 const priority = [...flagged].sort((a,b) => Number(b.level.slice(1)) - Number(a.level.slice(1)) || b.findings.length - a.findings.length)
 fs.writeFileSync(path.join(out, '05_Editorial_Priority.md'), [

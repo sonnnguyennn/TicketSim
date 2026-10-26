@@ -2,7 +2,7 @@
 
 ## Scope and method
 
-Read-only export from authored Guided content at HEAD `be97c33`. Covers 112 tickets, 122 Command Library IDs, 620 scored questions, and 112 English reference notes. The 112 short-answer notes are excluded from the scored-question count.
+Read-only export from effective authored Guided content, using repository base HEAD `027936f` plus any working-tree edits. Covers 112 tickets, 122 Command Library IDs, 620 scored questions, and 112 English reference notes. The 112 short-answer notes are excluded from the scored-question count.
 
 The labels below are **deterministic editorial triage**, not case-by-case technical certification or SME approval. `KEEP` means no rule below fired; it does not establish that the key, distractors, evidence, or command semantics are correct. All 620 entries remain `SME_PENDING`. The full dataset gives the reviewer the exact prose, options, keys, probes, hints, final context, and authored source.
 
@@ -14,31 +14,31 @@ Rules: prompt >180 characters or option >155 → clarity; correct-option mean > 
 
 | Classification | Questions |
 |---|---:|
-| KEEP | 563 |
+| KEEP | 568 |
 | EDIT_CLARITY | 0 |
-| EDIT_DISTRACTORS | 9 |
-| EDIT_FEEDBACK | 48 |
+| EDIT_DISTRACTORS | 6 |
+| EDIT_FEEDBACK | 46 |
 | TECHNICAL_ISSUE | 0 |
 | MULTIPLE_ISSUES | 0 |
 
-Flagged at least once: **57/620**. A question can carry several issue labels.
+Flagged at least once: **52/620**. A question can carry several issue labels.
 
 ## Topic review order
 
 | Topic | Scored | Flagged by rules |
 |---|---:|---:|
 | Control Panel | 44 | 13 |
-| Web Server & HTTP | 44 | 7 |
 | Docker & Containers | 44 | 7 |
 | Backup & Recovery | 44 | 7 |
 | Billing & Lifecycle | 44 | 7 |
-| Virtualization | 44 | 5 |
-| Disk & Filesystem | 45 | 3 |
-| Linux System & Services | 44 | 2 |
+| Web Server & HTTP | 44 | 6 |
+| Virtualization | 44 | 4 |
 | Security & Abuse | 44 | 2 |
 | DNS & Domain | 45 | 2 |
+| Linux System & Services | 44 | 1 |
 | CPU, RAM & Performance | 44 | 1 |
 | VPS Management | 44 | 1 |
+| Disk & Filesystem | 45 | 1 |
 | SSH | 45 | 0 |
 | Network | 45 | 0 |
 
@@ -49,7 +49,6 @@ Highest flag counts are in Control Panel, Web, Docker, Backup, and Billing. Thes
 | Ticket | Topic / level | Flagged questions | Evidence to inspect |
 |---|---|---:|---|
 | VPS-12-002 | Control Panel / L0 | 3 | triage: EDIT_FEEDBACK (So nguồn và timestamp trước khi coi VM đã tắt.); output: EDIT_FEEDBACK (Điều tra lớp đồng bộ mà không cắt VM đang chạy.); evidence: EDIT_FEEDBACK (over: SSH không đo trạng thái worker. / p1: Đây là thông tin có timestamp cũ.) |
-| VPS-05-002 | Disk & Filesystem / L0 | 2 | output: EDIT_FEEDBACK (ram: df -i không đo RAM. / full: Đúng IFree0/IUse%100 của df -i.); evidence: EDIT_FEEDBACK (inode: df -i có IFree0 và IUse%100. / gb: df -h có Avail11G và Use%45.) |
 | VPS-07-006 | Web Server & HTTP / L2 | 2 | check: EDIT_FEEDBACK (Đọc response local trước khi so app state.); evidence: EDIT_FEEDBACK (p2: App chưa ổn định ởstate phục vụ. / p1: Có response Service Unavailable.) |
 | VPS-07-003 | Web Server & HTTP / L1 | 2 | check: EDIT_FEEDBACK (Gửi đúng path trước khi so config và file.); evidence: EDIT_FEEDBACK (p2: Cần so đường dẫn này với release. / p1: Đây là status URL được hỏi.) |
 | VPS-13-001 | Docker & Containers / L0 | 2 | triage: EDIT_FEEDBACK (symptom: Đây là điều khách cần kiểm tra. / other: Khách chưa cung cấp VM state.); evidence: EDIT_FEEDBACK (p1: Đọc từ danh sách container. / p2: Đọc từ log container.) |
@@ -60,13 +59,10 @@ Highest flag counts are in Control Panel, Web, Docker, Backup, and Billing. Thes
 | VPS-12-005 | Control Panel / L2 | 2 | check: EDIT_FEEDBACK (Đọc task trước khi xem chi tiết job liên quan.); evidence: EDIT_FEEDBACK+EDIT_FEEDBACK (Chỉ xác nhận chờ lock và snapshot đang chạy.) |
 | VPS-12-006 | Control Panel / L2 | 2 | triage: EDIT_FEEDBACK (Cần so order với guest trước gán nguyên nhân.); evidence: EDIT_FEEDBACK (p2: Đọc trực tiếp từ ip addr. / p1: Đây là IP để đối chiếu cấp phát.) |
 | VPS-12-008 | Control Panel / L3 | 2 | check: EDIT_FEEDBACK (Task history khác danh sách VM hiện có.); evidence: EDIT_FEEDBACK+EDIT_FEEDBACK (Những quan sát này chưa cho phép xóa một VM.) |
+| VPS-14-003 | Billing & Lifecycle / L1 | 2 | triage: EDIT_FEEDBACK+EDIT_FEEDBACK (Giữ khác biệt giữa yêu cầu theo kỳ và xóa ngay.); evidence: EDIT_FEEDBACK (p1: Đây là mốc kỳ hiện tại. / p2: Policy cho cách hủy theo yêu cầu.) |
 
 ## Concrete examples to edit first
 
-- **VPS-03-001/triage** (L0, Linux System & Services; scripts/content/phase-b-01-05.mjs:542): EDIT_DISTRACTORS — Có 2 phương án sai dùng khẳng định tuyệt đối hoặc hành động cực đoan; xem liệu có thể loại bằng văn phong thay vì bằng chứng. “http: HTTP từ client chắc chắn truy cập được. | nginx: Nginx chắc chắn đang chạy.”
-- **VPS-05-002/output** (L0, Disk & Filesystem; scripts/content/phase-b-01-05.mjs:285): EDIT_FEEDBACK — 2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn. “ram: df -i không đo RAM. | full: Đúng IFree0/IUse%100 của df -i.”
-- **VPS-05-002/evidence** (L0, Disk & Filesystem; scripts/content/phase-b-01-05.mjs:286): EDIT_FEEDBACK — 2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn. “inode: df -i có IFree0 và IUse%100. | gb: df -h có Avail11G và Use%45.”
-- **VPS-07-001/evidence** (L0, Web Server & HTTP; scripts/content/phase-b-06-10.mjs:808): EDIT_DISTRACTORS — Có 2 phương án sai dùng khẳng định tuyệt đối hoặc hành động cực đoan; xem liệu có thể loại bằng văn phong thay vì bằng chứng. “config: Cấu hình Nginx chắc chắn sai cú pháp. | upstream: ISP chắc chắn làm webserver dừng.”
 - **VPS-05-004/output** (L1, Disk & Filesystem; scripts/content/phase-b-01-05.mjs:322): EDIT_DISTRACTORS — Có 2 phương án sai dùng khẳng định tuyệt đối hoặc hành động cực đoan; xem liệu có thể loại bằng văn phong thay vì bằng chứng. “safe: Dữ liệu trên volume chắc chắn nguyên vẹn. | block: Root filesystem / chắc chắn đầy.”
 - **VPS-03-004/check** (L1, Linux System & Services; scripts/content/phase-b-01-05.mjs:579): EDIT_FEEDBACK — Explanation ngắn dưới 48 ký tự; cần kiểm tra có giải thích bằng chứng hoặc giới hạn kết luận hay không. “getenforce chỉ đọc chế độ, không chuyển mode.”
 - **VPS-07-006/check** (L2, Web Server & HTTP; scripts/content/phase-b-06-10.mjs:776): EDIT_FEEDBACK — Explanation ngắn dưới 48 ký tự; cần kiểm tra có giải thích bằng chứng hoặc giới hạn kết luận hay không. “Đọc response local trước khi so app state.”
@@ -83,7 +79,6 @@ Highest flag counts are in Control Panel, Web, Docker, Backup, and Billing. Thes
 - **VPS-10-003/evidence** (L1, Virtualization; scripts/content/phase-b-06-10.mjs:285): EDIT_FEEDBACK — 3 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn. “p2: Đây là cấu hình mong muốn của VM. | over: Chưa có dữ liệu guest firewall. | p1: domiflist liệt kê Source đó.”
 - **VPS-10-006/order** (L2, Virtualization; scripts/content/phase-b-06-10.mjs:966): EDIT_FEEDBACK — 2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn. “evidence: Lập timeline trước can thiệp. | act: Không ghi đè trạng thái hiện tại.”
 - **VPS-10-007/evidence** (L3, Virtualization; scripts/content/phase-b-06-10.mjs:987): EDIT_FEEDBACK — 2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn. “p2: Monitor ghi cửa sổ rớt gói. | p1: Panel ghi cửa sổ migration.”
-- **VPS-10-008/output** (L3, Virtualization; scripts/content/phase-b-06-10.mjs:1009): EDIT_DISTRACTORS — Có 2 phương án sai dùng khẳng định tuyệt đối hoặc hành động cực đoan; xem liệu có thể loại bằng văn phong thay vì bằng chứng. “over: Guest chắc chắn chậm đúng một ngày. | ignore: Host đúng giờ nên guest chắc chắn đúng.”
 - **VPS-09-003/check** (L1, Security & Abuse; scripts/content/phase-b-06-10.mjs:350): EDIT_FEEDBACK — Explanation ngắn dưới 48 ký tự; cần kiểm tra có giải thích bằng chứng hoặc giới hạn kết luận hay không. “Mode khác với log AVC và listener của backend.”
 - **VPS-09-007/check** (L3, Security & Abuse; scripts/content/phase-b-06-10.mjs:158): EDIT_DISTRACTORS — Đáp án đúng dài trung bình 86 ký tự, phương án sai 12; độ dài có thể lộ key. “journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC"”
 - **VPS-13-001/triage** (L0, Docker & Containers; scripts/content/phase-b-11-14.mjs:1530): EDIT_FEEDBACK — 2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn. “symptom: Đây là điều khách cần kiểm tra. | other: Khách chưa cung cấp VM state.”
@@ -93,6 +88,11 @@ Highest flag counts are in Control Panel, Web, Docker, Backup, and Billing. Thes
 - **VPS-13-005/check** (L2, Docker & Containers; scripts/content/phase-b-11-14.mjs:1055): EDIT_FEEDBACK — Explanation ngắn dưới 48 ký tự; cần kiểm tra có giải thích bằng chứng hoặc giới hạn kết luận hay không. “Phép đo cần ở đúng namespace của ứng dụng.”
 - **VPS-13-007/evidence** (L3, Docker & Containers; scripts/content/phase-b-11-14.mjs:1259): EDIT_FEEDBACK — Explanation ngắn dưới 48 ký tự; cần kiểm tra có giải thích bằng chứng hoặc giới hạn kết luận hay không. “Không suy toàn stack khỏe từ API Up.”
 - **VPS-13-008/evidence** (L3, Docker & Containers; scripts/content/phase-b-11-14.mjs:1429): EDIT_FEEDBACK — Explanation ngắn dưới 48 ký tự; cần kiểm tra có giải thích bằng chứng hoặc giới hạn kết luận hay không. “Đừng đồng nhất thay tag với quyền rollback.”
+- **VPS-11-003/check** (L1, Backup & Recovery; scripts/content/phase-b-11-14.mjs:4505): EDIT_FEEDBACK — Explanation ngắn dưới 48 ký tự; cần kiểm tra có giải thích bằng chứng hoặc giới hạn kết luận hay không. “tar -t liệt kê; không giải nén đè dữ liệu.”
+- **VPS-11-004/triage** (L1, Backup & Recovery; scripts/content/phase-b-11-14.mjs:4622): EDIT_FEEDBACK — 2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn. “other: Khách không nêu thao tác này. | symptom: Đúng tác vụ cần mở để đọc lỗi.”
+- **VPS-11-004/evidence** (L1, Backup & Recovery; scripts/content/phase-b-11-14.mjs:4676): EDIT_FEEDBACK — 2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn. “p2: Mức dùng phù hợp thiếu headroom. | p1: Lỗi chỉ rõ kho lưu snapshot.”
+- **VPS-11-005/triage** (L2, Backup & Recovery; scripts/content/phase-b-11-14.mjs:3716): EDIT_FEEDBACK — 2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn. “symptom: Đúng phần khách cần tìm lại. | other: Khách đã xác nhận boot được.”
+- **VPS-11-005/evidence** (L2, Backup & Recovery; scripts/content/phase-b-11-14.mjs:3770): EDIT_FEEDBACK — Explanation ngắn dưới 48 ký tự; cần kiểm tra có giải thích bằng chứng hoặc giới hạn kết luận hay không. “Hai nguồn chưa xác nhận dữ liệu bị xóa.” EDIT_FEEDBACK — 2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn. “p1: Đây là scope được ghi rõ. | p2: Đây là trạng thái tại lúc đo.”
 
 ## Evidence and verification limits
 
@@ -107,7 +107,7 @@ Highest flag counts are in Control Panel, Web, Docker, Backup, and Billing. Thes
 - `04_Command_Content_Conflicts.md`: verified structural conflicts and semantic comparison limits.
 - `05_Editorial_Priority.md`: prioritized review queues.
 
-## Verification record — 2026-10-26
+## D3-A historical verification record — 2026-10-26
 
 - Baseline Git: `8ec08f7` on `master`; working tree was clean before D3-A.
 - `npm run prepare-data`: PASS, 112 original tickets and 112 Guided cases generated.

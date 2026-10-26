@@ -111,8 +111,8 @@
       "options": [
         {
           "id": "http",
-          "label": "HTTP từ client chắc chắn truy cập được.",
-          "feedback": "Chưa có request HTTP từ client trong trạng thái nguồn VM."
+          "label": "Website trả HTTP thành công từ mạng khách.",
+          "feedback": "Chưa có phép thử HTTP từ client. VM Running không cho biết kết quả truy cập website."
         },
         {
           "id": "vm",
@@ -121,8 +121,8 @@
         },
         {
           "id": "nginx",
-          "label": "Nginx chắc chắn đang chạy.",
-          "feedback": "Trạng thái VM không đọc unit Nginx."
+          "label": "Dịch vụ Nginx trong guest đang active.",
+          "feedback": "Panel cho biết trạng thái nguồn VM, không đọc trạng thái unit Nginx; cần systemctl status nginx trong guest."
         }
       ],
       "correctIds": [
@@ -149,16 +149,9 @@
         "overrides": []
       },
       "classification": [
-        "EDIT_DISTRACTORS"
+        "KEEP"
       ],
-      "findings": [
-        {
-          "label": "EDIT_DISTRACTORS",
-          "reason": "Có 2 phương án sai dùng khẳng định tuyệt đối hoặc hành động cực đoan; xem liệu có thể loại bằng văn phong thay vì bằng chứng.",
-          "evidence": "http: HTTP từ client chắc chắn truy cập được. | nginx: Nginx chắc chắn đang chạy.",
-          "source": "scripts/content/phase-b-01-05.mjs:542"
-        }
-      ],
+      "findings": [],
       "reviewStatus": "AUTOMATED_EDITORIAL_TRIAGE; SME_PENDING"
     },
     {

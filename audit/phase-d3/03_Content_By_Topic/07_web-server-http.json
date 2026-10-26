@@ -611,13 +611,13 @@
         },
         {
           "id": "config",
-          "label": "Cấu hình Nginx chắc chắn sai cú pháp.",
-          "feedback": "Config test bổ sung thành công; inactive không chứng minh syntaxerror."
+          "label": "Nginx không khởi động do cấu hình sai cú pháp.",
+          "feedback": "Lệnh nginx -t bổ sung thành công. Vì vậy lỗi cú pháp chưa được chứng minh là nguyên nhân Nginx dừng."
         },
         {
           "id": "upstream",
-          "label": "ISP chắc chắn làm webserver dừng.",
-          "feedback": "Chưa có bằng chứng ISP, còn localcurl cũng refused."
+          "label": "Nginx đã trả HTTP 502 vì upstream không phản hồi.",
+          "feedback": "Tại thời điểm kiểm tra chưa có listener TCP/80 và curl local bị từ chối kết nối; không có response HTTP 502."
         }
       ],
       "correctIds": [
@@ -645,16 +645,9 @@
         "overrides": []
       },
       "classification": [
-        "EDIT_DISTRACTORS"
+        "KEEP"
       ],
-      "findings": [
-        {
-          "label": "EDIT_DISTRACTORS",
-          "reason": "Có 2 phương án sai dùng khẳng định tuyệt đối hoặc hành động cực đoan; xem liệu có thể loại bằng văn phong thay vì bằng chứng.",
-          "evidence": "config: Cấu hình Nginx chắc chắn sai cú pháp. | upstream: ISP chắc chắn làm webserver dừng.",
-          "source": "scripts/content/phase-b-06-10.mjs:808"
-        }
-      ],
+      "findings": [],
       "reviewStatus": "AUTOMATED_EDITORIAL_TRIAGE; SME_PENDING"
     },
     {

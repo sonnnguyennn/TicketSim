@@ -57,4 +57,4 @@ This is an ID and metadata cross-check. It does not assert semantic agreement be
 | panel-api-audit | 1 | INTERNAL_SOP_REQUIRED | Compare authored example and limitation against the provider SOP before publication. |
 | panel-security-case | 1 | INTERNAL_SOP_REQUIRED | Compare authored example and limitation against the provider SOP before publication. |
 
-Current authored Command Library metadata reports 71 source-verified shell cards, 31 pending shell cards, and 20 support tasks requiring SOP. README and the D2 ledger report 70/32/20; `getent-passwd` is now SOURCE_VERIFIED in authored metadata while the older ledger still says PENDING. Reconcile that ledger before citing its counts. No lab verification is established by source metadata.
+Current authored Command Library metadata reports 71 source-verified shell cards, 31 pending shell cards, and 20 support tasks requiring SOP. Historical D2 QA reported 70/32/20; `getent-passwd` was subsequently changed to SOURCE_VERIFIED in authored metadata. Compare the synchronized D2 ledger for the current count. No lab verification is established by source metadata.
