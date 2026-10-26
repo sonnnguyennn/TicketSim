@@ -58,7 +58,7 @@ describe('D2 command knowledge', () => {
     }
     const ss = commandLibrary.find(card => card.id === 'ss-ltnp')!.knowledge!
     expect(ss.examples[0].expectedOutput).not.toContain('users:')
-    expect(ss.examples[0].interpretation).toContain('chưa xác định')
+    expect(ss.examples[0].interpretation).not.toMatch(/(?:thuộc|của) sshd/i)
     expect(ss.examples[1].expectedOutput).toContain('users:')
     for (const card of commandLibrary) {
       const examples = card.knowledge!.examples

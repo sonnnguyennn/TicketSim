@@ -1,10 +1,12 @@
 import { test, expect, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
+import { mkdir } from 'node:fs/promises'
 import type { GuidedAnswerKey, GuidedCase, GuidedQuestion } from '../src/guided/types'
 
 const cases = JSON.parse(await readFile('src/data/guided-public.json', 'utf8')) as GuidedCase[]
+const sourceTickets = JSON.parse(await readFile('starter-data/tickets.json', 'utf8')).tickets as { id: string; customer_message: string }[]
 // One full learning path per topic, collectively covering L0–L3 and all contexts.
-const representatives = ['VPS-01-001', 'VPS-01-008', 'VPS-02-006', 'VPS-03-001', 'VPS-03-003', 'VPS-04-007', 'VPS-04-008', 'VPS-05-007', 'VPS-06-001', 'VPS-07-005', 'VPS-08-003', 'VPS-08-008', 'VPS-09-007', 'VPS-10-004', 'VPS-10-005', 'VPS-10-006', 'VPS-11-001', 'VPS-12-004', 'VPS-13-006', 'VPS-14-008']
+const representatives = ['VPS-01-001', 'VPS-01-008', 'VPS-02-006', 'VPS-03-001', 'VPS-03-003', 'VPS-04-007', 'VPS-04-008', 'VPS-05-007', 'VPS-06-001', 'VPS-07-005', 'VPS-08-003', 'VPS-08-008', 'VPS-09-007', 'VPS-10-004', 'VPS-10-005', 'VPS-10-006', 'VPS-11-001', 'VPS-12-004', 'VPS-13-006', 'VPS-14-008', 'VPS-13-002']
 
 test('Command Library keeps empty stdout separate from the explanation', async ({ page }) => {
   await page.goto('/')
@@ -14,11 +16,10 @@ test('Command Library keeps empty stdout separate from the explanation', async (
   await page.locator('.guided-heading').getByRole('button', { name: 'Thư viện lệnh', exact: true }).click()
   await page.getByLabel('Tìm lệnh', { exact: true }).fill('systemctl start')
   await page.locator('.library-list button').filter({ hasText: 'sudo systemctl start SERVICE' }).click()
-  await page.locator('.library-expanded summary').click()
   await expect(page.locator('.library-example')).toHaveCount(0)
   await expect(page.locator('.library-caption')).toContainText('stdout rỗng')
   await expect(page.locator('.library-detail')).toContainText('Thành công thường không in stdout')
-  await expect(page.locator('.library-notes')).toContainText('cần quyền')
+  await expect(page.locator('.library-notes')).toContainText('cần phê duyệt')
 })
 
 async function answer(page: Page, item: GuidedCase, question: GuidedQuestion) {
@@ -33,7 +34,6 @@ async function answer(page: Page, item: GuidedCase, question: GuidedQuestion) {
   } else for (const id of key.correctIds) await card.getByLabel(question.options.find(option => option.id === id)!.label, { exact: true }).check()
   await card.getByRole('button', { name: 'Kiểm tra câu trả lời', exact: true }).click()
   await expect(card.locator('.guided-feedback')).toContainText(key.explanation)
-  await card.getByText('Giải thích từng lựa chọn', { exact: true }).click()
   for (const feedback of Object.values(key.optionFeedback)) await expect(card.locator('.guided-feedback')).toContainText(feedback)
 }
 
@@ -47,7 +47,8 @@ for (const [index, id] of representatives.entries()) test(`Phase B full topic pa
   await page.getByLabel('Tìm ticket', { exact: true }).fill(id)
   await page.locator(`[data-ticket-id="${id}"]`).click()
   await page.locator('.guided-entry').getByRole('button').click()
-  await expect(page.locator('.customer-explanation')).toContainText(item.customerExplanation!)
+  await expect(page.locator('.guided-ticket p[lang="en"]')).toHaveText(sourceTickets.find(ticket => ticket.id === id)!.customer_message)
+  await expect(page.locator('.customer-explanation')).toHaveCount(0)
   await page.getByText('Gợi ý', { exact: true }).click()
   await page.getByRole('button', { name: 'Mở gợi ý', exact: true }).click()
   await expect(page.locator('.guided-hints')).toContainText(JSON.parse(await readFile(`public/guided-hints/${id}.json`, 'utf8')).hints[0])
@@ -81,7 +82,21 @@ for (const [index, id] of representatives.entries()) test(`Phase B full topic pa
   await page.getByLabel('Ghi chú cuối ticket', { exact: true }).fill('Đã đối chiếu triệu chứng với kết quả kiểm tra, ghi điều chưa xác định, quyền cần có và bước xác minh sau xử lý hoặc chuyển cấp.')
   await page.getByRole('button', { name: 'Hoàn thành và xem đáp án', exact: true }).click()
   const answerKey = JSON.parse(await readFile(`public/guided-answers/${id}.json`, 'utf8'))
-  await expect(page.locator('.guided-model')).toContainText(answerKey.referenceNoteEn)
+  for (const line of answerKey.referenceNoteEn.split('\n')) {
+    const colon = line.indexOf(':')
+    const label = line.slice(0, colon)
+    const value = line.slice(colon + 1).trim()
+    await expect(page.locator('.guided-reference-fields > div').filter({ has: page.locator('dt').getByText(label, { exact: true }) }).locator('dd')).toHaveText(value)
+  }
+  if (id === 'VPS-13-002') {
+    await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
+    await page.getByRole('button', { name: 'Copy note', exact: true }).click()
+    expect((await page.evaluate(() => navigator.clipboard.readText())).replace(/\r\n/g, '\n')).toBe(answerKey.referenceNoteEn)
+    await mkdir('screenshots/phase-d2-2', { recursive: true })
+    await page.locator('.guided-result').screenshot({ path: 'screenshots/phase-d2-2/VPS-13-002-summary-1440.png' })
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.locator('.guided-result').screenshot({ path: 'screenshots/phase-d2-2/VPS-13-002-summary-390.png' })
+  }
   await expect(page.locator('.guided-model')).not.toContainText(answerKey.production_warning)
   expect(answerRequests.length).toBeGreaterThan(0)
   const progress = await page.evaluate(() => JSON.parse(localStorage.getItem('vps-ticket-simulator-progress-v5')!))

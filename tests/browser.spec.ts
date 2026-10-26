@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
+import { mkdir } from 'node:fs/promises'
 import type { GuidedAnswerKey, GuidedCase, GuidedQuestion } from '../src/guided/types'
 import type { Progress } from '../src/types'
 
@@ -61,8 +62,7 @@ test('D2.1 library separates syntax, examples and support tasks without internal
   await search.fill('BatchMode')
   await expect(page.locator('.library-list button').filter({ hasText: 'ssh -vvv' })).toBeVisible()
   await expect(page.locator('.library-options')).toContainText('BatchMode=yes')
-  await page.locator('.library-expanded summary').click()
-  await expect(page.locator('.library-expanded')).toContainText('BatchMode=yes')
+  await expect(page.locator('.library-usage').filter({ hasText: 'BatchMode=yes' })).toHaveCount(1)
   await search.fill('target quota')
   await expect(page.locator('.library-detail')).toContainText('Nơi quan sát hoặc xử lý')
   await expect(page.locator('.library-detail')).toContainText('Quyền và chuyển cấp')
@@ -78,11 +78,9 @@ test('D2.1 getent lookup distinguishes database, key, found and missing entry', 
   await page.getByTitle('Thư viện lệnh', { exact: true }).click()
   await page.getByRole('textbox', { name: 'Tìm lệnh', exact: true }).fill('getent passwd')
   const detail = page.locator('.library-detail')
-  await expect(detail.locator('.library-parts')).toContainText('Cơ sở dữ liệu passwd')
-  await expect(detail.locator('.library-parts')).toContainText('Đối số USER')
-  await expect(detail.locator('.library-options')).toHaveCount(0)
+  await expect(detail.locator('.library-options')).toContainText('Cơ sở dữ liệu passwd')
+  await expect(detail.locator('.library-options')).toContainText('Đối số USER')
   await expect(detail).not.toContainText(/SOURCE_VERIFIED|PENDING|INTERNAL_SOP_REQUIRED|CentOS Stream 9/)
-  await detail.locator('summary').click()
   await expect(detail).toContainText('getent passwd webapp')
   await expect(detail).toContainText('webapp:x:1001:1001')
   await expect(detail).toContainText('getent passwd admin')
@@ -91,6 +89,67 @@ test('D2.1 getent lookup distinguishes database, key, found and missing entry', 
   await page.getByRole('textbox', { name: 'Tìm lệnh', exact: true }).fill('ss -ltnp')
   await expect(page.locator('.library-options code')).toHaveText(['-l', '-t', '-n', '-p'])
   await expect(page.locator('.library-options')).not.toContainText('ss -ltnp')
+})
+
+test('D2.2 feedback explains wrong, correct, missing and ordered choices at 390px', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  const item = caseFor('VPS-01-001')
+  await openTicket(page, item.id)
+  await expect(page.locator('.guided-ticket p[lang="en"]')).toContainText('Hello Support Team')
+  await expect(page.locator('.customer-explanation')).toHaveCount(0)
+  await mkdir('screenshots/phase-d2-2', { recursive: true })
+  await page.locator('.guided-ticket').screenshot({ path: 'screenshots/phase-d2-2/customer-English-390.png' })
+  const triage = item.questions.find(question => question.id === 'triage')!
+  await answerQuestion(page, item, triage, true)
+  const triageCard = page.locator('.guided-question').filter({ has: page.getByRole('heading', { name: triage.prompt, exact: true }) })
+  await expect(triageCard.locator('.guided-feedback')).toBeFocused()
+  await expect(triageCard).toContainText('Bạn chọn sai')
+  await expect(triageCard).toContainText('Đáp án đúng')
+  await expect(triageCard).toContainText('Chưa đúng')
+  await mkdir('screenshots/phase-d2-2', { recursive: true })
+  await triageCard.screenshot({ path: 'screenshots/phase-d2-2/feedback-l0-wrong-390.png' })
+  await next(page).click()
+  for (const question of item.questions.filter(question => question.stage === 'investigate')) await answerQuestion(page, item, question)
+  await run(page, item.probes.find(probe => probe.id === 'P1')!.command)
+  await run(page, item.probes.find(probe => probe.id === 'P2')!.command)
+  await next(page).click()
+  await answerQuestion(page, item, item.questions.find(question => question.id === 'output')!)
+  const evidence = item.questions.find(question => question.id === 'evidence')!
+  const evidenceKey = JSON.parse(await readFile(`public/guided-feedback/${item.id}/evidence.json`, 'utf8')) as GuidedAnswerKey
+  const evidenceCard = page.locator('.guided-question').filter({ has: page.getByRole('heading', { name: evidence.prompt, exact: true }) })
+  for (const id of [evidenceKey.correctIds[0], evidence.options.find(option => !evidenceKey.correctIds.includes(option.id))!.id]) await evidenceCard.getByLabel(evidence.options.find(option => option.id === id)!.label, { exact: true }).check()
+  await evidenceCard.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
+  await expect(evidenceCard.locator('.guided-feedback')).toBeFocused()
+  for (const status of ['Bạn chọn đúng', 'Bạn chọn sai', 'Đáp án đúng', 'Không chọn']) await expect(evidenceCard).toContainText(status)
+  await evidenceCard.screenshot({ path: 'screenshots/phase-d2-2/feedback-multi-390.png' })
+  await next(page).click()
+  await answerQuestion(page, item, item.questions.find(question => question.id === 'decision')!)
+  const sequence = item.questions.find(question => question.id === 'sequence')!
+  const sequenceCard = page.locator('.guided-question').filter({ has: page.getByRole('heading', { name: sequence.prompt, exact: true }) })
+  await sequenceCard.getByRole('button', { name: 'Kiểm tra câu trả lời' }).click()
+  await expect(sequenceCard.locator('.guided-feedback')).toBeFocused()
+  await expect(sequenceCard).toContainText('Thứ tự bạn đã chọn')
+  await expect(sequenceCard).toContainText('Thứ tự tham khảo')
+  await expect(sequenceCard).toContainText('Sai vị trí')
+  await sequenceCard.screenshot({ path: 'screenshots/phase-d2-2/feedback-order-390.png' })
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
+})
+
+test('D2.2 quick lookup keeps the selected command and a relevant example visible', async ({ page }) => {
+  await page.goto('/')
+  await enterInvestigation(page, 'VPS-01-001')
+  await page.locator('.quick-lookup > summary').click()
+  const lookup = page.locator('.quick-lookup')
+  await lookup.getByRole('textbox', { name: 'Tìm giải thích lệnh' }).fill('ss -ltnp')
+  await expect(lookup.getByRole('heading', { name: 'Đang xem: ss -ltnp' })).toBeVisible()
+  await expect(lookup.locator('.quick-results button[aria-current="true"]')).toContainText('ss -ltnp')
+  await expect(lookup.locator('.quick-summary')).toContainText('Ví dụ:')
+  await mkdir('screenshots/phase-d2-2', { recursive: true })
+  await lookup.screenshot({ path: 'screenshots/phase-d2-2/quick-lookup-1440.png' })
+  await lookup.getByRole('textbox', { name: 'Tìm giải thích lệnh' }).fill('journalctl')
+  await expect(lookup.locator('.quick-results button[aria-current="true"]')).toBeVisible()
+  await expect(lookup.locator('.quick-summary')).toContainText('journalctl')
 })
 
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
@@ -177,7 +236,8 @@ test('SSH Guided keeps exact outputs, neutral errors, library return and grading
   expect(answerRequests).toHaveLength(0)
   await page.getByRole('button', { name: 'Hoàn thành và xem đáp án', exact: true }).click()
   await expect(page.getByText('Reference ticket summary', { exact: true })).toBeVisible()
-  await expect(page.locator('.guided-reference-note')).toContainText('Findings: sshd was inactive')
+  await expect(page.locator('.guided-reference-fields')).toContainText('Findings')
+  await expect(page.locator('.guided-reference-fields')).toContainText('inactive sshd')
   await expect(page.locator('.guided-model')).not.toContainText('Kiểm tra tiếp:')
   const result = await stored(page)
   expect(result.guidedAttempts).toHaveLength(1)
