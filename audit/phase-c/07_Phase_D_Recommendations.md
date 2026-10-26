@@ -1,5 +1,7 @@
 # Phase D remediation backlog — proposed, not implemented
 
+> Historical backlog at Phase C2 close. Phase D1 work and remaining D2/D3 items are recorded in `Phase_D1_Correctness_QA.md`; finding status is in `04_Finding_Register.csv`.
+
 This list is grouped by severity and distinguishes technical correctness from learning quality. No runtime content, answer key, fixture or progress schema was changed in Phase C. Apply fixes in `scripts/guided-content.mjs` or the relevant `scripts/content/` authoring source, then regenerate data with `npm run prepare-data` and test in Phase D.
 
 ## Critical

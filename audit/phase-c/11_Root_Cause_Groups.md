@@ -1,5 +1,7 @@
 # Root-cause consolidation and severity review
 
+> Historical root-cause analysis at Phase C2 close. All 19 registered findings have D1 lifecycle decisions in `04_Finding_Register.csv`; see `Phase_D1_Correctness_QA.md` for fixes and remaining validation limits.
+
 The finding register has 19 rows, but only eight root-cause groups. Multiple rows remain because remediation must point to each affected ticket or card. Severity is the impact on a learner's technical decision, not the number of repeated appearances.
 
 | Root cause | Findings | Severity decision and scope |

@@ -1,5 +1,7 @@
 # Verification record — Phase C2
 
+> This record preserves the pre-D1 protected-source hashes and 101 fixture count. Phase D1 intentionally changed two original ticket fixtures and Guided content; current verification is in `Phase_D1_Correctness_QA.md`.
+
 - Workspace: `E:\Document\TicketSim`; Git branch `master`; baseline HEAD `2b017b9dcb3ae984a21a210133843dec9fcfb036`.
 - Before audit, Git tracked files were clean and the prior Phase C `audit/` directory was untracked. After the C2 review and standard build/test scripts, `git diff --name-only HEAD` was empty; `git status --short` showed only `?? audit/`. The standard scripts regenerated data but produced no tracked runtime diff.
 - Protected source SHA-256 after checks: `scripts/guided-content.mjs` = `9A719B66DAECE5AC96BE6EAF15E0E8FA55851FB5708E3059349C091B4969585D`; `starter-data/tickets.json` = `706EF607B984D69846E4C59B670A80B5488E618080B812D9B38CEA9BC4BC09F7`; `src/guided/commands.ts` = `38C5FC789223664BC574AECEC978B6BAD23F6373B71BF6A3B0F3B07C7A17BF1B`.

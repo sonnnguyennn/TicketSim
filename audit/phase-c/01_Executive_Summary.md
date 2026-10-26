@@ -1,5 +1,7 @@
 # Phase C2 — independent content audit
 
+> Historical Phase C2 snapshot. Phase D1 resolved all 19 findings at source/regression level; current lifecycle is in `04_Finding_Register.csv` and `Phase_D1_Correctness_QA.md` at the project root. Counts and source hashes below describe the C2 baseline.
+
 Date: 2026-10-26 (Asia/Saigon). Baseline: `2b017b9dcb3ae984a21a210133843dec9fcfb036` on `master`. This audit changes only `audit/phase-c/` scripts and reports. It does not change TicketSim runtime content, answer keys, fixtures, original tickets or progress schema.
 
 ## Coverage and result

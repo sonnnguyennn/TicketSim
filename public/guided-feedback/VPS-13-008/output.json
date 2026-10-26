@@ -7,6 +7,6 @@
   "optionFeedback": {
     "over": "Migration unknown có thể khiến image cũ không đọc dữ liệu mới.",
     "ignore": "Restart không thêm config option đã bị bỏ.",
-    "supported": "Lỗi và release notes phù hợp; chưaduệtmộtphươngánrollback."
+    "supported": "Lỗi và release notes phù hợp; chưa duyệt phương án rollback."
   }
 }

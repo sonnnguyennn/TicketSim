@@ -2,6 +2,6 @@
   "hints": [
     "Xóa tên file không bắt buộc đóng file descriptor mà process còn giữ.",
     "So dung lượng filesystem với lsof +L1 và PID giữ file deleted.",
-    "Java PID2300 đang giữ file5GiB đã unlink; cần owner chọn reopen/graceful restart có phép rồi xác minh cả dung lượng và ứng dụng."
+    "Java PID 2300 đang giữ file 5 GiB đã unlink; cần owner chọn reopen hoặc graceful restart có phép rồi xác minh dung lượng và ứng dụng."
   ]
 }

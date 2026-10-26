@@ -5,7 +5,7 @@
   "explanation": "Dependency thuộc build/deploy của ứng dụng; giữ volume dữ liệu.",
   "optionFeedback": {
     "safe": "Đối chiếu digest/manifest, giữ rollback rồi kiểm tra endpoint.",
-    "unsafe": "Volume dữ liệu không cung cấp module bị thiếu trong image.",
+    "unsafe": "Cùng image vẫn thiếu appconfig; cần owner sửa build/dependency rồi kiểm tra endpoint.",
     "close": "Container tồn tại không chứng minh ứng dụng khởi động và đáp ứng."
   }
 }

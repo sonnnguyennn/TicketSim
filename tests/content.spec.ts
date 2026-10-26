@@ -4,7 +4,7 @@ import type { GuidedAnswerKey, GuidedCase, GuidedQuestion } from '../src/guided/
 
 const cases = JSON.parse(await readFile('src/data/guided-public.json', 'utf8')) as GuidedCase[]
 // One full learning path per topic, collectively covering L0–L3 and all contexts.
-const representatives = ['VPS-01-001', 'VPS-02-006', 'VPS-03-003', 'VPS-04-007', 'VPS-05-007', 'VPS-06-001', 'VPS-07-005', 'VPS-08-003', 'VPS-08-008', 'VPS-09-007', 'VPS-10-005', 'VPS-11-001', 'VPS-12-004', 'VPS-13-006', 'VPS-14-008']
+const representatives = ['VPS-01-001', 'VPS-01-008', 'VPS-02-006', 'VPS-03-001', 'VPS-03-003', 'VPS-04-007', 'VPS-04-008', 'VPS-05-007', 'VPS-06-001', 'VPS-07-005', 'VPS-08-003', 'VPS-08-008', 'VPS-09-007', 'VPS-10-004', 'VPS-10-005', 'VPS-10-006', 'VPS-11-001', 'VPS-12-004', 'VPS-13-006', 'VPS-14-008']
 
 test('Command Library keeps empty stdout separate from the explanation', async ({ page }) => {
   await page.goto('/')
@@ -84,7 +84,14 @@ for (const [index, id] of representatives.entries()) test(`Phase B full topic pa
   expect(answerRequests.length).toBeGreaterThan(0)
   const progress = await page.evaluate(() => JSON.parse(localStorage.getItem('vps-ticket-simulator-progress-v5')!))
   expect(progress.guidedAttempts[0].score).toBe(progress.guidedAttempts[0].total)
+  expect(progress.guidedAttempts[0].contentRevision).toBe('D1-2026-10-26')
   expect(progress.guidedDrafts[id].submitted).toBe(true)
   expect(progress.reviewAttempts).toHaveLength(0)
+  if (id === 'VPS-04-008') {
+    await page.reload()
+    const retained = await page.evaluate(() => JSON.parse(localStorage.getItem('vps-ticket-simulator-progress-v5')!))
+    expect(retained.guidedAttempts[0]).toEqual(progress.guidedAttempts[0])
+    expect(retained.reviewAttempts).toHaveLength(0)
+  }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
 })

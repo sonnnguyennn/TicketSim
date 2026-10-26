@@ -153,12 +153,31 @@ test('SSH Guided keeps exact outputs, neutral errors, library return and grading
   await expect(page.locator('.history-card')).toContainText(item.id)
 })
 
+test('a pre-D1 draft is preserved until the learner explicitly starts the revised case', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(key => {
+    const progress = JSON.parse(localStorage.getItem(key)!)
+    progress.guidedDrafts['VPS-02-006'] = { stage: 1, responses: { triage: ['symptom'] }, feedback: {}, commands: [], hintLevel: 0, note: 'Old draft', submitted: false }
+    localStorage.setItem(key, JSON.stringify(progress))
+  }, STORAGE_KEY)
+  await page.reload()
+  await page.getByRole('textbox', { name: 'Tìm ticket', exact: true }).fill('VPS-02-006')
+  await page.locator('[data-ticket-id="VPS-02-006"]').click()
+  await page.locator('.guided-entry').getByRole('button', { name: /Học ticket|Tiếp tục/ }).click()
+  await expect(page.getByRole('heading', { name: 'Nội dung ticket đã được sửa' })).toBeVisible()
+  expect((await stored(page)).guidedDrafts['VPS-02-006'].note).toBe('Old draft')
+  page.once('dialog', dialog => dialog.accept())
+  await page.getByRole('button', { name: 'Bắt đầu bản mới' }).click()
+  await expect(page.getByRole('navigation', { name: 'Các bước bài học' })).toBeVisible()
+  expect((await stored(page)).guidedDrafts['VPS-02-006'].note).toBe('')
+})
+
 test('stored command history and independent setting survive Guided continuation, ticket changes and refresh', async ({ page }) => {
   await page.goto('/')
   await page.evaluate(key => {
     const progress = JSON.parse(localStorage.getItem(key)!)
     progress.supportLevel = 'independent'
-    progress.guidedDrafts['VPS-01-001'] = { stage: 1, responses: {}, feedback: {}, commands: [{ id: 'old-command', command: 'old investigation', output: 'output preserved from saved session', supported: true, kind: 'terminal', at: '2026-10-20T00:00:00Z' }], hintLevel: 0, note: 'Ghi chú đang soạn cần giữ lại.', submitted: false }
+    progress.guidedDrafts['VPS-01-001'] = { stage: 1, responses: {}, feedback: {}, commands: [{ id: 'old-command', command: 'old investigation', output: 'output preserved from saved session', supported: true, kind: 'terminal', at: '2026-10-20T00:00:00Z' }], hintLevel: 0, note: 'Ghi chú đang soạn cần giữ lại.', submitted: false, contentRevision: 'D1-2026-10-26' }
     progress.statefulDrafts['VPS-01-001'] = { state: 'initial', commands: [], approval: false, note: 'Stateful draft retained', completed: false, errors: [] }
     progress.objectiveExamDrafts['VPS-01-001'] = { commands: [], responses: { triage: ['refused'] } }
     progress.examDrafts['VPS-01-001'] = { form: { symptom: 'Legacy Exam draft retained', hypothesis: '', evidence: '', action: '', verification: '' }, commands: [] }

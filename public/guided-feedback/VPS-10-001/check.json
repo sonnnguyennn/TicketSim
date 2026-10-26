@@ -6,7 +6,7 @@
   "commandId": "virsh-dominfo",
   "optionFeedback": {
     "wrong1": "Incident bổ sung bối cảnh, không thay VM status.",
-    "wrong2": "Đây là phép đọc host, không phải mục panel đang hỏi.",
+    "wrong2": "virsh đọc state trên host nếu NOC được cấp quyền; đây không phải mục panel mà vai trò trong câu hỏi có thể dùng.",
     "direct": "Mục này cho trạng thái VM theo panel."
   }
 }

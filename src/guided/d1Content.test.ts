@@ -13,6 +13,7 @@ const option = (id: string, question: string, optionId: string) => byId(id).ques
 
 describe('D1 correctness regressions', () => {
   it('uses dated UTC windows for all historical journal probes and matches their events', () => {
+    const originalTickets = JSON.parse(fs.readFileSync('starter-data/tickets.json', 'utf8')).tickets as { id: string; probe_outputs: { probe_id: string; command: string; stdout: string }[]; hint: string }[]
     const windows: [string, string, string][] = [
       ['VPS-04-008', 'P1', '02:00'], ['VPS-09-007', 'P1', '09:14'], ['VPS-01-008', 'G1', '23:12'],
     ]
@@ -28,6 +29,13 @@ describe('D1 correctness regressions', () => {
     for (const guidedCase of cases) for (const probe of guidedCase.probes) {
       if (!probe.command.includes('journalctl') || !/--since|--until/.test(probe.command)) continue
       expect(probe.command).not.toMatch(/--since\s+(?:today|yesterday|"\d\d:\d\d")/)
+    }
+    for (const id of ['VPS-04-008', 'VPS-09-007']) {
+      const original = originalTickets.find(item => item.id === id)!
+      const initial = original.probe_outputs.find(item => item.probe_id === 'P1')!
+      expect(initial.command).toBe(byId(id).probes[0].command)
+      expect(initial.stdout).toBe(byId(id).probes[0].output)
+      expect(original.hint).toContain('2026-10-22')
     }
   })
 
@@ -59,6 +67,39 @@ describe('D1 correctness regressions', () => {
 
   it('marks all changed major cases with a stable revision identifier', () => {
     expect(GUIDED_CONTENT_REVISION).toBe('D1-2026-10-26')
-    expect(revisedGuidedTicketIds.size).toBe(6)
+    expect(revisedGuidedTicketIds.size).toBe(15)
+  })
+
+  it('keeps post-action ss tables and the SSH debug probe consistent with their cards', () => {
+    for (const [id, port] of [['VPS-01-001', '22'], ['VPS-03-001', '80']]) {
+      const probe = byId(id).probes.find(item => item.command === 'ss -ltnp' && item.requiredState?.includes('changed'))!
+      expect(probe.output).toContain('Peer Address:Port')
+      expect(probe.output).toContain(`0.0.0.0:${port} 0.0.0.0:*`)
+      expect(classifyGuidedCommand(probe.command, byId(id).probes, commandLibrary, 'changed')).toMatchObject({ kind: 'available', probe: { id: probe.id } })
+    }
+    const ssh = byId('VPS-01-001').probes.find(item => item.id === 'G5')!
+    expect(ssh.command).toContain('ssh -vvv')
+    expect(commandLibrary.find(card => card.id === ssh.commandId)?.command).toContain('ssh -vvv')
+    expect(ssh.output).toContain('debug1:')
+    expect(ssh.output).toContain('Permission denied')
+  })
+
+  it('provides only the evidence each command can print', () => {
+    const dns = byId('VPS-08-008').probes.find(item => item.id === 'P2')!
+    expect(dns.output).toContain('ANSWER: 1')
+    expect(dns.output).toContain('signed.example.test. 300 IN A 198.51.100.20')
+    const top = byId('VPS-10-004').probes.find(item => item.id === 'P1')!
+    expect(top.output.split('\n')).toHaveLength(10)
+    expect(top.output.split('\n')[0]).toMatch(/^top - /)
+    expect(top.output).toContain('%Cpu(s):')
+    expect(top.output).toContain('60.0 st')
+    expect(top.output).toContain('PID USER')
+  })
+
+  it('uses role-aware and plausible alternatives in virtualization and Docker questions', () => {
+    expect(byId('VPS-10-001').questions.find(item => item.id === 'check')?.prompt).toContain('quyền VPS support')
+    expect(key('VPS-10-001').optionFeedback.wrong2).toContain('NOC')
+    expect(option('VPS-13-001', 'output', 'over').label).toContain('image tag')
+    expect(option('VPS-13-001', 'decision', 'unsafe').label).toContain('cùng image')
   })
 })

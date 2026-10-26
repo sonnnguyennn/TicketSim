@@ -1348,3 +1348,44 @@ d1Question('VPS-10-006', 'check').prompt = 'Mục nào là lịch sử hoạt đ
 d1Question('VPS-10-006', 'check').explanation = 'Activity là lịch sử thao tác. Metadata cũng ghi mốc hoàn tất restore, nhưng câu hỏi này yêu cầu đúng loại nguồn lịch sử hoạt động.'
 d1Option('VPS-10-006', 'check', 'wrong1').feedback = 'Metadata cũng ghi restore completed lúc 10:14; nó phục vụ đối chiếu mốc tạo snapshot, còn câu hỏi yêu cầu mục activity.'
 
+// Minor fixture and Command Library consistency fixes.
+d1['VPS-01-001'].extras.find(probe => probe.command === 'ss -ltnp' && probe.requiredState?.includes('changed')).output = 'State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:(("sshd",pid=724,fd=3))'
+d1['VPS-01-001'].reviewVariants[0].evidence.find(item => item.label.includes('ss -ltnp')).output = 'State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:80 0.0.0.0:* users:(("nginx",pid=801,fd=6))'
+d1['VPS-03-001'].extras.find(probe => probe.command === 'ss -ltnp' && probe.requiredState?.includes('changed')).output = 'State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 511 0.0.0.0:80 0.0.0.0:* users:(("nginx",pid=812,fd=6))'
+const sshClientCheck = d1['VPS-01-001'].extras.find(probe => probe.command.startsWith('ssh -o BatchMode=yes'))
+sshClientCheck.command = 'ssh -vvv admin@192.0.2.25'
+sshClientCheck.output = 'debug1: Connecting to 192.0.2.25 [192.0.2.25] port 22.\ndebug1: Authentications that can continue: publickey,password\nadmin@192.0.2.25: Permission denied (publickey,password).'
+sshClientCheck.purpose = 'Đọc debug kết nối và xác thực SSH từ client sau hành động mô phỏng.'
+sshClientCheck.meaning = 'Client tới bước xác thực nhưng bị từ chối; chưa thể báo khách đã đăng nhập được.'
+
+d1['VPS-08-008'].probeOverrides = { ...d1['VPS-08-008'].probeOverrides, P2: ';; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19820\n;; flags: qr rd ra cd; QUERY: 1, ANSWER: 1\n;; ANSWER SECTION:\nsigned.example.test. 300 IN A 198.51.100.20' }
+d1['VPS-08-008'].probeNotes[1].meaning = 'Với +cd, cùng resolver trả NOERROR và một A record; phù hợp giả thuyết validation nhưng chưa xác định DS, DNSKEY hay RRSIG sai.'
+phaseBEdits['VPS-08-008'].review.fixtureChanges.find(item => item.probeId === 'P2').reason = 'Giữ status NOERROR với +cd và thêm A answer đúng định dạng dig; kết quả này không tự xác minh DNSSEC chain.'
+
+d1['VPS-10-004'].probeOverrides = { ...d1['VPS-10-004'].probeOverrides, P1: 'top - 09:05:00 up 3 days,  2 users,  load average: 4.80, 4.21, 3.90\nTasks: 118 total,   1 running, 117 sleeping,   0 stopped,   0 zombie\n%Cpu(s):  5.0 us,  3.0 sy,  0.0 ni, 30.0 id,  2.0 wa,  0.0 hi,  0.0 si, 60.0 st\nMiB Mem :   4096.0 total,    740.0 free,   2100.0 used,   1256.0 buff/cache\nMiB Swap:   1024.0 total,   1024.0 free,      0.0 used.   1650.0 avail Mem\n\n    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n   1042 app       20   0  522000  98000  12000 S   8.0   2.3   3:12.00 app\n    741 root      20   0  160000   8200   5400 S   1.0   0.2   0:41.00 sshd\n      1 root      20   0  168000  12000   7800 S   0.0   0.3   0:20.00 systemd' }
+phaseBEdits['VPS-10-004'].review.fixtureChanges.push({ probeId: 'P1', reason: 'top -b -n1 | head phải gồm summary/header trước dòng process; thêm 10 dòng với st=60% và các CPU category cộng 100%.' })
+
+// A close distractor should test source interpretation and role, not merely
+// ask learners to reject an obviously destructive action.
+d1Question('VPS-10-001', 'check').prompt = 'Với quyền VPS support chỉ xem panel khách, mục nào đọc trực tiếp trạng thái VM?'
+d1Option('VPS-10-001', 'check', 'wrong2').feedback = 'virsh đọc state trên host nếu NOC được cấp quyền; đây không phải mục panel mà vai trò trong câu hỏi có thể dùng.'
+d1Option('VPS-13-001', 'output', 'over').label = 'Chỉ cần đổi image tag về bản trước, không cần kiểm tra manifest hay dữ liệu.'
+d1Option('VPS-13-001', 'output', 'over').feedback = 'Rollback có thể là phương án, nhưng cần xác nhận image, dependency và tương thích dữ liệu trước khi thực hiện.'
+d1Option('VPS-13-001', 'decision', 'unsafe').label = 'Tạo lại container bằng cùng image mà không sửa dependency.'
+d1Option('VPS-13-001', 'decision', 'unsafe').feedback = 'Cùng image vẫn thiếu appconfig; cần owner sửa build/dependency rồi kiểm tra endpoint.'
+
+// Editorial repairs, scoped to the audited cases and preserving all option IDs.
+d1Question('VPS-12-007', 'output').prompt = 'API trả 403, token chỉ có quyền đọc và cùng owner; permission matrix yêu cầu reboot:vm. Nhận định nào đúng?'
+d1Option('VPS-13-008', 'output', 'supported').feedback = 'Lỗi và release notes phù hợp; chưa duyệt phương án rollback.'
+d1['VPS-14-004'].extras.find(probe => probe.command === 'BILLING: refund request state').meaning = 'RF-1404 chưa gửi, decision none; chưa có kết quả chính thức.'
+const deletedLog = d1['VPS-05-006']
+deletedLog.hints[2] = 'Java PID 2300 đang giữ file 5 GiB đã unlink; cần owner chọn reopen hoặc graceful restart có phép rồi xác minh dung lượng và ứng dụng.'
+deletedLog.probeNotes[1].meaning = 'Java PID 2300 giữ app.log đã xóa tên, nlink 0, kích thước 5 GiB. Chưa biết cách đóng handle an toàn của app.'
+deletedLog.probeNotes[1].purpose = 'Liệt kê file có link count nhỏ hơn 1 còn được process mở.'
+deletedLog.extras[0].purpose = 'Đọc command line của PID 2300.'
+deletedLog.extras[0].meaning = 'PID 2300 là Java app chạy api.jar. Command line không tự cho biết ai được phép thay đổi service.'
+d1Question('VPS-05-006', 'output').prompt = 'lsof cho thấy app.log đã unlink, còn PID 2300 giữ khoảng 5 GiB. Hiểu thế nào?'
+d1Option('VPS-05-006', 'evidence', 'p2').label = 'Java PID 2300 giữ app.log đã unlink, khoảng 5 GiB.'
+d1Option('VPS-05-006', 'decision', 'unsafe').label = 'Dùng kill -9 với PID 2300 ngay.'
+deletedLog.answerOverrides.expected_diagnosis = 'PID 2300 còn mở app.log đã unlink, khoảng 5 GiB; đây là ứng viên giải thích block chưa được trả. Cần so đúng filesystem và thời gian.'
+

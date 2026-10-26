@@ -967,19 +967,6 @@
   },
   {
     "ticketId": "VPS-04-008",
-    "probeId": "P1",
-    "beforeCommand": "journalctl -u backup-agent --since \"02:00\" --until \"02:30\"",
-    "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
-    "before": "backup started 02:00; finished 02:20",
-    "after": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
-    "reason": "Bỏ prose chấm phẩy, dùng hai dòng journalstarted/finished cótimestamp.",
-    "references": [
-      "https://man7.org/linux/man-pages/man8/iostat.8.html",
-      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
-    ]
-  },
-  {
-    "ticketId": "VPS-04-008",
     "probeId": "P2",
     "beforeCommand": "iostat -xz 1 2",
     "command": "iostat -xz 1 2",
@@ -1049,8 +1036,8 @@
     "beforeCommand": "dig @1.1.1.1 signed.example.test A +cd",
     "command": "dig @1.1.1.1 signed.example.test A +cd",
     "before": "status: NOERROR",
-    "after": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19820",
-    "reason": "NOERRORdạngheaderdig;khôngbịaAanswer.",
+    "after": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19820\n;; flags: qr rd ra cd; QUERY: 1, ANSWER: 1\n;; ANSWER SECTION:\nsigned.example.test. 300 IN A 198.51.100.20",
+    "reason": "Giữ status NOERROR với +cd và thêm A answer đúng định dạng dig; kết quả này không tự xác minh DNSSEC chain.",
     "references": [
       "https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility",
       "https://www.rfc-editor.org/rfc/rfc6605.html"
@@ -1105,6 +1092,19 @@
     "reason": "Dòng vnet4 bridge br-storage thiếu header/model/MAC; bổ sung bảng domiflist hợp lý, giữ source bridge.",
     "references": [
       "https://libvirt.org/manpages/virsh.html"
+    ]
+  },
+  {
+    "ticketId": "VPS-10-004",
+    "probeId": "P1",
+    "beforeCommand": "top -b -n1 | head",
+    "command": "top -b -n1 | head",
+    "before": "%Cpu(s): 60.0 st",
+    "after": "top - 09:05:00 up 3 days,  2 users,  load average: 4.80, 4.21, 3.90\nTasks: 118 total,   1 running, 117 sleeping,   0 stopped,   0 zombie\n%Cpu(s):  5.0 us,  3.0 sy,  0.0 ni, 30.0 id,  2.0 wa,  0.0 hi,  0.0 si, 60.0 st\nMiB Mem :   4096.0 total,    740.0 free,   2100.0 used,   1256.0 buff/cache\nMiB Swap:   1024.0 total,   1024.0 free,      0.0 used.   1650.0 avail Mem\n\n    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n   1042 app       20   0  522000  98000  12000 S   8.0   2.3   3:12.00 app\n    741 root      20   0  160000   8200   5400 S   1.0   0.2   0:41.00 sshd\n      1 root      20   0  168000  12000   7800 S   0.0   0.3   0:20.00 systemd",
+    "reason": "top -b -n1 | head phải gồm summary/header trước dòng process; thêm 10 dòng với st=60% và các CPU category cộng 100%.",
+    "references": [
+      "https://libvirt.org/manpages/virsh.html",
+      "https://man7.org/linux/man-pages/man1/top.1.html"
     ]
   },
   {
@@ -1174,7 +1174,7 @@
   {
     "ticketId": "VPS-09-007",
     "probeId": "P1",
-    "beforeCommand": "journalctl -u sshd --since today",
+    "beforeCommand": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
     "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
     "before": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:AbCdEf123456",
     "after": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",

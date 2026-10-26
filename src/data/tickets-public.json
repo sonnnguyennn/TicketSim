@@ -1161,8 +1161,8 @@
     "probe_outputs": [
       {
         "probe_id": "P1",
-        "command": "journalctl -u backup-agent --since \"02:00\" --until \"02:30\"",
-        "stdout": "backup started 02:00; finished 02:20",
+        "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+        "stdout": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
         "available": true,
         "mutates_guest": false
       },
@@ -2604,8 +2604,8 @@
     "probe_outputs": [
       {
         "probe_id": "P1",
-        "command": "journalctl -u sshd --since today",
-        "stdout": "Accepted publickey for root from 203.0.113.77",
+        "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+        "stdout": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
         "available": true,
         "mutates_guest": false
       },

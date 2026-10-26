@@ -5,7 +5,7 @@
   "explanation": "Lỗi import hướng tới bản ứng dụng; chưa quy hỏng Docker daemon.",
   "commandId": "docker-logs",
   "optionFeedback": {
-    "over": "Docker vẫn liệt kê và đọc log; chưa có bằng chứng daemon hỏng.",
+    "over": "Rollback có thể là phương án, nhưng cần xác nhận image, dependency và tương thích dữ liệu trước khi thực hiện.",
     "ignore": "Mã lỗi chung không sửa module thiếu trong image.",
     "supported": "Log xác định import thất bại; manifest và release cần được đối chiếu."
   }

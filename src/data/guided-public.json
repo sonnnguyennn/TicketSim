@@ -73,7 +73,7 @@
         "id": "G4",
         "context": "guest",
         "command": "ss -ltnp",
-        "output": "LISTEN 0 128 0.0.0.0:22 users:((\"sshd\",pid=724,fd=3))",
+        "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=724,fd=3))",
         "purpose": "Xác minh listener TCP/22 sau hành động.",
         "meaning": "Guest đã lắng nghe ở :22; điều này chưa chứng minh client đăng nhập thành công.",
         "commandId": "ss-ltnp",
@@ -87,10 +87,10 @@
       {
         "id": "G5",
         "context": "client",
-        "command": "ssh -o BatchMode=yes admin@192.0.2.25",
-        "output": "Permission denied (publickey,password).",
-        "purpose": "Kiểm tra SSH từ client sau hành động mà không nhập mật khẩu.",
-        "meaning": "Đường kết nối đã đi tới xác thực nhưng tài khoản/khóa vẫn cần kiểm tra; chưa thể báo khách đăng nhập được.",
+        "command": "ssh -vvv admin@192.0.2.25",
+        "output": "debug1: Connecting to 192.0.2.25 [192.0.2.25] port 22.\ndebug1: Authentications that can continue: publickey,password\nadmin@192.0.2.25: Permission denied (publickey,password).",
+        "purpose": "Đọc debug kết nối và xác thực SSH từ client sau hành động mô phỏng.",
+        "meaning": "Client tới bước xác thực nhưng bị từ chối; chưa thể báo khách đã đăng nhập được.",
         "commandId": "ssh-vvv",
         "aliases": [],
         "requiredState": [
@@ -335,7 +335,7 @@
           },
           {
             "label": "Guest console · ss -ltnp",
-            "output": "LISTEN 0 128 0.0.0.0:80 users:((\"nginx\",pid=801,fd=6))"
+            "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:80 0.0.0.0:* users:((\"nginx\",pid=801,fd=6))"
           }
         ],
         "questions": [
@@ -1074,7 +1074,7 @@
         "id": "G4",
         "context": "guest",
         "command": "ss -ltnp",
-        "output": "LISTEN 0 511 0.0.0.0:80 users:((\"nginx\",pid=812,fd=6))",
+        "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 511 0.0.0.0:80 0.0.0.0:* users:((\"nginx\",pid=812,fd=6))",
         "purpose": "Xác minh listener HTTP sau start.",
         "meaning": "Nginx đã nhận TCP/80 trên guest.",
         "commandId": "ss-ltnp",
@@ -6851,8 +6851,8 @@
         "command": "lsof +L1",
         "output": "COMMAND  PID USER   FD   TYPE DEVICE   SIZE/OFF NLINK NODE NAME\njava    2300 app    12w   REG  252,1 5368709120     0  511 /var/log/app.log (deleted)",
         "context": "guest",
-        "purpose": "Liệt kê file có link count nhỏ hơn1 còn được process mở.",
-        "meaning": "java PID2300 giữ file app.log deleted, nlink0 và kích thước5368709120 byte, khoảng5GiB. Chưa biết cách đóng handle an toàn của app.",
+        "purpose": "Liệt kê file có link count nhỏ hơn 1 còn được process mở.",
+        "meaning": "Java PID 2300 giữ app.log đã xóa tên, nlink 0, kích thước 5 GiB. Chưa biết cách đóng handle an toàn của app.",
         "commandId": "lsof-deleted",
         "aliases": [],
         "why": "File đã xóa tên nhưng còn handle có thể vẫn chiếm block."
@@ -6862,8 +6862,8 @@
         "context": "guest",
         "command": "ps -p 2300 -o pid,comm,args",
         "output": "PID COMMAND COMMAND\n2300 java /usr/bin/java -jar /srv/app/api.jar",
-        "purpose": "Đọc command line của PID2300.",
-        "meaning": "PID2300 là Java app chạy api.jar. Command line không tự cho biết ai được phép thay đổi service.",
+        "purpose": "Đọc command line của PID 2300.",
+        "meaning": "PID 2300 là Java app chạy api.jar. Command line không tự cho biết ai được phép thay đổi service.",
         "commandId": "ps-process",
         "aliases": [],
         "why": "Cần nhận diện đúng service và owner trước đề xuất reopen hoặc restart."
@@ -6917,7 +6917,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "lsof có app.log deleted5GiB do PID2300 giữ: hiểu thế nào?",
+        "prompt": "lsof cho thấy app.log đã unlink, còn PID 2300 giữ khoảng 5 GiB. Hiểu thế nào?",
         "options": [
           {
             "id": "over",
@@ -6952,7 +6952,7 @@
           },
           {
             "id": "p2",
-            "label": "java PID2300 giữ app.log đã unlink khoảng5GiB."
+            "label": "Java PID 2300 giữ app.log đã unlink, khoảng 5 GiB."
           },
           {
             "id": "over",
@@ -6982,7 +6982,7 @@
           },
           {
             "id": "unsafe",
-            "label": "Kill -9 PID2300 ngay."
+            "label": "Dùng kill -9 với PID 2300 ngay."
           }
         ],
         "skill": "deleted-open-file"
@@ -11839,10 +11839,10 @@
       {
         "id": "P2",
         "command": "dig @1.1.1.1 signed.example.test A +cd",
-        "output": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19820",
+        "output": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19820\n;; flags: qr rd ra cd; QUERY: 1, ANSWER: 1\n;; ANSWER SECTION:\nsigned.example.test. 300 IN A 198.51.100.20",
         "context": "client",
         "purpose": "Hỏi cùng tên với cờ Checking Disabled.",
-        "meaning": "+cd đổi kết quả thành NOERROR, hỗ trợ giả thuyết validation; chưa phân biệt DS, DNSKEY hay signature.",
+        "meaning": "Với +cd, cùng resolver trả NOERROR và một A record; phù hợp giả thuyết validation nhưng chưa xác định DS, DNSKEY hay RRSIG sai.",
         "commandId": "dig-a",
         "aliases": [],
         "why": "So đường validation với kết quả khi query yêu cầu bỏ kiểm tra."
@@ -13760,7 +13760,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Trong panel, mục nào đọc trực tiếp trạng thái VM?",
+        "prompt": "Với quyền VPS support chỉ xem panel khách, mục nào đọc trực tiếp trạng thái VM?",
         "options": [
           {
             "id": "wrong1",
@@ -14204,7 +14204,7 @@
       {
         "id": "P1",
         "command": "top -b -n1 | head",
-        "output": "%Cpu(s): 60.0 st",
+        "output": "top - 09:05:00 up 3 days,  2 users,  load average: 4.80, 4.21, 3.90\nTasks: 118 total,   1 running, 117 sleeping,   0 stopped,   0 zombie\n%Cpu(s):  5.0 us,  3.0 sy,  0.0 ni, 30.0 id,  2.0 wa,  0.0 hi,  0.0 si, 60.0 st\nMiB Mem :   4096.0 total,    740.0 free,   2100.0 used,   1256.0 buff/cache\nMiB Swap:   1024.0 total,   1024.0 free,      0.0 used.   1650.0 avail Mem\n\n    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n   1042 app       20   0  522000  98000  12000 S   8.0   2.3   3:12.00 app\n    741 root      20   0  160000   8200   5400 S   1.0   0.2   0:41.00 sshd\n      1 root      20   0  168000  12000   7800 S   0.0   0.3   0:20.00 systemd",
         "context": "guest",
         "purpose": "Đọc tỷ lệ CPU steal trong guest.",
         "meaning": "Ảnh chụp top có 60% st; cần lấy nhiều mẫu và so thời điểm khách báo chậm.",
@@ -16932,7 +16932,7 @@
         "options": [
           {
             "id": "over",
-            "label": "Docker daemon hỏng nên phải cài lại host."
+            "label": "Chỉ cần đổi image tag về bản trước, không cần kiểm tra manifest hay dữ liệu."
           },
           {
             "id": "ignore",
@@ -16988,7 +16988,7 @@
           },
           {
             "id": "unsafe",
-            "label": "Xóa volume rồi tạo lại container để hết lỗi."
+            "label": "Tạo lại container bằng cùng image mà không sửa dependency."
           },
           {
             "id": "close",
@@ -21155,7 +21155,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "403, token read-only, cùng owner vàmatrixđòi reboot:vm. Nhận định nào đúng?",
+        "prompt": "API trả 403, token chỉ có quyền đọc và cùng owner; permission matrix yêu cầu reboot:vm. Nhận định nào đúng?",
         "options": [
           {
             "id": "ignore",
@@ -22094,7 +22094,7 @@
         "command": "BILLING: refund request state",
         "output": "Request RF-1404: not submitted; decision: none",
         "purpose": "Đọc trạng thái request hoàn tiền.",
-        "meaning": "RF-1404 chưa gửi, decision none; chưa có kết quả chính thứ c.",
+        "meaning": "RF-1404 chưa gửi, decision none; chưa có kết quả chính thức.",
         "commandId": "billing-invoice",
         "aliases": [],
         "why": "Phân biệt mới hỏi policy với yêu cầu đã được tiếp nhận và phê duyệt."

@@ -29,7 +29,7 @@ describe('first stateful pilot: SSH stopped', () => {
     draft = run(draft, 'systemctl restart sshd')
     expect(draft.commands.at(-1)?.supported).toBe(false)
     expect(draft.commands.at(-1)?.output).toMatch(/thay đổi hệ thống/i)
-    for (const command of ['ss -ltnp', 'ssh -o BatchMode=yes admin@192.0.2.25']) draft = run(draft, command)
+    for (const command of ['ss -ltnp', 'ssh -vvv admin@192.0.2.25']) draft = run(draft, command)
     expect(verificationReady(ssh, draft)).toBe(true)
     expect(draft.commands.at(-1)?.output).toContain('Permission denied')
   })

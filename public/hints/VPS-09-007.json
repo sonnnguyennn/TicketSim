@@ -1,3 +1,3 @@
 {
-  "hint": "Đọc output của journalctl -u sshd --since today; xem thêm Confirm approved automation/bastion and key fingerprint; preserve logs.."
+  "hint": "Đọc output của journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"; xem thêm Confirm approved automation/bastion and key fingerprint; preserve logs.."
 }

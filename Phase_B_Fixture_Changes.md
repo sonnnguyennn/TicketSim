@@ -1634,27 +1634,6 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
 
 Tham khảo: https://man7.org/linux/man-pages/man8/vmstat.8.html, https://man7.org/linux/man-pages/man1/top.1.html
 
-## VPS-04-008/P1
-
-Bỏ prose chấm phẩy, dùng hai dòng journalstarted/finished cótimestamp.
-
-Command trước: `journalctl -u backup-agent --since "02:00" --until "02:30"`; sau: `journalctl -u backup-agent --since "2026-10-22 02:00:00 UTC" --until "2026-10-22 02:30:00 UTC"`.
-
-Trước:
-
-```text
-backup started 02:00; finished 02:20
-```
-
-Sau:
-
-```text
-Oct 22 02:00:00 vps backup-agent[901]: backup started
-Oct 22 02:20:00 vps backup-agent[901]: backup finished
-```
-
-Tham khảo: https://man7.org/linux/man-pages/man8/iostat.8.html, https://www.freedesktop.org/software/systemd/man/latest/journalctl.html
-
 ## VPS-04-008/P2
 
 Thay during backup prose bằng hai báo cáo iostat với r_await/w_await; quan hệ với backup nằm ở explanation.
@@ -1772,7 +1751,7 @@ Tham khảo: https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-look
 
 ## VPS-08-008/P2
 
-NOERRORdạngheaderdig;khôngbịaAanswer.
+Giữ status NOERROR với +cd và thêm A answer đúng định dạng dig; kết quả này không tự xác minh DNSSEC chain.
 
 Command trước: `dig @1.1.1.1 signed.example.test A +cd`; sau: `dig @1.1.1.1 signed.example.test A +cd`.
 
@@ -1786,6 +1765,9 @@ Sau:
 
 ```text
 ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19820
+;; flags: qr rd ra cd; QUERY: 1, ANSWER: 1
+;; ANSWER SECTION:
+signed.example.test. 300 IN A 198.51.100.20
 ```
 
 Tham khảo: https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-lookup-utility, https://www.rfc-editor.org/rfc/rfc6605.html
@@ -1877,6 +1859,35 @@ vnet4 bridge br-storage virtio 52:54:00:ab:10:02
 ```
 
 Tham khảo: https://libvirt.org/manpages/virsh.html
+
+## VPS-10-004/P1
+
+top -b -n1 | head phải gồm summary/header trước dòng process; thêm 10 dòng với st=60% và các CPU category cộng 100%.
+
+Command trước: `top -b -n1 | head`; sau: `top -b -n1 | head`.
+
+Trước:
+
+```text
+%Cpu(s): 60.0 st
+```
+
+Sau:
+
+```text
+top - 09:05:00 up 3 days,  2 users,  load average: 4.80, 4.21, 3.90
+Tasks: 118 total,   1 running, 117 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  5.0 us,  3.0 sy,  0.0 ni, 30.0 id,  2.0 wa,  0.0 hi,  0.0 si, 60.0 st
+MiB Mem :   4096.0 total,    740.0 free,   2100.0 used,   1256.0 buff/cache
+MiB Swap:   1024.0 total,   1024.0 free,      0.0 used.   1650.0 avail Mem
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   1042 app       20   0  522000  98000  12000 S   8.0   2.3   3:12.00 app
+    741 root      20   0  160000   8200   5400 S   1.0   0.2   0:41.00 sshd
+      1 root      20   0  168000  12000   7800 S   0.0   0.3   0:20.00 systemd
+```
+
+Tham khảo: https://libvirt.org/manpages/virsh.html, https://man7.org/linux/man-pages/man1/top.1.html
 
 ## VPS-10-004/P2
 
@@ -1989,7 +2000,7 @@ Tham khảo: https://man7.org/linux/man-pages/man8/ss.8.html
 
 Fingerprint mẫu ban đầu quá ngắn so với SHA256 fingerprint OpenSSH; thay chuỗi mẫu 43 ký tự.
 
-Command trước: `journalctl -u sshd --since today`; sau: `journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC"`.
+Command trước: `journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC"`; sau: `journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC"`.
 
 Trước:
 

@@ -1,5 +1,5 @@
 {
-  "expected_diagnosis": "PID2300 còn mở app.log đã unlink khoảng5GiB; đây là ứng viên giải thích block chưa được trả. Cần so đúng filesystem và thời gian.",
+  "expected_diagnosis": "PID 2300 còn mở app.log đã unlink, khoảng 5 GiB; đây là ứng viên giải thích block chưa được trả. Cần so đúng filesystem và thời gian.",
   "recommended_next_checks": "Xác nhận PID/service/owner, cách app hỗ trợ reopen/rotation và retention; tránh lộ secret trong command line.",
   "resolution_guidance": "Phối hợp owner đóng handle qua reopen hoặc graceful restart đã duyệt, có kế hoạch gián đoạn; không kill -9 mù.",
   "verification": "lsof không còn handle liên quan, df có dung lượng trở lại và app ghi/phục vụ đúng.",
