@@ -1648,14 +1648,14 @@ export const topicEdits = {
     }
   },
   "VPS-13-002": {
-    "objective": "Phân biệt port được EXPOSE với port publish ra Docker host trước khi thay cách truy cập.",
-    "customerExplanation": "Ứng dụng chạy bên trong container nhưng khách không mở được qua IP VPS. Cần kiểm tra đường publish hoặc proxy dự kiến.",
+    "objective": "Phân biệt cổng trong container và cổng được publish ra VPS.",
+    "customerExplanation": "Ứng dụng truy cập được trong container nhưng không mở được qua IP của VPS. Cần kiểm tra Docker có publish cổng ra host hay ứng dụng chỉ được truy cập qua reverse proxy.",
     "hints": [
       "Port ghi trong container không nhất thiết đã được map ra host.",
       "So PORTS trong docker ps với docker port và PortBindings.",
       "8080/tcp không có host mapping; docker port rỗng và PortBindings {}. Xác nhận thiết kế private/proxy trước mở public."
     ],
-    "verificationPrompt": "Ghi exposed/published port và metadata binding. Nêu yêu cầu public/private, change được owner duyệt và phép thử đúng endpoint từ client.",
+    "verificationPrompt": "Ghi cổng trong container, cổng đã publish (nếu có), và kết quả PortBindings. Xác nhận ứng dụng cần public hay chỉ qua proxy; nêu bước xử lý được chủ VPS duyệt và cách kiểm tra từ client.",
     "probes": {
       "P1": {
         "purpose": "Đọc tên và thông tin port của container.",
@@ -1676,11 +1676,11 @@ export const topicEdits = {
     "questions": {
       "triage": {
         "prompt": "Hai nơi truy cập nào cho kết quả khác nhau?",
-        "explanation": "Cần phân biệt bên trong container với đường qua VPS IP.",
+        "explanation": "Ứng dụng hoạt động trong container không đồng nghĩa VPS đã có cổng hoặc proxy để client bên ngoài truy cập.",
         "options": {
           "symptom": [
             "Trong container được, qua IP VPS không được.",
-            "Đúng phạm vi cần kiểm tra publish/proxy."
+            "Đường nội bộ đã hoạt động; phải kiểm tra cổng publish hoặc reverse proxy trên VPS."
           ],
           "other": [
             "Ứng dụng lỗi HTTP 500 ngay trong container.",
@@ -1698,47 +1698,47 @@ export const topicEdits = {
         "options": {
           "direct": [
             "docker ps --format \"{{.Names}} {{.Ports}}\"",
-            "In đúng tên và cột ports cần đọc."
+            "Hiển thị tên container và cột PORTS, giúp thấy container port có được ánh xạ sang host port hay không."
           ],
           "wrong1": [
             "docker exec web ss -ltnp",
-            "Kiểm tra listener trong container, không in host mapping của Docker."
+            "Cho biết ứng dụng có lắng nghe trong container; không cho biết Docker publish cổng ra host như thế nào."
           ],
           "wrong2": [
             "ss -ltnp",
-            "Đọc socket host, không trực tiếp hiển thị metadata PORTS của web."
+            "Xem socket trên host, nhưng không thay thế được thông tin mapping do Docker quản lý."
           ]
         }
       },
       "output": {
         "prompt": "Chỉ thấy 8080/tcp và docker port rỗng. Điều gì còn thiếu trong cấu hình đang thấy?",
-        "explanation": "EXPOSE không tự publish ra host; cần xác nhận topology trước mở port.",
+        "explanation": "EXPOSE chỉ mô tả cổng ứng dụng trong container. Cần Docker publish hoặc một proxy phù hợp thì client mới có đường truy cập từ bên ngoài.",
         "options": {
           "supported": [
             "Chưa có published host port được ghi nhận.",
-            "PortBindings {} củng cố; vẫn phải hỏi yêu cầu public/proxy."
+            "Dòng PORTS không có host port và PortBindings rỗng đều cho thấy chưa cấu hình publish. Vẫn phải xác nhận ứng dụng có cần public hay không."
           ],
           "over": [
             "EXPOSE 8080 đã tự mở public port trên VPS.",
-            "EXPOSE là metadata của image/container, không tự tạo mapping host."
+            "EXPOSE không tự mở cổng ở VPS và không tạo host-port mapping."
           ],
           "ignore": [
             "App bên trong chạy được nghĩa là đường ngoài đã đúng.",
-            "Listener nội bộ không chứng minh có đường vào qua VPS IP."
+            "Ứng dụng có thể chỉ nhận kết nối từ container network; client ngoài VPS cần đường publish hoặc proxy riêng."
           ]
         }
       },
       "evidence": {
         "prompt": "Chọn hai kết quả về mapping được Docker trả về.",
-        "explanation": "Kết quả rỗng vẫn là quan sát, không được thay bằng stdout mô tả tự sinh.",
+        "explanation": "Không có host-port mapping cũng là kết quả cần ghi nhận. Đọc cùng cột PORTS và PortBindings để xác nhận.",
         "options": {
           "p1": [
             "PORTS chỉ ghi 8080/tcp.",
-            "Không có host mapping ở dòng này."
+            "Chỉ thấy cổng container 8080/tcp, chưa thấy host IP:port được publish."
           ],
           "p2": [
             "docker port web không in mapping.",
-            "Không có published mapping được liệt kê."
+            "Lệnh không trả về cổng host nào được publish cho container web."
           ],
           "over": [
             "EXPOSE tự mở firewall public.",
@@ -1748,19 +1748,19 @@ export const topicEdits = {
       },
       "decision": {
         "prompt": "Trước khi publish 8080 ra host, nên xác nhận điều gì?",
-        "explanation": "Mở public là thay đổi bề mặt truy cập, không chỉ sửa lỗi kết nối.",
+        "explanation": "Publish cổng có thể đưa ứng dụng nội bộ ra Internet. Phải xác nhận thiết kế truy cập và quyền thay đổi trước.",
         "options": {
           "safe": [
             "Xác nhận kiến trúc và owner, dùng proxy/publish được duyệt.",
-            "Chọn interface, ACL/TLS và kiểm tra đúng endpoint."
+            "Chủ VPS cần xác nhận interface, firewall/ACL và HTTPS hoặc reverse proxy; sau đó kiểm tra endpoint từ client."
           ],
           "unsafe": [
             "Publish 0.0.0.0:8080 và mở firewall rộng ngay.",
-            "Có thể lộ ứng dụng vốn chỉ dành cho nội bộ/proxy."
+            "Bind 0.0.0.0 có thể mở dịch vụ tới tất cả interface; ứng dụng nội bộ có thể bị truy cập ngoài dự kiến."
           ],
           "close": [
             "Đóng ticket vì app trong container đã chạy.",
-            "Khách vẫn không truy cập được đường cần dùng."
+            "Ticket chưa được giải quyết vì người dùng vẫn không truy cập được ứng dụng qua đường dự kiến."
           ]
         }
       }

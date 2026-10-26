@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Mở public là thay đổi bề mặt truy cập, không chỉ sửa lỗi kết nối.",
+  "explanation": "Publish cổng có thể đưa ứng dụng nội bộ ra Internet. Phải xác nhận thiết kế truy cập và quyền thay đổi trước.",
   "optionFeedback": {
-    "safe": "Chọn interface, ACL/TLS và kiểm tra đúng endpoint.",
-    "unsafe": "Có thể lộ ứng dụng vốn chỉ dành cho nội bộ/proxy.",
-    "close": "Khách vẫn không truy cập được đường cần dùng."
+    "safe": "Chủ VPS cần xác nhận interface, firewall/ACL và HTTPS hoặc reverse proxy; sau đó kiểm tra endpoint từ client.",
+    "unsafe": "Bind 0.0.0.0 có thể mở dịch vụ tới tất cả interface; ứng dụng nội bộ có thể bị truy cập ngoài dự kiến.",
+    "close": "Ticket chưa được giải quyết vì người dùng vẫn không truy cập được ứng dụng qua đường dự kiến."
   }
 }

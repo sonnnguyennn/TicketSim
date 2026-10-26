@@ -2,7 +2,7 @@ import type { CommandDoc } from './types'
 
 // Explicit corrections from the Phase B card-by-card review. IDs stay stable.
 export const commandRevisions: Record<string, Partial<CommandDoc>> = {
-  'systemctl-status': { pitfalls: 'CentOS Stream 9 thường dùng sshd.service; Ubuntu dùng ssh.service và có thể có ssh.socket. active không chứng minh TCP từ client hoạt động.' },
+  'systemctl-status': { pitfalls: 'Tên unit thường là sshd.service trên CentOS/RHEL và ssh.service trên Ubuntu; cấu hình có thể dùng socket activation. Dịch vụ active không chứng minh client bên ngoài kết nối hoặc đăng nhập được.' },
   'df-h': { exampleOutput: 'Filesystem      Size  Used Avail Use% Mounted on\n/dev/vda1        20G  8.0G   12G  40% /' },
   'df-i': { exampleOutput: 'Filesystem      Inodes IUsed   IFree IUse% Mounted on\n/dev/vda1      1310720 550502 760218   42% /', interpretation: 'IUse% là tỷ lệ inode đã dùng; 100% có thể gây lỗi tạo file dù df -h còn dung lượng.' },
   'nmcli-show': { exampleOutput: 'NAME           UUID                                  TYPE      DEVICE\nSystem enp0s3  8f22f660-a72b-440c-a251-d5cc36a33167  ethernet  enp0s3', pitfalls: 'Chỉ áp dụng khi NetworkManager quản lý interface. Ubuntu Server có thể dùng Netplan với systemd-networkd; không down connection để thử.' },

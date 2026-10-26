@@ -12,5 +12,5 @@
     "safe_resolution": 2,
     "verification_or_escalation": 1
   },
-  "referenceNoteEn": "Issue: Container port is not published to the host.\nFindings: Docker listed container port 8080/tcp but docker port returned no host mapping.\nNext Action: Review the intended exposure and recreate the deployment with an approved publish rule.\nVerification: Confirm the host port and external HTTP path work.\nStatus: Pending authorized remediation and verification."
+  "referenceNoteEn": "Issue: Container application is unreachable through the VPS IP.\nFindings: The container exposes TCP/8080, but Docker reported no published host port; PortBindings was empty. Container reachability does not establish external access.\nNext Action: Confirm whether access should use a reverse proxy or an approved host-port mapping. Do not expose the application publicly without owner approval.\nVerification: Test the intended HTTP endpoint from an external client and verify that no unintended port is exposed.\nStatus: Pending owner confirmation and external-access verification."
 }

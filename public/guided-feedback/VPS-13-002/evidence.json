@@ -3,11 +3,11 @@
     "p1",
     "p2"
   ],
-  "explanation": "Kết quả rỗng vẫn là quan sát, không được thay bằng stdout mô tả tự sinh.",
+  "explanation": "Không có host-port mapping cũng là kết quả cần ghi nhận. Đọc cùng cột PORTS và PortBindings để xác nhận.",
   "commandId": "docker-port",
   "optionFeedback": {
-    "p2": "Không có published mapping được liệt kê.",
+    "p2": "Lệnh không trả về cổng host nào được publish cho container web.",
     "over": "Không được hai phép đọc hỗ trợ.",
-    "p1": "Không có host mapping ở dòng này."
+    "p1": "Chỉ thấy cổng container 8080/tcp, chưa thấy host IP:port được publish."
   }
 }

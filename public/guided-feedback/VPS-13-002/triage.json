@@ -2,9 +2,9 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Cần phân biệt bên trong container với đường qua VPS IP.",
+  "explanation": "Ứng dụng hoạt động trong container không đồng nghĩa VPS đã có cổng hoặc proxy để client bên ngoài truy cập.",
   "optionFeedback": {
-    "symptom": "Đúng phạm vi cần kiểm tra publish/proxy.",
+    "symptom": "Đường nội bộ đã hoạt động; phải kiểm tra cổng publish hoặc reverse proxy trên VPS.",
     "other": "Khách xác nhận bên trong hoạt động.",
     "cause": "Chưa kiểm tra host mapping hoặc đường proxy."
   }

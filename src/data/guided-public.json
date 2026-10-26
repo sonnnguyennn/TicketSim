@@ -17010,8 +17010,8 @@
   },
   {
     "id": "VPS-13-002",
-    "objective": "Phân biệt port được EXPOSE với port publish ra Docker host trước khi thay cách truy cập.",
-    "customerExplanation": "Ứng dụng chạy bên trong container nhưng khách không mở được qua IP VPS. Cần kiểm tra đường publish hoặc proxy dự kiến.",
+    "objective": "Phân biệt cổng trong container và cổng được publish ra VPS.",
+    "customerExplanation": "Ứng dụng truy cập được trong container nhưng không mở được qua IP của VPS. Cần kiểm tra Docker có publish cổng ra host hay ứng dụng chỉ được truy cập qua reverse proxy.",
     "probes": [
       {
         "id": "P1",
@@ -17168,12 +17168,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi exposed/published port và metadata binding. Nêu yêu cầu public/private, change được owner duyệt và phép thử đúng endpoint từ client.",
+        "prompt": "Ghi cổng trong container, cổng đã publish (nếu có), và kết quả PortBindings. Xác nhận ứng dụng cần public hay chỉ qua proxy; nêu bước xử lý được chủ VPS duyệt và cách kiểm tra từ client.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi exposed/published port và metadata binding. Nêu yêu cầu public/private, change được owner duyệt và phép thử đúng endpoint từ client."
+    "verificationPrompt": "Ghi cổng trong container, cổng đã publish (nếu có), và kết quả PortBindings. Xác nhận ứng dụng cần public hay chỉ qua proxy; nêu bước xử lý được chủ VPS duyệt và cách kiểm tra từ client."
   },
   {
     "id": "VPS-13-003",

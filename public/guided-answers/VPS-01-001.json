@@ -12,5 +12,5 @@
     "safe_resolution": 2,
     "verification_or_escalation": 1
   },
-  "referenceNoteEn": "Issue: SSH connection refused.\nFindings: sshd was inactive and no process listened on TCP/22.\nNext Action: Review the sshd journal and stop reason. Start the service only after authorization.\nVerification: Confirm sshd is active, TCP/22 listens, and an authorized client can log in.\nStatus: Pending authorized remediation and verification."
+  "referenceNoteEn": "Issue: SSH connection refused.\nFindings: The guest reported an inactive sshd service and no TCP/22 listener.\nNext Action: Review the sshd journal and stop reason. Start the service only after authorization.\nVerification: Confirm sshd is active, TCP/22 listens, and an authorized client can log in.\nStatus: Pending authorized remediation and verification."
 }

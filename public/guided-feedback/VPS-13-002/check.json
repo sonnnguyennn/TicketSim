@@ -5,8 +5,8 @@
   "explanation": "Dòng PORTS giúp phân biệt port container với mapping của host.",
   "commandId": "docker-ps",
   "optionFeedback": {
-    "wrong2": "Đọc socket host, không trực tiếp hiển thị metadata PORTS của web.",
-    "direct": "In đúng tên và cột ports cần đọc.",
-    "wrong1": "Kiểm tra listener trong container, không in host mapping của Docker."
+    "wrong2": "Xem socket trên host, nhưng không thay thế được thông tin mapping do Docker quản lý.",
+    "direct": "Hiển thị tên container và cột PORTS, giúp thấy container port có được ánh xạ sang host port hay không.",
+    "wrong1": "Cho biết ứng dụng có lắng nghe trong container; không cho biết Docker publish cổng ra host như thế nào."
   }
 }

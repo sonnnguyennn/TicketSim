@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "EXPOSE không tự publish ra host; cần xác nhận topology trước mở port.",
+  "explanation": "EXPOSE chỉ mô tả cổng ứng dụng trong container. Cần Docker publish hoặc một proxy phù hợp thì client mới có đường truy cập từ bên ngoài.",
   "commandId": "docker-port",
   "optionFeedback": {
-    "ignore": "Listener nội bộ không chứng minh có đường vào qua VPS IP.",
-    "supported": "PortBindings {} củng cố; vẫn phải hỏi yêu cầu public/proxy.",
-    "over": "EXPOSE là metadata của image/container, không tự tạo mapping host."
+    "ignore": "Ứng dụng có thể chỉ nhận kết nối từ container network; client ngoài VPS cần đường publish hoặc proxy riêng.",
+    "supported": "Dòng PORTS không có host port và PortBindings rỗng đều cho thấy chưa cấu hình publish. Vẫn phải xác nhận ứng dụng có cần public hay không.",
+    "over": "EXPOSE không tự mở cổng ở VPS và không tạo host-port mapping."
   }
 }
