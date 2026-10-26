@@ -2,6 +2,7 @@ import type { CommandDoc } from './types'
 import { commandRevisions } from './commandRevisions'
 import { additionalCommands } from './moreCommands'
 import { shellKnowledge } from './commandKnowledge'
+import { supportKnowledge } from './supportKnowledge'
 
 const examples: Record<string, [string, string, string, string[]]> = {
   'systemctl-status': ['Active: inactive (dead)', 'Khi SSH bị từ chối ở bước TCP.', 'journalctl -u sshd -n 50 --no-pager', ['VPS-01-001']],
@@ -64,5 +65,5 @@ export const commandLibrary: CommandDoc[] = [
   ...additionalCommands,
 ].map(card => {
   const revised = { ...card, ...commandRevisions[card.id] }
-  return revised.context === 'panel' ? revised : { ...revised, knowledge: shellKnowledge(revised) }
+  return { ...revised, knowledge: revised.context === 'panel' ? supportKnowledge(revised) : shellKnowledge(revised) }
 })

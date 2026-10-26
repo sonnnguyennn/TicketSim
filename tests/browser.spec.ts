@@ -54,6 +54,22 @@ async function run(page: Page, command: string) {
   await expect(page.locator('.terminal-history .terminal-entry')).toHaveCount(previous + 1)
 }
 
+test('D2 library searches flags and renders support tasks outside shell syntax', async ({ page }) => {
+  await page.goto('/')
+  await page.getByTitle('Thư viện lệnh', { exact: true }).click()
+  const search = page.getByRole('textbox', { name: 'Tìm lệnh', exact: true })
+  await search.fill('BatchMode')
+  await expect(page.locator('.library-list button').filter({ hasText: 'ssh -vvv' })).toBeVisible()
+  await page.locator('.library-expanded summary').click()
+  await expect(page.locator('.library-expanded')).toContainText('BatchMode=yes')
+  await search.fill('target quota')
+  await expect(page.locator('.library-detail')).toContainText('Tác vụ hỗ trợ')
+  await expect(page.locator('.library-detail')).toContainText('Nơi thực hiện')
+  await expect(page.locator('.library-detail h2 code')).toHaveCount(0)
+  await page.keyboard.press('Tab')
+  expect(await page.locator(':focus').count()).toBe(1)
+})
+
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
   test(`Guided-first navigation, filters and terminal layout at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport)
@@ -78,7 +94,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     expect(await page.locator(':focus').count()).toBe(1)
     await page.getByTitle('Thư viện lệnh', { exact: true }).focus()
     await page.keyboard.press('Enter')
-    await expect(page.getByRole('heading', { name: 'Thư viện lệnh (122)' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Kiến thức lệnh và tác vụ (122)' })).toBeVisible()
     await page.getByTitle('Kho ticket', { exact: true }).click()
     const item = await enterInvestigation(page, 'VPS-01-001')
     await run(page, initialProbes(item)[0].command)
@@ -116,7 +132,7 @@ test('SSH Guided keeps exact outputs, neutral errors, library return and grading
   await page.getByLabel('Nhập lệnh hoặc tác vụ', { exact: true }).fill('journalctl -u sshd')
   const beforeLibrary = await stored(page)
   await page.locator('.guided-heading').getByRole('button', { name: 'Thư viện lệnh', exact: true }).click()
-  await expect(page.getByRole('heading', { name: 'Thư viện lệnh (122)' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Kiến thức lệnh và tác vụ (122)' })).toBeVisible()
   await page.locator('.library-heading').getByRole('button', { name: /Quay lại/ }).click()
   await expect(page.getByLabel('Nhập lệnh hoặc tác vụ', { exact: true })).toHaveValue('journalctl -u sshd')
   expect((await stored(page)).guidedDrafts[item.id]).toEqual(beforeLibrary.guidedDrafts[item.id])

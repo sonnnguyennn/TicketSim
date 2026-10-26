@@ -24,7 +24,7 @@ Mở Kho ticket, tìm hoặc lọc theo chủ đề/cấp độ/trạng thái, c
 
 - **Guided (112/112):** một cột nội dung theo bước, lời khách hàng thu gọn sau Nhận diện, gợi ý mở khi cần. Giữ nguyên câu hỏi, feedback, điểm và yêu cầu bằng chứng đã biên soạn. Bộ chọn Beginner/Normal/Independent được ẩn; giao diện mặc định có gợi ý lệnh và giải thích cho người mới, không ghi đè lựa chọn hỗ trợ cũ.
 - **Một terminal ở bước Kiểm tra:** nhập lệnh/tác vụ hoặc chọn gợi ý để điền vào ô nhập, rồi bấm Chạy kiểm tra. Lịch sử hiển thị tuần tự command, output đã lưu, mục đích và cách đọc. Giữ nhãn Guest/Client/Panel/Hypervisor cùng tên PANEL/BILLING/BACKUP LOG; kết quả rỗng được phân biệt với lệnh chưa được hỗ trợ.
-- **Thư viện lệnh (122 thẻ):** tra nhanh ngay dưới terminal hoặc mở thư viện đầy đủ. Quay về giữ đúng bước, lịch sử và lệnh đang nhập. Khác biệt CentOS Stream 9/Ubuntu vẫn có trong thẻ lệnh khi cần troubleshooting.
+- **Kiến thức lệnh và tác vụ (122 thẻ):** 102 thẻ shell có cú pháp, structured flags/subcommands, ví dụ output và giới hạn kết luận; 20 thẻ provider/panel/billing/backup hiển thị như tác vụ hỗ trợ, không phải lệnh Linux. Xem nhanh hoặc mở chi tiết, tìm theo flag/công dụng/triệu chứng; Quick Lookup trong ticket vẫn gọn. Quay về giữ đúng bước, lịch sử và lệnh đang nhập. Xem [QA D2](Phase_D2_Command_Knowledge_QA.md) và [ledger 122 thẻ](Phase_D2_Command_Review_Ledger.csv).
 - **Tổng kết:** ghi nhận định, bằng chứng, hướng xử lý và xác minh; nộp bài để xem đáp án tham khảo. Câu viết vẫn tự đối chiếu. Hoàn thành Guided không tự cấp Mastered.
 
 ## Tính năng nâng cao được bảo toàn, tạm ẩn
@@ -44,6 +44,8 @@ Terminal **chỉ trả đúng output JSON đã biên soạn cho command/alias v�
 Tiến độ lưu ở `localStorage` phiên bản 5 và có thể xuất/nhập JSON. App chuyển dữ liệu hợp lệ từ v1–v4 sang v5, giữ key cũ làm bản dự phòng; lịch sử cũ không bị xóa. Guided lưu cả lệnh đang nhập dở qua trường tùy chọn `commandInput`; draft cũ không cần có trường này. Stateful, Objective Exam, Legacy Exam, Guided và Practice có bản nháp/lượt làm riêng. Dữ liệu trình duyệt phụ thuộc origin, nên `localhost` và `127.0.0.1` có tiến độ riêng.
 
 ## QA và giới hạn hiện tại
+
+Phase D2 giữ nguyên 112 Guided, 122 Command IDs và progress v5. Audit D2 kiểm tra knowledge schema, ID mapping, support task boundary và safety; unit/browser/build đạt. 70 thẻ đã đối chiếu nguồn chính thức ở mức cú pháp, 32 thẻ còn chờ đối chiếu nguồn, 20 thẻ support cần SOP. Không có thẻ nào được kiểm chứng trong lab; output ví dụ là trích đoạn biên soạn. Xem [QA D2](Phase_D2_Command_Knowledge_QA.md) để đọc scope của từng nhãn.
 
 Phase B đã rà soát và biên soạn lại nội dung của cả 112 Guided; 122 thẻ Command Library được kiểm tra, trong đó 60 thẻ có sửa đổi. Audit theo ID, báo cáo trùng lặp và 101 thay đổi fixture chỉ dành cho Guided nằm trong [QA Phase B](Phase_B_Content_QA.md). QA này do agent thực hiện; chưa có vòng kiểm duyệt độc lập của chuyên gia con người.
 

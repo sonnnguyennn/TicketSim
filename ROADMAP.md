@@ -18,6 +18,9 @@ Phase A đưa Guided thành luồng học mặc định: Kho ticket → Học ti
 | Phase 5E — Independent review expansion | Đã triển khai 20/112 | Thêm 14 tình huống mới với bằng chứng và ba câu hỏi khác bài Guided; Mastered vẫn đòi lượt đầu đúng toàn bộ sau 24 giờ. |
 | Phase 4 — Learning experience | Hoàn thành ở mức ứng dụng | Beginner/Normal/Independent lưu trong v5; Command Library luôn truy cập được; Review Mistakes nhóm lỗi theo kiến thức và mở bài ôn liên quan. Mastered chỉ tính lượt đầu của biến thể độc lập. |
 | Phase B — Guided content overhaul | Hoàn thành trong phạm vi nội dung | 112 case được agent rà và biên soạn lại; 122 thẻ lệnh được kiểm tra, 60 thẻ sửa; audit và browser representative đạt. Chưa có kiểm duyệt SME độc lập. |
+| Phase C/C2 — Independent content audit | Hoàn thành ở mức reasoned review | 112 ticket, 122 command, 620 câu hỏi và fixture được rà; source/lab/SOP là các mức xác minh riêng. |
+| Phase D1 — Correctness remediation | Hoàn thành ở mức source và regression | 19 findings được sửa theo [QA D1](Phase_D1_Correctness_QA.md); 23 ticket vẫn chờ SOP. |
+| Phase D2 — Command Knowledge System | Đã triển khai, verification còn chờ | 122 thẻ: 102 shell và 20 support task; flags/examples có cấu trúc, UX hai lớp, ledger và regression. 70 source-verified về cú pháp, 32 pending, 20 SOP-required, 0 lab-verified. Xem [QA D2](Phase_D2_Command_Knowledge_QA.md). |
 
 ## Độ phủ hiện tại
 
@@ -42,6 +45,10 @@ B1 tạo lớp biên soạn riêng và 14 mẫu; B2 áp dụng cho 112 case và 
 3. Mở rộng Objective Exam, Stateful hoặc bài ôn biến thể sau khi có dữ liệu và phạm vi sản phẩm phù hợp; Phase B không mở thêm các chế độ này.
 
 Quyết định phạm vi và hướng dẫn tác giả nội dung nằm trong [living spec](TicketSim_UX_Learning_Redesign_Spec.md). Repository Git đã được khởi tạo; mỗi phase có commit riêng. Xem [QA 5B](Milestone_5B_QA.md) và [QA batch 30](Phase_2_Guided_QA.md).
+
+## D3 — Xác minh vận hành
+
+Đối chiếu 32 thẻ lệnh còn pending với manual chính thức theo phiên bản, chạy lab cách ly cho output/exit status, và lấy SOP/owner sign-off cho 23 ticket và 20 tác vụ support trước khi dùng như quy trình sản xuất. Không mở rộng Stateful/Exam khi các gate này còn thiếu.
 
 [QA Phase 4](Phase_4_QA.md) ghi kiểm thử mức hỗ trợ và Review Mistakes tại thời điểm 42/112 Guided; hiện tại 112/112 Guided.
 

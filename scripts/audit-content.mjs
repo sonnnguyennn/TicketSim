@@ -162,6 +162,23 @@ for (const card of cards) {
   check(['purpose', 'flags', 'centos', 'ubuntu', 'interpretation', 'whenToUse', 'followUp', 'pitfalls', 'privilege'].every(field => typeof card[field] === 'string' && card[field].length > 0), `${card.id}: incompletecard`)
   if (previous && Object.entries(card).some(([field, value]) => hash(value) !== previous.fields[field])) stats.cardsChanged++
   check(!filler.test([card.purpose, card.flags, card.interpretation, card.whenToUse, card.followUp, card.pitfalls].join('\n')), `${card.id}: internalcardjargon`)
+  const knowledge = card.knowledge
+  check(!!knowledge, `${card.id}: missing D2 knowledge`)
+  if (!knowledge) continue
+  check(knowledge.kind === (card.context === 'panel' ? 'support_task' : 'shell'), `${card.id}: wrong knowledge kind`)
+  check(Array.isArray(knowledge.options) && Array.isArray(knowledge.examples) && knowledge.examples.length > 0, `${card.id}: incomplete options/examples`)
+  check(typeof knowledge.proves === 'string' && knowledge.proves.length > 10 && typeof knowledge.doesNotProve === 'string' && knowledge.doesNotProve.length > 10, `${card.id}: missing evidence boundary`)
+  check(['SOURCE_VERIFIED', 'LAB_VERIFIED', 'INTERNAL_SOP_REQUIRED', 'PENDING'].includes(knowledge.verification), `${card.id}: invalid verification`)
+  if (knowledge.verification === 'SOURCE_VERIFIED') check(knowledge.sourceUrls.length > 0 && knowledge.sourceUrls.every(url => url.startsWith('https://')), `${card.id}: source claim without URL`)
+  if (knowledge.kind === 'shell') {
+    check(knowledge.syntax === card.command, `${card.id}: example/syntax mismatch`)
+    check(!knowledge.task, `${card.id}: shell has task metadata`)
+    check(knowledge.options.every(option => [option.name, option.purpose, option.when, option.example].every(value => typeof value === 'string' && value.length > 0)), `${card.id}: incomplete structured option`)
+    check(knowledge.examples.every(example => example.command && example.context && example.interpretation && typeof example.outputIsExcerpt === 'boolean'), `${card.id}: incomplete usage example`)
+  } else {
+    check(!!knowledge.task && knowledge.options.length === 0 && knowledge.verification === 'INTERNAL_SOP_REQUIRED', `${card.id}: unsupported panel workflow claim`)
+    if (knowledge.task) check(knowledge.task.where && knowledge.task.dataToCheck.length && knowledge.task.authority && knowledge.task.observableOutcomes.length && knowledge.task.limits && knowledge.task.escalation, `${card.id}: incomplete support task`)
+  }
 }
 const commandReview = read('scripts/content/phase-b-command-review.json')
 check(commandReview.length === 122 && new Set(commandReview.map(item => item.id)).size === 122 && commandReview.every(item => cards.some(card => card.id === item.id) && item.inspected && item.finding.length > 20), 'Incomplete122cardinspectionrecord')

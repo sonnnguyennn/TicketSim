@@ -5,7 +5,7 @@ import type { CommandDoc } from './types'
 
 const isTask = (doc: CommandDoc) => doc.knowledge?.kind === 'support_task'
 const safetyLabel = (doc: CommandDoc) => doc.safety === 'read' ? 'Chỉ đọc' : doc.safety === 'privileged_read' ? 'Đọc có quyền' : 'Thay đổi hệ thống'
-const searchText = (doc: CommandDoc) => [doc.command, doc.family, doc.purpose, doc.whenToUse, doc.pitfalls, ...(doc.knowledge?.options.map(option => `${option.name} ${option.purpose} ${option.when}`) ?? [])].join(' ').toLocaleLowerCase()
+const searchText = (doc: CommandDoc) => [doc.command, doc.family, doc.purpose, doc.whenToUse, doc.pitfalls, doc.exampleOutput, ...(doc.knowledge?.options.map(option => `${option.name} ${option.purpose} ${option.when}`) ?? []), ...(doc.knowledge?.task?.dataToCheck ?? []), ...(doc.knowledge?.task?.observableOutcomes ?? [])].join(' ').toLocaleLowerCase()
 
 export function CommandCard({ selected }: { selected: CommandDoc }) {
   const knowledge = selected.knowledge
@@ -38,7 +38,8 @@ export function CommandCard({ selected }: { selected: CommandDoc }) {
       {knowledge?.examples.map((example, index) => <section className="library-usage" key={index}>
         <p><strong>{example.purpose}</strong>{!task && <> — <code>{example.command}</code></>}</p>
         <p className="library-caption">Output minh họa{example.outputIsExcerpt ? ' (trích đoạn)' : ''} · {example.context}</p>
-        <pre className="library-example">{example.expectedOutput || '(thường không có stdout; kiểm tra exit status)'}</pre>
+        <pre className="library-example">{example.expectedOutput}</pre>
+        {example.expectedOutput === '' && <p>Thành công thường không in stdout; cần kiểm tra exit code và trạng thái sau đó.</p>}
         <p>{example.interpretation}</p>
       </section>)}
       <dl>
@@ -47,7 +48,7 @@ export function CommandCard({ selected }: { selected: CommandDoc }) {
         <div><dt>Kiểm tra tiếp</dt><dd>{selected.followUp}</dd></div>
         <div><dt>Ticket liên quan</dt><dd>{selected.relatedTicketIds.join(', ') || 'Chưa liên kết ticket cụ thể'}</dd></div>
         <div><dt>Lưu ý an toàn</dt><dd>{selected.pitfalls}</dd></div>
-        <div><dt>Mức xác minh</dt><dd>{knowledge?.verification ?? 'PENDING'}{knowledge?.sourceUrls.map(url => <> · <a key={url} href={url} target="_blank" rel="noreferrer">Nguồn chính thức</a></>)}</dd></div>
+        <div><dt>Mức xác minh</dt><dd>{knowledge?.verification ?? 'PENDING'}{knowledge?.sourceUrls.map(url => <a key={url} href={url} target="_blank" rel="noreferrer"> · Nguồn chính thức</a>)}</dd></div>
       </dl>
     </details>
   </article>
@@ -58,7 +59,7 @@ export function CommandQuickLookup({ initialId }: { initialId?: string }) {
   const [selectedId, setSelectedId] = useState(initialId ?? '')
   const matches = commandLibrary.filter(doc => searchText(doc).includes(query.toLocaleLowerCase())).slice(0, 8)
   const selected = commandLibrary.find(doc => doc.id === selectedId)
-  return <details className="quick-lookup"><summary>Tra nhanh lệnh / tác vụ</summary><label className="library-search"><Search size={16} /><input aria-label="Tìm giải thích lệnh" placeholder="Tìm lệnh, flag, triệu chứng..." value={query} onChange={event => setQuery(event.target.value)} /></label><div className="quick-results">{matches.map(doc => <button key={doc.id} onClick={() => setSelectedId(doc.id)}><code>{doc.command}</code><span>{safetyLabel(doc)}</span></button>)}</div>{!matches.length && <p>Không tìm thấy mục phù hợp.</p>}{selected && <div className="quick-summary"><strong>{selected.purpose}</strong><p>{selected.knowledge?.examples[0]?.interpretation ?? selected.interpretation}</p><p>{selected.pitfalls}</p></div>}</details>
+  return <details className="quick-lookup"><summary>Tra nhanh lệnh / tác vụ</summary><label className="library-search"><Search size={16} /><input aria-label="Tìm giải thích lệnh" placeholder="Tìm lệnh, flag, triệu chứng..." value={query} onChange={event => setQuery(event.target.value)} /></label><div className="quick-results">{matches.map(doc => <button key={doc.id} onClick={() => setSelectedId(doc.id)}>{isTask(doc) ? <strong>{doc.purpose}</strong> : <code>{doc.command}</code>}<span>{safetyLabel(doc)}</span></button>)}</div>{!matches.length && <p>Không tìm thấy mục phù hợp.</p>}{selected && <div className="quick-summary"><strong>{selected.purpose}</strong><p>{selected.knowledge?.examples[0]?.interpretation ?? selected.interpretation}</p><p>{selected.pitfalls}</p></div>}</details>
 }
 
 export function CommandLibrary({ focusedId, onBack }: { focusedId?: string; onBack: () => void }) {
