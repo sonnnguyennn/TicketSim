@@ -11,7 +11,8 @@ export const revisedGuidedTicketIds = new Set([
 // Only drafts for cases with changed evidence or grading context need restarting.
 // A spacing-only editorial correction does not change a learner's saved work.
 export const c2RevisedGuidedTicketIds = new Set([
-  'VPS-01-008', 'VPS-02-008', 'VPS-04-006', 'VPS-04-008', 'VPS-09-007', 'VPS-14-006',
+  'VPS-01-008', 'VPS-02-008', 'VPS-04-001', 'VPS-04-004', 'VPS-04-006',
+  'VPS-04-008', 'VPS-05-005', 'VPS-09-007', 'VPS-13-008', 'VPS-14-006',
 ])
 
 export const guidedContentRevisionFor = (ticketId: string) =>

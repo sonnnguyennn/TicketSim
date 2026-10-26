@@ -5806,13 +5806,13 @@
       "options": [
         {
           "id": "over",
-          "label": "Đổi tag về v1.8 không cần kiểm tra data.",
-          "feedback": "Migration unknown có thể khiến image cũ không đọc dữ liệu mới."
+          "label": "Rollback v1.8 ngay vì log chỉ báo unknown legacyMode.",
+          "feedback": "Log định hướng lỗi config/release, nhưng chưa xác nhận v1.8 đọc được data sau migration."
         },
         {
           "id": "ignore",
-          "label": "Chỉ restart v2.0 sẽ tự hỗ trợ legacyMode.",
-          "feedback": "Restart không thêm config option đã bị bỏ."
+          "label": "Chỉ cần bỏ legacyMode; không cần đối chiếu release notes và schema.",
+          "feedback": "Bỏ option có thể xử lý một lỗi config, nhưng chưa xác nhận các thay đổi release và data migration khác."
         },
         {
           "id": "supported",
@@ -6108,8 +6108,8 @@
       "options": [
         {
           "id": "close",
-          "label": "Đóng ticket vì tag đã đổi về cũ.",
-          "feedback": "Chưa xác minh API hoặc tương thích dữ liệu."
+          "label": "Bỏ legacyMode rồi đóng ticket khi container báo Up.",
+          "feedback": "Container Up chưa xác nhận API hoạt động hay dữ liệu sau deploy còn tương thích."
         },
         {
           "id": "safe",
@@ -6118,8 +6118,8 @@
         },
         {
           "id": "unsafe",
-          "label": "Xóa container/volume và pull latest để thử.",
-          "feedback": "Có thể mất dữ liệu và đưa vào một artifact chưa biết."
+          "label": "Rollback về v1.8 theo tag cũ trước khi kiểm tra data migration.",
+          "feedback": "Image cũ có thể không tương thích dữ liệu sau upgrade; phải xác định digest, schema và phương án phục hồi."
         }
       ],
       "correctIds": [

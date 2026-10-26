@@ -318,13 +318,13 @@
       "options": [
         {
           "id": "over",
-          "label": "python3 chắc chắn độc hại nên phải kill ngay.",
-          "feedback": "Tên process và CPU cao không xác định ý định hoặc quyền dừng job."
+          "label": "python3 PID 2601 là nguyên nhân duy nhất của toàn bộ thời gian khách thấy chậm.",
+          "feedback": "top/ps là các mẫu hiện tại; chưa có lịch sử tải và thời điểm triệu chứng để gắn toàn bộ sự cố với PID này."
         },
         {
           "id": "ignore",
-          "label": "ps và top khác loại mẫu nên không cần điều tra CPU.",
-          "feedback": "Khác cách đo đòi trend/correlation, không làm mất giá trị của cả hai dấu hiệu."
+          "label": "Chỉ cần xem load average, chưa cần đối chiếu PID đang dùng CPU.",
+          "feedback": "Load average bổ sung xu hướng nhưng không thay thế dấu hiệu process CPU cao cần kiểm tra owner/job."
         },
         {
           "id": "supported",
@@ -2194,13 +2194,13 @@
         },
         {
           "id": "over",
-          "label": "Đã chứng minh đĩa vật lý bị hỏng.",
-          "feedback": "Chưa có health/error telemetry hoặc mapping thiết bị vật lý."
+          "label": "Ưu tiên yêu cầu thay ổ vật lý trước khi đối chiếu tải guest và host.",
+          "feedback": "Chưa có health/error telemetry hoặc mapping vda tới ổ vật lý; mẫu hiện tại chỉ định hướng điều tra I/O."
         },
         {
           "id": "ignore",
-          "label": "CPU user thấp nên await cao không ảnh hưởng ứng dụng.",
-          "feedback": "Task chờ I/O có thể tăng độ trễ trong khi CPU user vẫn thấp."
+          "label": "Ưu tiên điều tra CPU user vì đó là nguyên nhân trực tiếp của độ trễ.",
+          "feedback": "CPU user thấp trong mẫu; wa và await cao định hướng I/O chứ không chứng minh CPU user là nút thắt."
         }
       ],
       "correctIds": [
@@ -2433,13 +2433,13 @@
       "options": [
         {
           "id": "unsafe",
-          "label": "Xóa dữ liệu ứng dụng để giảm I/O ngay.",
-          "feedback": "Có thể mất dữ liệu và chưa biết process nào tạo tải."
+          "label": "Yêu cầu chuyển storage node ngay dựa trên một mẫu iostat.",
+          "feedback": "Chưa so được tải guest, host và baseline cùng thời gian; đổi node có tác động rộng mà chưa xác định lớp lỗi."
         },
         {
           "id": "close",
-          "label": "Đóng ticket vì CPU user còn thấp.",
-          "feedback": "Bằng chứng wa/độ trễ và triệu chứng khách vẫn chưa được xử lý."
+          "label": "Tăng CPU quota rồi kết thúc kiểm tra storage.",
+          "feedback": "CPU user thấp không giải thích wa/await cao và triệu chứng khách chưa được xác minh lại."
         },
         {
           "id": "safe",
@@ -2450,7 +2450,7 @@
       "correctIds": [
         "safe"
       ],
-      "explanation": "Cần tìm nguồn I/O và bằng chứng hạ tầng theo cùng thời gian; xóa dữ liệu không phải chẩn đoán hiệu năng.",
+      "explanation": "Cần tìm nguồn I/O và bằng chứng hạ tầng theo cùng thời gian trước khi chọn thay đổi.",
       "hints": [
         "CPU user thấp có thể vì task đang chờ I/O; xem wa ở các dòng interval.",
         "So vmstat với r_await/w_await và hàng đợi của vda trong iostat.",

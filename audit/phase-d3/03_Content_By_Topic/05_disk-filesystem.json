@@ -3759,8 +3759,8 @@
       "options": [
         {
           "id": "ignore",
-          "label": "Chỉ cần disk 40G thì df 20G là chắc chắn lỗi hiển thị.",
-          "feedback": "df đo filesystem thật, khác kích thước thiết bị disk."
+          "label": "df đang hiển thị dung lượng trước lần nâng disk nên có thể bỏ qua.",
+          "feedback": "df đo filesystem hiện tại; cần phân biệt disk, partition và filesystem thay vì xem đây là cache hiển thị."
         },
         {
           "id": "supported",
@@ -3769,8 +3769,8 @@
         },
         {
           "id": "over",
-          "label": "Có thể chạy xfs_growfs mà không cần biết loại FS.",
-          "feedback": "Công cụ XFS không áp cho mọi filesystem, và còn giới hạn partition bên dưới."
+          "label": "Chỉ cần grow filesystem vì partition đã theo kích thước disk.",
+          "feedback": "lsblk vẫn cho vda1 ở 20G; filesystem chưa thể dùng phần disk nằm ngoài partition."
         }
       ],
       "correctIds": [

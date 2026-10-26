@@ -5,8 +5,8 @@
   "explanation": "Có hướng config/release incompatibility, nhưng rollback cần tương thích data.",
   "commandId": "panel-probes",
   "optionFeedback": {
-    "over": "Migration unknown có thể khiến image cũ không đọc dữ liệu mới.",
-    "ignore": "Restart không thêm config option đã bị bỏ.",
+    "over": "Log định hướng lỗi config/release, nhưng chưa xác nhận v1.8 đọc được data sau migration.",
+    "ignore": "Bỏ option có thể xử lý một lỗi config, nhưng chưa xác nhận các thay đổi release và data migration khác.",
     "supported": "Lỗi và release notes phù hợp; chưa duyệt phương án rollback."
   }
 }

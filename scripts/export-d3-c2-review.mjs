@@ -29,7 +29,8 @@ function parseCsv(source) {
     else if (char !== '\r') field += char
   }
   if (field || row.length) { row.push(field); result.push(row) }
-  const [headings, ...records] = result
+  const [rawHeadings, ...records] = result
+  const headings = rawHeadings.map(name => name.replace(/^\uFEFF/, ''))
   return records.map(values => Object.fromEntries(headings.map((name, index) => [name, values[index] ?? ''])))
 }
 
@@ -41,15 +42,24 @@ const d3Rows = fs.readdirSync(path.join(root, 'audit/phase-d3/03_Content_By_Topi
 const d3 = new Map(d3Rows.map(entry => [`${entry.ticketId}/${entry.questionId}`, entry]))
 const screening = new Map(parseCsv(read('audit/phase-d3-c2/inputs/TicketSim_D3_Question_Screening.csv')).map(item => [`${item.ticket_id}/${item.question_id}`, item]))
 const commandScreen = new Map(parseCsv(read('audit/phase-d3-c2/inputs/TicketSim_D3_Command_Screening.csv')).map(item => [item.command_id, item]))
+if (screening.size !== 620 || commandScreen.size !== 122 || !screening.has('VPS-01-001/triage') || !commandScreen.has('iostat')) {
+  throw new Error(`Independent screening join failed: ${screening.size} questions, ${commandScreen.size} commands`)
+}
 const c1Command = new Map(parseCsv(read('audit/phase-d3/07_Command_Expert_Review.csv')).map(item => [item.command_id, item]))
-const c2RevisionIds = new Set(['VPS-01-008', 'VPS-02-008', 'VPS-04-006', 'VPS-04-008', 'VPS-09-007', 'VPS-14-006'])
+const c2RevisionIds = new Set(['VPS-01-008', 'VPS-02-008', 'VPS-04-001', 'VPS-04-004', 'VPS-04-006', 'VPS-04-008', 'VPS-05-005', 'VPS-09-007', 'VPS-13-008', 'VPS-14-006'])
 const majorQuestionReasons = {
   'VPS-01-008/check': 'Giới hạn câu hỏi vào kernel log của boot này; tail 30 dòng không cam kết bao trùm cửa sổ job.',
   'VPS-04-006/output': 'Prompt cũ hỏi điều chưa chứng minh nhưng khóa chọn diễn giải phù hợp; đổi mục tiêu câu hỏi để chỉ còn một đáp án đúng.',
   'VPS-04-008/check': 'Lệnh Guided thêm --utc, giữ ngày và đầu vào UTC; output lịch sử vẫn là fixture gốc.',
   'VPS-09-007/check': 'Lệnh Guided thêm --utc để timestamp hiển thị khớp cửa sổ auth incident UTC.',
   'VPS-14-006/output': 'Phân biệt lịch xóa ngày 25/10 với job đã hoàn tất và hold thực tế tại mốc tiếp nhận 22/10.',
-  'VPS-14-006/decision': 'Yêu cầu owner và Billing/Lifecycle phê duyệt hold có audit; sau hạn phải kiểm tra job hiện tại.'
+  'VPS-14-006/decision': 'Yêu cầu owner và Billing/Lifecycle phê duyệt hold có audit; sau hạn phải kiểm tra job hiện tại.',
+  'VPS-04-001/output': 'Thay kết luận python3 độc hại bằng bẫy thời gian đo: mẫu top/ps chưa xác định duy nhất nguyên nhân toàn bộ incident.',
+  'VPS-04-004/output': 'Thay kết luận ổ vật lý hỏng bằng lựa chọn thay ổ quá sớm; cần so guest/host và health telemetry.',
+  'VPS-04-004/decision': 'Thay hành động xóa dữ liệu hiển nhiên sai bằng đề xuất chuyển storage node quá sớm khi chỉ có một mẫu.',
+  'VPS-05-005/output': 'Phân biệt disk 40G với partition và filesystem 20G; các lựa chọn sai nay là nhầm lớp grow/cache.',
+  'VPS-13-008/output': 'Các phương án sai đề nghị rollback hoặc bỏ config option khi chưa xác minh migration và release.',
+  'VPS-13-008/decision': 'Đề nghị rollback trước khi kiểm tra data là sai ở thứ tự; container Up không xác nhận chức năng.',
 }
 const questionHead = ['ticket_id','question_id','topic','level','question_type','screening_flags','before_prompt','after_prompt','before_options_json','after_options_json','before_feedback_json','after_feedback_json','checked_fields','review_decision','review_reason','case_evidence','source_location','answer_key_status','content_revision_impact','review_type','sme_status']
 const questionRows = []

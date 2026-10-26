@@ -5,8 +5,8 @@
   "explanation": "Có ứng viên workload CPU cao, nhưng cần đối chiếu PID/owner và khoảng đo trước can thiệp.",
   "commandId": "ps-cpu",
   "optionFeedback": {
-    "over": "Tên process và CPU cao không xác định ý định hoặc quyền dừng job.",
-    "ignore": "Khác cách đo đòi trend/correlation, không làm mất giá trị của cả hai dấu hiệu.",
+    "over": "top/ps là các mẫu hiện tại; chưa có lịch sử tải và thời điểm triệu chứng để gắn toàn bộ sự cố với PID này.",
+    "ignore": "Load average bổ sung xu hướng nhưng không thay thế dấu hiệu process CPU cao cần kiểm tra owner/job.",
     "supported": "top và ps cùng gợi ứng viên, nhưng chưa xác minh đó là script dự kiến."
   }
 }

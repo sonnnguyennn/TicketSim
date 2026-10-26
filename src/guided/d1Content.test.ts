@@ -74,6 +74,24 @@ describe('D1 correctness regressions', () => {
     expect(gradeSelection(['over'], key('VPS-04-006', 'output'))).toBe(false)
   })
 
+  it('keeps plausible distractors wrong for the evidence actually shown', () => {
+    for (const [id, questionId, correct, wrong] of [
+      ['VPS-04-001', 'output', 'supported', 'over'],
+      ['VPS-04-004', 'output', 'supported', 'over'],
+      ['VPS-04-004', 'decision', 'safe', 'unsafe'],
+      ['VPS-05-005', 'output', 'supported', 'over'],
+      ['VPS-13-008', 'output', 'supported', 'over'],
+      ['VPS-13-008', 'decision', 'safe', 'unsafe'],
+    ]) {
+      expect(gradeSelection([correct], key(id, questionId)), `${id}/${questionId} correct`).toBe(true)
+      expect(gradeSelection([wrong], key(id, questionId)), `${id}/${questionId} wrong`).toBe(false)
+      expect(key(id, questionId).optionFeedback[wrong].length).toBeGreaterThan(30)
+    }
+    expect(option('VPS-04-004', 'output', 'over').label).toContain('trước khi đối chiếu')
+    expect(option('VPS-05-005', 'output', 'over').label).toContain('partition')
+    expect(option('VPS-13-008', 'decision', 'unsafe').label).toContain('migration')
+  })
+
   it('keeps the Guided tracepath PMTU sample consistent with the DF probe', () => {
     const ticket = byId('VPS-02-008')
     const trace = ticket.probes.find(item => item.command === 'tracepath 198.51.100.20')!
@@ -115,7 +133,7 @@ describe('D1 correctness regressions', () => {
   it('marks all changed major cases with a stable revision identifier', () => {
     expect(GUIDED_CONTENT_REVISION).toBe('D1-2026-10-26')
     expect(revisedGuidedTicketIds.size).toBe(15)
-    expect([...c2RevisedGuidedTicketIds].sort()).toEqual(['VPS-01-008', 'VPS-02-008', 'VPS-04-006', 'VPS-04-008', 'VPS-09-007', 'VPS-14-006'])
+    expect([...c2RevisedGuidedTicketIds].sort()).toEqual(['VPS-01-008', 'VPS-02-008', 'VPS-04-001', 'VPS-04-004', 'VPS-04-006', 'VPS-04-008', 'VPS-05-005', 'VPS-09-007', 'VPS-13-008', 'VPS-14-006'])
     expect(guidedContentRevisionFor('VPS-14-006')).toBe('D3-C2-2026-10-26')
     expect(guidedContentRevisionFor('VPS-02-006')).toBe(GUIDED_CONTENT_REVISION)
     expect(hasRevisedGuidedContent('VPS-14-006')).toBe(true)

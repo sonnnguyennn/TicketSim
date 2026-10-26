@@ -5741,11 +5741,11 @@
         "options": [
           {
             "id": "over",
-            "label": "python3 chắc chắn độc hại nên phải kill ngay."
+            "label": "python3 PID 2601 là nguyên nhân duy nhất của toàn bộ thời gian khách thấy chậm."
           },
           {
             "id": "ignore",
-            "label": "ps và top khác loại mẫu nên không cần điều tra CPU."
+            "label": "Chỉ cần xem load average, chưa cần đối chiếu PID đang dùng CPU."
           },
           {
             "id": "supported",
@@ -6224,11 +6224,11 @@
           },
           {
             "id": "over",
-            "label": "Đã chứng minh đĩa vật lý bị hỏng."
+            "label": "Ưu tiên yêu cầu thay ổ vật lý trước khi đối chiếu tải guest và host."
           },
           {
             "id": "ignore",
-            "label": "CPU user thấp nên await cao không ảnh hưởng ứng dụng."
+            "label": "Ưu tiên điều tra CPU user vì đó là nguyên nhân trực tiếp của độ trễ."
           }
         ],
         "requiredProbeIds": [
@@ -6272,11 +6272,11 @@
         "options": [
           {
             "id": "unsafe",
-            "label": "Xóa dữ liệu ứng dụng để giảm I/O ngay."
+            "label": "Yêu cầu chuyển storage node ngay dựa trên một mẫu iostat."
           },
           {
             "id": "close",
-            "label": "Đóng ticket vì CPU user còn thấp."
+            "label": "Tăng CPU quota rồi kết thúc kiểm tra storage."
           },
           {
             "id": "safe",
@@ -6732,7 +6732,7 @@
         "options": [
           {
             "id": "ignore",
-            "label": "Chỉ cần disk 40G thì df 20G là chắc chắn lỗi hiển thị."
+            "label": "df đang hiển thị dung lượng trước lần nâng disk nên có thể bỏ qua."
           },
           {
             "id": "supported",
@@ -6740,7 +6740,7 @@
           },
           {
             "id": "over",
-            "label": "Có thể chạy xfs_growfs mà không cần biết loại FS."
+            "label": "Chỉ cần grow filesystem vì partition đã theo kích thước disk."
           }
         ],
         "requiredProbeIds": [
@@ -18315,11 +18315,11 @@
         "options": [
           {
             "id": "over",
-            "label": "Đổi tag về v1.8 không cần kiểm tra data."
+            "label": "Rollback v1.8 ngay vì log chỉ báo unknown legacyMode."
           },
           {
             "id": "ignore",
-            "label": "Chỉ restart v2.0 sẽ tự hỗ trợ legacyMode."
+            "label": "Chỉ cần bỏ legacyMode; không cần đối chiếu release notes và schema."
           },
           {
             "id": "supported",
@@ -18369,7 +18369,7 @@
         "options": [
           {
             "id": "close",
-            "label": "Đóng ticket vì tag đã đổi về cũ."
+            "label": "Bỏ legacyMode rồi đóng ticket khi container báo Up."
           },
           {
             "id": "safe",
@@ -18377,7 +18377,7 @@
           },
           {
             "id": "unsafe",
-            "label": "Xóa container/volume và pull latest để thử."
+            "label": "Rollback về v1.8 theo tag cũ trước khi kiểm tra data migration."
           }
         ],
         "skill": "image-regression"

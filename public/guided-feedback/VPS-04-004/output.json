@@ -6,7 +6,7 @@
   "commandId": "iostat",
   "optionFeedback": {
     "supported": "vmstat và iostat cùng chỉ chờ/độ trễ cao trong mẫu.",
-    "over": "Chưa có health/error telemetry hoặc mapping thiết bị vật lý.",
-    "ignore": "Task chờ I/O có thể tăng độ trễ trong khi CPU user vẫn thấp."
+    "over": "Chưa có health/error telemetry hoặc mapping vda tới ổ vật lý; mẫu hiện tại chỉ định hướng điều tra I/O.",
+    "ignore": "CPU user thấp trong mẫu; wa và await cao định hướng I/O chứ không chứng minh CPU user là nút thắt."
   }
 }

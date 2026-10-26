@@ -25,7 +25,7 @@
   "fixtureChanges": 103,
   "choiceCues": {
     "singleChoiceQuestions": 448,
-    "correctStrictlyLongest": 177,
+    "correctStrictlyLongest": 176,
     "correctPositions": {
       "1": 160,
       "2": 130,
@@ -46,7 +46,7 @@
       },
       "13": {
         "questions": 32,
-        "correctStrictlyLongest": 16
+        "correctStrictlyLongest": 15
       },
       "14": {
         "questions": 32,

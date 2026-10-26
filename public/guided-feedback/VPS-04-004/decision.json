@@ -2,10 +2,10 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Cần tìm nguồn I/O và bằng chứng hạ tầng theo cùng thời gian; xóa dữ liệu không phải chẩn đoán hiệu năng.",
+  "explanation": "Cần tìm nguồn I/O và bằng chứng hạ tầng theo cùng thời gian trước khi chọn thay đổi.",
   "optionFeedback": {
-    "unsafe": "Có thể mất dữ liệu và chưa biết process nào tạo tải.",
-    "close": "Bằng chứng wa/độ trễ và triệu chứng khách vẫn chưa được xử lý.",
+    "unsafe": "Chưa so được tải guest, host và baseline cùng thời gian; đổi node có tác động rộng mà chưa xác định lớp lỗi.",
+    "close": "CPU user thấp không giải thích wa/await cao và triệu chứng khách chưa được xác minh lại.",
     "safe": "Giúp phân biệt workload guest với contention hoặc lỗi lớp storage."
   }
 }

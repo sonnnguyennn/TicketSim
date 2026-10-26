@@ -1417,12 +1417,12 @@ export const topicEdits = {
             "Lỗi và release notes phù hợp; chưaduệtmộtphươngánrollback."
           ],
           "over": [
-            "Đổi tag về v1.8 không cần kiểm tra data.",
-            "Migration unknown có thể khiến image cũ không đọc dữ liệu mới."
+            "Rollback v1.8 ngay vì log chỉ báo unknown legacyMode.",
+            "Log định hướng lỗi config/release, nhưng chưa xác nhận v1.8 đọc được data sau migration."
           ],
           "ignore": [
-            "Chỉ restart v2.0 sẽ tự hỗ trợ legacyMode.",
-            "Restart không thêm config option đã bị bỏ."
+            "Chỉ cần bỏ legacyMode; không cần đối chiếu release notes và schema.",
+            "Bỏ option có thể xử lý một lỗi config, nhưng chưa xác nhận các thay đổi release và data migration khác."
           ]
         }
       },
@@ -1453,12 +1453,12 @@ export const topicEdits = {
             "Có phương án bảo vệ data và verify chức năng."
           ],
           "unsafe": [
-            "Xóa container/volume và pull latest để thử.",
-            "Có thể mất dữ liệu và đưa vào một artifact chưa biết."
+            "Rollback về v1.8 theo tag cũ trước khi kiểm tra data migration.",
+            "Image cũ có thể không tương thích dữ liệu sau upgrade; phải xác định digest, schema và phương án phục hồi."
           ],
           "close": [
-            "Đóng ticket vì tag đã đổi về cũ.",
-            "Chưa xác minh API hoặc tương thích dữ liệu."
+            "Bỏ legacyMode rồi đóng ticket khi container báo Up.",
+            "Container Up chưa xác nhận API hoạt động hay dữ liệu sau deploy còn tương thích."
           ]
         }
       },
