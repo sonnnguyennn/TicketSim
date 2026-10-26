@@ -4,8 +4,8 @@
   ],
   "explanation": "VM được báo running mới là một lớp; các service và HTTP cần phép kiểm tra riêng.",
   "optionFeedback": {
-    "http": "Chưa có request HTTP từ client trong trạng thái nguồn VM.",
+    "http": "Chưa có phép thử HTTP từ client. VM Running không cho biết kết quả truy cập website.",
     "vm": "Đúng phạm vi thông tin panel cung cấp, không phải kiểm tra website.",
-    "nginx": "Trạng thái VM không đọc unit Nginx."
+    "nginx": "Panel cho biết trạng thái nguồn VM, không đọc trạng thái unit Nginx; cần systemctl status nginx trong guest."
   }
 }

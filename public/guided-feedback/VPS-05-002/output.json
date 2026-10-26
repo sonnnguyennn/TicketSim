@@ -5,8 +5,8 @@
   "explanation": "Filesystem có thể còn GB nhưng không còn inode để tạo thêm đối tượng mới.",
   "commandId": "df-i",
   "optionFeedback": {
-    "blocks": "df -h còn45%; không đồng inode với GB.",
-    "ram": "df -i không đo RAM.",
-    "full": "Đúng IFree0/IUse%100 của df -i."
+    "blocks": "df -h / cho thấy còn 11G (Use% = 45%). Hết inode khác với hết block space.",
+    "ram": "df -i đếm inode của filesystem; muốn xem RAM dùng free -h.",
+    "full": "df -i / ghi IFree = 0 và IUse% = 100%. Máy vẫn còn GB trống nhưng không cấp thêm inode để tạo file mới."
   }
 }

@@ -34,7 +34,7 @@
     "byTopic": {
       "10": {
         "questions": 32,
-        "correctStrictlyLongest": 14
+        "correctStrictlyLongest": 13
       },
       "11": {
         "questions": 32,
@@ -66,7 +66,7 @@
       },
       "05": {
         "questions": 32,
-        "correctStrictlyLongest": 16
+        "correctStrictlyLongest": 17
       },
       "07": {
         "questions": 32,

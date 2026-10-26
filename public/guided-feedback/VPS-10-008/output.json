@@ -6,7 +6,7 @@
   "commandId": "date-utc",
   "optionFeedback": {
     "supported": "NTP inactive làm hướng kiểm tra có cơ sở.",
-    "over": "Không có phép so hai đồng hồ cùng thời điểm.",
-    "ignore": "VM vẫn có clock và dịch vụ đồng bộ riêng."
+    "over": "Cờ này không cho biết số giây lệch. Phải so giờ guest với nguồn UTC tin cậy ở cùng thời điểm.",
+    "ignore": "Guest có đồng hồ và dịch vụ đồng bộ riêng; giờ host không thay thế phép đo trong guest."
   }
 }

@@ -73,6 +73,18 @@ test('D2.1 library separates syntax, examples and support tasks without internal
   expect(await page.locator(':focus').count()).toBe(1)
 })
 
+test('D3-B firewalld lookup distinguishes default zone from the zone handling traffic', async ({ page }) => {
+  await page.goto('/')
+  await page.getByTitle('Thư viện lệnh', { exact: true }).click()
+  await page.getByRole('textbox', { name: 'Tìm lệnh', exact: true }).fill('firewall-cmd --list-all')
+  await page.locator('.library-list button').filter({ hasText: 'firewall-cmd --list-all' }).click()
+  const detail = page.locator('.library-detail')
+  await expect(detail).toContainText('default zone')
+  await expect(detail).toContainText('--get-active-zones')
+  await expect(detail).toContainText('firewall-cmd --zone=public --list-all')
+  await expect(detail).toContainText('interface/source')
+})
+
 test('D2.1 getent lookup distinguishes database, key, found and missing entry', async ({ page }) => {
   await page.goto('/')
   await page.getByTitle('Thư viện lệnh', { exact: true }).click()

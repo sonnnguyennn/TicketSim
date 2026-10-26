@@ -6,9 +6,9 @@
   "explanation": "Hai phép đo xác nhận hai loại tài nguyên; chưa phân loại dữ liệu hay chẩn đoán phần cứng.",
   "commandId": "df-i",
   "optionFeedback": {
-    "inode": "df -i có IFree0 và IUse%100.",
+    "inode": "df -i / ghi IFree = 0, IUse% = 100%. Đây là bằng chứng cạn inode dù filesystem vẫn còn dung lượng block.",
     "which": "Hai df không liệt kê loại dữ liệu và owner/retention.",
     "hardware": "Hết inode không phải kết quả kiểm tra sức khỏe ổ vật lý.",
-    "gb": "df -h có Avail11G và Use%45."
+    "gb": "df -h / cho thấy Avail = 11G, Use% = 45%. Kết quả này không phản ánh inode."
   }
 }

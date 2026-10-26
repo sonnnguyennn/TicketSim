@@ -1106,7 +1106,7 @@
         "options": [
           {
             "id": "http",
-            "label": "HTTP từ client chắc chắn truy cập được."
+            "label": "Website trả HTTP thành công từ mạng khách."
           },
           {
             "id": "vm",
@@ -1114,7 +1114,7 @@
           },
           {
             "id": "nginx",
-            "label": "Nginx chắc chắn đang chạy."
+            "label": "Dịch vụ Nginx trong guest đang active."
           }
         ],
         "skill": "triage"
@@ -1864,15 +1864,15 @@
         "options": [
           {
             "id": "blocks",
-            "label": "Block space cũng chắc chắn dùng100%."
+            "label": "Block space của filesystem cũng đã cạn."
           },
           {
             "id": "ram",
-            "label": "RAM của VPS đã dùng hết."
+            "label": "RAM khả dụng đã hết."
           },
           {
             "id": "full",
-            "label": "Inode đã dùng hết trong mẫu."
+            "label": "Filesystem không còn inode khả dụng trong mẫu."
           }
         ],
         "requiredProbeIds": [
@@ -2084,11 +2084,11 @@
           },
           {
             "id": "config",
-            "label": "Cấu hình Nginx chắc chắn sai cú pháp."
+            "label": "Nginx không khởi động do cấu hình sai cú pháp."
           },
           {
             "id": "upstream",
-            "label": "ISP chắc chắn làm webserver dừng."
+            "label": "Nginx đã trả HTTP 502 vì upstream không phản hồi."
           }
         ],
         "requiredProbeIds": [
@@ -15173,11 +15173,11 @@
           },
           {
             "id": "over",
-            "label": "Guest chắc chắn chậm đúng một ngày."
+            "label": "Cờ synchronized: no cho biết guest đang lệch đúng 24 giờ."
           },
           {
             "id": "ignore",
-            "label": "Host đúng giờ nên guest chắc chắn đúng."
+            "label": "Giờ host đúng nên không cần đo lại giờ trong guest."
           }
         ],
         "requiredProbeIds": [
