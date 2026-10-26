@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: AAAA record targets unassigned IPv6.\nFindings: The A record matched the service, but AAAA pointed to 2001:db8:bad::20 and panel showed no assigned IPv6.\nNext Action: Have the domain owner correct or remove the broken AAAA record after approval.\nVerification: Verify IPv6 clients reach a working endpoint or no broken AAAA is returned.\nStatus: Pending authorized remediation and verification."
 }

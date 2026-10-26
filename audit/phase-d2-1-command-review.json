@@ -1,0 +1,3181 @@
+[
+  {
+    "id": "systemctl-status",
+    "command": "systemctl status sshd",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ],
+    "options": [
+      {
+        "name": "status",
+        "kind": "subcommand",
+        "purpose": "Đọc trạng thái unit và log ngắn."
+      }
+    ],
+    "examples": [
+      {
+        "command": "systemctl status sshd",
+        "expectedOutput": "Active: inactive (dead)",
+        "interpretation": "Active cho biết service hiện chạy hay dừng; không tự nói nguyên nhân.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ss-ltnp",
+    "command": "ss -ltnp",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ],
+    "options": [
+      {
+        "name": "-l",
+        "kind": "flag",
+        "purpose": "Chỉ socket đang lắng nghe."
+      },
+      {
+        "name": "-t",
+        "kind": "flag",
+        "purpose": "Chỉ TCP."
+      },
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Giữ địa chỉ và port dạng số."
+      },
+      {
+        "name": "-p",
+        "kind": "flag",
+        "purpose": "Hiện process nếu quyền cho phép."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ss -ltnp",
+        "expectedOutput": "LISTEN 0 128 0.0.0.0:22 0.0.0.0:*",
+        "interpretation": "Output mẫu cho thấy listener TCP/22 trong guest; vì thiếu thông tin process nên chưa xác định đó là sshd.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "sudo ss -ltnp",
+        "expectedOutput": "LISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=742,fd=3))",
+        "interpretation": "Listener TCP/22 thuộc sshd ở guest; chưa chứng minh client qua được provider firewall.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "journalctl-unit",
+    "command": "journalctl -u sshd -n 50 --no-pager",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ],
+    "options": [
+      {
+        "name": "-u",
+        "kind": "flag",
+        "purpose": "Lọc đúng systemd unit."
+      },
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Giới hạn số bản ghi cuối."
+      },
+      {
+        "name": "--no-pager",
+        "kind": "flag",
+        "purpose": "In trực tiếp, không mở pager."
+      },
+      {
+        "name": "--utc",
+        "kind": "flag",
+        "purpose": "Hiển thị timestamp theo UTC; --since/--until cũng cần chỉ rõ timezone."
+      }
+    ],
+    "examples": [
+      {
+        "command": "journalctl -u sshd -n 50 --no-pager",
+        "expectedOutput": "Oct 22 10:12:00 vm sshd[742]: Server listening on 0.0.0.0 port 22.",
+        "interpretation": "Dòng mẫu ghi sshd đã lắng nghe TCP/22 lúc 10:12; cần đối chiếu trạng thái hiện tại và thời điểm sự cố.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc --no-pager",
+        "expectedOutput": "Oct 22 09:14:20 vm sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2",
+        "interpretation": "Sự kiện xác thực thành công trong cửa sổ; cần đối chiếu owner/key và audit. --utc cố định timezone hiển thị.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "df-h",
+    "command": "df -h /",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/df.1.html"
+    ],
+    "options": [
+      {
+        "name": "-h",
+        "kind": "flag",
+        "purpose": "Dùng đơn vị dễ đọc."
+      }
+    ],
+    "examples": [
+      {
+        "command": "df -h /",
+        "expectedOutput": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/vda1        20G  8.0G   12G  40% /",
+        "interpretation": "Use% và Available phản ánh block space.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "df -h /var",
+        "expectedOutput": "Filesystem Size Used Avail Use% Mounted on\n/dev/vda1 20G 18G 2G 90% /",
+        "interpretation": "/var có thể cùng filesystem với /; Use% chưa cho biết thư mục nào chiếm chỗ.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ssh-vvv",
+    "command": "ssh -vvv user@IP",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/ssh.1.html",
+      "https://man7.org/linux/man-pages/man5/ssh_config.5.html"
+    ],
+    "options": [
+      {
+        "name": "-vvv",
+        "kind": "flag",
+        "purpose": "Tăng log debug phía client, không thay đổi phương thức xác thực."
+      },
+      {
+        "name": "-o BatchMode=yes",
+        "kind": "flag",
+        "purpose": "Tắt lời nhắc tương tác, gồm password và xác nhận host key; không bỏ qua xác minh host key."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ssh -vvv user@IP",
+        "expectedOutput": "debug1: Authentications that can continue: publickey,password",
+        "interpretation": "Các dòng debug giúp phân biệt kết nối, host key và xác thực.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "ssh -o BatchMode=yes user@IP",
+        "expectedOutput": "Permission denied (publickey,password).",
+        "interpretation": "TCP đã tới giai đoạn xác thực; BatchMode không yêu cầu nhập password. Đây không phải debug verbose.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "getent-passwd",
+    "command": "getent passwd USER",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/getent.1.html"
+    ],
+    "options": [
+      {
+        "name": "passwd",
+        "kind": "database",
+        "purpose": "Chọn cơ sở dữ liệu tài khoản qua NSS; không phải flag."
+      },
+      {
+        "name": "USER",
+        "kind": "argument",
+        "purpose": "Tên account cần tra; là positional key."
+      }
+    ],
+    "examples": [
+      {
+        "command": "getent passwd webapp",
+        "expectedOutput": "webapp:x:1001:1001::/home/webapp:/bin/bash",
+        "interpretation": "Tìm thấy entry webapp. Entry có thể đến từ file local hoặc dịch vụ danh tính remote; chưa chứng minh SSH cho phép login hay thông tin xác thực đúng.",
+        "outputIsExcerpt": false,
+        "exitStatus": 0
+      },
+      {
+        "command": "getent passwd admin",
+        "expectedOutput": "",
+        "interpretation": "Không có dòng stdout cùng exit status 2 nghĩa là không tìm thấy key admin trong database passwd. Nếu nguồn danh tính remote lỗi, cần kiểm tra NSS và dịch vụ trước khi kết luận account không tồn tại ở mọi nơi.",
+        "outputIsExcerpt": false,
+        "exitStatus": 2
+      }
+    ]
+  },
+  {
+    "id": "ip-addr",
+    "command": "ip -br addr",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/ip.8.html"
+    ],
+    "options": [
+      {
+        "name": "-br",
+        "kind": "flag",
+        "purpose": "Hiển thị ngắn gọn."
+      },
+      {
+        "name": "addr",
+        "kind": "subcommand",
+        "purpose": "Chọn đối tượng địa chỉ."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ip -br addr",
+        "expectedOutput": "enp0s3 UP 10.10.20.25/24",
+        "interpretation": "IP trên interface giúp kiểm tra cấu hình guest.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ip-route",
+    "command": "ip route",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/ip-route.8.html"
+    ],
+    "options": [
+      {
+        "name": "route",
+        "kind": "subcommand",
+        "purpose": "Đọc bảng route mặc định."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ip route",
+        "expectedOutput": "default via 10.10.20.1 dev enp0s3",
+        "interpretation": "Output mẫu có default route qua 10.10.20.1; route tồn tại chưa chứng minh đích ngoài mạng truy cập được.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "ip route get 1.1.1.1",
+        "expectedOutput": "1.1.1.1 via 10.10.20.1 dev enp0s3 src 10.10.20.25",
+        "interpretation": "Kernel chọn gateway và source IP; không gửi packet và không chứng minh reachability.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ip-route-get",
+    "command": "ip route get 1.1.1.1",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/ip-route.8.html"
+    ],
+    "options": [
+      {
+        "name": "route get",
+        "kind": "subcommand",
+        "purpose": "Hỏi kernel route tới đích cụ thể; không gửi packet."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ip route get 1.1.1.1",
+        "expectedOutput": "1.1.1.1 via 10.10.20.1 dev enp0s3 src 10.10.20.25",
+        "interpretation": "Kết quả cho biết next hop/interface hoặc lỗi route.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nmcli-show",
+    "command": "nmcli connection show",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://networkmanager.pages.freedesktop.org/NetworkManager/NetworkManager/nmcli.html"
+    ],
+    "options": [
+      {
+        "name": "connection show",
+        "kind": "subcommand",
+        "purpose": "Liệt kê profile NetworkManager."
+      }
+    ],
+    "examples": [
+      {
+        "command": "nmcli connection show",
+        "expectedOutput": "NAME           UUID                                  TYPE      DEVICE\nSystem enp0s3  8f22f660-a72b-440c-a251-d5cc36a33167  ethernet  enp0s3",
+        "interpretation": "Tên profile và trạng thái hỗ trợ kiểm tra cấu hình mạng.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "systemctl-nginx",
+    "command": "systemctl status nginx",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ],
+    "options": [
+      {
+        "name": "status",
+        "kind": "subcommand",
+        "purpose": "Đọc trạng thái unit."
+      }
+    ],
+    "examples": [
+      {
+        "command": "systemctl status nginx",
+        "expectedOutput": "Active: inactive (dead)",
+        "interpretation": "inactive nghĩa là Nginx hiện không chạy.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "journalctl-nginx",
+    "command": "journalctl -u nginx -n 50 --no-pager",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ],
+    "options": [
+      {
+        "name": "-u",
+        "kind": "flag",
+        "purpose": "Lọc unit nginx."
+      },
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Giới hạn bản ghi."
+      }
+    ],
+    "examples": [
+      {
+        "command": "journalctl -u nginx -n 50 --no-pager",
+        "expectedOutput": "Oct 22 10:12:00 vm nginx[921]: nginx.service: Failed with result exit-code.",
+        "interpretation": "Log giúp tìm lỗi khởi động hay cấu hình.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nginx-test",
+    "command": "nginx -t",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://nginx.org/en/docs/switches.html"
+    ],
+    "options": [
+      {
+        "name": "-t",
+        "kind": "flag",
+        "purpose": "Test config trên đĩa; kết quả thường ra stderr."
+      }
+    ],
+    "examples": [
+      {
+        "command": "nginx -t",
+        "expectedOutput": "nginx: configuration file /etc/nginx/nginx.conf test is successful",
+        "interpretation": "syntax is ok hỗ trợ bước tiếp theo nhưng không chứng minh site hoạt động.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "du-var",
+    "command": "du -xhd1 /var",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/du.1.html"
+    ],
+    "options": [
+      {
+        "name": "-x",
+        "kind": "flag",
+        "purpose": "Không băng qua filesystem khác."
+      },
+      {
+        "name": "-h",
+        "kind": "flag",
+        "purpose": "Dùng đơn vị dễ đọc."
+      },
+      {
+        "name": "-d1",
+        "kind": "flag",
+        "purpose": "Giới hạn độ sâu một cấp."
+      }
+    ],
+    "examples": [
+      {
+        "command": "du -xhd1 /var",
+        "expectedOutput": "13G /var/log\n14G /var",
+        "interpretation": "Chỉ ra nơi chiếm dung lượng để tiếp tục điều tra.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "du -xhd1 /var/log",
+        "expectedOutput": "8.0G /var/log/app\n8.2G /var/log",
+        "interpretation": "Kích thước chỉ khoanh vùng. Cần owner và retention trước mọi dọn dẹp.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "df-i",
+    "command": "df -i /",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/df.1.html"
+    ],
+    "options": [
+      {
+        "name": "-i",
+        "kind": "flag",
+        "purpose": "Hiện số inode."
+      }
+    ],
+    "examples": [
+      {
+        "command": "df -i /",
+        "expectedOutput": "Filesystem      Inodes IUsed   IFree IUse% Mounted on\n/dev/vda1      1310720 550502 760218   42% /",
+        "interpretation": "IUse% là tỷ lệ inode đã dùng; 100% có thể gây lỗi tạo file dù df -h còn dung lượng.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "df -i /var",
+        "expectedOutput": "Filesystem Inodes IUsed IFree IUse% Mounted on\n/dev/vda1 1310720 1310720 0 100% /",
+        "interpretation": "Inode hết ở filesystem này; cần xác định nguồn file nhỏ, không xóa mù.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "find-files",
+    "command": "find /var -xdev -type f",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/find.1.html"
+    ],
+    "options": [
+      {
+        "name": "-xdev",
+        "kind": "flag",
+        "purpose": "Không đi sang filesystem khác."
+      },
+      {
+        "name": "-type f",
+        "kind": "flag",
+        "purpose": "Chỉ file thường; đây là expression của find."
+      }
+    ],
+    "examples": [
+      {
+        "command": "find /var -xdev -type f",
+        "expectedOutput": "/var/log/app/2026-10-22.log",
+        "interpretation": "Dòng mẫu chỉ chứng minh một file được liệt kê; cần đếm theo thư mục trước khi quy inode exhaustion cho nhiều file.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "curl-head",
+    "command": "curl -I http://127.0.0.1",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://curl.se/docs/httpscripting.html"
+    ],
+    "options": [
+      {
+        "name": "-I",
+        "kind": "flag",
+        "purpose": "Gửi HTTP HEAD, lấy header mà không lấy body."
+      }
+    ],
+    "examples": [
+      {
+        "command": "curl -I http://127.0.0.1",
+        "expectedOutput": "HTTP/1.1 200 OK\nServer: nginx",
+        "interpretation": "Status và header cho thấy web server có phản hồi tại đích kiểm tra.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "curl -I https://example.com",
+        "expectedOutput": "HTTP/2 200\nserver: nginx",
+        "interpretation": "HEAD trả 200 ở nguồn này; GET và đường từ nguồn khác còn cần kiểm tra.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "dig-a",
+    "command": "dig example.com A",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://bind9.readthedocs.io/en/stable/manpages.html"
+    ],
+    "options": [
+      {
+        "name": "A",
+        "kind": "target",
+        "purpose": "Query type A, không phải shell flag."
+      },
+      {
+        "name": "@resolver",
+        "kind": "target",
+        "purpose": "Chọn DNS server đích, không phải flag của shell."
+      }
+    ],
+    "examples": [
+      {
+        "command": "dig example.com A",
+        "expectedOutput": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 29107\n;; ANSWER SECTION:\nexample.com. 300 IN A 198.51.100.20",
+        "interpretation": "ANSWER SECTION và status cho biết kết quả từ resolver được hỏi.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "dig @192.0.2.53 example.com A",
+        "expectedOutput": ";; ->>HEADER<<- opcode: QUERY, status: NOERROR\n;; ANSWER SECTION:\nexample.com. 300 IN A 198.51.100.20",
+        "interpretation": "Chỉ chứng minh resolver được hỏi trả A record lúc đó; không đại diện mọi resolver.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "dig-ns",
+    "command": "dig example.com NS",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://bind9.readthedocs.io/en/stable/manpages.html"
+    ],
+    "options": [
+      {
+        "name": "NS",
+        "kind": "target",
+        "purpose": "Query type NS."
+      }
+    ],
+    "examples": [
+      {
+        "command": "dig example.com NS",
+        "expectedOutput": "example.com. 3600 IN NS ns1.example.net.",
+        "interpretation": "NS trong câu trả lời từ resolver cần đối chiếu delegation tại parent và authoritative; một truy vấn cache không chứng minh registrar đã cập nhật.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "resolvectl",
+    "command": "resolvectl status",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html"
+    ],
+    "options": [
+      {
+        "name": "status",
+        "kind": "subcommand",
+        "purpose": "Đọc trạng thái resolver systemd-resolved."
+      }
+    ],
+    "examples": [
+      {
+        "command": "resolvectl status",
+        "expectedOutput": "DNS Servers: 192.0.2.53",
+        "interpretation": "resolvectl hỏi systemd-resolved; nmcli đọc cấu hình NetworkManager. Chúng xem hai lớp khác nhau, cần xác định máy đang dùng lớp nào.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "free-h",
+    "command": "free -h",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/free.1.html"
+    ],
+    "options": [
+      {
+        "name": "-h",
+        "kind": "flag",
+        "purpose": "Đơn vị dễ đọc."
+      }
+    ],
+    "examples": [
+      {
+        "command": "free -h",
+        "expectedOutput": "               total        used        free      shared  buff/cache   available\nMem:           3.8Gi       1.2Gi       1.0Gi       120Mi       1.6Gi       2.3Gi\nSwap:          1.0Gi          0B       1.0Gi",
+        "interpretation": "available ước lượng RAM có thể cấp thêm mà chưa cần swap; free thấp một mình chưa chứng minh thiếu RAM. Cách tính used khác theo phiên bản procps.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "free -h",
+        "expectedOutput": "Mem: 3.8Gi 3.1Gi 120Mi 90Mi 580Mi 360Mi",
+        "interpretation": "Available thấp là tín hiệu áp lực RAM, chưa tự chứng minh process hoặc OOM.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "top",
+    "command": "top -b -n 1",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/top.1.html"
+    ],
+    "options": [
+      {
+        "name": "-b",
+        "kind": "flag",
+        "purpose": "Batch mode để in output."
+      },
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Số lần cập nhật."
+      }
+    ],
+    "examples": [
+      {
+        "command": "top -b -n 1",
+        "expectedOutput": "%Cpu(s): 12.0 us, 3.0 sy, 0.0 ni, 85.0 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st",
+        "interpretation": "So sánh tải CPU, memory và process nổi bật.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "firewall-list",
+    "command": "firewall-cmd --list-all",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/security_guide/sec-working_with_zones"
+    ],
+    "options": [
+      {
+        "name": "--list-all",
+        "kind": "flag",
+        "purpose": "Đọc cấu hình runtime của zone được chọn; mặc định là default zone."
+      },
+      {
+        "name": "--zone",
+        "kind": "flag",
+        "purpose": "Chỉ định zone gắn interface/source cần xét."
+      }
+    ],
+    "examples": [
+      {
+        "command": "firewall-cmd --list-all",
+        "expectedOutput": "public (active)\n  services: ssh dhcpv6-client",
+        "interpretation": "Đọc service/port của đúng active zone. Không có service ssh trong một zone chưa đủ chứng minh mọi đường tới cổng 22 bị chặn.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "firewall-cmd --zone=public --list-all",
+        "expectedOutput": "public (active)\n  services: ssh",
+        "interpretation": "Zone public cho phép service ssh theo firewalld; provider ACL và listener còn cần kiểm tra.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "getenforce",
+    "command": "getenforce",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "getenforce",
+        "expectedOutput": "Enforcing",
+        "interpretation": "Enforcing cho biết policy đang áp dụng.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "docker-ps",
+    "command": "docker ps -a",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.docker.com/reference/cli/docker/container/ls/"
+    ],
+    "options": [
+      {
+        "name": "ps",
+        "kind": "subcommand",
+        "purpose": "Liệt kê container."
+      },
+      {
+        "name": "-a",
+        "kind": "flag",
+        "purpose": "Bao gồm container stopped."
+      }
+    ],
+    "examples": [
+      {
+        "command": "docker ps -a",
+        "expectedOutput": "CONTAINER ID  IMAGE  STATUS  PORTS\nabc123 nginx Up 2 hours 0.0.0.0:8080->80/tcp",
+        "interpretation": "STATUS hỗ trợ phân biệt container stopped/restarting.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "docker ps",
+        "expectedOutput": "CONTAINER ID   IMAGE   STATUS   PORTS",
+        "interpretation": "Không thấy container chưa chứng minh nó chưa từng tồn tại; dùng -a để xem stopped.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-rebuild",
+    "command": "PANEL: rebuild history",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "OS reinstalled 15 minutes ago",
+        "interpretation": "Lịch sử rebuild là bối cảnh, không xác thực host key hiện tại.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "fail2ban-status",
+    "command": "fail2ban-client status sshd",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "status sshd",
+        "kind": "subcommand",
+        "purpose": "Đọc jail sshd; jail phải tồn tại."
+      }
+    ],
+    "examples": [
+      {
+        "command": "fail2ban-client status sshd",
+        "expectedOutput": "Banned IP list: 198.51.100.14",
+        "interpretation": "IP trong danh sách bị ban; cần xác minh đó là IP nguồn của khách.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "fail2ban-log",
+    "command": "journalctl -u fail2ban -n 20",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ],
+    "options": [
+      {
+        "name": "-u",
+        "kind": "flag",
+        "purpose": "Lọc unit fail2ban."
+      },
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Giới hạn dòng."
+      }
+    ],
+    "examples": [
+      {
+        "command": "journalctl -u fail2ban -n 20",
+        "expectedOutput": "Oct 22 10:12:00 vm fail2ban-server[824]: fail2ban.actions [824]: NOTICE [sshd] Ban 198.51.100.14",
+        "interpretation": "Sự kiện ban cần đối chiếu source IP và failed login.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "sshd-effective",
+    "command": "sshd -T | grep '^port '",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/sshd.8.html"
+    ],
+    "options": [
+      {
+        "name": "-T",
+        "kind": "flag",
+        "purpose": "In effective configuration từ file hiện tại."
+      },
+      {
+        "name": "-C",
+        "kind": "flag",
+        "purpose": "Áp dụng Match theo user/host/addr giả định."
+      },
+      {
+        "name": "grep '^port '",
+        "kind": "filter",
+        "purpose": "Bộ lọc shell riêng, không phải flag sshd; grep port rộng hơn còn khớp gatewayports."
+      }
+    ],
+    "examples": [
+      {
+        "command": "sshd -T | grep '^port '",
+        "expectedOutput": "port 2222",
+        "interpretation": "port 2222 là cấu hình đọc từ file hiện tại, chưa chứng minh daemon đang chạy đã nạp file đó hoặc có listener trên 2222.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "sshd -T | grep port",
+        "expectedOutput": "port 2222\ngatewayports no",
+        "interpretation": "grep port cũng trả gatewayports. Dùng bộ lọc ^port để chỉ đọc khóa port; cả hai chưa chứng minh daemon đã nạp config.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ip-family-addr",
+    "command": "ip -4 addr show dev enp0s3",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/ip.8.html"
+    ],
+    "options": [
+      {
+        "name": "-4",
+        "kind": "flag",
+        "purpose": "Chỉ IPv4."
+      },
+      {
+        "name": "-6",
+        "kind": "flag",
+        "purpose": "Chỉ IPv6."
+      },
+      {
+        "name": "show dev",
+        "kind": "subcommand",
+        "purpose": "Chọn interface thực tế."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ip -4 addr show dev enp0s3",
+        "expectedOutput": "inet 192.0.2.25/24 scope global enp0s3",
+        "interpretation": "Output mẫu có IPv4 trên enp0s3; cần đối chiếu IP cấp phát, route và đường kết nối.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-ip-allocation",
+    "command": "PANEL: IPv4 allocation",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Assigned IPv4: 192.0.2.25/24; gateway: 192.0.2.1",
+        "interpretation": "Cấp phát panel chưa chứng minh guest đã nhận địa chỉ.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-probes",
+    "command": "PANEL: probes",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Tokyo TCP/22 success; ISP-A timeout; ISP-B timeout",
+        "interpretation": "Khác biệt theo nguồn chưa định vị chính xác nơi mất gói.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "id-user",
+    "command": "id webapp",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "USER",
+        "kind": "argument",
+        "purpose": "Account cần tra; positional argument."
+      }
+    ],
+    "examples": [
+      {
+        "command": "id webapp",
+        "expectedOutput": "uid=1001(webapp) gid=1001(webapp)",
+        "interpretation": "So user chạy app với owner/mode/ACL của đường dẫn.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "systemctl-service",
+    "command": "systemctl status SERVICE",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ],
+    "options": [
+      {
+        "name": "status",
+        "kind": "subcommand",
+        "purpose": "Đọc trạng thái unit được chọn."
+      }
+    ],
+    "examples": [
+      {
+        "command": "systemctl status SERVICE",
+        "expectedOutput": "Active: failed (Result: exit-code)",
+        "interpretation": "Failed/status cần đối chiếu journal và dependency.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "journalctl-service",
+    "command": "journalctl -u SERVICE -n 50 --no-pager",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ],
+    "options": [
+      {
+        "name": "-u",
+        "kind": "flag",
+        "purpose": "Chọn unit cần điều tra."
+      },
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Giới hạn bản ghi."
+      },
+      {
+        "name": "--no-pager",
+        "kind": "flag",
+        "purpose": "In trực tiếp."
+      }
+    ],
+    "examples": [
+      {
+        "command": "journalctl -u SERVICE -n 50 --no-pager",
+        "expectedOutput": "SERVICE: Main process exited, status=1/FAILURE",
+        "interpretation": "Đối chiếu timestamp và unit; một dòng chưa đủ toàn bộ nguyên nhân.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "systemctl-cat",
+    "command": "systemctl cat SERVICE",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ],
+    "options": [
+      {
+        "name": "cat",
+        "kind": "subcommand",
+        "purpose": "Xem unit file và drop-in trên đĩa."
+      }
+    ],
+    "examples": [
+      {
+        "command": "systemctl cat SERVICE",
+        "expectedOutput": "ExecStart=/opt/custom/venv/bin/python /opt/custom/app.py",
+        "interpretation": "ExecStart trong unit file/drop-in trên đĩa cho biết command được khai báo; nếu file vừa sửa mà chưa daemon-reload, manager có thể đang dùng cấu hình cũ.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "cgroup-cpu-stat",
+    "command": "cat /sys/fs/cgroup/cpu.stat",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "cat /sys/fs/cgroup/cpu.stat",
+        "expectedOutput": "usage_usec 22000000\nuser_usec 20000000\nsystem_usec 2000000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 4000000",
+        "interpretation": "nr_throttled và throttled_usec là bộ đếm tích lũy của cgroup đang đọc. So hai mẫu cùng cpu.max để biết có bị giới hạn trong khoảng sự cố.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "docker-stats",
+    "command": "docker stats --no-stream",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.docker.com/reference/cli/docker/container/stats/"
+    ],
+    "options": [
+      {
+        "name": "stats",
+        "kind": "subcommand",
+        "purpose": "Đọc CPU/RAM theo container."
+      },
+      {
+        "name": "--no-stream",
+        "kind": "flag",
+        "purpose": "Lấy một mẫu, không stream liên tục."
+      }
+    ],
+    "examples": [
+      {
+        "command": "docker stats --no-stream",
+        "expectedOutput": "CONTAINER ID   NAME   CPU %    MEM USAGE / LIMIT   MEM %\nabc123456789   api    99.80%   498MiB / 512MiB     97.27%",
+        "interpretation": "CPU% cần đọc cùng quota và host/cgroup metrics.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "lsof-deleted",
+    "command": "lsof +L1",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/lsof.8.html"
+    ],
+    "options": [
+      {
+        "name": "+L1",
+        "kind": "flag",
+        "purpose": "Liệt kê file có link count nhỏ hơn 1."
+      }
+    ],
+    "examples": [
+      {
+        "command": "lsof +L1",
+        "expectedOutput": "COMMAND PID  USER FD TYPE DEVICE SIZE/OFF NLINK NODE NAME\njava    2300 app  7w REG  252,1 5368709120 0 394821 /var/log/app.log (deleted)",
+        "interpretation": "File đã unlink nhưng FD vẫn mở có thể giữ block. SIZE/OFF không luôn bằng dung lượng vật lý do sparse/compression; đối chiếu df, PID và mount.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ps-process",
+    "command": "ps -p PID -o pid,comm,args",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/ps.1.html"
+    ],
+    "options": [
+      {
+        "name": "-p",
+        "kind": "flag",
+        "purpose": "Chọn PID cụ thể."
+      },
+      {
+        "name": "-o",
+        "kind": "flag",
+        "purpose": "Chọn cột output."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ps -p PID -o pid,comm,args",
+        "expectedOutput": "2300 java /usr/bin/java -jar /srv/app/api.jar",
+        "interpretation": "Cho biết command line tại thời điểm đo; chưa xác nhận owner thay đổi.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-backup-status",
+    "command": "PANEL: verified backup status",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Last verified backup: 2026-10-21 00:00 UTC",
+        "interpretation": "Mốc backup cần đối chiếu phạm vi và RPO; chưa chứng minh restore thành công.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "openssl-sni",
+    "command": "openssl s_client -connect IP:443 -servername HOST",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.openssl.org/3.0/man1/openssl-s_client/"
+    ],
+    "options": [
+      {
+        "name": "-connect",
+        "kind": "flag",
+        "purpose": "Chọn endpoint IP:port."
+      },
+      {
+        "name": "-servername",
+        "kind": "flag",
+        "purpose": "Gửi SNI hostname; riêng SNI không xác minh tên cert."
+      },
+      {
+        "name": "-verify_hostname",
+        "kind": "flag",
+        "purpose": "Đối chiếu tên hostname với certificate."
+      },
+      {
+        "name": "-verify_return_error",
+        "kind": "flag",
+        "purpose": "Báo lỗi xác minh và dừng handshake thay vì chỉ in cảnh báo."
+      }
+    ],
+    "examples": [
+      {
+        "command": "openssl s_client -connect IP:443 -servername HOST",
+        "expectedOutput": "subject=CN=api.example.com",
+        "interpretation": "Certificate được server trình ra cho SNI đã chọn; subject CN một mình chưa chứng minh hostname coverage, chain hoặc ứng dụng HTTPS hoạt động.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "openssl s_client -connect IP:443 -servername HOST -verify_hostname HOST -verify_return_error",
+        "expectedOutput": "Verify return code: 0 (ok)",
+        "interpretation": "Đây là trích đoạn kiểm tra TLS từ client này; còn phải đối chiếu endpoint, HTTP và thời gian/CA tin cậy của môi trường.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nginx-dump",
+    "command": "nginx -T",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://nginx.org/en/docs/switches.html"
+    ],
+    "options": [
+      {
+        "name": "-T",
+        "kind": "flag",
+        "purpose": "Test và dump toàn bộ config; có thể lộ secret."
+      }
+    ],
+    "examples": [
+      {
+        "command": "nginx -T",
+        "expectedOutput": "server_name shop.example.com; root /srv/shop/public;",
+        "interpretation": "Đối chiếu server_name, listen, certificate và upstream; chưa chứng minh process đã reload bản này.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-cert-inventory",
+    "command": "PANEL: certificate inventory",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Installed certificate names: api.example.com only",
+        "interpretation": "Cần so với cert từ openssl s_client theo SNI.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-rdns",
+    "command": "PANEL: reverse DNS",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Reverse DNS: Not set",
+        "interpretation": "PTR thường do IP owner/provider quản lý, không tự sinh từ A record.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "systemctl-start",
+    "command": "sudo systemctl start SERVICE",
+    "kind": "shell",
+    "safety": "change",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ],
+    "options": [
+      {
+        "name": "start",
+        "kind": "subcommand",
+        "purpose": "Yêu cầu khởi động unit; làm thay đổi trạng thái."
+      }
+    ],
+    "examples": [
+      {
+        "command": "sudo systemctl start SERVICE",
+        "expectedOutput": "",
+        "interpretation": "Thành công thường không in stdout. Exit code 0 chưa chứng minh chức năng người dùng đã phục hồi; cần status, listener và phép thử từ client.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "journal-vacuum",
+    "command": "sudo journalctl --vacuum-size=200M",
+    "kind": "shell",
+    "safety": "change",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ],
+    "options": [
+      {
+        "name": "--vacuum-size",
+        "kind": "flag",
+        "purpose": "Xóa archived journal đến ngưỡng; không giảm hết active journal."
+      }
+    ],
+    "examples": [
+      {
+        "command": "sudo journalctl --vacuum-size=200M",
+        "expectedOutput": "Vacuuming done, freed 1.0G of archived journals.",
+        "interpretation": "Số GB giải phóng phụ thuộc archived journal thật; đo lại df và journal.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ip-route-add",
+    "command": "sudo ip route add default via 10.10.20.1 dev enp0s3",
+    "kind": "shell",
+    "safety": "change",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/ip-route.8.html"
+    ],
+    "options": [
+      {
+        "name": "route add",
+        "kind": "subcommand",
+        "purpose": "Thêm route vào kernel; thay đổi lưu lượng."
+      }
+    ],
+    "examples": [
+      {
+        "command": "sudo ip route add default via 10.10.20.1 dev enp0s3",
+        "expectedOutput": "",
+        "interpretation": "Stdout rỗng không chứng minh route đã đổi; kiểm tra exit status, ip route và kết nối trước khi kết luận.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "registrar-change",
+    "command": "PANEL: change registrar delegation",
+    "kind": "support_task",
+    "safety": "change",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Delegated NS: new-dns.example.test",
+        "interpretation": "Registrar cập nhật không xóa cache recursive đã tồn tại.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "storage-escalation",
+    "command": "PANEL: open storage incident",
+    "kind": "support_task",
+    "safety": "change",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Storage incident opened; infrastructure team assigned.",
+        "interpretation": "Escalation được tiếp nhận không đồng nghĩa volume đã sửa.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ssh-key-login",
+    "command": "ssh -i ~/.ssh/lab_key lab@192.0.2.25",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/ssh.1.html",
+      "https://man7.org/linux/man-pages/man5/ssh_config.5.html"
+    ],
+    "options": [
+      {
+        "name": "-i",
+        "kind": "flag",
+        "purpose": "Chỉ định private key phía client."
+      },
+      {
+        "name": "-o BatchMode=yes",
+        "kind": "flag",
+        "purpose": "Không hỏi tương tác."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ssh -i ~/.ssh/lab_key lab@192.0.2.25",
+        "expectedOutput": "Permissions 0644 for '/home/lab/.ssh/lab_key' are too open.\nThis private key will be ignored.\nLoad key \"/home/lab/.ssh/lab_key\": bad permissions",
+        "interpretation": "Cảnh báo quyền key ở client; chưa kết luận service hoặc user guest sai.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ls-key-mode",
+    "command": "ls -l ~/.ssh/lab_key",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-l",
+        "kind": "flag",
+        "purpose": "Hiện mode/owner file."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ls -l ~/.ssh/lab_key",
+        "expectedOutput": "-rw-r--r-- 1 lab lab 1675 Oct 22 10:00 /home/lab/.ssh/lab_key",
+        "interpretation": "-rw-r--r-- là 0644: group và others còn quyền đọc.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "os-release",
+    "command": "cat /etc/os-release",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "cat /etc/os-release",
+        "expectedOutput": "ID=\"centos\"\nVERSION_ID=\"9\"",
+        "interpretation": "Đọc ID và VERSION_ID trước khi chọn cú pháp package/service.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "hostnamectl",
+    "command": "hostnamectl",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "hostnamectl",
+        "expectedOutput": "Static hostname: vps-01\nOperating System: CentOS Stream 9",
+        "interpretation": "Operating System là thông tin từ guest.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "sshd-test",
+    "command": "sshd -t",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/sshd.8.html"
+    ],
+    "options": [
+      {
+        "name": "-t",
+        "kind": "flag",
+        "purpose": "Kiểm tra cú pháp và tính hợp lệ cấu hình."
+      }
+    ],
+    "examples": [
+      {
+        "command": "sshd -t",
+        "expectedOutput": "",
+        "interpretation": "Thành công thường không in stdout; cần biết exit code để xác nhận kiểm tra đã qua. Kết quả không chứng minh service đang chạy.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ssh-host-fingerprint",
+    "command": "ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/ssh-keygen.1.html"
+    ],
+    "options": [
+      {
+        "name": "-l",
+        "kind": "flag",
+        "purpose": "In fingerprint."
+      },
+      {
+        "name": "-f",
+        "kind": "flag",
+        "purpose": "Chọn public key file."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub",
+        "expectedOutput": "256 SHA256:fXF1R8eRyu87zfi0yV/IaXPnduzV4xZeKJdoORSCy1A root@vm (ED25519)",
+        "interpretation": "So sánh fingerprint với client qua kênh tin cậy.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nmcli-device-status",
+    "command": "nmcli device status",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://networkmanager.pages.freedesktop.org/NetworkManager/NetworkManager/nmcli.html"
+    ],
+    "options": [
+      {
+        "name": "device status",
+        "kind": "subcommand",
+        "purpose": "Xem trạng thái device."
+      }
+    ],
+    "examples": [
+      {
+        "command": "nmcli device status",
+        "expectedOutput": "DEVICE  TYPE      STATE      CONNECTION\nenp0s3  ethernet  connected  System enp0s3",
+        "interpretation": "connected nói profile gắn với device, chưa chứng minh Internet.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nmcli-device-show",
+    "command": "nmcli device show",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://networkmanager.pages.freedesktop.org/NetworkManager/NetworkManager/nmcli.html"
+    ],
+    "options": [
+      {
+        "name": "device show",
+        "kind": "subcommand",
+        "purpose": "Xem thuộc tính device."
+      }
+    ],
+    "examples": [
+      {
+        "command": "nmcli device show",
+        "expectedOutput": "IP4.ADDRESS[1]: 10.10.20.25/24\nIP4.GATEWAY: 10.10.20.1",
+        "interpretation": "Đối chiếu địa chỉ/gateway với thông tin cấp phát.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ip-link",
+    "command": "ip -br link show dev enp0s3",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/ip.8.html"
+    ],
+    "options": [
+      {
+        "name": "-br",
+        "kind": "flag",
+        "purpose": "Hiển thị ngắn."
+      },
+      {
+        "name": "link show dev",
+        "kind": "subcommand",
+        "purpose": "Đọc interface được chọn."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ip -br link show dev enp0s3",
+        "expectedOutput": "enp0s3          UP             52:54:00:12:34:56 <BROADCAST,MULTICAST,UP,LOWER_UP>",
+        "interpretation": "UP ở cột trạng thái hoạt động phải đọc cùng flags; interface UP chưa chứng minh có IP, route hay kết nối tới đích.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ping",
+    "command": "ping -c 4 1.1.1.1",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-c",
+        "kind": "flag",
+        "purpose": "Giới hạn số echo request."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ping -c 4 1.1.1.1",
+        "expectedOutput": "4 packets transmitted, 4 received, 0% packet loss",
+        "interpretation": "ICMP có phản hồi; không chứng minh TCP hay DNS.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nc-port",
+    "command": "nc -vz -w 5 IP 22",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-v",
+        "kind": "flag",
+        "purpose": "In chi tiết kết nối."
+      },
+      {
+        "name": "-z",
+        "kind": "flag",
+        "purpose": "Kiểm tra port không gửi payload."
+      },
+      {
+        "name": "-w",
+        "kind": "flag",
+        "purpose": "Đặt timeout."
+      }
+    ],
+    "examples": [
+      {
+        "command": "nc -vz -w 5 IP 22",
+        "expectedOutput": "Connection to 198.51.100.10 22 port [tcp/ssh] succeeded!",
+        "interpretation": "Chỉ chứng minh TCP handshake, chưa chứng minh đăng nhập SSH.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "mtr",
+    "command": "mtr -rw -c 20 IP",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://github.com/traviscross/mtr/blob/master/man/mtr.8.in"
+    ],
+    "options": [
+      {
+        "name": "-r",
+        "kind": "flag",
+        "purpose": "Report mode thay vì giao diện liên tục."
+      },
+      {
+        "name": "-w",
+        "kind": "flag",
+        "purpose": "Wide report để giữ hostname."
+      },
+      {
+        "name": "-c",
+        "kind": "flag",
+        "purpose": "Số lượt mẫu."
+      }
+    ],
+    "examples": [
+      {
+        "command": "mtr -rw -c 20 IP",
+        "expectedOutput": "HOST: client          Loss% Snt Last Avg Best Wrst StDev\n  1.|-- gateway        0.0%  20  1.0 1.2  0.8  2.0   0.3\n  2.|-- 203.0.113.25   0.0%  20 30.0 31.0 29.0 35.0   1.2",
+        "interpretation": "Loss ở hop giữa có thể do ICMP rate-limit; ngay cả loss tới đích cũng cần đối chiếu TCP và cùng cửa sổ thời gian.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "tcpdump-ssh",
+    "command": "sudo tcpdump -ni any \"tcp port 22\"",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/tcpdump.8.html"
+    ],
+    "options": [
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Không phân giải địa chỉ và service."
+      },
+      {
+        "name": "-i",
+        "kind": "flag",
+        "purpose": "Chọn interface; any gom nhiều interface."
+      },
+      {
+        "name": "-c",
+        "kind": "flag",
+        "purpose": "Giới hạn số packet rồi dừng."
+      },
+      {
+        "name": "tcp port 22",
+        "kind": "filter",
+        "purpose": "BPF capture filter, không phải option tcpdump."
+      }
+    ],
+    "examples": [
+      {
+        "command": "sudo tcpdump -ni any \"tcp port 22\"",
+        "expectedOutput": "IP 198.51.100.20.50123 > 10.0.0.5.22: Flags [S]",
+        "interpretation": "SYN đến guest không đồng nghĩa service có listener.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "sudo tcpdump -ni any -c 20 \"tcp port 22\"",
+        "expectedOutput": "IP 198.51.100.14.54321 > 192.0.2.25.22: Flags [S]",
+        "interpretation": "Thấy SYN vào guest trong mẫu; không chứng minh SSH auth thành công. Capture có IP nhạy cảm.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "firewall-state",
+    "command": "sudo firewall-cmd --state",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "--state",
+        "kind": "flag",
+        "purpose": "Đọc trạng thái daemon."
+      }
+    ],
+    "examples": [
+      {
+        "command": "sudo firewall-cmd --state",
+        "expectedOutput": "running",
+        "interpretation": "running chưa cho biết cổng nào được phép.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "firewall-zones",
+    "command": "sudo firewall-cmd --get-active-zones",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/security_guide/sec-working_with_zones"
+    ],
+    "options": [
+      {
+        "name": "--get-active-zones",
+        "kind": "flag",
+        "purpose": "Liệt kê zone gắn interface/source."
+      }
+    ],
+    "examples": [
+      {
+        "command": "sudo firewall-cmd --get-active-zones",
+        "expectedOutput": "public\n  interfaces: enp0s3",
+        "interpretation": "Cần đọc rule của đúng zone.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nft-rules",
+    "command": "sudo nft list ruleset",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "list ruleset",
+        "kind": "subcommand",
+        "purpose": "In toàn bộ ruleset; cần quyền và có thể lộ topology."
+      }
+    ],
+    "examples": [
+      {
+        "command": "sudo nft list ruleset",
+        "expectedOutput": "table inet filter { chain input { type filter hook input priority 0; policy accept; } }",
+        "interpretation": "Đọc policy và thứ tự rule của chain liên quan.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "systemctl-failed",
+    "command": "systemctl --failed",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ],
+    "options": [
+      {
+        "name": "--failed",
+        "kind": "flag",
+        "purpose": "Lọc các unit ở trạng thái failed."
+      }
+    ],
+    "examples": [
+      {
+        "command": "systemctl --failed",
+        "expectedOutput": "UNIT LOAD ACTIVE SUB DESCRIPTION\nnginx.service loaded failed failed nginx",
+        "interpretation": "Unit failed cần log riêng; danh sách rỗng không chứng minh mọi app khỏe.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "journal-boot",
+    "command": "journalctl -b -p err -n 80 --no-pager",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ],
+    "options": [
+      {
+        "name": "-b",
+        "kind": "flag",
+        "purpose": "Lọc boot hiện tại."
+      },
+      {
+        "name": "-p",
+        "kind": "flag",
+        "purpose": "Lọc mức ưu tiên."
+      },
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Giới hạn bản ghi."
+      }
+    ],
+    "examples": [
+      {
+        "command": "journalctl -b -p err -n 80 --no-pager",
+        "expectedOutput": "Oct 22 10:00:00 vm kernel: I/O error, dev vda",
+        "interpretation": "Đối chiếu thời gian và subsystem với triệu chứng.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ps-cpu",
+    "command": "ps aux --sort=-%cpu | head",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/ps.1.html"
+    ],
+    "options": [
+      {
+        "name": "aux",
+        "kind": "flag",
+        "purpose": "BSD option: liệt kê process của mọi user với CPU/memory."
+      },
+      {
+        "name": "--sort",
+        "kind": "flag",
+        "purpose": "Sắp theo %CPU giảm dần."
+      },
+      {
+        "name": "head",
+        "kind": "filter",
+        "purpose": "Giới hạn dòng ở shell, không phải option ps."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ps aux --sort=-%cpu | head",
+        "expectedOutput": "USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND\nroot 421 87.0 2.1 85000 21000 ? R 10:00 12:30 worker",
+        "interpretation": "%CPU của ps là tỷ lệ CPU time so với thời gian process tồn tại, không phải phần trăm riêng giây vừa qua. Dùng top/pidstat lấy mẫu khi cần xu hướng.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ls-permission",
+    "command": "ls -l PATH",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-l",
+        "kind": "flag",
+        "purpose": "Hiện mode/owner/group."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ls -l PATH",
+        "expectedOutput": "-rw-r----- 1 root nginx 1024 Oct 22 10:00 /etc/nginx/site.conf",
+        "interpretation": "Đọc owner/group/mode rồi đối chiếu user chạy process.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ausearch-avc",
+    "command": "ausearch -m AVC -ts recent",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-m",
+        "kind": "flag",
+        "purpose": "Chọn loại event AVC."
+      },
+      {
+        "name": "-ts",
+        "kind": "flag",
+        "purpose": "Chọn khoảng thời gian bắt đầu."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ausearch -m AVC -ts recent",
+        "expectedOutput": "type=AVC msg=audit(1792663920.123:81): avc: denied { read } for pid=921 comm=\"nginx\" name=\"site.conf\" scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:default_t:s0 tclass=file permissive=0",
+        "interpretation": "Denial liên quan cần khớp thời điểm và process.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "uptime",
+    "command": "uptime",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "uptime",
+        "expectedOutput": "10:20:00 up 5 days, 2 users, load average: 0.12, 0.20, 0.15",
+        "interpretation": "Load cần so với số CPU và trạng thái IO.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "vmstat",
+    "command": "vmstat 1 5",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "1 5",
+        "kind": "argument",
+        "purpose": "Lấy 5 mẫu cách nhau 1 giây; là positional arguments."
+      }
+    ],
+    "examples": [
+      {
+        "command": "vmstat 1 5",
+        "expectedOutput": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r b swpd   free  buff cache si so bi bo in cs us sy id wa st\n 1 0    0 204800 12000 90000 0 0 1 2 90 120 4 1 94 1 0\n 1 0    0 204700 12000 90100 0 0 0 4 95 130 5 1 93 1 0",
+        "interpretation": "Đây là hai dòng trích từ chuỗi mẫu. Dòng đầu CPU/I/O là trung bình từ boot; các dòng sau mới phản ánh khoảng 1 giây. Đối chiếu si/so, wa và st.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "iostat",
+    "command": "iostat -xz 1 5",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-x",
+        "kind": "flag",
+        "purpose": "Hiện extended device stats."
+      },
+      {
+        "name": "-z",
+        "kind": "flag",
+        "purpose": "Bỏ device không hoạt động."
+      },
+      {
+        "name": "1 5",
+        "kind": "argument",
+        "purpose": "Lấy 5 mẫu cách nhau 1 giây."
+      }
+    ],
+    "examples": [
+      {
+        "command": "iostat -xz 1 5",
+        "expectedOutput": "Device r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 10.00 40.00 0.00 0.00 3.00 4.00 20.00 80.00 0.00 0.00 4.10 4.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.11 35.00",
+        "interpretation": "r_await/w_await là thời gian I/O đọc/ghi trung bình, bao gồm chờ; tên cột tùy phiên bản sysstat. So với baseline và độ trễ ứng dụng.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "df-hT",
+    "command": "df -hT",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man1/df.1.html"
+    ],
+    "options": [
+      {
+        "name": "-h",
+        "kind": "flag",
+        "purpose": "Dùng đơn vị dễ đọc."
+      },
+      {
+        "name": "-T",
+        "kind": "flag",
+        "purpose": "Hiện loại filesystem."
+      }
+    ],
+    "examples": [
+      {
+        "command": "df -hT",
+        "expectedOutput": "Filesystem Type Size Used Avail Use% Mounted on\n/dev/vda1 xfs 20G 8G 12G 40% /",
+        "interpretation": "Use% của đúng mount mới trả lời ticket.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "journal-disk-usage",
+    "command": "journalctl --disk-usage",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ],
+    "options": [
+      {
+        "name": "--disk-usage",
+        "kind": "flag",
+        "purpose": "Đọc tổng dung lượng journal active và archived."
+      }
+    ],
+    "examples": [
+      {
+        "command": "journalctl --disk-usage",
+        "expectedOutput": "Archived and active journals take up 1.2G in the file system.",
+        "interpretation": "Con số này không bằng toàn bộ /var/log.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "lsblk",
+    "command": "lsblk -f",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/lsblk.8.html"
+    ],
+    "options": [
+      {
+        "name": "-f",
+        "kind": "flag",
+        "purpose": "Hiện filesystem, UUID và mountpoints."
+      },
+      {
+        "name": "-o",
+        "kind": "flag",
+        "purpose": "Chọn cột output."
+      }
+    ],
+    "examples": [
+      {
+        "command": "lsblk -f",
+        "expectedOutput": "NAME FSTYPE UUID MOUNTPOINTS\nvda1 xfs abcd /",
+        "interpretation": "Đối chiếu device chứa filesystem, chưa thay đổi partition.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINTS",
+        "expectedOutput": "NAME SIZE FSTYPE MOUNTPOINTS\nvda 40G\n└─vda1 40G ext4 /",
+        "interpretation": "Không thấy vdb trong guest cần đối chiếu attachment provider; không suy ra dữ liệu đã mất.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "findmnt",
+    "command": "findmnt /",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/findmnt.8.html"
+    ],
+    "options": [
+      {
+        "name": "/",
+        "kind": "argument",
+        "purpose": "Chọn mount target; positional argument."
+      }
+    ],
+    "examples": [
+      {
+        "command": "findmnt /",
+        "expectedOutput": "TARGET SOURCE FSTYPE OPTIONS\n/ /dev/vda1 xfs rw,relatime",
+        "interpretation": "rw/ro cho biết mode mount hiện tại.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "dmesg-tail",
+    "command": "dmesg | tail",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "tail",
+        "kind": "filter",
+        "purpose": "Lệnh shell thứ hai lấy dòng cuối; không phải option dmesg."
+      }
+    ],
+    "examples": [
+      {
+        "command": "dmesg | tail",
+        "expectedOutput": "[12345.6] Buffer I/O error on dev vdb",
+        "interpretation": "Đối chiếu device và thời gian; một dòng chưa xác định phần cứng hỏng.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-zone",
+    "command": "PANEL: edited zone",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "ns1.new-dns.example",
+        "interpretation": "Zone được chỉnh chưa chứng minh registrar đã ủy quyền domain tới NS đó.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "lvm-report",
+    "command": "lvs; vgs",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "lvs",
+        "kind": "command",
+        "purpose": "Lệnh riêng liệt kê logical volumes."
+      },
+      {
+        "name": "vgs",
+        "kind": "command",
+        "purpose": "Lệnh riêng liệt kê volume groups."
+      }
+    ],
+    "examples": [
+      {
+        "command": "lvs; vgs",
+        "expectedOutput": "LV   VG  Attr       LSize  Pool Origin Data% Meta% Move Log Cpy%Sync Convert\nroot vg0 -wi-ao---- 20.00g\nVG  #PV #LV #SN Attr   VSize  VFree\nvg0   1   1   0 wz--n- 30.00g 10.00g",
+        "interpretation": "VFree là phần trống trong VG, chưa phải dung lượng filesystem.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nginx-error-tail",
+    "command": "sudo tail -n 50 /var/log/nginx/error.log",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Giới hạn số dòng của tail."
+      }
+    ],
+    "examples": [
+      {
+        "command": "sudo tail -n 50 /var/log/nginx/error.log",
+        "expectedOutput": "2026/10/22 10:12:00 [error] 921#921: connect() failed (111: Connection refused)",
+        "interpretation": "Đối chiếu timestamp và upstream; lỗi này không nói Nginx dừng.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "dig-ptr",
+    "command": "dig -x IP",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://bind9.readthedocs.io/en/stable/manpages.html"
+    ],
+    "options": [
+      {
+        "name": "-x",
+        "kind": "flag",
+        "purpose": "Tạo truy vấn reverse DNS cho IP."
+      }
+    ],
+    "examples": [
+      {
+        "command": "dig -x IP",
+        "expectedOutput": ";; ANSWER SECTION:\n20.100.51.198.in-addr.arpa. 300 IN PTR mail.example.com.",
+        "interpretation": "PTR là reverse DNS, không thay A record.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nmcli-dns",
+    "command": "nmcli dev show | grep DNS",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://networkmanager.pages.freedesktop.org/NetworkManager/NetworkManager/nmcli.html"
+    ],
+    "options": [
+      {
+        "name": "device show",
+        "kind": "subcommand",
+        "purpose": "Xem DNS do NetworkManager biết."
+      },
+      {
+        "name": "grep DNS",
+        "kind": "filter",
+        "purpose": "Lọc text ở shell, không phải option nmcli."
+      }
+    ],
+    "examples": [
+      {
+        "command": "nmcli dev show | grep DNS",
+        "expectedOutput": "IP4.DNS[1]: 192.0.2.53",
+        "interpretation": "Đây là resolver cấu hình, không bảo đảm truy vấn thành công.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "virsh-list",
+    "command": "virsh list --all",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.libvirt.org/manpages/virsh.html"
+    ],
+    "options": [
+      {
+        "name": "--all",
+        "kind": "flag",
+        "purpose": "Bao gồm VM đang tắt."
+      }
+    ],
+    "examples": [
+      {
+        "command": "virsh list --all",
+        "expectedOutput": "Id Name State\n- vps-01 shut off",
+        "interpretation": "State của VM không nói service trong guest.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "virsh-dominfo",
+    "command": "virsh dominfo VM",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.libvirt.org/manpages/virsh.html"
+    ],
+    "options": [
+      {
+        "name": "dominfo",
+        "kind": "subcommand",
+        "purpose": "Đọc metadata của domain được chọn."
+      }
+    ],
+    "examples": [
+      {
+        "command": "virsh dominfo VM",
+        "expectedOutput": "Id: 7\nName: vps-01\nState: running",
+        "interpretation": "Running chỉ nói VM đang chạy.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "virsh-domiflist",
+    "command": "virsh domiflist VM",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.libvirt.org/manpages/virsh.html"
+    ],
+    "options": [
+      {
+        "name": "domiflist",
+        "kind": "subcommand",
+        "purpose": "Liệt kê interface gắn vào domain."
+      }
+    ],
+    "examples": [
+      {
+        "command": "virsh domiflist VM",
+        "expectedOutput": "Interface Type   Source Model  MAC\n-----------------------------------------------\nvnet0     bridge br0    virtio 52:54:00:12:34:56",
+        "interpretation": "Đối chiếu bridge/NIC với sơ đồ mạng.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "sha256sum",
+    "command": "sha256sum FILE",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "sha256sum FILE",
+        "expectedOutput": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08  backup.tar",
+        "interpretation": "So sánh hash với giá trị từ nguồn tin cậy.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "tar-list",
+    "command": "tar -tf ARCHIVE",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-t",
+        "kind": "flag",
+        "purpose": "Liệt kê archive, không giải nén."
+      },
+      {
+        "name": "-f",
+        "kind": "flag",
+        "purpose": "Chọn archive file."
+      }
+    ],
+    "examples": [
+      {
+        "command": "tar -tf ARCHIVE",
+        "expectedOutput": "etc/nginx/nginx.conf\nvar/www/index.html",
+        "interpretation": "Kiểm tra file kỳ vọng có trong archive.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "docker-logs",
+    "command": "docker logs --tail 50 CONTAINER",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.docker.com/reference/cli/docker/container/logs/"
+    ],
+    "options": [
+      {
+        "name": "logs",
+        "kind": "subcommand",
+        "purpose": "Đọc stdout/stderr đã thu của container."
+      },
+      {
+        "name": "--tail",
+        "kind": "flag",
+        "purpose": "Giới hạn dòng cuối."
+      }
+    ],
+    "examples": [
+      {
+        "command": "docker logs --tail 50 CONTAINER",
+        "expectedOutput": "2026-10-22T10:12:00Z app ready",
+        "interpretation": "Đối chiếu log với thời điểm sự cố.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "docker-port",
+    "command": "docker port CONTAINER",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.docker.com/reference/cli/docker/container/port/"
+    ],
+    "options": [
+      {
+        "name": "port",
+        "kind": "subcommand",
+        "purpose": "Đọc port mapping của container."
+      }
+    ],
+    "examples": [
+      {
+        "command": "docker port CONTAINER",
+        "expectedOutput": "80/tcp -> 0.0.0.0:8080",
+        "interpretation": "Host port 8080 ánh xạ vào container port 80.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "docker-inspect",
+    "command": "docker inspect CONTAINER",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.docker.com/reference/cli/docker/container/inspect/"
+    ],
+    "options": [
+      {
+        "name": "inspect",
+        "kind": "subcommand",
+        "purpose": "Đọc metadata dạng JSON."
+      }
+    ],
+    "examples": [
+      {
+        "command": "docker inspect CONTAINER",
+        "expectedOutput": "[{\"State\":{\"Status\":\"running\"}}]",
+        "interpretation": "State và network config giúp khoanh vùng, không chứng minh app khỏe.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "systemctl-restart",
+    "command": "systemctl restart SERVICE",
+    "kind": "shell",
+    "safety": "change",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ],
+    "options": [
+      {
+        "name": "restart",
+        "kind": "subcommand",
+        "purpose": "Dừng rồi khởi động lại unit; có thể gián đoạn."
+      }
+    ],
+    "examples": [
+      {
+        "command": "systemctl restart SERVICE",
+        "expectedOutput": "",
+        "interpretation": "Stdout rỗng không xác nhận restart thành công; kiểm tra exit status, trạng thái unit và chức năng người dùng.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nmcli-down",
+    "command": "nmcli connection down PROFILE",
+    "kind": "shell",
+    "safety": "change",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://networkmanager.pages.freedesktop.org/NetworkManager/NetworkManager/nmcli.html"
+    ],
+    "options": [
+      {
+        "name": "connection down",
+        "kind": "subcommand",
+        "purpose": "Ngắt profile mạng; có thể mất SSH."
+      }
+    ],
+    "examples": [
+      {
+        "command": "nmcli connection down PROFILE",
+        "expectedOutput": "Connection deactivated",
+        "interpretation": "Có thể cắt đường quản trị ngay lập tức.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "rm-rf",
+    "command": "rm -rf PATH",
+    "kind": "shell",
+    "safety": "change",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.gnu.org/s/coreutils/manual/html_node/rm-invocation.html"
+    ],
+    "options": [
+      {
+        "name": "-r",
+        "kind": "flag",
+        "purpose": "Xóa đệ quy; destructive."
+      },
+      {
+        "name": "-f",
+        "kind": "flag",
+        "purpose": "Ép xóa không hỏi; destructive."
+      }
+    ],
+    "examples": [
+      {
+        "command": "rm -rf PATH",
+        "expectedOutput": "",
+        "interpretation": "Stdout rỗng không xác nhận đích đã xóa hoặc còn nguyên; kiểm tra exit status và trạng thái dữ liệu theo change plan.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "virsh-destroy",
+    "command": "virsh destroy VM",
+    "kind": "shell",
+    "safety": "change",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.libvirt.org/manpages/virsh.html"
+    ],
+    "options": [
+      {
+        "name": "destroy",
+        "kind": "subcommand",
+        "purpose": "Buộc domain tắt ngay; không phải xóa data nhưng gây mất trạng thái RAM/I/O."
+      }
+    ],
+    "examples": [
+      {
+        "command": "virsh destroy VM",
+        "expectedOutput": "Domain VM destroyed",
+        "interpretation": "Guest dừng đột ngột; không phải shutdown graceful.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "fstab-read",
+    "command": "cat /etc/fstab",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "cat /etc/fstab",
+        "expectedOutput": "UUID=cafe1234 /data ext4 defaults 0 2",
+        "interpretation": "UUID trong fstab cần đối chiếu blkid và volume inventory; không tự sửa chỉ vì boot vào emergency.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-reinstall-confirmation",
+    "command": "PANEL: OS reinstall confirmation",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "All contents of main disk will be overwritten",
+        "interpretation": "Reinstall có nguy cơ mất dữ liệu; cần backup/restore test và chủ sở hữu phê duyệt.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "virsh-domblklist",
+    "command": "virsh domblklist VM",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://www.libvirt.org/manpages/virsh.html"
+    ],
+    "options": [
+      {
+        "name": "domblklist",
+        "kind": "subcommand",
+        "purpose": "Liệt kê disk target/source gắn vào domain."
+      }
+    ],
+    "examples": [
+      {
+        "command": "virsh domblklist VM",
+        "expectedOutput": "Target Source\nvda /var/lib/libvirt/images/os.qcow2",
+        "interpretation": "Thiếu vdb trong danh sách attachment không chứng minh volume bị xóa.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "stat-file",
+    "command": "stat /srv/app/data.db",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "stat /srv/app/data.db",
+        "expectedOutput": "Modify: 2026-10-18 00:00:00 +0000",
+        "interpretation": "mtime một file không chứng minh toàn bộ database mất dữ liệu.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "timedatectl",
+    "command": "timedatectl",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "timedatectl",
+        "expectedOutput": "System clock synchronized: no\nNTP service: inactive",
+        "interpretation": "Host time đúng không tự đồng bộ guest; cần kiểm tra service/time source theo image.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "date-utc",
+    "command": "date -u",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-u",
+        "kind": "flag",
+        "purpose": "Hiển thị UTC."
+      }
+    ],
+    "examples": [
+      {
+        "command": "date -u",
+        "expectedOutput": "Wed Oct 21 01:00:00 UTC 2026",
+        "interpretation": "So với nguồn thời gian tin cậy trước khi đổi cấu hình sync.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "last-logins",
+    "command": "last -n 10",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Giới hạn số dòng."
+      }
+    ],
+    "examples": [
+      {
+        "command": "last -n 10",
+        "expectedOutput": "root pts/0 203.0.113.77 Thu Oct 22 09:14",
+        "interpretation": "Một snapshot last không thay auth/audit logs và có thể bị thay đổi.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "sudoers-read",
+    "command": "grep -R supportadmin /etc/sudoers.d",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-R",
+        "kind": "flag",
+        "purpose": "Tìm đệ quy trong thư mục drop-in."
+      }
+    ],
+    "examples": [
+      {
+        "command": "grep -R supportadmin /etc/sudoers.d",
+        "expectedOutput": "/etc/sudoers.d/supportadmin:supportadmin ALL=(ALL) ALL",
+        "interpretation": "Grant hiện có cần đối chiếu change record và account owner.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "crontab-read",
+    "command": "crontab -l -u root",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "-l",
+        "kind": "flag",
+        "purpose": "Liệt kê cron."
+      },
+      {
+        "name": "-u",
+        "kind": "flag",
+        "purpose": "Chọn account."
+      }
+    ],
+    "examples": [
+      {
+        "command": "crontab -l -u root",
+        "expectedOutput": "*/5 * * * * /usr/local/bin/agent-update",
+        "interpretation": "Cron có thể tái chạy process; tên file không chứng minh malicious.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "sysctl-read",
+    "command": "sysctl net.ipv4.ip_forward",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "sysctl net.ipv4.ip_forward",
+        "expectedOutput": "net.ipv4.ip_forward = 0",
+        "interpretation": "Forwarding off có thể chặn egress container, nhưng còn NAT/firewall/policy.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "docker-compose-ps",
+    "command": "docker compose ps --all",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.docker.com/reference/cli/docker/compose/ps/"
+    ],
+    "options": [
+      {
+        "name": "compose ps",
+        "kind": "subcommand",
+        "purpose": "Đọc service container của project hiện tại."
+      },
+      {
+        "name": "--all",
+        "kind": "flag",
+        "purpose": "Bao gồm stopped container."
+      }
+    ],
+    "examples": [
+      {
+        "command": "docker compose ps --all",
+        "expectedOutput": "NAME        IMAGE       COMMAND         SERVICE CREATED        STATUS     PORTS\nshop-api-1  shop:1.4    \"./start-api\"   api     2 hours ago    Up 2 hours 0.0.0.0:8080->80/tcp\nshop-db-1   mariadb:11  \"docker-entry…\" db      2 hours ago    Exited (1)",
+        "interpretation": "Trạng thái từng service khác nhau; api Up chưa chứng minh DB hoặc chức năng đặt hàng khỏe.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "docker-compose-logs",
+    "command": "docker compose logs --tail 10 db",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.docker.com/reference/cli/docker/compose/logs/"
+    ],
+    "options": [
+      {
+        "name": "compose logs",
+        "kind": "subcommand",
+        "purpose": "Đọc log service trong project."
+      },
+      {
+        "name": "--tail",
+        "kind": "flag",
+        "purpose": "Giới hạn số dòng trên service."
+      },
+      {
+        "name": "--since",
+        "kind": "flag",
+        "purpose": "Chỉ log từ mốc thời gian đã chọn."
+      }
+    ],
+    "examples": [
+      {
+        "command": "docker compose logs --tail 10 db",
+        "expectedOutput": "db  | InnoDB: Cannot allocate memory",
+        "interpretation": "Đọc cùng OOMKilled, limit, host memory và thời điểm.",
+        "outputIsExcerpt": true
+      },
+      {
+        "command": "docker compose logs --since 2026-10-22T09:00:00Z --tail 20 db",
+        "expectedOutput": "db  | InnoDB: Cannot allocate memory",
+        "interpretation": "Log gợi lỗi cấp RAM; cần so limit, host/cgroup và timestamp trước kết luận.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "getent-hosts",
+    "command": "getent hosts example.com",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [
+      {
+        "name": "hosts",
+        "kind": "database",
+        "purpose": "Chọn NSS database tên host."
+      }
+    ],
+    "examples": [
+      {
+        "command": "getent hosts example.com",
+        "expectedOutput": "93.184.215.14 example.com",
+        "interpretation": "Có kết quả ở host chưa chứng minh container resolver hoạt động.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "docker-exec-read",
+    "command": "docker exec CONTAINER cat /etc/resolv.conf",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://docs.docker.com/reference/cli/docker/container/exec/"
+    ],
+    "options": [
+      {
+        "name": "exec",
+        "kind": "subcommand",
+        "purpose": "Chạy lệnh bên trong container; trên production cần quyền Docker."
+      }
+    ],
+    "examples": [
+      {
+        "command": "docker exec CONTAINER cat /etc/resolv.conf",
+        "expectedOutput": "nameserver 127.0.0.11",
+        "interpretation": "Docker embedded DNS cần upstream và Docker network hoạt động.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "ss-connections",
+    "command": "ss -tunap",
+    "kind": "shell",
+    "safety": "privileged_read",
+    "verification": "SOURCE_VERIFIED",
+    "sourceUrls": [
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ],
+    "options": [
+      {
+        "name": "-t",
+        "kind": "flag",
+        "purpose": "Bao gồm TCP."
+      },
+      {
+        "name": "-u",
+        "kind": "flag",
+        "purpose": "Bao gồm UDP."
+      },
+      {
+        "name": "-n",
+        "kind": "flag",
+        "purpose": "Không phân giải tên."
+      },
+      {
+        "name": "-a",
+        "kind": "flag",
+        "purpose": "Bao gồm mọi trạng thái."
+      },
+      {
+        "name": "-p",
+        "kind": "flag",
+        "purpose": "Hiện process nếu có quyền."
+      }
+    ],
+    "examples": [
+      {
+        "command": "ss -tunap",
+        "expectedOutput": "ESTAB 0 0 198.51.100.20:45000 203.0.113.25:25 users:((\"python3\",pid=1802,fd=9))",
+        "interpretation": "Socket cho thấy kết nối, chưa chứng minh nội dung traffic là spam.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-backup-task",
+    "command": "PANEL: backup task",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Backup task failed: target quota exceeded",
+        "interpretation": "Task Failed không cung cấp một restore point hoàn tất đã kiểm chứng; cần xem artifact thực tế. Completed cũng chưa chứng minh khôi phục được.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "backup-log",
+    "command": "BACKUP LOG:",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "target quota exceeded",
+        "interpretation": "Log phải gắn với task/timestamp; lỗi ở target khác guest filesystem.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-restore-points",
+    "command": "PANEL: restore points",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Last completed: 2026-10-20 00:00 UTC",
+        "interpretation": "Một mốc tồn tại chưa chứng minh dữ liệu đủ hay restore thành công.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-provision-task",
+    "command": "PANEL: provisioning task",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "order-771 provision completed twice",
+        "interpretation": "Panel task completed phải đối chiếu guest và inventory.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-task-queue",
+    "command": "PANEL: task queue",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "reinstall waiting lock; snapshot running",
+        "interpretation": "Task chờ lock chưa thực thi; kiểm tra task giữ lock trước xử lý.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-api-audit",
+    "command": "PANEL: API audit",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "HTTP 403 Forbidden; token scope: read:vm",
+        "interpretation": "403 có thể do scope/resource/policy; cấp tối thiểu khi owner được xác minh.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "nproc",
+    "command": "nproc",
+    "kind": "shell",
+    "safety": "read",
+    "verification": "PENDING",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "nproc",
+        "expectedOutput": "2",
+        "interpretation": "Giá trị có thể thấp hơn số CPU online do affinity, giới hạn hoặc môi trường process. Đối chiếu lscpu, current/max vCPU host và gói dịch vụ.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "billing-service",
+    "command": "BILLING: service",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Suspended: invoice overdue",
+        "interpretation": "Trạng thái billing không tự chứng minh guest power/network; kiểm tra lý do và audit.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "billing-invoice",
+    "command": "BILLING: invoice",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "INV-2026-101 overdue",
+        "interpretation": "Paid/overdue là snapshot; provision, refund và service state cần kiểm tra riêng.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-lifecycle-policy",
+    "command": "PANEL: lifecycle policy",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "end-of-term cancellation supported",
+        "interpretation": "Policy cần owner verification và audit; không tự quyết định eligibility.",
+        "outputIsExcerpt": true
+      }
+    ]
+  },
+  {
+    "id": "panel-security-case",
+    "command": "PANEL: security case",
+    "kind": "support_task",
+    "safety": "read",
+    "verification": "INTERNAL_SOP_REQUIRED",
+    "sourceUrls": [],
+    "options": [],
+    "examples": [
+      {
+        "command": "",
+        "expectedOutput": "Investigation open; appeal received",
+        "interpretation": "Appeal received chưa phải quyết định unsuspend.",
+        "outputIsExcerpt": true
+      }
+    ]
+  }
+]

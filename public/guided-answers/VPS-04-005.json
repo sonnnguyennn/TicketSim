@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Container workload may be CPU throttled.\nFindings: The cgroup throttling counter was elevated and Docker reported near-100% CPU for api; a time-window comparison is still needed.\nNext Action: Compare counter deltas with cpu.max, then tune the workload or approved quota if warranted.\nVerification: Confirm throttling rate and request latency improve.\nStatus: Investigation pending."
 }

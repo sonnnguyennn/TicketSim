@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: VM NIC attached to the wrong bridge.\nFindings: virsh showed vnet4 on br-storage while panel expectation was br-public.\nNext Action: Have network and virtualization owners correct the attachment under change control.\nVerification: Confirm gateway reachability and intended network isolation.\nStatus: Virtualization escalation recommended; unresolved."
 }

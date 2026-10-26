@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Customer requested OS reinstall.\nFindings: The panel warned that the main disk would be overwritten and showed no recent backup.\nNext Action: Obtain informed approval and a backup or data-loss decision before any reinstall.\nVerification: After an authorized reinstall, check OS, access, network and expected data state.\nStatus: Customer approval pending; no reinstall performed."
 }

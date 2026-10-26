@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Outbound SMTP abuse report.\nFindings: The panel showed an SMTP spike and a python process held a connection to TCP/25; the sample does not prove message content or malicious intent.\nNext Action: Preserve logs, coordinate containment with Abuse/Security and verify the process owner.\nVerification: Confirm unwanted traffic has stopped and the abuse case receives an authorized disposition.\nStatus: Abuse escalation recommended; unresolved."
 }

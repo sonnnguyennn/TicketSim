@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Reverse DNS record is absent.\nFindings: The PTR query returned NXDOMAIN and the panel showed reverse DNS unset.\nNext Action: Request a PTR from the IP owner or provider, then check forward confirmation where required.\nVerification: Resolve the IP to the agreed hostname and retest mail delivery.\nStatus: Pending authorized remediation and verification."
 }

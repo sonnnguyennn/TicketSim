@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
-import { guidedContent, unreviewedGuidedContent } from './guided-content.mjs'
+import { guidedContent, guidedReferenceNotes, unreviewedGuidedContent } from './guided-content.mjs'
 import { phaseBEdits, phaseBStage } from './content/phase-b-index.mjs'
 import { loadCommandLibrary } from './content/load-command-library.mjs'
 
@@ -42,6 +42,19 @@ function repeatedFeedback(items) {
   return [...counts].filter(([, count]) => count > 1).map(([feedback, count]) => ({ feedback, count })).sort((a, b) => b.count - a.count)
 }
 check(guidedContent.length === 112 && new Set(guidedContent.map(content => content.id)).size === 112, 'Expected112 uniqueGuided')
+check(Object.keys(guidedReferenceNotes).length === 112 && source.every(ticket => guidedReferenceNotes[ticket.id]), 'Expected112 English reference notes')
+for (const ticket of source) {
+  const note = guidedReferenceNotes[ticket.id]
+  const answer = read(`public/guided-answers/${ticket.id}.json`)
+  check(answer.referenceNoteEn === note, `${ticket.id}: generated reference note differs from authoring source`)
+  check(['Issue:', 'Findings:', 'Next Action:', 'Verification:', 'Status:'].every(label => note?.includes(label)), `${ticket.id}: incomplete reference note`)
+  check(!/[À-ỹĐđ]|\b(?:TODO|TBD|PLACEHOLDER)\b/i.test(note ?? ''), `${ticket.id}: untranslated or placeholder reference note`)
+  const content = guidedContent.find(item => item.id === ticket.id)
+  for (const field of ['expected_diagnosis', 'recommended_next_checks', 'resolution_guidance', 'verification', 'escalate_when', 'production_warning']) {
+    check(answer[field] === (content?.answerOverrides?.[field] ?? ticket[field]), `${ticket.id}: legacy answer field changed: ${field}`)
+  }
+  check(JSON.stringify(answer.scoring_rubric) === JSON.stringify(ticket.scoring_rubric), `${ticket.id}: legacy scoring rubric changed`)
+}
 check(cards.length === 122 && new Set(cards.map(card => card.id)).size === 122, 'Expected122 uniquecommandcards')
 if (!partial) check(stats.reviewed === 112 && phaseBStage === 'all', 'Fullreview requires112 explicitcase records')
 for (const [filename, digest] of Object.entries(baseline.protectedFiles)) {
@@ -173,7 +186,7 @@ for (const card of cards) {
   if (knowledge.kind === 'shell') {
     check(knowledge.syntax === card.command, `${card.id}: example/syntax mismatch`)
     check(!knowledge.task, `${card.id}: shell has task metadata`)
-    check(knowledge.options.every(option => [option.name, option.purpose, option.when, option.example].every(value => typeof value === 'string' && value.length > 0)), `${card.id}: incomplete structured option`)
+    check(knowledge.options.every(option => ['flag', 'subcommand', 'argument', 'database', 'target', 'filter', 'command'].includes(option.kind) && [option.name, option.purpose, option.when, option.example].every(value => typeof value === 'string' && value.length > 0)), `${card.id}: incomplete structured option`)
     check(knowledge.examples.every(example => example.command && example.context && example.interpretation && typeof example.outputIsExcerpt === 'boolean'), `${card.id}: incomplete usage example`)
   } else {
     check(!!knowledge.task && knowledge.options.length === 0 && knowledge.verification === 'INTERNAL_SOP_REQUIRED', `${card.id}: unsupported panel workflow claim`)

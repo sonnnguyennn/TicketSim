@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Guest interface has no IPv4 address.\nFindings: The Ethernet device existed, but NetworkManager showed it disconnected and no IPv4 address appeared.\nNext Action: Confirm the intended NIC and connection profile. Reconnect only with console access and approval.\nVerification: Verify IPv4, the route, and an external TCP test.\nStatus: Pending authorized remediation and verification."
 }

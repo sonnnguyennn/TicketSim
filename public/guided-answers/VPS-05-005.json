@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Virtual disk grew but filesystem capacity did not.\nFindings: lsblk showed a 40 GiB disk with a 20 GiB partition, and df still showed a 20 GiB root filesystem.\nNext Action: Confirm layout, filesystem type, backup and approval before growing the partition and filesystem.\nVerification: Verify expected size with lsblk and df and check filesystem health.\nStatus: Pending authorized remediation and verification."
 }

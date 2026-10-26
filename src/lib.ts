@@ -69,6 +69,7 @@ export function isAnswer(value: unknown): value is Answer {
   if (!value || typeof value !== 'object') return false
   const answer = value as Record<string, unknown>
   return ['expected_diagnosis', 'recommended_next_checks', 'resolution_guidance', 'verification', 'escalate_when', 'production_warning'].every(key => typeof answer[key] === 'string') &&
+    (answer.referenceNoteEn === undefined || typeof answer.referenceNoteEn === 'string') &&
     !!answer.scoring_rubric && typeof answer.scoring_rubric === 'object' &&
     SCORE_KEYS.every(key => Number.isFinite((answer.scoring_rubric as Record<string, unknown>)[key]))
 }

@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Panel console displays a black screen.\nFindings: The VM was marked Running, but the console gateway returned a WebSocket handshake 502; guest health was not established.\nNext Action: Escalate the panel or console gateway path before considering a guest reboot.\nVerification: Open a console session and independently verify VM health.\nStatus: Panel escalation recommended; guest state unverified."
 }

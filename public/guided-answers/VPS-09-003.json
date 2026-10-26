@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: SELinux blocks web-to-backend connection.\nFindings: SELinux was enforcing and an AVC event denied httpd name_connect to backend port 9000.\nNext Action: Validate the intended connection and apply only a justified policy boolean or rule.\nVerification: Confirm backend access with SELinux still enforcing.\nStatus: Pending authorized remediation and verification."
 }

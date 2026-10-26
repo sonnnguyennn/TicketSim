@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Site returns HTTP 503 after deployment.\nFindings: Local HTTP returned 503 while the application unit was auto-restarting.\nNext Action: Inspect deployment errors and arrange an approved fix or rollback.\nVerification: Confirm the app health check and public endpoint remain stable.\nStatus: Pending authorized remediation and verification."
 }

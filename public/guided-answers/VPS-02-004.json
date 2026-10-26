@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: HTTPS listener is not exposed by the inspected firewall zone.\nFindings: A process listened on TCP/443, while the displayed firewalld rules did not include HTTPS.\nNext Action: Identify the active zone for the relevant interface and, if approved, allow the required service.\nVerification: Test HTTPS from an external client.\nStatus: Pending authorized remediation and verification."
 }

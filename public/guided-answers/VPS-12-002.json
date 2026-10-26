@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Panel state appears stale.\nFindings: Panel reported Stopped with a 50-minute-old sync, while virsh reported running.\nNext Action: Use the approved backend reconciliation flow rather than starting a potentially running VM.\nVerification: Confirm panel and hypervisor agree on state.\nStatus: Panel reconciliation pending."
 }

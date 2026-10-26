@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Compose database dependency is unavailable.\nFindings: Compose showed api up but db exited, and the DB log reported it could not allocate memory.\nNext Action: Resolve database memory allocation or capacity before restarting dependent services.\nVerification: Confirm both database and application health checks.\nStatus: Pending authorized remediation and verification."
 }

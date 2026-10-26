@@ -1,10 +1,16 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import Ajv2020 from 'ajv/dist/2020.js'
-import { guidedContent } from './guided-content.mjs'
+import { guidedContent, guidedReferenceNotes } from './guided-content.mjs'
 
 const root = path.resolve(import.meta.dirname, '..')
 const source = JSON.parse(fs.readFileSync(path.join(root, 'starter-data/tickets.json'), 'utf8')).tickets
+const sourceIds = new Set(source.map(ticket => ticket.id))
+const noteIds = Object.keys(guidedReferenceNotes)
+if (noteIds.length !== 112 || noteIds.some(id => !sourceIds.has(id)) || source.some(ticket => !guidedReferenceNotes[ticket.id])) throw new Error('English reference notes must cover exactly the 112 original tickets')
+for (const [id, note] of Object.entries(guidedReferenceNotes)) {
+  if (typeof note !== 'string' || ['Issue:', 'Findings:', 'Next Action:', 'Verification:', 'Status:'].some(label => !note.includes(label)) || /[À-ỹĐđ]|\b(?:TODO|TBD|PLACEHOLDER)\b|\{\{|\[insert/i.test(note)) throw new Error(`Invalid English reference note: ${id}`)
+}
 const schema = JSON.parse(fs.readFileSync(path.join(root, 'starter-data/guided_schema.json'), 'utf8'))
 const ajv = new Ajv2020({ strict: false, allErrors: true })
 if (!ajv.validate(schema, guidedContent)) throw new Error(`Guided content schema: ${ajv.errorsText()}`)
@@ -16,7 +22,7 @@ const publicCases = guidedContent.map(content => {
   const { expected_diagnosis, recommended_next_checks, resolution_guidance, verification, escalate_when, production_warning, scoring_rubric } = ticket
   const answerPath = path.join(root, 'public/guided-answers', `${content.id}.json`)
   fs.mkdirSync(path.dirname(answerPath), { recursive: true })
-  fs.writeFileSync(answerPath, JSON.stringify({ expected_diagnosis, recommended_next_checks, resolution_guidance, verification, escalate_when, production_warning, ...content.answerOverrides, scoring_rubric }, null, 2))
+  fs.writeFileSync(answerPath, JSON.stringify({ expected_diagnosis, recommended_next_checks, resolution_guidance, verification, escalate_when, production_warning, ...content.answerOverrides, scoring_rubric, referenceNoteEn: guidedReferenceNotes[content.id] }, null, 2))
   if (content.probeOverrides && Object.keys(content.probeOverrides).some(id => !ticket.probe_outputs.some(probe => probe.probe_id === id))) throw new Error(`Unknown Guided probe override for ${content.id}`)
   ids.add(content.id)
   const probes = ticket.probe_outputs.map((probe, index) => ({

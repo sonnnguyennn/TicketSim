@@ -61,7 +61,7 @@ const optionRows: Record<string, OptionRow[]> = {
   'docker-exec-read': [['exec', 'Chạy lệnh bên trong container; trên production cần quyền Docker.', 'Đọc resolver container được phép.', 'docker exec CONTAINER cat /etc/resolv.conf']],
   'mtr': [['-r', 'Report mode thay vì giao diện liên tục.', 'Gửi báo cáo hữu hạn.', 'mtr -rw -c 20 IP'], ['-w', 'Wide report để giữ hostname.', 'Khi địa chỉ dài bị cắt.', 'mtr -rw -c 20 IP'], ['-c', 'Số lượt mẫu.', 'So loss tại đích.', 'mtr -rw -c 20 IP']],
   'tcpdump-ssh': [['-n', 'Không phân giải địa chỉ và service.', 'Giữ IP/port gốc.', 'sudo tcpdump -ni any "tcp port 22"'], ['-i', 'Chọn interface; any gom nhiều interface.', 'Chưa biết ingress interface.', 'sudo tcpdump -ni any "tcp port 22"'], ['-c', 'Giới hạn số packet rồi dừng.', 'Giảm phạm vi capture.', 'sudo tcpdump -ni any -c 20 "tcp port 22"'], ['tcp port 22', 'BPF capture filter, không phải option tcpdump.', 'Giới hạn dữ liệu thu.', 'sudo tcpdump -ni any "tcp port 22"']],
-  'getent-passwd': [['passwd', 'Chọn NSS database tài khoản; không phải flag.', 'Kiểm tra account có tồn tại.', 'getent passwd USER']],
+  'getent-passwd': [['passwd', 'Chọn cơ sở dữ liệu tài khoản qua NSS; không phải flag.', 'Kiểm tra account có thể tra được từ guest.', 'getent passwd admin'], ['USER', 'Tên account cần tra; là positional key.', 'Đối chiếu đúng username khách hàng dùng.', 'getent passwd admin']],
   'getent-hosts': [['hosts', 'Chọn NSS database tên host.', 'Kiểm tra resolver tại nơi chạy.', 'getent hosts example.com']],
   'resolvectl': [['status', 'Đọc trạng thái resolver systemd-resolved.', 'Khi guest dùng resolved.', 'resolvectl status', 'CentOS Stream 9 thường dùng NetworkManager.']],
   'fail2ban-status': [['status sshd', 'Đọc jail sshd; jail phải tồn tại.', 'Khi chỉ một IP bị chặn.', 'sudo fail2ban-client status sshd']],
@@ -96,6 +96,7 @@ const optionRows: Record<string, OptionRow[]> = {
 }
 
 const sourceById: Record<string, string> = {
+  'getent-passwd': 'https://man7.org/linux/man-pages/man1/getent.1.html',
   'systemctl-status': 'https://www.freedesktop.org/software/systemd/man/latest/systemctl.html',
   'systemctl-nginx': 'https://www.freedesktop.org/software/systemd/man/latest/systemctl.html',
   'systemctl-service': 'https://www.freedesktop.org/software/systemd/man/latest/systemctl.html',
@@ -170,6 +171,10 @@ const sourceById: Record<string, string> = {
 const checkedIds = new Set(Object.keys(sourceById))
 
 const extraExamples: Record<string, CommandUsage[]> = {
+  'getent-passwd': [
+    { command: 'getent passwd webapp', purpose: 'Tra account webapp từ nguồn danh tính mà guest cấu hình qua NSS.', expectedOutput: 'webapp:x:1001:1001::/home/webapp:/bin/bash', interpretation: 'Tìm thấy entry webapp. Entry có thể đến từ file local hoặc dịch vụ danh tính remote; chưa chứng minh SSH cho phép login hay thông tin xác thực đúng.', outputIsExcerpt: false, context: 'guest', exitStatus: 0 },
+    { command: 'getent passwd admin', purpose: 'Kiểm tra username admin không có trong nguồn NSS hiện truy cập được.', expectedOutput: '', interpretation: 'Không có dòng stdout cùng exit status 2 nghĩa là không tìm thấy key admin trong database passwd. Nếu nguồn danh tính remote lỗi, cần kiểm tra NSS và dịch vụ trước khi kết luận account không tồn tại ở mọi nơi.', outputIsExcerpt: false, context: 'guest', exitStatus: 2 },
+  ],
   'ssh-vvv': [{ command: 'ssh -o BatchMode=yes user@IP', purpose: 'Probe xác thực không tương tác.', expectedOutput: 'Permission denied (publickey,password).', interpretation: 'TCP đã tới giai đoạn xác thực; BatchMode không yêu cầu nhập password. Đây không phải debug verbose.', outputIsExcerpt: true, context: 'client' }],
   'ss-ltnp': [{ command: 'sudo ss -ltnp', purpose: 'Xem PID khi quyền user không hiển thị process.', expectedOutput: 'LISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:(("sshd",pid=742,fd=3))', interpretation: 'Listener TCP/22 thuộc sshd ở guest; chưa chứng minh client qua được provider firewall.', outputIsExcerpt: true, context: 'guest' }],
   'ip-route': [{ command: 'ip route get 1.1.1.1', purpose: 'Kiểm tra quyết định route cho một đích.', expectedOutput: '1.1.1.1 via 10.10.20.1 dev enp0s3 src 10.10.20.25', interpretation: 'Kernel chọn gateway và source IP; không gửi packet và không chứng minh reachability.', outputIsExcerpt: true, context: 'guest' }],
@@ -190,15 +195,25 @@ const extraExamples: Record<string, CommandUsage[]> = {
 }
 
 export function shellKnowledge(card: CommandDoc): CommandKnowledge {
-  const options: CommandOption[] = (optionRows[card.id] ?? []).map(([name, purpose, when, example, osNote]) => ({ name, purpose, when, example, ...(osNote ? { osNote } : {}) }))
+  const kindOf = (name: string): CommandOption['kind'] => {
+    if (name === 'passwd' || name === 'hosts') return 'database'
+    if (['USER', '/', '1 5'].includes(name)) return 'argument'
+    if (name === '@resolver' || name === 'A' || name === 'NS') return 'target'
+    if (name.startsWith('grep ') || name === 'head' || name === 'tail' || name === 'tcp port 22') return 'filter'
+    if (name === 'lvs' || name === 'vgs') return 'command'
+    if (name.startsWith('-') || name.startsWith('+') || name === 'aux') return 'flag'
+    return 'subcommand'
+  }
+  const options: CommandOption[] = (optionRows[card.id] ?? []).map(([name, purpose, when, example, osNote]) => ({ name, kind: kindOf(name), purpose, when, example, ...(osNote ? { osNote } : {}) }))
+  const examples = card.id === 'getent-passwd' ? extraExamples[card.id] : [{ command: card.command, purpose: card.whenToUse, expectedOutput: card.exampleOutput, interpretation: card.interpretation, outputIsExcerpt: true, context: card.context }, ...(extraExamples[card.id] ?? [])]
   return {
     kind: 'shell',
     syntax: card.command,
     options,
-    examples: [{ command: card.command, purpose: card.whenToUse, expectedOutput: card.exampleOutput, interpretation: card.interpretation, outputIsExcerpt: true, context: card.context }, ...(extraExamples[card.id] ?? [])],
+    examples,
     proves: card.interpretation,
     doesNotProve: card.pitfalls,
     verification: checkedIds.has(card.id) ? 'SOURCE_VERIFIED' : 'PENDING',
-    sourceUrls: sourceById[card.id] ? [sourceById[card.id], ...(['ssh-vvv', 'ssh-key-login'].includes(card.id) ? ['https://man7.org/linux/man-pages/man5/ssh_config.5.html'] : [])] : [],
+    sourceUrls: sourceById[card.id] ? [sourceById[card.id], ...(['ssh-vvv', 'ssh-key-login'].includes(card.id) ? ['https://man7.org/linux/man-pages/man5/ssh_config.5.html'] : [])] : card.id === 'getent-passwd' ? ['https://man7.org/linux/man-pages/man1/getent.1.html'] : [],
   }
 }

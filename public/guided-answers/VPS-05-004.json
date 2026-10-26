@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Data volume remounted read-only after I/O errors.\nFindings: The /data mount showed ro and the kernel reported a buffer I/O error on vdb.\nNext Action: Stop further writes and escalate storage integrity assessment and controlled offline repair.\nVerification: Verify volume health, mount mode and application data after recovery.\nStatus: Storage escalation recommended; unresolved."
 }

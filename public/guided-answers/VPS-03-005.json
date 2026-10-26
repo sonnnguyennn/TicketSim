@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Application startup blocked by its database dependency.\nFindings: The application unit reported a dependency failure and MariaDB was failed.\nNext Action: Investigate and recover the database first, then retry application startup under approval.\nVerification: Confirm database health, active application state and endpoint response.\nStatus: Pending authorized remediation and verification."
 }

@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: DNS query times out while direct HTTP works.\nFindings: The direct IP request returned HTTP 200, but the DNS query could not reach a resolver.\nNext Action: Inspect resolver reachability and repair the approved resolver or network profile.\nVerification: Resolve the name and complete an application request by hostname.\nStatus: Pending authorized remediation and verification."
 }

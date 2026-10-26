@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Unknown successful root SSH login.\nFindings: The sshd journal recorded Accepted publickey for root from 203.0.113.77 in the UTC incident window, and last showed a matching session.\nNext Action: Escalate as a security incident, preserve logs, identify the key and owner, then rotate access under the incident plan.\nVerification: Account for all sessions, check persistence and revalidate access controls.\nStatus: Security escalation recommended; unresolved."
 }

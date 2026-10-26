@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Restore only the approved forwarding and NAT configuration in a controlled environment.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
 }

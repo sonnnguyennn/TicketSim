@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Repeated failed SSH logins.\nFindings: The sshd journal recorded failed passwords for an invalid admin user, while the inspected login history showed only known sessions.\nNext Action: Review source patterns and apply approved rate limits, access controls and monitoring.\nVerification: Confirm no unauthorized sessions and that protective controls remain effective.\nStatus: Security monitoring pending."
 }

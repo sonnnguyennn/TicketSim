@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: SELinux denied the web write operation.\nFindings: SELinux was enforcing and an AVC record denied httpd write access to uploads.\nNext Action: Verify the intended path and context, then apply an approved context or policy fix without disabling enforcement.\nVerification: Repeat the write in enforcing mode and check for related AVC denials.\nStatus: Pending authorized remediation and verification."
 }

@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Filesystem error during boot.\nFindings: The kernel reported an EXT4 error on vda1 and the associated fsck unit failed.\nNext Action: Preserve data and escalate offline repair or recovery; do not run fsck on the mounted filesystem.\nVerification: Confirm a clean mount and validate affected application data.\nStatus: Storage escalation recommended; unresolved."
 }

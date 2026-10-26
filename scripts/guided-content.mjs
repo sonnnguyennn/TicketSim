@@ -1,4 +1,6 @@
 // Hand-authored learning content. The build script splits prompts from answer keys.
+// D2.1 English reference notes are authored separately and exposed through this Guided source.
+export { guidedReferenceNotes } from './guided-reference-notes.mjs'
 import { readFileSync } from 'node:fs'
 import { applyGuidedEdits } from './content/apply-guided-edits.mjs'
 import { phaseBEdits } from './content/phase-b-index.mjs'

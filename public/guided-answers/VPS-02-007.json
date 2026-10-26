@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: SSH reachability differs by source network.\nFindings: The panel probes reached TCP/22 from Tokyo but timed out from two ISPs; the effective sshd port was 22.\nNext Action: Collect affected source IPs, path measurements and guest/provider filtering evidence for network escalation.\nVerification: Repeat the same TCP test from the previously affected ISPs.\nStatus: Network escalation recommended; unresolved."
 }

@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: SSH sessions drop while the guest is under load.\nFindings: The kernel log showed an OOM kill and only 64 MiB of available memory; a direct causal link to each SSH drop remains unverified.\nNext Action: Review the memory-heavy job and coordinate limits or capacity changes with its owner.\nVerification: Observe the same workload without new OOM events or SSH disconnections.\nStatus: Pending investigation and verification."
 }

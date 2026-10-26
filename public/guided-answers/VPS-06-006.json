@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: VM repeatedly boots into rescue media.\nFindings: The rescue ISO remained mounted and optical media preceded disk in boot order.\nNext Action: Confirm recovery is complete, then remove rescue media or change boot order with permission.\nVerification: Boot the installed OS and verify services.\nStatus: Pending authorized remediation and verification."
 }

@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: API container exited.\nFindings: docker ps -a showed api exited with code 1 and its log reported a missing appconfig module.\nNext Action: Have the application owner correct the image or deployment; avoid a blind restart loop.\nVerification: Confirm the container stays healthy and its endpoint responds.\nStatus: Pending authorized remediation and verification."
 }

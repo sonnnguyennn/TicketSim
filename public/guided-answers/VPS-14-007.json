@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Invoice may contain a duplicate product line.\nFindings: The invoice listed VPS-100 twice while service inventory showed one VPS-100.\nNext Action: Refer invoice correction or credit review to Billing; do not manually alter accounting records.\nVerification: Confirm a corrected invoice and customer acknowledgement.\nStatus: Billing review pending."
 }

@@ -6,8 +6,8 @@ export type ReviewVariant = { id: string; scenario: string; evidence: { label: s
 export type SimulationTransition = { actionId: string; commandId?: string; label: string; from: string; to: string; requiredProbeIds: string[]; context: 'guest' | 'client' | 'panel' | 'hypervisor'; safety: 'change' | 'escalate'; requiresApproval: boolean; allowed: boolean; output: string; feedback: string; category?: 'knowledge' | 'missing_evidence' | 'unsafe_action' }
 export type GuidedCase = { id: string; objective: string; customerFollowup?: string; customerExplanation?: string; probes: GuidedProbe[]; questions: GuidedQuestion[]; verificationPrompt: string; objectiveExam?: GuidedQuestion; reviewVariants?: ReviewVariant[]; branches?: { id: string; requiredProbeIds: string[]; probeIds: string[]; questionIds: string[] }[]; simulation?: { states: string[]; transitions: SimulationTransition[]; verificationProbeIds: string[] } }
 export type GuidedAnswerKey = { correctIds: string[]; explanation: string; optionFeedback: Record<string, string>; commandId?: string }
-export type CommandOption = { name: string; purpose: string; when: string; example: string; osNote?: string }
-export type CommandUsage = { command: string; purpose: string; expectedOutput: string; interpretation: string; outputIsExcerpt: boolean; context: string }
+export type CommandOption = { name: string; kind: 'flag' | 'subcommand' | 'argument' | 'database' | 'target' | 'filter' | 'command'; purpose: string; when: string; example: string; osNote?: string }
+export type CommandUsage = { command: string; purpose: string; expectedOutput: string; interpretation: string; outputIsExcerpt: boolean; context: string; exitStatus?: number }
 export type SupportTask = { where: string; dataToCheck: string[]; authority: string; observableOutcomes: string[]; limits: string; escalation: string }
 export type CommandKnowledge = {
   kind: 'shell' | 'support_task'

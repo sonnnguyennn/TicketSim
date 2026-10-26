@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Customer asks about refund eligibility.\nFindings: The purchase date was 15 October 2026, but the displayed policy required review and did not grant automatic approval.\nNext Action: Refer the request and relevant dates to Billing; do not promise a refund.\nVerification: Record Billing’s authorized written decision.\nStatus: Billing decision pending."
 }

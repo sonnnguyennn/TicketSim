@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: SSH private key rejected on the client.\nFindings: The client reported mode 0644 on the private key, and ls confirmed it was readable by group and others.\nNext Action: On the authorized client, restrict the key file to mode 0600 and retry without sharing the key.\nVerification: Confirm the key is accepted and the authorized SSH session succeeds.\nStatus: Pending authorized remediation and verification."
 }

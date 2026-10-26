@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Requested restore point is unavailable.\nFindings: The latest completed point shown was 20 October 00:00 UTC, earlier than the requested 22 October 08:00 UTC.\nNext Action: Explain the available point and likely data gap before obtaining restore approval.\nVerification: Confirm the customer accepts the chosen point and validates restored data.\nStatus: Customer decision pending; no restore performed."
 }

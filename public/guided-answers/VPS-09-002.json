@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Office IP is blocked by Fail2ban.\nFindings: The sshd jail and Fail2ban journal both listed 198.51.100.60 as banned.\nNext Action: Verify office IP ownership and failed-login cause, then follow approved unblock policy.\nVerification: Confirm legitimate login works without weakening abuse controls.\nStatus: Pending authorized remediation and verification."
 }

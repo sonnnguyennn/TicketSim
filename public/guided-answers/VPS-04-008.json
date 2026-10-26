@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Intermittent slowness during backup window.\nFindings: The backup-agent log overlapped the incident window and iostat showed elevated await during the backup.\nNext Action: Coordinate schedule or throttling with the backup owner; preserve backup coverage.\nVerification: Measure performance through a later backup window and confirm it meets the agreed target.\nStatus: Backup coordination pending."
 }

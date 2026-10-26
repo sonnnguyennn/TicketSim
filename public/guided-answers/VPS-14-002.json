@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Paid invoice has not advanced provisioning.\nFindings: Billing marked the invoice Paid, while provisioning remained Waiting on payment event.\nNext Action: Escalate event reconciliation and resume the task idempotently through the authorized flow.\nVerification: Confirm one provisioning run and consistent order status.\nStatus: Billing/operations reconciliation pending."
 }

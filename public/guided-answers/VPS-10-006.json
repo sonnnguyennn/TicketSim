@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Data appears older after a snapshot restore.\nFindings: Panel activity recorded a restore at 10:14 and one database file had an older modification time; the full data gap remains unverified.\nNext Action: Preserve the current state and plan recovery with the customer and backup team.\nVerification: Agree on the restore point and verify recovered data if available.\nStatus: Recovery planning pending."
 }

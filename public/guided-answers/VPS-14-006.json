@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: Billing showed expiry on 20 October and panel retention scheduled deletion for 25 October 2026.\nNext Action: Urgently request a policy-approved retention decision and advise the authorized owner to preserve needed data.\nVerification: Confirm renewal or exception is recorded and the required data remains available.\nStatus: Urgent billing/retention escalation recommended."
 }

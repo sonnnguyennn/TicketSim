@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: VM remains in Stopping state.\nFindings: Lifecycle stayed Stopping for 20 minutes after an ACPI shutdown request with no guest response.\nNext Action: Ask the virtualization team to assess a controlled shutdown and obtain approval before force-off.\nVerification: Confirm a clean state transition and data integrity.\nStatus: Virtualization escalation recommended; unresolved."
 }

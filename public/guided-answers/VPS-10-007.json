@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Network interruption overlapped live migration.\nFindings: Panel migration ran from 08:00:00 to 08:00:36, overlapping monitor packet loss from 08:00:04 to 08:00:35.\nNext Action: Send both timelines to the virtualization network team for path investigation.\nVerification: Check a planned migration against the agreed interruption target.\nStatus: Virtualization escalation recommended; unresolved."
 }

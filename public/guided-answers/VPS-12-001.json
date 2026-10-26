@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Provisioning cannot allocate IPv4.\nFindings: The task failed and IPAM showed no free address in pool sg-02.\nNext Action: Escalate pool allocation, then retry through an idempotent approved workflow.\nVerification: Confirm one VPS receives the intended IP and customer login works.\nStatus: IPAM escalation recommended; unresolved."
 }

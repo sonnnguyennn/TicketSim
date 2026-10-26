@@ -39,4 +39,38 @@ describe('D2 command knowledge', () => {
     expect(commandLibrary.find(card => card.id === 'ps-cpu')?.knowledge?.options.find(option => option.name === 'head')?.purpose).toContain('shell')
     expect(commandLibrary.find(card => card.id === 'tcpdump-ssh')?.knowledge?.options.find(option => option.name === 'tcp port 22')?.purpose).toContain('BPF')
   })
+
+  it('keeps lookup examples and syntax components consistent with their output', () => {
+    const getent = commandLibrary.find(card => card.id === 'getent-passwd')!.knowledge!
+    expect(getent.options.find(option => option.name === 'passwd')?.kind).toBe('database')
+    expect(getent.options.find(option => option.name === 'USER')?.kind).toBe('argument')
+    expect(getent.examples).toHaveLength(2)
+    expect(getent.examples[0].command).toBe('getent passwd webapp')
+    expect(getent.examples[0].expectedOutput).toMatch(/^webapp:/)
+    expect(getent.examples[0].exitStatus).toBe(0)
+    expect(getent.examples[1].command).toBe('getent passwd admin')
+    expect(getent.examples[1].expectedOutput).toBe('')
+    expect(getent.examples[1].exitStatus).toBe(2)
+    for (const id of ['ss-ltnp', 'ip-route', 'ip-family-addr']) {
+      const example = commandLibrary.find(card => card.id === id)!.knowledge!.examples[0]
+      expect(example.expectedOutput).not.toBe('')
+      expect(example.interpretation, id).not.toMatch(/^Không có (listener|inet|dòng default)/)
+    }
+    const ss = commandLibrary.find(card => card.id === 'ss-ltnp')!.knowledge!
+    expect(ss.examples[0].expectedOutput).not.toContain('users:')
+    expect(ss.examples[0].interpretation).toContain('chưa xác định')
+    expect(ss.examples[1].expectedOutput).toContain('users:')
+    for (const card of commandLibrary) {
+      const examples = card.knowledge!.examples
+      expect(examples.length, card.id).toBeGreaterThanOrEqual(1)
+      expect(examples.length, card.id).toBeLessThanOrEqual(3)
+      for (const example of examples) {
+        expect(example.command.trim() || card.knowledge!.kind === 'support_task', card.id).toBeTruthy()
+        expect(example.interpretation.trim().length, card.id).toBeGreaterThan(10)
+        if (card.knowledge!.kind === 'shell' && example.expectedOutput === '' && example.exitStatus === undefined) {
+          expect(example.interpretation, card.id).toMatch(/exit (code|status)/i)
+        }
+      }
+    }
+  })
 })

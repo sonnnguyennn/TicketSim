@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: LVM group has capacity not yet assigned to the data filesystem.\nFindings: The data disk was 80 GiB, the logical volume was 30 GiB, and the volume group reported 50 GiB free.\nNext Action: With backup and approval, follow the filesystem-specific LV and filesystem growth procedure.\nVerification: Verify the intended LV and filesystem capacity.\nStatus: Pending authorized remediation and verification."
 }

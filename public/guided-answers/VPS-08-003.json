@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Delegation still points to old nameservers.\nFindings: The NS query returned old-dns names while the edited zone was on new-dns.\nNext Action: Verify registrar authority and plan a controlled delegation update; avoid conflicting active zones.\nVerification: Confirm parent delegation and authoritative responses agree.\nStatus: Pending authorized remediation and verification."
 }

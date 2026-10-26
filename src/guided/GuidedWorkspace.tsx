@@ -20,7 +20,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
   const input = draft.commandInput ?? ''
   const setInput = (commandInput: string) => update({ commandInput })
   const [hints, setHints] = useState<string[] | null>(null)
-  const [answer, setAnswer] = useState<Answer | null>(null)
+  const [answer, setAnswer] = useState<(Answer & { referenceNoteEn?: string }) | null>(null)
   const [error, setError] = useState('')
   const terminalRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -55,7 +55,11 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
   useEffect(() => {
     if (!draft.submitted) return
     let active = true
-    fetch(`${import.meta.env.BASE_URL}guided-answers/${ticket.id}.json`).then(response => response.json()).then((value: unknown) => { if (active && isAnswer(value)) setAnswer(value) }).catch(() => { if (active) setError('Không tải được đáp án mẫu.') })
+    fetch(`${import.meta.env.BASE_URL}guided-answers/${ticket.id}.json`).then(response => response.json()).then((value: unknown) => {
+      if (!active) return
+      if (isAnswer(value) && typeof (value as Answer & { referenceNoteEn?: unknown }).referenceNoteEn === 'string') setAnswer(value)
+      else setError('Không tải được bản tóm tắt tham khảo.')
+    }).catch(() => { if (active) setError('Không tải được bản tóm tắt tham khảo.') })
     return () => { active = false }
   }, [draft.submitted, ticket.id])
 
@@ -165,7 +169,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
         </form>
         <CommandQuickLookup />
       </section>}
-      {stage.id === 'verify' && <section className="guided-card"><h2>Tổng kết ticket</h2><p className="guided-muted">{guidedCase.verificationPrompt}</p><textarea aria-label="Ghi chú cuối ticket" rows={5} value={draft.note} onChange={event => update({ note: event.target.value })} placeholder={'Hiện tượng...\nBằng chứng...\nBước tiếp theo và xác minh...'} disabled={draft.submitted} />{!draft.submitted && draft.note.trim().length > 0 && draft.note.replace(/\s/g, '').length < 30 && <p className="guided-muted">Viết ít nhất 30 ký tự không tính khoảng trắng.</p>}{draft.submitted && <div className="guided-result"><h3>Đã hoàn thành · {score.score}/{score.total} câu đúng</h3>{savedAttempt && revisedGuidedTicketIds.has(ticket.id) && contentRevisionOf(savedAttempt) !== GUIDED_CONTENT_REVISION && <p>Lượt này thuộc nội dung trước D1; điểm và đáp án đã nộp được giữ nguyên, không so trực tiếp với câu hỏi hiện tại.</p>}<p>Đối chiếu ghi chú của bạn với đáp án bên dưới.</p>{mistakeIds(progress, guidedCase).length > 0 && <details className="guided-mistakes"><summary>Câu cần xem lại</summary><ul>{guidedCase.questions.filter(question => mistakeIds(progress, guidedCase).includes(question.id)).map(question => <li key={question.id}>{question.prompt}</li>)}</ul></details>}{answer && <div className="guided-model"><strong>Đáp án tham khảo</strong><p>{answer.expected_diagnosis}</p><p><b>Kiểm tra tiếp:</b> {answer.recommended_next_checks}</p><p><b>Hướng xử lý:</b> {answer.resolution_guidance}</p><p><b>Xác minh:</b> {answer.verification}</p><p><b>Khi cần chuyển cấp:</b> {answer.escalate_when}</p><p><b>Lưu ý xử lý:</b> {answer.production_warning}</p></div>}</div>}</section>}
+      {stage.id === 'verify' && <section className="guided-card"><h2>Tổng kết ticket</h2><p className="guided-muted">{guidedCase.verificationPrompt}</p><textarea aria-label="Ghi chú cuối ticket" rows={5} value={draft.note} onChange={event => update({ note: event.target.value })} placeholder={'Hiện tượng...\nBằng chứng...\nBước tiếp theo và xác minh...'} disabled={draft.submitted} />{!draft.submitted && draft.note.trim().length > 0 && draft.note.replace(/\s/g, '').length < 30 && <p className="guided-muted">Viết ít nhất 30 ký tự không tính khoảng trắng.</p>}{draft.submitted && <div className="guided-result"><h3>Đã hoàn thành · {score.score}/{score.total} câu đúng</h3>{savedAttempt && revisedGuidedTicketIds.has(ticket.id) && contentRevisionOf(savedAttempt) !== GUIDED_CONTENT_REVISION && <p>Lượt này thuộc nội dung trước D1; điểm và đáp án đã nộp được giữ nguyên, không so trực tiếp với câu hỏi hiện tại.</p>}<p>Đối chiếu ghi chú của bạn với bản tóm tắt tiếng Anh bên dưới.</p>{mistakeIds(progress, guidedCase).length > 0 && <details className="guided-mistakes"><summary>Câu cần xem lại</summary><ul>{guidedCase.questions.filter(question => mistakeIds(progress, guidedCase).includes(question.id)).map(question => <li key={question.id}>{question.prompt}</li>)}</ul></details>}{answer && <div className="guided-model" lang="en"><strong>Reference ticket summary</strong><p className="guided-reference-note">{answer.referenceNoteEn}</p></div>}</div>}</section>}
       <details className="guided-hints"><summary><Lightbulb size={15} /> Gợi ý{draft.hintLevel > 0 ? ' · ' + draft.hintLevel + '/3 đã mở' : ''}</summary><button className="guided-secondary" onClick={revealHint} disabled={draft.hintLevel >= 3 || !hintReady}>{draft.hintLevel >= 3 ? 'Đã mở hết gợi ý' : draft.hintLevel ? 'Mở gợi ý tiếp' : 'Mở gợi ý'}</button>{!hintReady && <p>Thu thập thêm bằng chứng để mở gợi ý tiếp.</p>}{draft.hintLevel > 0 && hints && <ol>{hints.slice(0, draft.hintLevel).map(hint => <li key={hint}>{hint}</li>)}</ol>}</details>
       {stage.id === 'investigate' && remainingChecks > 0 && <p className="guided-step-note">Còn {remainingChecks} phép kiểm tra bắt buộc trước khi đọc bằng chứng.</p>}
       {error && <div className="notice error" role="alert">{error}</div>}

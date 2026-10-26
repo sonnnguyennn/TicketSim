@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Customer requested end-of-term cancellation.\nFindings: The service was active until 15 November 2026 and the displayed policy supported end-of-term cancellation.\nNext Action: Verify requester identity, record the approved date and explain the backup deadline.\nVerification: Confirm the scheduled date without immediate deletion.\nStatus: Customer authorization pending."
 }

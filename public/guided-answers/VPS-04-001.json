@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: High CPU use during customer slowness.\nFindings: A python3 process used about 97% CPU in the observed sample.\nNext Action: Identify the job and coordinate optimization or rescheduling with its owner; avoid killing it blindly.\nVerification: Measure user-facing latency and CPU after the approved change.\nStatus: Pending authorized remediation and verification."
 }

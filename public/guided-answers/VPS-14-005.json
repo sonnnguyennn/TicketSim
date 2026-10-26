@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Paid IPv4 add-on has no assigned address yet.\nFindings: Billing listed the add-on as active while panel allocation remained pending manual review.\nNext Action: Escalate assignment to IPAM and operations, then configure only through the approved process.\nVerification: Confirm the second IP in panel and guest with correct routing.\nStatus: IPAM/operations review pending."
 }

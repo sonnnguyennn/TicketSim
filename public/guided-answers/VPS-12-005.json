@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Reinstall task waits on another job.\nFindings: The reinstall task was locked while a snapshot job remained active.\nNext Action: Ask operations to reconcile the task queue and lock; do not force-unlock or reinstall blindly.\nVerification: After explicit authorization, confirm one reinstall and the expected OS.\nStatus: Operations escalation recommended; reinstall pending."
 }

@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Reverse proxy returns HTTP 502.\nFindings: Nginx was active but logged Connection refused to the backend on 127.0.0.1:3000.\nNext Action: Investigate backend state and the configured upstream address before an approved fix.\nVerification: Confirm backend health and public HTTP access.\nStatus: Pending authorized remediation and verification."
 }

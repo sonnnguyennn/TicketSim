@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: VPS is powered off.\nFindings: Panel state was Powered Off and the event log recorded a user-requested shutdown at 12:30.\nNext Action: Confirm ownership, intent and permission before starting the VM.\nVerification: Check Running state, console boot and service connectivity.\nStatus: Pending authorized remediation and verification."
 }

@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: With approval, roll back to a validated image or migrate the configuration.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
 }

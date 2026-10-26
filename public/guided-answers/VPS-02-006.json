@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Packet loss on the tested path.\nFindings: Both mtr and ping reported 25% loss to the destination; the failing segment is not established.\nNext Action: Record source, destination, timestamps and path evidence, then refer the case to the network owner.\nVerification: Repeat end-to-end tests from the affected source after remediation.\nStatus: Network escalation recommended; unresolved."
 }

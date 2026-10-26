@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After authorized recovery, verify task removal and host integrity.\nStatus: Security escalation recommended; unresolved."
 }

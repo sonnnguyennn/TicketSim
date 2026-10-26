@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Snapshot failed because datastore is full.\nFindings: The snapshot task reported no space on the datastore and panel utilization was 99.9%.\nNext Action: Escalate datastore capacity management; do not delete snapshots without retention and dependency review.\nVerification: Complete a snapshot and confirm safe datastore headroom.\nStatus: Storage escalation recommended; unresolved."
 }

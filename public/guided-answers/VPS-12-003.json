@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Provisioned OS differs from the order.\nFindings: The order specified AlmaLinux 9, but /etc/os-release showed Ubuntu 24.04.\nNext Action: Discuss data impact and obtain customer authorization for replacement or rebuild.\nVerification: Verify the delivered OS matches the order and service functions.\nStatus: Customer decision pending."
 }

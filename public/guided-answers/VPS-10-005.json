@@ -11,5 +11,6 @@
     "additional_checks": 2,
     "safe_resolution": 2,
     "verification_or_escalation": 1
-  }
+  },
+  "referenceNoteEn": "Issue: Expected data disk is detached from the VM.\nFindings: The guest listed only vda and virsh showed only the OS disk attachment; this does not prove data was deleted.\nNext Action: Escalate safe reattachment and verify disk identity before mounting or repair.\nVerification: Confirm the correct volume, filesystem, mount and data.\nStatus: Storage and virtualization escalation recommended; unresolved."
 }
