@@ -3037,7 +3037,7 @@
           "verification": "PENDING",
           "purpose": "Đọc khai báo mount khi boot.",
           "proves": "UUID trong fstab cần đối chiếu blkid và volume inventory; không tự sửa chỉ vì boot vào emergency.",
-          "doesNotProve": "Không format hay bỏ mount dữ liệu để che sự cố.",
+          "doesNotProve": "/etc/fstab mô tả mount dự kiến, không xác nhận filesystem hiện đã mount; đối chiếu findmnt, blkid và volume inventory. Không format hoặc bỏ mount dữ liệu để che sự cố.",
           "examples": [
             {
               "command": "cat /etc/fstab",
@@ -3244,7 +3244,7 @@
           "verification": "PENDING",
           "purpose": "Đọc khai báo mount khi boot.",
           "proves": "UUID trong fstab cần đối chiếu blkid và volume inventory; không tự sửa chỉ vì boot vào emergency.",
-          "doesNotProve": "Không format hay bỏ mount dữ liệu để che sự cố.",
+          "doesNotProve": "/etc/fstab mô tả mount dự kiến, không xác nhận filesystem hiện đã mount; đối chiếu findmnt, blkid và volume inventory. Không format hoặc bỏ mount dữ liệu để che sự cố.",
           "examples": [
             {
               "command": "cat /etc/fstab",

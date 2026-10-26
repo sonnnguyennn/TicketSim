@@ -1347,8 +1347,8 @@ d1Option('VPS-08-008', 'triage', 'symptom').label = 'Cùng resolver trả SERVFA
 d1Option('VPS-08-008', 'triage', 'symptom').feedback = 'Hai phép hỏi tới cùng @1.1.1.1; khác biệt là cờ Checking Disabled, chưa xác định DS sai.'
 
 d1Question('VPS-10-006', 'check').prompt = 'Mục nào là lịch sử hoạt động panel ghi thao tác restore vừa hoàn tất?'
-d1Question('VPS-10-006', 'check').explanation = 'Activity là lịch sử thao tác. Metadata cũng ghi mốc hoàn tất restore, nhưng câu hỏi này yêu cầu đúng loại nguồn lịch sử hoạt động.'
-d1Option('VPS-10-006', 'check', 'wrong1').feedback = 'Metadata cũng ghi restore completed lúc 10:14; nó phục vụ đối chiếu mốc tạo snapshot, còn câu hỏi yêu cầu mục activity.'
+d1Question('VPS-10-006', 'check').explanation = 'Activity ghi sự kiện restore VM hoàn tất; inventory backup chỉ liệt kê nguồn dữ liệu có thể xem xét sau đó.'
+d1Option('VPS-10-006', 'check', 'wrong1').feedback = 'Inventory có backup mới hơn nhưng không ghi sự kiện restore VM đang được hỏi.'
 
 // Minor fixture and Command Library consistency fixes.
 d1['VPS-01-001'].extras.find(probe => probe.command === 'ss -ltnp' && probe.requiredState?.includes('changed')).output = 'State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:(("sshd",pid=724,fd=3))'

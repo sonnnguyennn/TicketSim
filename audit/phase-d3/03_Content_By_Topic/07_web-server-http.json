@@ -1113,7 +1113,7 @@
           "verification": "PENDING",
           "purpose": "Đọc 50 dòng cuối error log Nginx.",
           "proves": "Đối chiếu timestamp và upstream; lỗi này không nói Nginx dừng.",
-          "doesNotProve": "Log có thể lộ URL/IP; chia sẻ có chọn lọc.",
+          "doesNotProve": "Đường dẫn error_log có thể được đổi trong cấu hình Nginx hoặc ghi sang syslog; kiểm tra cấu hình đang nạp trước khi suy log vắng là không có lỗi. Log có thể lộ URL/IP, nên chia sẻ có chọn lọc.",
           "examples": [
             {
               "command": "sudo tail -n 50 /var/log/nginx/error.log",
@@ -1276,7 +1276,7 @@
           "verification": "PENDING",
           "purpose": "Đọc 50 dòng cuối error log Nginx.",
           "proves": "Đối chiếu timestamp và upstream; lỗi này không nói Nginx dừng.",
-          "doesNotProve": "Log có thể lộ URL/IP; chia sẻ có chọn lọc.",
+          "doesNotProve": "Đường dẫn error_log có thể được đổi trong cấu hình Nginx hoặc ghi sang syslog; kiểm tra cấu hình đang nạp trước khi suy log vắng là không có lỗi. Log có thể lộ URL/IP, nên chia sẻ có chọn lọc.",
           "examples": [
             {
               "command": "sudo tail -n 50 /var/log/nginx/error.log",
@@ -1715,7 +1715,7 @@
           "verification": "PENDING",
           "purpose": "Đọc 50 dòng cuối error log Nginx.",
           "proves": "Đối chiếu timestamp và upstream; lỗi này không nói Nginx dừng.",
-          "doesNotProve": "Log có thể lộ URL/IP; chia sẻ có chọn lọc.",
+          "doesNotProve": "Đường dẫn error_log có thể được đổi trong cấu hình Nginx hoặc ghi sang syslog; kiểm tra cấu hình đang nạp trước khi suy log vắng là không có lỗi. Log có thể lộ URL/IP, nên chia sẻ có chọn lọc.",
           "examples": [
             {
               "command": "sudo tail -n 50 /var/log/nginx/error.log",
@@ -1870,7 +1870,7 @@
           "verification": "PENDING",
           "purpose": "Đọc 50 dòng cuối error log Nginx.",
           "proves": "Đối chiếu timestamp và upstream; lỗi này không nói Nginx dừng.",
-          "doesNotProve": "Log có thể lộ URL/IP; chia sẻ có chọn lọc.",
+          "doesNotProve": "Đường dẫn error_log có thể được đổi trong cấu hình Nginx hoặc ghi sang syslog; kiểm tra cấu hình đang nạp trước khi suy log vắng là không có lỗi. Log có thể lộ URL/IP, nên chia sẻ có chọn lọc.",
           "examples": [
             {
               "command": "sudo tail -n 50 /var/log/nginx/error.log",
@@ -5657,7 +5657,7 @@
           "verification": "PENDING",
           "purpose": "Đọc 50 dòng cuối error log Nginx.",
           "proves": "Đối chiếu timestamp và upstream; lỗi này không nói Nginx dừng.",
-          "doesNotProve": "Log có thể lộ URL/IP; chia sẻ có chọn lọc.",
+          "doesNotProve": "Đường dẫn error_log có thể được đổi trong cấu hình Nginx hoặc ghi sang syslog; kiểm tra cấu hình đang nạp trước khi suy log vắng là không có lỗi. Log có thể lộ URL/IP, nên chia sẻ có chọn lọc.",
           "examples": [
             {
               "command": "sudo tail -n 50 /var/log/nginx/error.log",
@@ -5834,7 +5834,7 @@
           "verification": "PENDING",
           "purpose": "Đọc 50 dòng cuối error log Nginx.",
           "proves": "Đối chiếu timestamp và upstream; lỗi này không nói Nginx dừng.",
-          "doesNotProve": "Log có thể lộ URL/IP; chia sẻ có chọn lọc.",
+          "doesNotProve": "Đường dẫn error_log có thể được đổi trong cấu hình Nginx hoặc ghi sang syslog; kiểm tra cấu hình đang nạp trước khi suy log vắng là không có lỗi. Log có thể lộ URL/IP, nên chia sẻ có chọn lọc.",
           "examples": [
             {
               "command": "sudo tail -n 50 /var/log/nginx/error.log",
@@ -6065,7 +6065,7 @@
           "verification": "PENDING",
           "purpose": "Đọc 50 dòng cuối error log Nginx.",
           "proves": "Đối chiếu timestamp và upstream; lỗi này không nói Nginx dừng.",
-          "doesNotProve": "Log có thể lộ URL/IP; chia sẻ có chọn lọc.",
+          "doesNotProve": "Đường dẫn error_log có thể được đổi trong cấu hình Nginx hoặc ghi sang syslog; kiểm tra cấu hình đang nạp trước khi suy log vắng là không có lỗi. Log có thể lộ URL/IP, nên chia sẻ có chọn lọc.",
           "examples": [
             {
               "command": "sudo tail -n 50 /var/log/nginx/error.log",

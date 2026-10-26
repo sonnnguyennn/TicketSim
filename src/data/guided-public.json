@@ -14753,7 +14753,7 @@
           },
           {
             "id": "wrong1",
-            "label": "PANEL: restored snapshot metadata"
+            "label": "PANEL: newer backup inventory"
           }
         ],
         "commandId": "panel-probes",

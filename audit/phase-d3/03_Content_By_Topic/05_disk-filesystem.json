@@ -2515,7 +2515,7 @@
           "verification": "PENDING",
           "purpose": "Đọc thông báo kernel gần đây, bao gồm lỗi block I/O.",
           "proves": "Đối chiếu device và thời gian; một dòng chưa xác định phần cứng hỏng.",
-          "doesNotProve": "Có thể cần sudo; tail có thể bỏ lỡ lỗi cũ; không remount rw khi chưa rõ nguyên nhân.",
+          "doesNotProve": "Có thể cần sudo; tail chỉ lấy cuối ring buffer và có thể bỏ lỡ lỗi cũ. Trong pipeline dmesg | tail, exit status mặc định của shell là của tail, nên mã 0 không tự chứng minh dmesg đã đọc thành công. Không remount rw khi chưa rõ nguyên nhân.",
           "examples": [
             {
               "command": "dmesg | tail",
@@ -2675,7 +2675,7 @@
           "verification": "PENDING",
           "purpose": "Đọc thông báo kernel gần đây, bao gồm lỗi block I/O.",
           "proves": "Đối chiếu device và thời gian; một dòng chưa xác định phần cứng hỏng.",
-          "doesNotProve": "Có thể cần sudo; tail có thể bỏ lỡ lỗi cũ; không remount rw khi chưa rõ nguyên nhân.",
+          "doesNotProve": "Có thể cần sudo; tail chỉ lấy cuối ring buffer và có thể bỏ lỡ lỗi cũ. Trong pipeline dmesg | tail, exit status mặc định của shell là của tail, nên mã 0 không tự chứng minh dmesg đã đọc thành công. Không remount rw khi chưa rõ nguyên nhân.",
           "examples": [
             {
               "command": "dmesg | tail",
@@ -6273,7 +6273,7 @@
           "verification": "PENDING",
           "purpose": "Xem logical volumes và free extents của LVM.",
           "proves": "VFree là phần trống trong VG, chưa phải dung lượng filesystem.",
-          "doesNotProve": "Tài liệu này ghép hai phép đọc lvs và vgs. Chọn đúng lệnh/tác vụ có trong bài; chưa có free extents thì không thể mở LV từ VG đó.",
+          "doesNotProve": "Ví dụ ghép hai lệnh lvs; vgs và hai bảng output tương ứng. Dấu ; không dừng khi lvs lỗi; exit status cuối là của vgs, nên kiểm tra riêng từng lệnh. VFree trong VG chưa phải dung lượng filesystem; cần đúng LV, backup và quyền trước khi mở rộng.",
           "examples": [
             {
               "command": "lvs; vgs",
@@ -6495,7 +6495,7 @@
           "verification": "PENDING",
           "purpose": "Xem logical volumes và free extents của LVM.",
           "proves": "VFree là phần trống trong VG, chưa phải dung lượng filesystem.",
-          "doesNotProve": "Tài liệu này ghép hai phép đọc lvs và vgs. Chọn đúng lệnh/tác vụ có trong bài; chưa có free extents thì không thể mở LV từ VG đó.",
+          "doesNotProve": "Ví dụ ghép hai lệnh lvs; vgs và hai bảng output tương ứng. Dấu ; không dừng khi lvs lỗi; exit status cuối là của vgs, nên kiểm tra riêng từng lệnh. VFree trong VG chưa phải dung lượng filesystem; cần đúng LV, backup và quyền trước khi mở rộng.",
           "examples": [
             {
               "command": "lvs; vgs",

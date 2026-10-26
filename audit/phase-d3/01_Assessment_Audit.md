@@ -2,7 +2,7 @@
 
 ## Scope and method
 
-Read-only export from effective authored Guided content, using repository base HEAD `3dd4bd7` plus any working-tree edits. Covers 112 tickets, 122 Command Library IDs, 620 scored questions, and 112 English reference notes. The 112 short-answer notes are excluded from the scored-question count.
+Read-only export from effective authored Guided content, using repository base HEAD `64ff150` plus any working-tree edits. Covers 112 tickets, 122 Command Library IDs, 620 scored questions, and 112 English reference notes. The 112 short-answer notes are excluded from the scored-question count.
 
 The labels below are **deterministic editorial triage**, not case-by-case technical certification or SME approval. `KEEP` means no rule below fired; it does not establish that the key, distractors, evidence, or command semantics are correct. All 620 entries remain `SME_PENDING`. The full dataset gives the reviewer the exact prose, options, keys, probes, hints, final context, and authored source.
 

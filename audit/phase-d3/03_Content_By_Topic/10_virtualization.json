@@ -3706,14 +3706,14 @@
         },
         {
           "id": "wrong1",
-          "label": "PANEL: restored snapshot metadata",
-          "feedback": "Metadata cũng ghi restore completed lúc 10:14; nó phục vụ đối chiếu mốc tạo snapshot, còn câu hỏi yêu cầu mục activity."
+          "label": "PANEL: newer backup inventory",
+          "feedback": "Inventory có backup mới hơn nhưng không ghi sự kiện restore VM đang được hỏi."
         }
       ],
       "correctIds": [
         "direct"
       ],
-      "explanation": "Activity là lịch sử thao tác. Metadata cũng ghi mốc hoàn tất restore, nhưng câu hỏi này yêu cầu đúng loại nguồn lịch sử hoạt động.",
+      "explanation": "Activity ghi sự kiện restore VM hoàn tất; inventory backup chỉ liệt kê nguồn dữ liệu có thể xem xét sau đó.",
       "hints": [
         "Restore hoàn tất lúc 10:14 không có nghĩa dữ liệu mới tới 10:14.",
         "So thời điểm tạo snapshot, mtime file và bản backup mới hơn.",

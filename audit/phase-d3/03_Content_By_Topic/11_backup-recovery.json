@@ -1630,12 +1630,12 @@
           "verification": "PENDING",
           "purpose": "Tính SHA-256 của file backup.",
           "proves": "So sánh hash với giá trị từ nguồn tin cậy.",
-          "doesNotProve": "Hash khớp không chứng minh backup khôi phục được.",
+          "doesNotProve": "Giá trị hash chỉ có nghĩa khi so với digest từ nguồn tin cậy của đúng artifact; hash khớp không chứng minh nội dung backup phục hồi được. Digest trong ví dụ là của một tar USTAR minh họa, không phải checksum để áp cho backup thật.",
           "examples": [
             {
               "command": "sha256sum FILE",
               "purpose": "Khi xác minh integrity backup.",
-              "expectedOutput": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08  backup.tar",
+              "expectedOutput": "3ee112d116cdb1763b6b60d82d652e1a53f1a06c8ae5b9be7d283f8ddf89aa41  backup.tar",
               "interpretation": "So sánh hash với giá trị từ nguồn tin cậy.",
               "outputIsExcerpt": true,
               "context": "guest"
@@ -1794,12 +1794,12 @@
           "verification": "PENDING",
           "purpose": "Tính SHA-256 của file backup.",
           "proves": "So sánh hash với giá trị từ nguồn tin cậy.",
-          "doesNotProve": "Hash khớp không chứng minh backup khôi phục được.",
+          "doesNotProve": "Giá trị hash chỉ có nghĩa khi so với digest từ nguồn tin cậy của đúng artifact; hash khớp không chứng minh nội dung backup phục hồi được. Digest trong ví dụ là của một tar USTAR minh họa, không phải checksum để áp cho backup thật.",
           "examples": [
             {
               "command": "sha256sum FILE",
               "purpose": "Khi xác minh integrity backup.",
-              "expectedOutput": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08  backup.tar",
+              "expectedOutput": "3ee112d116cdb1763b6b60d82d652e1a53f1a06c8ae5b9be7d283f8ddf89aa41  backup.tar",
               "interpretation": "So sánh hash với giá trị từ nguồn tin cậy.",
               "outputIsExcerpt": true,
               "context": "guest"

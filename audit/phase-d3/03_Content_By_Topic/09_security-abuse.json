@@ -357,7 +357,7 @@
           "verification": "PENDING",
           "purpose": "Đọc phiên đăng nhập gần đây từ wtmp.",
           "proves": "Một snapshot last không thay auth/audit logs và có thể bị thay đổi.",
-          "doesNotProve": "Không quy kết actor chỉ từ địa chỉ IP.",
+          "doesNotProve": "last đọc wtmp, phụ thuộc dữ liệu ghi nhận và khả năng bị sửa; thời gian hiển thị có thể theo timezone/định dạng host. Đối chiếu auth/audit log và key, không quy kết actor chỉ từ IP.",
           "examples": [
             {
               "command": "last -n 10",
@@ -531,7 +531,7 @@
           "verification": "PENDING",
           "purpose": "Đọc phiên đăng nhập gần đây từ wtmp.",
           "proves": "Một snapshot last không thay auth/audit logs và có thể bị thay đổi.",
-          "doesNotProve": "Không quy kết actor chỉ từ địa chỉ IP.",
+          "doesNotProve": "last đọc wtmp, phụ thuộc dữ liệu ghi nhận và khả năng bị sửa; thời gian hiển thị có thể theo timezone/định dạng host. Đối chiếu auth/audit log và key, không quy kết actor chỉ từ IP.",
           "examples": [
             {
               "command": "last -n 10",
@@ -2331,7 +2331,7 @@
           "verification": "PENDING",
           "purpose": "Tìm grant sudo cho account cần kiểm tra.",
           "proves": "Grant hiện có cần đối chiếu change record và account owner.",
-          "doesNotProve": "Đọc có quyền; không tự xóa grant trước khi bảo toàn chứng cứ.",
+          "doesNotProve": "grep trong /etc/sudoers.d chỉ tìm dòng khớp ở drop-in; không bao quát /etc/sudoers, nhóm/alias, include khác hoặc quyền hiệu lực của user. Cần quyền đọc; không xóa grant trước khi bảo toàn chứng cứ.",
           "examples": [
             {
               "command": "grep -R supportadmin /etc/sudoers.d",
@@ -2507,7 +2507,7 @@
           "verification": "PENDING",
           "purpose": "Tìm grant sudo cho account cần kiểm tra.",
           "proves": "Grant hiện có cần đối chiếu change record và account owner.",
-          "doesNotProve": "Đọc có quyền; không tự xóa grant trước khi bảo toàn chứng cứ.",
+          "doesNotProve": "grep trong /etc/sudoers.d chỉ tìm dòng khớp ở drop-in; không bao quát /etc/sudoers, nhóm/alias, include khác hoặc quyền hiệu lực của user. Cần quyền đọc; không xóa grant trước khi bảo toàn chứng cứ.",
           "examples": [
             {
               "command": "grep -R supportadmin /etc/sudoers.d",
@@ -4791,7 +4791,7 @@
           "verification": "PENDING",
           "purpose": "Đọc phiên đăng nhập gần đây từ wtmp.",
           "proves": "Một snapshot last không thay auth/audit logs và có thể bị thay đổi.",
-          "doesNotProve": "Không quy kết actor chỉ từ địa chỉ IP.",
+          "doesNotProve": "last đọc wtmp, phụ thuộc dữ liệu ghi nhận và khả năng bị sửa; thời gian hiển thị có thể theo timezone/định dạng host. Đối chiếu auth/audit log và key, không quy kết actor chỉ từ IP.",
           "examples": [
             {
               "command": "last -n 10",
@@ -5000,7 +5000,7 @@
           "verification": "PENDING",
           "purpose": "Đọc phiên đăng nhập gần đây từ wtmp.",
           "proves": "Một snapshot last không thay auth/audit logs và có thể bị thay đổi.",
-          "doesNotProve": "Không quy kết actor chỉ từ địa chỉ IP.",
+          "doesNotProve": "last đọc wtmp, phụ thuộc dữ liệu ghi nhận và khả năng bị sửa; thời gian hiển thị có thể theo timezone/định dạng host. Đối chiếu auth/audit log và key, không quy kết actor chỉ từ IP.",
           "examples": [
             {
               "command": "last -n 10",
@@ -5456,7 +5456,7 @@
           "verification": "PENDING",
           "purpose": "Đọc cron của root.",
           "proves": "Cron có thể tái chạy process; tên file không chứng minh malicious.",
-          "doesNotProve": "Cần quyền; không xóa cron trước forensic.",
+          "doesNotProve": "Chỉ đọc user crontab của root; không bao quát /etc/crontab, /etc/cron.d hay systemd timers. Cần quyền; không xóa job trước khi giữ bằng chứng.",
           "examples": [
             {
               "command": "crontab -l -u root",
@@ -5633,7 +5633,7 @@
           "verification": "PENDING",
           "purpose": "Đọc cron của root.",
           "proves": "Cron có thể tái chạy process; tên file không chứng minh malicious.",
-          "doesNotProve": "Cần quyền; không xóa cron trước forensic.",
+          "doesNotProve": "Chỉ đọc user crontab của root; không bao quát /etc/crontab, /etc/cron.d hay systemd timers. Cần quyền; không xóa job trước khi giữ bằng chứng.",
           "examples": [
             {
               "command": "crontab -l -u root",
@@ -5655,12 +5655,12 @@
           "verification": "PENDING",
           "purpose": "Tính SHA-256 của file backup.",
           "proves": "So sánh hash với giá trị từ nguồn tin cậy.",
-          "doesNotProve": "Hash khớp không chứng minh backup khôi phục được.",
+          "doesNotProve": "Giá trị hash chỉ có nghĩa khi so với digest từ nguồn tin cậy của đúng artifact; hash khớp không chứng minh nội dung backup phục hồi được. Digest trong ví dụ là của một tar USTAR minh họa, không phải checksum để áp cho backup thật.",
           "examples": [
             {
               "command": "sha256sum FILE",
               "purpose": "Khi xác minh integrity backup.",
-              "expectedOutput": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08  backup.tar",
+              "expectedOutput": "3ee112d116cdb1763b6b60d82d652e1a53f1a06c8ae5b9be7d283f8ddf89aa41  backup.tar",
               "interpretation": "So sánh hash với giá trị từ nguồn tin cậy.",
               "outputIsExcerpt": true,
               "context": "guest"
@@ -5854,7 +5854,7 @@
           "verification": "PENDING",
           "purpose": "Đọc cron của root.",
           "proves": "Cron có thể tái chạy process; tên file không chứng minh malicious.",
-          "doesNotProve": "Cần quyền; không xóa cron trước forensic.",
+          "doesNotProve": "Chỉ đọc user crontab của root; không bao quát /etc/crontab, /etc/cron.d hay systemd timers. Cần quyền; không xóa job trước khi giữ bằng chứng.",
           "examples": [
             {
               "command": "crontab -l -u root",
@@ -5876,12 +5876,12 @@
           "verification": "PENDING",
           "purpose": "Tính SHA-256 của file backup.",
           "proves": "So sánh hash với giá trị từ nguồn tin cậy.",
-          "doesNotProve": "Hash khớp không chứng minh backup khôi phục được.",
+          "doesNotProve": "Giá trị hash chỉ có nghĩa khi so với digest từ nguồn tin cậy của đúng artifact; hash khớp không chứng minh nội dung backup phục hồi được. Digest trong ví dụ là của một tar USTAR minh họa, không phải checksum để áp cho backup thật.",
           "examples": [
             {
               "command": "sha256sum FILE",
               "purpose": "Khi xác minh integrity backup.",
-              "expectedOutput": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08  backup.tar",
+              "expectedOutput": "3ee112d116cdb1763b6b60d82d652e1a53f1a06c8ae5b9be7d283f8ddf89aa41  backup.tar",
               "interpretation": "So sánh hash với giá trị từ nguồn tin cậy.",
               "outputIsExcerpt": true,
               "context": "guest"

@@ -48,12 +48,14 @@ describe('D1 correctness regressions', () => {
     expect(gradeSelection(['wrong1'], key('VPS-02-006'))).toBe(false)
   })
 
-  it('distinguishes panel activity from metadata without denying metadata completion', () => {
+  it('asks for panel activity without offering another source of the same restore event', () => {
     const question = byId('VPS-10-006').questions.find(item => item.id === 'check')!
     expect(question.prompt).toContain('lịch sử hoạt động')
     expect(byId('VPS-10-006').probes.find(item => item.command === 'PANEL: restored snapshot metadata')?.output).toContain('restore completed=2026-10-22 10:14 UTC')
-    expect(key('VPS-10-006').optionFeedback.wrong1).toContain('cũng ghi restore completed')
+    expect(option('VPS-10-006', 'check', 'wrong1').label).toBe('PANEL: newer backup inventory')
+    expect(key('VPS-10-006').optionFeedback.wrong1).toContain('không ghi sự kiện restore')
     expect(gradeSelection(['direct'], key('VPS-10-006'))).toBe(true)
+    expect(gradeSelection(['wrong1'], key('VPS-10-006'))).toBe(false)
   })
 
   it('does not assert synchronized memory, OOM and SSH evidence or different DNS resolvers', () => {
