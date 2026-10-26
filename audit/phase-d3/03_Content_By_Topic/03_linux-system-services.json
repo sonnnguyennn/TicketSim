@@ -3005,12 +3005,12 @@
           "source": "src/guided/commands.ts (id systemctl-service)"
         }
       ],
-      "prompt": "Muốn xem myapp fail do điều kiện phụ thuộc hay lỗi riêng, đọc gì?",
+      "prompt": "Muốn đọc trạng thái hiện tại của unit myapp cùng vài sự kiện startup gần đây, dùng gì?",
       "options": [
         {
           "id": "direct",
           "label": "systemctl status myapp",
-          "feedback": "Đọc trạng thái và sự kiện startup của ứng dụng đang không lên."
+          "feedback": "Đọc trạng thái hiện tại và sự kiện startup gần đây của đúng unit."
         },
         {
           "id": "wrong1",
@@ -3026,7 +3026,7 @@
       "correctIds": [
         "direct"
       ],
-      "explanation": "Trạng thái unit và các sự kiện giúp chọn service nào cần điều tra tiếp.",
+      "explanation": "systemctl status myapp hiển thị trạng thái unit và các dòng journal gần đây; journalctl chỉ đọc sự kiện theo thời gian và cũng có ích khi điều tra tiếp.",
       "hints": [
         "Dependency failed nói một điều kiện phụ thuộc chưa đạt; không đồng nghĩa dữ liệu DB đã hỏng.",
         "Đọc trạng thái MariaDB và journal của nó cùng thời điểm boot.",

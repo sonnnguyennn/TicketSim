@@ -1,5 +1,5 @@
 {
-  "expected_diagnosis": "Backup02:00–02:20 trùng mẫu I/O latency và p95 ứng dụng tăng; nghi contention nhưng chưa chứng minh backup là nguyên nhân duy nhất.",
+  "expected_diagnosis": "Backup 02:00–02:20 trùng mẫu I/O latency và p95 ứng dụng tăng; nghi contention nhưng chưa chứng minh backup là nguyên nhân duy nhất.",
   "recommended_next_checks": "So nhiều ngày, lịch job khác, traffic, process I/O và metric host với cùng timestamp/timezone.",
   "resolution_guidance": "Cùng owner backup/app đánh giá lịch, throttle hoặc capacity sau xác minh; giữ mục tiêu RPO và có phê duyệt.",
   "verification": "Ở cửa sổ backup mới app đạt latency mục tiêu; task backup hoàn thành và kiểm tra integrity/restore được thực hiện riêng.",

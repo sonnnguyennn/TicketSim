@@ -5348,7 +5348,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Muốn xem myapp fail do điều kiện phụ thuộc hay lỗi riêng, đọc gì?",
+        "prompt": "Muốn đọc trạng thái hiện tại của unit myapp cùng vài sự kiện startup gần đây, dùng gì?",
         "options": [
           {
             "id": "direct",
@@ -9024,7 +9024,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "MTR và ping mất 25% phản hồi, còn probe Singapore kết nối đủ. Bạn khoanh vùng đến đâu?",
+        "prompt": "MTR và ping thiếu 25% phản hồi ICMP ở đích, còn probe Singapore kết nối TCP đủ. Bạn khoanh vùng đến đâu?",
         "options": [
           {
             "id": "over",
@@ -9032,11 +9032,11 @@
           },
           {
             "id": "ignore",
-            "label": "Probe Singapore tốt nên có thể bỏ qua loss từ khách."
+            "label": "Probe Singapore tốt nên có thể bỏ qua mẫu ICMP từ khách."
           },
           {
             "id": "supported",
-            "label": "Đường từ nguồn đo có loss; chưa xác định đoạn gây lỗi."
+            "label": "Từ mạng khách thiếu 25% phản hồi ICMP ở đích; cần đo TCP/SSH cùng thời điểm để khoanh vùng."
           }
         ],
         "requiredProbeIds": [
@@ -10438,15 +10438,15 @@
   {
     "id": "VPS-04-008",
     "objective": "Đối chiếu thời gian backup với I/O wait và latency nhưng không khẳng định một lần trùng thời gian là nguyên nhân.",
-    "customerExplanation": "Ứng dụng nhanh ban ngày nhưng chậm khoảng02:00UTC. Cần đối chiếu các công việc theo lịch với độ trễ và I/O cùng cửa sổ, chưa mặc định tắt backup.",
+    "customerExplanation": "Ứng dụng nhanh ban ngày nhưng chậm khoảng 02:00 UTC. Cần đối chiếu các công việc theo lịch với độ trễ và I/O cùng cửa sổ, chưa mặc định tắt backup.",
     "probes": [
       {
         "id": "P1",
         "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
         "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
         "context": "guest",
-        "purpose": "Đọc log backup-agent trong cửa sổ02:00–02:30.",
-        "meaning": "Job bắt đầu02:00 và xong02:20 trong log. Log chưa đo tác động tới ứng dụng.",
+        "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",
+        "meaning": "Job bắt đầu 02:00 và xong 02:20 trong log. Log chưa đo tác động tới ứng dụng.",
         "commandId": "journalctl-service",
         "aliases": [],
         "why": "Khách chậm theo giờ cố định nên cần xác định job nào chạy cùng lúc."
@@ -10457,7 +10457,7 @@
         "output": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           8.00  0.00    4.00    5.00   0.00 83.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 5.00 128.00 10.00 1280.00 0.00 0.00 5.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 5.00 0.15 20.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           8.00  0.00    4.00   50.00   0.00 38.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 95.00 128.00 20.00 2560.00 0.00 0.00 95.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 2.00 95.00 9.69 90.00",
         "context": "guest",
         "purpose": "Đọc các mẫu I/O mở rộng của vda.",
-        "meaning": "Trong mẫu interval, r_await/w_await95ms. Cần đối chiếu baseline, traffic và các job khác; mẫu không ghi ai tạo I/O.",
+        "meaning": "Trong mẫu interval, r_await/w_await 95 ms. Cần đối chiếu baseline, traffic và các job khác; mẫu không ghi ai tạo I/O.",
         "commandId": "iostat",
         "aliases": [],
         "why": "Đối chiếu thời điểm backup với độ trễ storage thay vì chỉ biết job chạy."
@@ -10468,7 +10468,7 @@
         "command": "PANEL: app latency samples",
         "output": "01:30 UTC p95 120 ms\n02:05 UTC p95 2400 ms\n02:30 UTC p95 130 ms",
         "purpose": "Đọc p95 latency trước, trong và sau cửa sổ chậm.",
-        "meaning": "p95 tăng từ120ms lên2400ms lúc02:05 rồi còn130ms lúc02:30. Chưa loại trừ traffic hoặc công việc khác cùng thời điểm.",
+        "meaning": "p95 tăng từ 120 ms lên 2400 ms lúc 02:05 rồi còn 130 ms lúc 02:30. Chưa loại trừ traffic hoặc công việc khác cùng thời điểm.",
         "commandId": "panel-probes",
         "aliases": [],
         "why": "Cần đối chiếu trải nghiệm ứng dụng với timeline job/I/O."
@@ -10479,7 +10479,7 @@
         "command": "PANEL: backup task result",
         "output": "Backup task 2026-10-22 02:00 UTC: completed at 02:20 UTC",
         "purpose": "Đọc trạng thái hoàn thành task backup.",
-        "meaning": "Task báo completed02:20. Hoàn thành task không chứng minh archive còn nguyên hay restore thành công.",
+        "meaning": "Task báo completed 02:20. Hoàn thành task không chứng minh archive còn nguyên hay restore thành công.",
         "commandId": "panel-backup-status",
         "aliases": [],
         "why": "Khi cân nhắc đổi lịch phải giữ yêu cầu bảo vệ dữ liệu và theo dõi task."
@@ -10498,7 +10498,7 @@
           },
           {
             "id": "symptom",
-            "label": "Ứng dụng chậm quanh02:00UTC."
+            "label": "Ứng dụng chậm quanh 02:00 UTC."
           },
           {
             "id": "other",
@@ -10511,7 +10511,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Muốn biết backup-agent có chạy trong cửa sổ02:00–02:30, đọc gì?",
+        "prompt": "Muốn biết backup-agent có chạy trong cửa sổ 02:00–02:30, đọc gì?",
         "options": [
           {
             "id": "wrong1",
@@ -10533,7 +10533,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Backup, I/O cao và latency cùng tăng quanh02:00 hỗ trợ nhận định nào?",
+        "prompt": "Backup, I/O cao và latency cùng tăng quanh 02:00 hỗ trợ nhận định nào?",
         "options": [
           {
             "id": "ignore",
@@ -10565,7 +10565,7 @@
         "options": [
           {
             "id": "p2",
-            "label": "Mẫu interval có độ trễ đọc/ghi vda95ms."
+            "label": "Mẫu interval có độ trễ đọc/ghi vda 95 ms."
           },
           {
             "id": "over",
@@ -10573,7 +10573,7 @@
           },
           {
             "id": "p1",
-            "label": "Backup chạy từ02:00 đến02:20."
+            "label": "Backup chạy từ 02:00 đến 02:20."
           }
         ],
         "requiredProbeIds": [

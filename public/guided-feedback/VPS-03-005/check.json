@@ -2,10 +2,10 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Trạng thái unit và các sự kiện giúp chọn service nào cần điều tra tiếp.",
+  "explanation": "systemctl status myapp hiển thị trạng thái unit và các dòng journal gần đây; journalctl chỉ đọc sự kiện theo thời gian và cũng có ích khi điều tra tiếp.",
   "commandId": "systemctl-service",
   "optionFeedback": {
-    "direct": "Đọc trạng thái và sự kiện startup của ứng dụng đang không lên.",
+    "direct": "Đọc trạng thái hiện tại và sự kiện startup gần đây của đúng unit.",
     "wrong1": "Trạng thái MariaDB giúp kiểm tra dependency, không đọc trạng thái unit myapp.",
     "wrong2": "Journal là sự kiện lịch sử, không thay phép đọc trạng thái hiện tại của unit."
   }

@@ -7,7 +7,7 @@ import { loadCommandLibrary } from './content/load-command-library.mjs'
 
 const root = path.resolve(import.meta.dirname, '..')
 const folder = path.join(root, 'audit/phase-d3')
-const reviewStatuses = new Set(['SME_PENDING', 'REVIEWED_PASS', 'EDIT_REQUIRED', 'NEEDS_SOURCE'])
+const reviewStatuses = new Set(['SME_PENDING', 'REVIEWED_PASS', 'EDIT_REQUIRED', 'NEEDS_SOURCE', 'AGENT_REVIEWED', 'EDITORIAL_REVISED', 'NEEDS_EXTERNAL_REVIEW'])
 const dimensionNames = ['syntax', 'flags', 'examples', 'output', 'interpretation', 'safety', 'distro']
 const batch01Questions = new Set(['VPS-03-001/triage', 'VPS-05-002/output', 'VPS-05-002/evidence', 'VPS-07-001/evidence', 'VPS-10-008/output'])
 const batch01Commands = new Set(['firewall-list', 'firewall-zones'])

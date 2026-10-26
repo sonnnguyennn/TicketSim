@@ -5203,28 +5203,28 @@
           "source": "src/guided/commands.ts (id ip-link)"
         }
       ],
-      "prompt": "MTR và ping mất 25% phản hồi, còn probe Singapore kết nối đủ. Bạn khoanh vùng đến đâu?",
+      "prompt": "MTR và ping thiếu 25% phản hồi ICMP ở đích, còn probe Singapore kết nối TCP đủ. Bạn khoanh vùng đến đâu?",
       "options": [
         {
           "id": "over",
           "label": "Hop trung gian phản hồi ít chính là router hỏng.",
-          "feedback": "Router có thể hạn chế ICMP dành cho chính nó; cần nhìn loss tiếp diễn tới đích và phép TCP."
+          "feedback": "Router có thể hạn chế ICMP dành cho chính nó; cần nhìn phản hồi ở đích và phép TCP cùng nguồn."
         },
         {
           "id": "ignore",
-          "label": "Probe Singapore tốt nên có thể bỏ qua loss từ khách.",
-          "feedback": "Khác đường đi có thể cho kết quả khác; probe khác tốt không bác bỏ mẫu của khách."
+          "label": "Probe Singapore tốt nên có thể bỏ qua mẫu ICMP từ khách.",
+          "feedback": "Khác đường đi có thể cho kết quả khác; probe khác tốt không bác bỏ triệu chứng của khách."
         },
         {
           "id": "supported",
-          "label": "Đường từ nguồn đo có loss; chưa xác định đoạn gây lỗi.",
-          "feedback": "Hai phép đo cùng nguồn cùng có loss, còn điểm đo khác không bị trong cửa sổ mẫu."
+          "label": "Từ mạng khách thiếu 25% phản hồi ICMP ở đích; cần đo TCP/SSH cùng thời điểm để khoanh vùng.",
+          "feedback": "Hai phép đo ICMP cùng nguồn thiếu phản hồi; probe TCP từ Singapore dùng đường khác và không xác minh SSH từ mạng khách."
         }
       ],
       "correctIds": [
         "supported"
       ],
-      "explanation": "Mẫu cho thấy loss trên đường đo từ nguồn khách; chưa phân biệt access, transit hay phía đích bằng ICMP và một probe khác.",
+      "explanation": "Mẫu cho thấy thiếu phản hồi ICMP từ nguồn khách; chưa chứng minh mất gói TCP/SSH hay xác định access, transit hoặc phía đích.",
       "hints": [
         "Khách báo gián đoạn, nên thời điểm và mạng nguồn của phép đo rất quan trọng.",
         "So sánh tỷ lệ mất gói ở đích trong MTR với ping; ghi nguồn và thời gian đo.",
