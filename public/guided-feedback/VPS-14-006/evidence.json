@@ -6,7 +6,7 @@
   "explanation": "Không suy trạng thái dữ liệu từ lịch đơn thuần.",
   "commandId": "panel-lifecycle-policy",
   "optionFeedback": {
-    "p2": "Đây là deadline cần đối chiếu task.",
+    "p2": "Đây là lịch dự kiến trong bản ghi 22/10, không phải trạng thái job sau 25/10.",
     "over": "G1 ghi hold false; chưa được áp giữ lại.",
     "p1": "Đọc từ billing expired."
   }

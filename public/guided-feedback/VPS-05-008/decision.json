@@ -4,7 +4,7 @@
   ],
   "explanation": "LVM/FS change phải đúng mapping/type, có backup và quyền; không dùng mkfs cho tăng dung lượng dữ liệu đang có.",
   "optionFeedback": {
-    "close": "Ứng dụng vẫn chỉ có không gian trong filesystem30G gần đầy.",
+    "close": "Ứng dụng vẫn chỉ có không gian trong filesystem 30G gần đầy.",
     "safe": "Tạo chỗ đúng lớp và dùng công cụ filesystem phù hợp.",
     "unsafe": "Format/xóa có thể phá dữ liệu, không phải mở rộng filesystem hiện có."
   }

@@ -4,9 +4,9 @@
     "act",
     "verify"
   ],
-  "explanation": "Xác nhận mốc và quyền trước, xin hold sau, kiểm tra trạng thái thật cuối.",
+  "explanation": "Xác nhận mốc, trạng thái job và quyền trước; xin hold sau, rồi kiểm tra trạng thái áp dụng. Sau 25/10 phải hỏi job đã chạy chưa.",
   "optionFeedback": {
-    "evidence": "Biết rủi ro và thời gian còn lại.",
+    "evidence": "Đọc trạng thái job tại thời điểm xử lý; lịch xóa không chứng minh dữ liệu còn hay mất.",
     "verify": "Quyết định duyệt cần được áp trong hệ thống.",
     "act": "Support không tự bỏ deletion task."
   }

@@ -2,6 +2,7 @@ import { test, expect, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
 import { mkdir } from 'node:fs/promises'
 import type { GuidedAnswerKey, GuidedCase, GuidedQuestion } from '../src/guided/types'
+import { guidedContentRevisionFor } from '../src/guided/contentRevision'
 
 const cases = JSON.parse(await readFile('src/data/guided-public.json', 'utf8')) as GuidedCase[]
 const sourceTickets = JSON.parse(await readFile('starter-data/tickets.json', 'utf8')).tickets as { id: string; customer_message: string }[]
@@ -101,7 +102,7 @@ for (const [index, id] of representatives.entries()) test(`Phase B full topic pa
   expect(answerRequests.length).toBeGreaterThan(0)
   const progress = await page.evaluate(() => JSON.parse(localStorage.getItem('vps-ticket-simulator-progress-v5')!))
   expect(progress.guidedAttempts[0].score).toBe(progress.guidedAttempts[0].total)
-  expect(progress.guidedAttempts[0].contentRevision).toBe('D1-2026-10-26')
+  expect(progress.guidedAttempts[0].contentRevision).toBe(guidedContentRevisionFor(id))
   expect(progress.guidedDrafts[id].submitted).toBe(true)
   expect(progress.reviewAttempts).toHaveLength(0)
   if (id === 'VPS-04-008') {

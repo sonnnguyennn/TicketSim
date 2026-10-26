@@ -7,7 +7,7 @@
   "commandId": "lsof-deleted",
   "optionFeedback": {
     "p1": "Đúng cột Use% của df.",
-    "p2": "lsof có PID/FD, nlink0, kích thước và tên deleted.",
+    "p2": "lsof có PID/FD, nlink 0, kích thước và tên deleted.",
     "over": "Không có quyền/owner hoặc đánh giá tác động trong hai output."
   }
 }

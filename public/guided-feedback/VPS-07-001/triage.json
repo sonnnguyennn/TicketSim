@@ -2,10 +2,10 @@
   "correctIds": [
     "tcp"
   ],
-  "explanation": "Refused là lỗi thiết lập kết nối TCP;403 chỉ xuất hiện sau khi đã nhận phản hồi HTTP.",
+  "explanation": "Refused là lỗi thiết lập kết nối TCP; 403 chỉ xuất hiện sau khi đã nhận phản hồi HTTP.",
   "optionFeedback": {
-    "403": "403 là một phản hồiHTTP, khác refused.",
-    "dns": "curl báorefused không tự xác nhận lỗi phân giải tên.",
-    "tcp": "curl chưa nhận mãHTTP từ server."
+    "403": "403 là một phản hồi HTTP, khác refused.",
+    "dns": "curl báo refused không tự xác nhận lỗi phân giải tên.",
+    "tcp": "curl chưa nhận mã HTTP từ server."
   }
 }

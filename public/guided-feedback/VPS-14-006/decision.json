@@ -2,9 +2,9 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Đúng owner và đội policy cần quyết định, tránh hứa điều chưa áp.",
+  "explanation": "Xác minh chủ tài khoản rồi chuyển đội có quyền duyệt hold. Khi xử lý sau deadline, phải đọc trạng thái job trước khi nói dữ liệu còn hay đã xóa.",
   "optionFeedback": {
-    "safe": "Thông báo deadline và chỉ xác nhận gia hạn khi đã có task/decision.",
+    "safe": "Tại mốc 22/10, còn lịch xóa 25/10; chỉ xác nhận gia hạn khi có quyết định và trạng thái hold thực.",
     "unsafe": "Vượt quyền và không xác minh khả năng restore.",
     "close": "Gửi request chưa có nghĩa hold đã được áp."
   }

@@ -5,8 +5,8 @@
   "explanation": "Free extents nằm ở VG chưa được cấp vào LV; filesystem cần mở bằng công cụ đúng loại sau đó.",
   "commandId": "lvm-report",
   "optionFeedback": {
-    "supported": "vgs có VFree còn lvs/df vẫn30G.",
+    "supported": "vgs có VFree còn lvs/df vẫn 30G.",
     "over": "Disk là lớp dưới, không đồng kích thước LV và filesystem.",
-    "ignore": "df đo bên trong filesystem; vgs riêng đang có free49.99g."
+    "ignore": "df đo bên trong filesystem; vgs riêng đang có free 49.99g."
   }
 }

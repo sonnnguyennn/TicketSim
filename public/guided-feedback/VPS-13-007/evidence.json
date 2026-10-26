@@ -8,6 +8,6 @@
   "optionFeedback": {
     "p2": "Đây là lỗi cần đối chiếu memory limit/host.",
     "over": "Chưa có change hoặc kết quả verify.",
-    "p1": "Đọc được vì đã dùng--all."
+    "p1": "Đọc được vì đã dùng --all."
   }
 }

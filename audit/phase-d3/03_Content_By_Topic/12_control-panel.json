@@ -4509,7 +4509,7 @@
         "resolution": "Owner cấp token quyền tối thiểu qua quy trình IAM hoặc chuyển đội authorization.",
         "verification": "Kiểm tra quyền theo quy trình; chỉ thử mutation thực khi owner đã duyệt tác động và thời điểm.",
         "escalation": "Quyền hoặc ownership tranh chấp, matrix không rõ hoặc cần IAM quyết định.",
-        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Retry the approved API action and confirm its effect.\nStatus: Authorization pending."
+        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Check the endpoint permission under the approved scope; perform a real reboot only at an owner-approved time.\nStatus: Authorization pending."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:2409",
@@ -4681,7 +4681,7 @@
         "resolution": "Owner cấp token quyền tối thiểu qua quy trình IAM hoặc chuyển đội authorization.",
         "verification": "Kiểm tra quyền theo quy trình; chỉ thử mutation thực khi owner đã duyệt tác động và thời điểm.",
         "escalation": "Quyền hoặc ownership tranh chấp, matrix không rõ hoặc cần IAM quyết định.",
-        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Retry the approved API action and confirm its effect.\nStatus: Authorization pending."
+        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Check the endpoint permission under the approved scope; perform a real reboot only at an owner-approved time.\nStatus: Authorization pending."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:2427",
@@ -4858,7 +4858,7 @@
         "resolution": "Owner cấp token quyền tối thiểu qua quy trình IAM hoặc chuyển đội authorization.",
         "verification": "Kiểm tra quyền theo quy trình; chỉ thử mutation thực khi owner đã duyệt tác động và thời điểm.",
         "escalation": "Quyền hoặc ownership tranh chấp, matrix không rõ hoặc cần IAM quyết định.",
-        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Retry the approved API action and confirm its effect.\nStatus: Authorization pending."
+        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Check the endpoint permission under the approved scope; perform a real reboot only at an owner-approved time.\nStatus: Authorization pending."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:2445",
@@ -5036,7 +5036,7 @@
         "resolution": "Owner cấp token quyền tối thiểu qua quy trình IAM hoặc chuyển đội authorization.",
         "verification": "Kiểm tra quyền theo quy trình; chỉ thử mutation thực khi owner đã duyệt tác động và thời điểm.",
         "escalation": "Quyền hoặc ownership tranh chấp, matrix không rõ hoặc cần IAM quyết định.",
-        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Retry the approved API action and confirm its effect.\nStatus: Authorization pending."
+        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Check the endpoint permission under the approved scope; perform a real reboot only at an owner-approved time.\nStatus: Authorization pending."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:2463",
@@ -5149,7 +5149,7 @@
         "resolution": "Owner cấp token quyền tối thiểu qua quy trình IAM hoặc chuyển đội authorization.",
         "verification": "Kiểm tra quyền theo quy trình; chỉ thử mutation thực khi owner đã duyệt tác động và thời điểm.",
         "escalation": "Quyền hoặc ownership tranh chấp, matrix không rõ hoặc cần IAM quyết định.",
-        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Retry the approved API action and confirm its effect.\nStatus: Authorization pending."
+        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Check the endpoint permission under the approved scope; perform a real reboot only at an owner-approved time.\nStatus: Authorization pending."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:2481",
@@ -5255,7 +5255,7 @@
         "resolution": "Owner cấp token quyền tối thiểu qua quy trình IAM hoặc chuyển đội authorization.",
         "verification": "Kiểm tra quyền theo quy trình; chỉ thử mutation thực khi owner đã duyệt tác động và thời điểm.",
         "escalation": "Quyền hoặc ownership tranh chấp, matrix không rõ hoặc cần IAM quyết định.",
-        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Retry the approved API action and confirm its effect.\nStatus: Authorization pending."
+        "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Check the endpoint permission under the approved scope; perform a real reboot only at an owner-approved time.\nStatus: Authorization pending."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:2499",

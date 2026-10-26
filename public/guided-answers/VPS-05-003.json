@@ -1,5 +1,5 @@
 {
-  "expected_diagnosis": "Journal chiếm8G gồm active và archived; root dùng94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
+  "expected_diagnosis": "Journal chiếm 8G gồm active và archived; root dùng 94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
   "recommended_next_checks": "Đọc nguồn log theo unit/time, cấu hình journald và yêu cầu lưu giữ/security; xác minh filesystem chứa journal.",
   "resolution_guidance": "Được owner/policy phê duyệt thì dùng retention/vacuum phù hợp cho archived journal và sửa nguồn tăng; không xóa cả /var/log.",
   "verification": "Dung lượng đủ, log mới vẫn được ghi và tốc độ tăng phù hợp; không chỉ nhìn exit status của vacuum.",

@@ -158,14 +158,14 @@ export const topicEdits = {
     }
   },
   "VPS-14-006": {
-    "objective": "Đọc thời hạn xóa dữ liệu và trạng thái hold để chuyển yêu cầu gia hạn đúng người trước deadline.",
-    "customerExplanation": "Khách nhận thông báo hết hạn và muốn giữ dữ liệu lâu hơn. Cần xác minh thời hạn xóa và policy, chưa thể hứa giữ vô hạn.",
+    "objective": "Tại thời điểm tiếp nhận 22/10/2026 10:00 UTC, phân biệt lịch xóa với xóa đã hoàn tất và chuyển yêu cầu giữ dữ liệu đúng người.",
+    "customerExplanation": "Đây là ticket lịch sử được tiếp nhận lúc 10:00 UTC ngày 22/10/2026, trước lịch xóa 25/10. Khách muốn giữ dữ liệu lâu hơn. Các bản ghi trong bài phản ánh thời điểm tiếp nhận; nếu xử lý lại sau deadline, phải hỏi trạng thái deletion job hiện tại trước khi hứa còn dữ liệu hoặc còn thời gian xin hold.",
     "hints": [
       "Hết hạn dịch vụ không đồng nghĩa dữ liệu đã xóa.",
       "So expired date với scheduled deletion và hold state.",
-      "Ngày xóa 25/10, hold false và backup chưa thử restore. Chuyển billing/lifecycle xin hold có audit trước deadline, chưa bảo đảm được duyệt."
+      "Ở mốc 22/10, job mới được lên lịch 25/10 và hold=false. Chuyển billing/lifecycle xin hold có audit; nếu đã qua 25/10, kiểm tra job đã chạy chưa và backup có phục hồi được không."
     ],
-    "verificationPrompt": "Ghi expiration, deletion deadline, hold và backup. Nêu bước chuyển khẩn, quyền duyệt, thời hạn mới cần xác nhận và cách kiểm tra dữ liệu.",
+    "verificationPrompt": "Ghi thời điểm ticket 22/10, expiration, lịch xóa, hold và backup. Nêu ai duyệt hold; nếu xử lý sau 25/10, cần đọc trạng thái deletion job và kiểm tra khả năng khôi phục trước khi báo khách.",
     "probes": {
       "P1": {
         "purpose": "Đọc ngày dịch vụ hết hạn.",
@@ -174,13 +174,13 @@ export const topicEdits = {
       },
       "P2": {
         "purpose": "Đọc lịch xóa theo retention.",
-        "why": "Xác định deadline cần chuyển yêu cầu giữ dữ liệu.",
-        "meaning": "Scheduled deletion 25/10 là lịch dự kiến; cần kiểm tra task/hold và quyền ngoại lệ."
+        "why": "Tại mốc tiếp nhận 22/10, xác định lịch xóa để chuyển yêu cầu giữ dữ liệu.",
+        "meaning": "Scheduled deletion 25/10 là kế hoạch, không phải bằng chứng job đã chạy. Nếu đọc sau mốc đó, phải xem trạng thái job thực tế."
       },
       "G1": {
         "purpose": "Đọc hold hiện tại và deletion job.",
         "why": "Không coi ticket xin gia hạn là hold đã áp.",
-        "meaning": "hold=false, job 25/10 00:00 UTC; chưa có lệnh giữ dữ liệu được xác nhận."
+        "meaning": "Tại mốc 22/10, hold=false và job được lên lịch 25/10 00:00 UTC. Bản ghi này không chứng minh trạng thái job sau deadline."
       },
       "G2": {
         "purpose": "Đọc backup hiện có và restore verification.",
@@ -226,20 +226,20 @@ export const topicEdits = {
         }
       },
       "output": {
-        "prompt": "Expired 20/10, xóa 25/10 và hold false. Nên trả lời thế nào?",
-        "explanation": "Cần xử lý trước deadline nhưng không hứa ngoại lệ chưa được duyệt.",
+        "prompt": "Ở mốc tiếp nhận 22/10, expired 20/10, lịch xóa 25/10 và hold=false. Nên trả lời thế nào?",
+        "explanation": "Ngày 22/10 vẫn còn thời gian chuyển yêu cầu, nhưng chưa có hold được duyệt. Nếu mở lại sau 25/10, phải kiểm tra job đã chạy hay chưa.",
         "options": {
           "supported": [
-            "Cần chuyển khẩn xin hold theo quyền trước deadline.",
-            "Hiện chưa có hold và backup cũng chưa verified restore."
+            "Chuyển billing/lifecycle xin hold có audit; chưa hứa dữ liệu được giữ.",
+            "Tại mốc 22/10, hold=false và backup chưa thử restore. Sau 25/10 phải kiểm tra trạng thái deletion job."
           ],
           "over": [
             "Support có thể hứa giữ dữ liệu vô hạn.",
             "Policy và người duyệt quyết định phạm vi gia hạn."
           ],
           "ignore": [
-            "Expired nghĩa là dữ liệu đã xóa nên không cần xem job.",
-            "Bản ghi còn scheduled deletion tươnglai cần được đối chiếu."
+            "Hết hạn dịch vụ là đủ để báo dữ liệu đã bị xóa.",
+            "Expired chỉ là trạng thái billing; cần trạng thái deletion job mới biết việc xóa đã xảy ra chưa."
           ]
         }
       },
@@ -253,7 +253,7 @@ export const topicEdits = {
           ],
           "p2": [
             "Lịch xóa là 25/10.",
-            "Đây là deadline cần đối chiếu task."
+            "Đây là lịch dự kiến trong bản ghi 22/10, không phải trạng thái job sau 25/10."
           ],
           "over": [
             "Yêu cầu ticket đã tự đặt hold.",
@@ -262,12 +262,12 @@ export const topicEdits = {
         }
       },
       "decision": {
-        "prompt": "Ai cần tiếp nhận yêu cầu giữ dữ liệu này?",
-        "explanation": "Đúng owner và đội policy cần quyết định, tránh hứa điều chưa áp.",
+        "prompt": "Ở mốc 22/10, ai cần tiếp nhận yêu cầu giữ dữ liệu?",
+        "explanation": "Xác minh chủ tài khoản rồi chuyển đội có quyền duyệt hold. Khi xử lý sau deadline, phải đọc trạng thái job trước khi nói dữ liệu còn hay đã xóa.",
         "options": {
           "safe": [
             "Xác minh owner rồi chuyển billing/lifecycle xin hold có audit.",
-            "Thông báo deadline và chỉ xác nhận gia hạn khi đã có task/decision."
+            "Tại mốc 22/10, còn lịch xóa 25/10; chỉ xác nhận gia hạn khi có quyết định và trạng thái hold thực."
           ],
           "unsafe": [
             "Tự hủy deletion job hoặc hứa dữ liệu chưa sao luôn an toàn.",
@@ -280,19 +280,19 @@ export const topicEdits = {
         }
       },
       "order": {
-        "prompt": "Sắp xếp xử lý gia hạn retention trước ngày xóa.",
-        "explanation": "Xác nhận mốc và quyền trước, xin hold sau, kiểm tra trạng thái thật cuối.",
+        "prompt": "Sắp xếp xử lý yêu cầu retention tại mốc tiếp nhận 22/10.",
+        "explanation": "Xác nhận mốc, trạng thái job và quyền trước; xin hold sau, rồi kiểm tra trạng thái áp dụng. Sau 25/10 phải hỏi job đã chạy chưa.",
         "options": {
           "evidence": [
             "Xác minh owner, expiration, deletion job, hold và backup.",
-            "Biết rủi ro và thời gian còn lại."
+            "Đọc trạng thái job tại thời điểm xử lý; lịch xóa không chứng minh dữ liệu còn hay mất."
           ],
           "verify": [
             "Kiểm tra hold/extension đã áp, deadline mới và data/backup status.",
             "Quyết định duyệt cần được áp trong hệ thống."
           ],
           "act": [
-            "Đội được quyền xử lý ngoại lệ retention có audit trước deadline.",
+            "Đội được quyền xử lý ngoại lệ retention có audit khi dữ liệu còn đủ điều kiện giữ.",
             "Support không tự bỏ deletion task."
           ]
         }
@@ -300,16 +300,16 @@ export const topicEdits = {
     },
     "review": {
       "technical": "Expired khác deleted; request khác applied hold; pending restore không bảo đảm dữ liệu.",
-      "editorial": "Câu hỏi theo deadline và authority, không generic warning.",
+      "editorial": "Ticket lịch sử tại 22/10; không suy trạng thái xóa sau 25/10 từ lịch dự kiến.",
       "references": [],
       "fixtureChanges": []
     },
     "answerOverrides": {
-      "expected_diagnosis": "Dịch vụ hết hạn 20/10, xóa lịch 25/10, hold false; backup 19/10 chưa xác minh restore.",
-      "recommended_next_checks": "Xác minh owner, renewal, retention job, policy và khả năng backup trước deadline.",
-      "resolution_guidance": "Chuyển billing/lifecycle on-call xin ngoại lệ hold có audit; chỉ hứa thời hạn đã được duyệt và áp.",
-      "verification": "Kiểm tra hold/renewal, deadline mới, data/backup status và khách xác nhận phương án.",
-      "escalate_when": "Cần policy owner hoặc quyết định khẩn trước deletion.",
+      "expected_diagnosis": "Tại 22/10/2026 10:00 UTC: dịch vụ hết hạn 20/10, deletion job dự kiến 25/10, hold=false; backup 19/10 chưa thử restore. Không biết job đã chạy hay dữ liệu còn sau 25/10.",
+      "recommended_next_checks": "Xác minh owner, policy, trạng thái deletion job tại lúc xử lý, hold hiện tại và khả năng phục hồi từ backup.",
+      "resolution_guidance": "Chuyển billing/lifecycle on-call xin quyết định hold có audit nếu còn áp dụng được; không hứa gia hạn hay phục hồi khi chưa xác nhận trạng thái job và dữ liệu.",
+      "verification": "Kiểm tra job đã chạy chưa, hold/renewal và deadline mới nếu được duyệt; kiểm tra dữ liệu/backup rồi báo khách kết quả xác minh.",
+      "escalate_when": "Cần policy owner quyết định khẩn về hold hoặc đánh giá khôi phục sau deadline.",
       "production_warning": "Không tự hủy job xóa hoặc hứa giữ dữ liệu vô hạn; backup chưa thử không bảo đảm restore."
     }
   },
@@ -1079,7 +1079,7 @@ export const topicEdits = {
             "So Docker network, embedded DNS và upstream; không vội đổi toàn host."
           ],
           "over": [
-            "Authoritative chắc chắn không cóArecord.",
+            "Authoritative chắc chắn không có A record.",
             "Timeout không là NXDOMAIN; host còn tra được entry."
           ],
           "ignore": [
@@ -1212,7 +1212,7 @@ export const topicEdits = {
           ],
           "other": [
             "Toàn Docker host đã tắt.",
-            "API còn chạy, khách chưa nêu hostoff."
+            "API còn chạy, khách chưa nêu host off."
           ],
           "cause": [
             "API Up chứng minh DB cũng healthy.",
@@ -1222,7 +1222,7 @@ export const topicEdits = {
       },
       "check": {
         "prompt": "Lệnh nào thấy cả DB đã dừng trong Compose project?",
-        "explanation": "Mặc định compose ps chỉ hiện running; cần--all khi tìm dependency đã thoát.",
+        "explanation": "Mặc định compose ps chỉ hiện running; cần --all khi tìm dependency đã thoát.",
         "options": {
           "direct": [
             "docker compose ps --all",
@@ -1262,7 +1262,7 @@ export const topicEdits = {
         "options": {
           "p1": [
             "API Up nhưng db Exited(1).",
-            "Đọc được vì đã dùng--all."
+            "Đọc được vì đã dùng --all."
           ],
           "p2": [
             "Log DB ghi Cannot allocate memory.",
@@ -1312,7 +1312,7 @@ export const topicEdits = {
       }
     },
     "review": {
-      "technical": "Sửa Compose ps cần--all để show DB Exited; OOM snapshot không chứng minh host RAM sole cause; chuẩn hóa free header.",
+      "technical": "Sửa Compose ps cần --all để show DB Exited; OOM snapshot không chứng minh host RAM sole cause; chuẩn hóa free header.",
       "editorial": "Tách API db dependency, không cho API Up=resolved.",
       "references": [
         "https://docs.docker.com/reference/cli/docker/compose/ps/",
@@ -1321,7 +1321,7 @@ export const topicEdits = {
       "fixtureChanges": [
         {
           "probeId": "P1",
-          "reason": "Compose ps mặc định chỉ running; dùng--all và bảng đủ cột để hiện db Exited, không alias lệnh cũ sai.",
+          "reason": "Compose ps mặc định chỉ running; dùng --all và bảng đủ cột để hiện db Exited, không alias lệnh cũ sai.",
           "reference": "https://docs.docker.com/reference/cli/docker/compose/ps/"
         },
         {
@@ -1847,7 +1847,7 @@ export const topicEdits = {
         }
       },
       "output": {
-        "prompt": "Mapping ở127.0.0.1 và local curl 200. Kết luận nào phù hợp?",
+        "prompt": "Mapping ở 127.0.0.1 và local curl 200. Kết luận nào phù hợp?",
         "explanation": "Địa chỉ loopback giải thích giới hạn đường vào; ý định thiết kế còn phải xác nhận.",
         "options": {
           "supported": [
@@ -4238,14 +4238,14 @@ export const topicEdits = {
       },
       "output": {
         "prompt": "Cùng IP, clone nối public bridge và ARP có hai MAC. Nên hiểu thế nào?",
-        "explanation": "Bằng chứng hỗ trợ trùng IP trên mạng chung; cần nhắm đúngclone và giữ production.",
+        "explanation": "Bằng chứng hỗ trợ trùng IP trên mạng chung; cần nhắm đúng clone và giữ production.",
         "options": {
           "supported": [
             "Cần cách ly clone có quyền và đối chiếu kế hoạch IP trước test tiếp.",
             "Không coi clone boot được là restore an toàn cho mạng thật."
           ],
           "over": [
-            "ĐổiDNSA là đủ hết duplicate IP của hai NIC.",
+            "Đổi DNS A là đủ hết duplicate IP của hai NIC.",
             "DNS không đổi IP mà NIC phát trên cùng mạng."
           ],
           "ignore": [

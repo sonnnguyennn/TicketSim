@@ -5,7 +5,7 @@
   "explanation": "Xác nhận Host/vhost/release rồi test config và reload đúng quyền.",
   "optionFeedback": {
     "close": "URL khách vẫn 404; tồn tại file chưa đủ.",
-    "safe": "Dùng nginx-t, rollback và kiểm tra URL sau reload.",
+    "safe": "Dùng nginx -t, rollback và kiểm tra URL sau reload.",
     "unsafe": "Có thể mất dữ liệu, chưa giải quyết mapping."
   }
 }

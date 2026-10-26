@@ -702,7 +702,7 @@
           "output": "top - 02:11:02 up 4 days, 2:14, 1 user, load average: 2.89, 2.11, 1.40\n%Cpu(s): 96.2 us, 2.0 sy, 1.8 id\n  PID USER      %CPU COMMAND\n 2418 mysql      94.7 mariabackup",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process.",
-          "meaning": "CPU user cao và mariabackup PID2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
+          "meaning": "CPU user cao và mariabackup PID 2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
           "commandId": "top",
           "aliases": [],
           "why": "Cần biết trong lúc chậm, CPU dành cho workload nào."
@@ -713,7 +713,7 @@
           "command": "PANEL: backup job state",
           "output": "database-backup task running since 02:00 UTC; progress 72%",
           "purpose": "Đọc tiến độ backup database.",
-          "meaning": "Task chạy từ02:00, tiến độ72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
+          "meaning": "Task chạy từ 02:00, tiến độ 72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
           "commandId": "panel-backup-status",
           "aliases": [],
           "why": "Reboot giữa backup có thể làm job thất bại và tăng rủi ro vận hành."
@@ -807,7 +807,7 @@
           "output": "top - 02:11:02 up 4 days, 2:14, 1 user, load average: 2.89, 2.11, 1.40\n%Cpu(s): 96.2 us, 2.0 sy, 1.8 id\n  PID USER      %CPU COMMAND\n 2418 mysql      94.7 mariabackup",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process.",
-          "meaning": "CPU user cao và mariabackup PID2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
+          "meaning": "CPU user cao và mariabackup PID 2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
           "commandId": "top",
           "aliases": [],
           "why": "Cần biết trong lúc chậm, CPU dành cho workload nào."
@@ -818,7 +818,7 @@
           "command": "PANEL: backup job state",
           "output": "database-backup task running since 02:00 UTC; progress 72%",
           "purpose": "Đọc tiến độ backup database.",
-          "meaning": "Task chạy từ02:00, tiến độ72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
+          "meaning": "Task chạy từ 02:00, tiến độ 72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
           "commandId": "panel-backup-status",
           "aliases": [],
           "why": "Reboot giữa backup có thể làm job thất bại và tăng rủi ro vận hành."
@@ -927,7 +927,7 @@
           "output": "top - 02:11:02 up 4 days, 2:14, 1 user, load average: 2.89, 2.11, 1.40\n%Cpu(s): 96.2 us, 2.0 sy, 1.8 id\n  PID USER      %CPU COMMAND\n 2418 mysql      94.7 mariabackup",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process.",
-          "meaning": "CPU user cao và mariabackup PID2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
+          "meaning": "CPU user cao và mariabackup PID 2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
           "commandId": "top",
           "aliases": [],
           "why": "Cần biết trong lúc chậm, CPU dành cho workload nào."
@@ -951,7 +951,7 @@
           "output": "top - 02:11:02 up 4 days, 2:14, 1 user, load average: 2.89, 2.11, 1.40\n%Cpu(s): 96.2 us, 2.0 sy, 1.8 id\n  PID USER      %CPU COMMAND\n 2418 mysql      94.7 mariabackup",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process.",
-          "meaning": "CPU user cao và mariabackup PID2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
+          "meaning": "CPU user cao và mariabackup PID 2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
           "commandId": "top",
           "aliases": [],
           "why": "Cần biết trong lúc chậm, CPU dành cho workload nào."
@@ -962,7 +962,7 @@
           "command": "PANEL: backup job state",
           "output": "database-backup task running since 02:00 UTC; progress 72%",
           "purpose": "Đọc tiến độ backup database.",
-          "meaning": "Task chạy từ02:00, tiến độ72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
+          "meaning": "Task chạy từ 02:00, tiến độ 72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
           "commandId": "panel-backup-status",
           "aliases": [],
           "why": "Reboot giữa backup có thể làm job thất bại và tăng rủi ro vận hành."
@@ -1018,7 +1018,7 @@
           "source": "src/guided/commands.ts (id top)"
         }
       ],
-      "prompt": "VM Running, mariabackup dùng nhiều CPU và job mới hoàn thành72%. Nên nhận định thế nào?",
+      "prompt": "VM Running, mariabackup dùng nhiều CPU và job mới hoàn thành 72%. Nên nhận định thế nào?",
       "options": [
         {
           "id": "supported",
@@ -1095,7 +1095,7 @@
           "output": "top - 02:11:02 up 4 days, 2:14, 1 user, load average: 2.89, 2.11, 1.40\n%Cpu(s): 96.2 us, 2.0 sy, 1.8 id\n  PID USER      %CPU COMMAND\n 2418 mysql      94.7 mariabackup",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process.",
-          "meaning": "CPU user cao và mariabackup PID2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
+          "meaning": "CPU user cao và mariabackup PID 2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
           "commandId": "top",
           "aliases": [],
           "why": "Cần biết trong lúc chậm, CPU dành cho workload nào."
@@ -1119,7 +1119,7 @@
           "output": "top - 02:11:02 up 4 days, 2:14, 1 user, load average: 2.89, 2.11, 1.40\n%Cpu(s): 96.2 us, 2.0 sy, 1.8 id\n  PID USER      %CPU COMMAND\n 2418 mysql      94.7 mariabackup",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process.",
-          "meaning": "CPU user cao và mariabackup PID2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
+          "meaning": "CPU user cao và mariabackup PID 2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
           "commandId": "top",
           "aliases": [],
           "why": "Cần biết trong lúc chậm, CPU dành cho workload nào."
@@ -1130,7 +1130,7 @@
           "command": "PANEL: backup job state",
           "output": "database-backup task running since 02:00 UTC; progress 72%",
           "purpose": "Đọc tiến độ backup database.",
-          "meaning": "Task chạy từ02:00, tiến độ72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
+          "meaning": "Task chạy từ 02:00, tiến độ 72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
           "commandId": "panel-backup-status",
           "aliases": [],
           "why": "Reboot giữa backup có thể làm job thất bại và tăng rủi ro vận hành."
@@ -1262,7 +1262,7 @@
           "output": "top - 02:11:02 up 4 days, 2:14, 1 user, load average: 2.89, 2.11, 1.40\n%Cpu(s): 96.2 us, 2.0 sy, 1.8 id\n  PID USER      %CPU COMMAND\n 2418 mysql      94.7 mariabackup",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process.",
-          "meaning": "CPU user cao và mariabackup PID2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
+          "meaning": "CPU user cao và mariabackup PID 2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
           "commandId": "top",
           "aliases": [],
           "why": "Cần biết trong lúc chậm, CPU dành cho workload nào."
@@ -1273,7 +1273,7 @@
           "command": "PANEL: backup job state",
           "output": "database-backup task running since 02:00 UTC; progress 72%",
           "purpose": "Đọc tiến độ backup database.",
-          "meaning": "Task chạy từ02:00, tiến độ72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
+          "meaning": "Task chạy từ 02:00, tiến độ 72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
           "commandId": "panel-backup-status",
           "aliases": [],
           "why": "Reboot giữa backup có thể làm job thất bại và tăng rủi ro vận hành."
@@ -2001,7 +2001,7 @@
           "meaning": "Panel cảnh báo toàn bộ main disk bị ghi đè; không thể hứa giữ /home hoặc database.",
           "commandId": "panel-reinstall-confirmation",
           "aliases": [],
-          "why": "Cần biết yêu cầu đổiOS có phá nội dung main disk hay không."
+          "why": "Cần biết yêu cầu đổi OS có phá nội dung main disk hay không."
         },
         {
           "id": "P2",
@@ -2032,12 +2032,12 @@
         {
           "id": "other",
           "label": "Chỉ thay package manager trên OS hiện có.",
-          "feedback": "ReinstallOS có thể ghi đè disk, không phải chỉ đổi công cụ quản lý package."
+          "feedback": "Reinstall OS có thể ghi đè disk, không phải chỉ đổi công cụ quản lý package."
         },
         {
           "id": "cause",
           "label": "Nhắc Ubuntu đã đủ xác nhận mọi dữ liệu được phép xóa.",
-          "feedback": "TênOS không phải sự chấp thuận có hiểu biết về phạm vi dữ liệu mất."
+          "feedback": "Tên OS không phải sự chấp thuận có hiểu biết về phạm vi dữ liệu mất."
         },
         {
           "id": "symptom",
@@ -2056,8 +2056,8 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Reinstall sẽ ghi đè main disk và chưa có backup gần đây/restore test trong hồ sơ. Yêu cầu Ubuntu chưa đủ để chấp thuận mất dữ liệu.",
-        "nextChecks": "Xác nhậnserviceID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
-        "resolution": "Dừng trước reinstall; thống nhất migration hoặc backup/restoretest và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
+        "nextChecks": "Xác nhận service ID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
+        "resolution": "Dừng trước reinstall; thống nhất migration hoặc backup/restore test và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
         "verification": "Nếu được duyệt về sau, kiểm traOS, đăng nhập, mạng và dữ liệu/dịch vụ theo phạm vi migration; không coiOS boot là dữ liệu đã phục hồi.",
         "escalation": "Chuyển owner/admin/backup khi dữ liệu chưa được sao lưu, quyền không rõ hoặc cần phương ánmigration thay reinstall.",
         "referenceNoteEn": "Issue: Customer requested OS reinstall.\nFindings: The panel warned that the main disk would be overwritten and showed no recent backup.\nNext Action: Obtain informed approval and a backup or data-loss decision before any reinstall.\nVerification: After an authorized reinstall, check OS, access, network and expected data state.\nStatus: Customer approval pending; no reinstall performed."
@@ -2093,7 +2093,7 @@
           "meaning": "Panel cảnh báo toàn bộ main disk bị ghi đè; không thể hứa giữ /home hoặc database.",
           "commandId": "panel-reinstall-confirmation",
           "aliases": [],
-          "why": "Cần biết yêu cầu đổiOS có phá nội dung main disk hay không."
+          "why": "Cần biết yêu cầu đổi OS có phá nội dung main disk hay không."
         }
       ],
       "allTicketProbes": [
@@ -2106,7 +2106,7 @@
           "meaning": "Panel cảnh báo toàn bộ main disk bị ghi đè; không thể hứa giữ /home hoặc database.",
           "commandId": "panel-reinstall-confirmation",
           "aliases": [],
-          "why": "Cần biết yêu cầu đổiOS có phá nội dung main disk hay không."
+          "why": "Cần biết yêu cầu đổi OS có phá nội dung main disk hay không."
         },
         {
           "id": "P2",
@@ -2165,7 +2165,7 @@
         {
           "id": "wrong1",
           "label": "PANEL: backup list",
-          "feedback": "Danh sáchbackup cho biết khả năng có bản sao, không mô tả phạm vi reinstall."
+          "feedback": "Danh sách backup cho biết khả năng có bản sao, không mô tả phạm vi reinstall."
         },
         {
           "id": "wrong2",
@@ -2184,8 +2184,8 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Reinstall sẽ ghi đè main disk và chưa có backup gần đây/restore test trong hồ sơ. Yêu cầu Ubuntu chưa đủ để chấp thuận mất dữ liệu.",
-        "nextChecks": "Xác nhậnserviceID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
-        "resolution": "Dừng trước reinstall; thống nhất migration hoặc backup/restoretest và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
+        "nextChecks": "Xác nhận service ID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
+        "resolution": "Dừng trước reinstall; thống nhất migration hoặc backup/restore test và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
         "verification": "Nếu được duyệt về sau, kiểm traOS, đăng nhập, mạng và dữ liệu/dịch vụ theo phạm vi migration; không coiOS boot là dữ liệu đã phục hồi.",
         "escalation": "Chuyển owner/admin/backup khi dữ liệu chưa được sao lưu, quyền không rõ hoặc cần phương ánmigration thay reinstall.",
         "referenceNoteEn": "Issue: Customer requested OS reinstall.\nFindings: The panel warned that the main disk would be overwritten and showed no recent backup.\nNext Action: Obtain informed approval and a backup or data-loss decision before any reinstall.\nVerification: After an authorized reinstall, check OS, access, network and expected data state.\nStatus: Customer approval pending; no reinstall performed."
@@ -2224,7 +2224,7 @@
           "meaning": "Panel cảnh báo toàn bộ main disk bị ghi đè; không thể hứa giữ /home hoặc database.",
           "commandId": "panel-reinstall-confirmation",
           "aliases": [],
-          "why": "Cần biết yêu cầu đổiOS có phá nội dung main disk hay không."
+          "why": "Cần biết yêu cầu đổi OS có phá nội dung main disk hay không."
         },
         {
           "id": "P2",
@@ -2259,7 +2259,7 @@
           "meaning": "Panel cảnh báo toàn bộ main disk bị ghi đè; không thể hứa giữ /home hoặc database.",
           "commandId": "panel-reinstall-confirmation",
           "aliases": [],
-          "why": "Cần biết yêu cầu đổiOS có phá nội dung main disk hay không."
+          "why": "Cần biết yêu cầu đổi OS có phá nội dung main disk hay không."
         },
         {
           "id": "P2",
@@ -2344,7 +2344,7 @@
         },
         {
           "id": "ignore",
-          "label": "Khách yêu cầu đổiOS nên backup không còn cần thiết.",
+          "label": "Khách yêu cầu đổi OS nên backup không còn cần thiết.",
           "feedback": "Dữ liệu quan trọng vẫn cần được bảo vệ và owner hiểu rõ phạm vi mất."
         }
       ],
@@ -2359,8 +2359,8 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Reinstall sẽ ghi đè main disk và chưa có backup gần đây/restore test trong hồ sơ. Yêu cầu Ubuntu chưa đủ để chấp thuận mất dữ liệu.",
-        "nextChecks": "Xác nhậnserviceID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
-        "resolution": "Dừng trước reinstall; thống nhất migration hoặc backup/restoretest và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
+        "nextChecks": "Xác nhận service ID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
+        "resolution": "Dừng trước reinstall; thống nhất migration hoặc backup/restore test và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
         "verification": "Nếu được duyệt về sau, kiểm traOS, đăng nhập, mạng và dữ liệu/dịch vụ theo phạm vi migration; không coiOS boot là dữ liệu đã phục hồi.",
         "escalation": "Chuyển owner/admin/backup khi dữ liệu chưa được sao lưu, quyền không rõ hoặc cần phương ánmigration thay reinstall.",
         "referenceNoteEn": "Issue: Customer requested OS reinstall.\nFindings: The panel warned that the main disk would be overwritten and showed no recent backup.\nNext Action: Obtain informed approval and a backup or data-loss decision before any reinstall.\nVerification: After an authorized reinstall, check OS, access, network and expected data state.\nStatus: Customer approval pending; no reinstall performed."
@@ -2399,7 +2399,7 @@
           "meaning": "Panel cảnh báo toàn bộ main disk bị ghi đè; không thể hứa giữ /home hoặc database.",
           "commandId": "panel-reinstall-confirmation",
           "aliases": [],
-          "why": "Cần biết yêu cầu đổiOS có phá nội dung main disk hay không."
+          "why": "Cần biết yêu cầu đổi OS có phá nội dung main disk hay không."
         },
         {
           "id": "P2",
@@ -2434,7 +2434,7 @@
           "meaning": "Panel cảnh báo toàn bộ main disk bị ghi đè; không thể hứa giữ /home hoặc database.",
           "commandId": "panel-reinstall-confirmation",
           "aliases": [],
-          "why": "Cần biết yêu cầu đổiOS có phá nội dung main disk hay không."
+          "why": "Cần biết yêu cầu đổi OS có phá nội dung main disk hay không."
         },
         {
           "id": "P2",
@@ -2535,8 +2535,8 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Reinstall sẽ ghi đè main disk và chưa có backup gần đây/restore test trong hồ sơ. Yêu cầu Ubuntu chưa đủ để chấp thuận mất dữ liệu.",
-        "nextChecks": "Xác nhậnserviceID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
-        "resolution": "Dừng trước reinstall; thống nhất migration hoặc backup/restoretest và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
+        "nextChecks": "Xác nhận service ID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
+        "resolution": "Dừng trước reinstall; thống nhất migration hoặc backup/restore test và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
         "verification": "Nếu được duyệt về sau, kiểm traOS, đăng nhập, mạng và dữ liệu/dịch vụ theo phạm vi migration; không coiOS boot là dữ liệu đã phục hồi.",
         "escalation": "Chuyển owner/admin/backup khi dữ liệu chưa được sao lưu, quyền không rõ hoặc cần phương ánmigration thay reinstall.",
         "referenceNoteEn": "Issue: Customer requested OS reinstall.\nFindings: The panel warned that the main disk would be overwritten and showed no recent backup.\nNext Action: Obtain informed approval and a backup or data-loss decision before any reinstall.\nVerification: After an authorized reinstall, check OS, access, network and expected data state.\nStatus: Customer approval pending; no reinstall performed."
@@ -2573,7 +2573,7 @@
           "meaning": "Panel cảnh báo toàn bộ main disk bị ghi đè; không thể hứa giữ /home hoặc database.",
           "commandId": "panel-reinstall-confirmation",
           "aliases": [],
-          "why": "Cần biết yêu cầu đổiOS có phá nội dung main disk hay không."
+          "why": "Cần biết yêu cầu đổi OS có phá nội dung main disk hay không."
         },
         {
           "id": "P2",
@@ -2620,7 +2620,7 @@
       "correctIds": [
         "safe"
       ],
-      "explanation": "Giải thích cụ thể phạm vi xóa, kiểm tra bản sao và quyền; không áp dụng thay đổi phá hủy chỉ từ một yêu cầuOS.",
+      "explanation": "Giải thích cụ thể phạm vi xóa, kiểm tra bản sao và quyền; không áp dụng thay đổi phá hủy chỉ từ một yêu cầu OS.",
       "hints": [
         "Cài lại OS không chỉ là đổi package manager.",
         "Đọc phạm vi ghi đè và danh sách backup trước khi đề xuất thao tác.",
@@ -2628,8 +2628,8 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Reinstall sẽ ghi đè main disk và chưa có backup gần đây/restore test trong hồ sơ. Yêu cầu Ubuntu chưa đủ để chấp thuận mất dữ liệu.",
-        "nextChecks": "Xác nhậnserviceID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
-        "resolution": "Dừng trước reinstall; thống nhất migration hoặc backup/restoretest và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
+        "nextChecks": "Xác nhận service ID,OS đích, dữ liệu cần giữ, disk bị ảnh hưởng và điểm phục hồi đã kiểm tra.",
+        "resolution": "Dừng trước reinstall; thống nhất migration hoặc backup/restore test và phê duyệt cụ thể của owner rồi mới chuyển đội có quyền.",
         "verification": "Nếu được duyệt về sau, kiểm traOS, đăng nhập, mạng và dữ liệu/dịch vụ theo phạm vi migration; không coiOS boot là dữ liệu đã phục hồi.",
         "escalation": "Chuyển owner/admin/backup khi dữ liệu chưa được sao lưu, quyền không rõ hoặc cần phương ánmigration thay reinstall.",
         "referenceNoteEn": "Issue: Customer requested OS reinstall.\nFindings: The panel warned that the main disk would be overwritten and showed no recent backup.\nNext Action: Obtain informed approval and a backup or data-loss decision before any reinstall.\nVerification: After an authorized reinstall, check OS, access, network and expected data state.\nStatus: Customer approval pending; no reinstall performed."
@@ -3556,7 +3556,7 @@
           "command": "PANEL: boot activity",
           "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
           "purpose": "Đọc tài khoản gắn ISO và ticket liên quan.",
-          "meaning": "Recovery-team gắn ISO lúc07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
+          "meaning": "Recovery-team gắn ISO lúc 07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Không được ngắt recovery của đội khác."
@@ -3659,7 +3659,7 @@
           "command": "PANEL: boot activity",
           "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
           "purpose": "Đọc tài khoản gắn ISO và ticket liên quan.",
-          "meaning": "Recovery-team gắn ISO lúc07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
+          "meaning": "Recovery-team gắn ISO lúc 07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Không được ngắt recovery của đội khác."
@@ -3705,7 +3705,7 @@
           "command": "PANEL: boot activity",
           "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
           "purpose": "Đọc tài khoản gắn ISO và ticket liên quan.",
-          "meaning": "Recovery-team gắn ISO lúc07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
+          "meaning": "Recovery-team gắn ISO lúc 07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Không được ngắt recovery của đội khác."
@@ -3836,7 +3836,7 @@
           "command": "PANEL: boot activity",
           "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
           "purpose": "Đọc tài khoản gắn ISO và ticket liên quan.",
-          "meaning": "Recovery-team gắn ISO lúc07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
+          "meaning": "Recovery-team gắn ISO lúc 07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Không được ngắt recovery của đội khác."
@@ -3882,7 +3882,7 @@
           "command": "PANEL: boot activity",
           "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
           "purpose": "Đọc tài khoản gắn ISO và ticket liên quan.",
-          "meaning": "Recovery-team gắn ISO lúc07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
+          "meaning": "Recovery-team gắn ISO lúc 07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Không được ngắt recovery của đội khác."
@@ -4018,7 +4018,7 @@
           "command": "PANEL: boot activity",
           "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
           "purpose": "Đọc tài khoản gắn ISO và ticket liên quan.",
-          "meaning": "Recovery-team gắn ISO lúc07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
+          "meaning": "Recovery-team gắn ISO lúc 07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Không được ngắt recovery của đội khác."
@@ -4064,7 +4064,7 @@
           "command": "PANEL: boot activity",
           "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
           "purpose": "Đọc tài khoản gắn ISO và ticket liên quan.",
-          "meaning": "Recovery-team gắn ISO lúc07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
+          "meaning": "Recovery-team gắn ISO lúc 07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Không được ngắt recovery của đội khác."
@@ -4192,7 +4192,7 @@
           "command": "PANEL: boot activity",
           "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
           "purpose": "Đọc tài khoản gắn ISO và ticket liên quan.",
-          "meaning": "Recovery-team gắn ISO lúc07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
+          "meaning": "Recovery-team gắn ISO lúc 07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Không được ngắt recovery của đội khác."
@@ -4296,7 +4296,7 @@
           "command": "PANEL: boot activity",
           "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
           "purpose": "Đọc tài khoản gắn ISO và ticket liên quan.",
-          "meaning": "Recovery-team gắn ISO lúc07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
+          "meaning": "Recovery-team gắn ISO lúc 07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Không được ngắt recovery của đội khác."
@@ -4404,7 +4404,7 @@
           "command": "PANEL: console gateway health",
           "output": "gateway-c2 status=degraded; websocket 5xx rate=38% at 08:15 UTC",
           "purpose": "Đọc tình trạng gateway cùng thời điểm.",
-          "meaning": "gateway-c2 degraded và38% websocket5xx lúc08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
+          "meaning": "gateway-c2 degraded và 38% websocket 5xx lúc 08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Xem lỗi có ảnh hưởng rộng tới hạ tầng console không."
@@ -4415,7 +4415,7 @@
           "command": "PANEL: VM heartbeat",
           "output": "vm-102 qemu process heartbeat at 08:16 UTC: present",
           "purpose": "Đọc heartbeat process VM từ host.",
-          "meaning": "QEMU heartbeat hiện diện lúc08:16; chưa xác nhận guest boot hoặc app phản hồi.",
+          "meaning": "QEMU heartbeat hiện diện lúc 08:16; chưa xác nhận guest boot hoặc app phản hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Một tín hiệu độc lập giúp tránh reset guest chỉ vì UI đen."
@@ -4520,7 +4520,7 @@
           "command": "PANEL: console gateway health",
           "output": "gateway-c2 status=degraded; websocket 5xx rate=38% at 08:15 UTC",
           "purpose": "Đọc tình trạng gateway cùng thời điểm.",
-          "meaning": "gateway-c2 degraded và38% websocket5xx lúc08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
+          "meaning": "gateway-c2 degraded và 38% websocket 5xx lúc 08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Xem lỗi có ảnh hưởng rộng tới hạ tầng console không."
@@ -4531,7 +4531,7 @@
           "command": "PANEL: VM heartbeat",
           "output": "vm-102 qemu process heartbeat at 08:16 UTC: present",
           "purpose": "Đọc heartbeat process VM từ host.",
-          "meaning": "QEMU heartbeat hiện diện lúc08:16; chưa xác nhận guest boot hoặc app phản hồi.",
+          "meaning": "QEMU heartbeat hiện diện lúc 08:16; chưa xác nhận guest boot hoặc app phản hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Một tín hiệu độc lập giúp tránh reset guest chỉ vì UI đen."
@@ -4653,7 +4653,7 @@
           "command": "PANEL: console gateway health",
           "output": "gateway-c2 status=degraded; websocket 5xx rate=38% at 08:15 UTC",
           "purpose": "Đọc tình trạng gateway cùng thời điểm.",
-          "meaning": "gateway-c2 degraded và38% websocket5xx lúc08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
+          "meaning": "gateway-c2 degraded và 38% websocket 5xx lúc 08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Xem lỗi có ảnh hưởng rộng tới hạ tầng console không."
@@ -4664,7 +4664,7 @@
           "command": "PANEL: VM heartbeat",
           "output": "vm-102 qemu process heartbeat at 08:16 UTC: present",
           "purpose": "Đọc heartbeat process VM từ host.",
-          "meaning": "QEMU heartbeat hiện diện lúc08:16; chưa xác nhận guest boot hoặc app phản hồi.",
+          "meaning": "QEMU heartbeat hiện diện lúc 08:16; chưa xác nhận guest boot hoặc app phản hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Một tín hiệu độc lập giúp tránh reset guest chỉ vì UI đen."
@@ -4699,7 +4699,7 @@
           "command": "PANEL: console gateway health",
           "output": "gateway-c2 status=degraded; websocket 5xx rate=38% at 08:15 UTC",
           "purpose": "Đọc tình trạng gateway cùng thời điểm.",
-          "meaning": "gateway-c2 degraded và38% websocket5xx lúc08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
+          "meaning": "gateway-c2 degraded và 38% websocket 5xx lúc 08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Xem lỗi có ảnh hưởng rộng tới hạ tầng console không."
@@ -4710,7 +4710,7 @@
           "command": "PANEL: VM heartbeat",
           "output": "vm-102 qemu process heartbeat at 08:16 UTC: present",
           "purpose": "Đọc heartbeat process VM từ host.",
-          "meaning": "QEMU heartbeat hiện diện lúc08:16; chưa xác nhận guest boot hoặc app phản hồi.",
+          "meaning": "QEMU heartbeat hiện diện lúc 08:16; chưa xác nhận guest boot hoặc app phản hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Một tín hiệu độc lập giúp tránh reset guest chỉ vì UI đen."
@@ -4854,7 +4854,7 @@
           "command": "PANEL: console gateway health",
           "output": "gateway-c2 status=degraded; websocket 5xx rate=38% at 08:15 UTC",
           "purpose": "Đọc tình trạng gateway cùng thời điểm.",
-          "meaning": "gateway-c2 degraded và38% websocket5xx lúc08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
+          "meaning": "gateway-c2 degraded và 38% websocket 5xx lúc 08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Xem lỗi có ảnh hưởng rộng tới hạ tầng console không."
@@ -4865,7 +4865,7 @@
           "command": "PANEL: VM heartbeat",
           "output": "vm-102 qemu process heartbeat at 08:16 UTC: present",
           "purpose": "Đọc heartbeat process VM từ host.",
-          "meaning": "QEMU heartbeat hiện diện lúc08:16; chưa xác nhận guest boot hoặc app phản hồi.",
+          "meaning": "QEMU heartbeat hiện diện lúc 08:16; chưa xác nhận guest boot hoặc app phản hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Một tín hiệu độc lập giúp tránh reset guest chỉ vì UI đen."
@@ -4900,7 +4900,7 @@
           "command": "PANEL: console gateway health",
           "output": "gateway-c2 status=degraded; websocket 5xx rate=38% at 08:15 UTC",
           "purpose": "Đọc tình trạng gateway cùng thời điểm.",
-          "meaning": "gateway-c2 degraded và38% websocket5xx lúc08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
+          "meaning": "gateway-c2 degraded và 38% websocket 5xx lúc 08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Xem lỗi có ảnh hưởng rộng tới hạ tầng console không."
@@ -4911,7 +4911,7 @@
           "command": "PANEL: VM heartbeat",
           "output": "vm-102 qemu process heartbeat at 08:16 UTC: present",
           "purpose": "Đọc heartbeat process VM từ host.",
-          "meaning": "QEMU heartbeat hiện diện lúc08:16; chưa xác nhận guest boot hoặc app phản hồi.",
+          "meaning": "QEMU heartbeat hiện diện lúc 08:16; chưa xác nhận guest boot hoặc app phản hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Một tín hiệu độc lập giúp tránh reset guest chỉ vì UI đen."
@@ -4969,7 +4969,7 @@
       "options": [
         {
           "id": "p2",
-          "label": "Websocket handshake thất bại với502.",
+          "label": "Websocket handshake thất bại với 502.",
           "feedback": "Đường console qua gateway hiện chưa mở được."
         },
         {
@@ -4987,7 +4987,7 @@
         "p1",
         "p2"
       ],
-      "explanation": "Running không làm cho handshake502 trở thành thành công; hai nguồn có phạm vi khác nhau.",
+      "explanation": "Running không làm cho handshake 502 trở thành thành công; hai nguồn có phạm vi khác nhau.",
       "hints": [
         "Màn hình đen không tự chứng minh kernel crash.",
         "So VM state với lỗi websocket và sức khỏe console gateway.",
@@ -5054,7 +5054,7 @@
           "command": "PANEL: console gateway health",
           "output": "gateway-c2 status=degraded; websocket 5xx rate=38% at 08:15 UTC",
           "purpose": "Đọc tình trạng gateway cùng thời điểm.",
-          "meaning": "gateway-c2 degraded và38% websocket5xx lúc08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
+          "meaning": "gateway-c2 degraded và 38% websocket 5xx lúc 08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Xem lỗi có ảnh hưởng rộng tới hạ tầng console không."
@@ -5065,7 +5065,7 @@
           "command": "PANEL: VM heartbeat",
           "output": "vm-102 qemu process heartbeat at 08:16 UTC: present",
           "purpose": "Đọc heartbeat process VM từ host.",
-          "meaning": "QEMU heartbeat hiện diện lúc08:16; chưa xác nhận guest boot hoặc app phản hồi.",
+          "meaning": "QEMU heartbeat hiện diện lúc 08:16; chưa xác nhận guest boot hoặc app phản hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Một tín hiệu độc lập giúp tránh reset guest chỉ vì UI đen."
@@ -5082,7 +5082,7 @@
         {
           "id": "unsafe",
           "label": "Hard reset VM để sửa UI console.",
-          "feedback": "Có thể mất dữ liệu và không sửa gateway502."
+          "feedback": "Có thể mất dữ liệu và không sửa gateway 502."
         },
         {
           "id": "close",
@@ -5158,7 +5158,7 @@
           "command": "PANEL: console gateway health",
           "output": "gateway-c2 status=degraded; websocket 5xx rate=38% at 08:15 UTC",
           "purpose": "Đọc tình trạng gateway cùng thời điểm.",
-          "meaning": "gateway-c2 degraded và38% websocket5xx lúc08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
+          "meaning": "gateway-c2 degraded và 38% websocket 5xx lúc 08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Xem lỗi có ảnh hưởng rộng tới hạ tầng console không."
@@ -5169,7 +5169,7 @@
           "command": "PANEL: VM heartbeat",
           "output": "vm-102 qemu process heartbeat at 08:16 UTC: present",
           "purpose": "Đọc heartbeat process VM từ host.",
-          "meaning": "QEMU heartbeat hiện diện lúc08:16; chưa xác nhận guest boot hoặc app phản hồi.",
+          "meaning": "QEMU heartbeat hiện diện lúc 08:16; chưa xác nhận guest boot hoặc app phản hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Một tín hiệu độc lập giúp tránh reset guest chỉ vì UI đen."
@@ -5242,7 +5242,7 @@
           "output": "Stopping 20m",
           "context": "panel",
           "purpose": "Đọc trạng thái lifecycle và thời gian chờ.",
-          "meaning": "Stopping20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
+          "meaning": "Stopping 20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Cần phân biệt shutdown đã hoàn tất với task đang chờ."
@@ -5264,10 +5264,10 @@
           "command": "PANEL: host task timeline",
           "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
           "purpose": "Đối chiếu timeline yêu cầu và hoàn tất.",
-          "meaning": "Yêu cầu12:30, ACPI12:30:03, đến12:50 chưa có completion; cần điều tra, không tự hard stop.",
+          "meaning": "Yêu cầu 12:30, ACPI 12:30:03, đến 12:50 chưa có completion; cần điều tra, không tự hard stop.",
           "commandId": "panel-probes",
           "aliases": [],
-          "why": "Xác nhận20phút chờ không chỉ là timestamp UI cũ."
+          "why": "Xác nhận 20 phút chờ không chỉ là timestamp UI cũ."
         },
         {
           "id": "G2",
@@ -5275,7 +5275,7 @@
           "command": "PANEL: storage latency",
           "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
           "purpose": "Đọc độ trễ ghi storage trong khoảng chờ.",
-          "meaning": "p95 write latency210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
+          "meaning": "p95 write latency 210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Shutdown chậm có thể liên quan flush hoặc I/O cần bảo vệ."
@@ -5303,7 +5303,7 @@
       "correctIds": [
         "symptom"
       ],
-      "explanation": "Stopping20phút là một task chưa kết thúc; không được coi VM đã tắt chỉ vì lệnh đã gửi.",
+      "explanation": "Stopping 20 phút là một task chưa kết thúc; không được coi VM đã tắt chỉ vì lệnh đã gửi.",
       "hints": [
         "Stopping là chuyển trạng thái chưa hoàn tất, không phải xác nhận đã tắt.",
         "So thời gian gửi ACPI với console, tác vụ và disk I/O.",
@@ -5345,7 +5345,7 @@
           "output": "Stopping 20m",
           "context": "panel",
           "purpose": "Đọc trạng thái lifecycle và thời gian chờ.",
-          "meaning": "Stopping20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
+          "meaning": "Stopping 20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Cần phân biệt shutdown đã hoàn tất với task đang chờ."
@@ -5367,10 +5367,10 @@
           "command": "PANEL: host task timeline",
           "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
           "purpose": "Đối chiếu timeline yêu cầu và hoàn tất.",
-          "meaning": "Yêu cầu12:30, ACPI12:30:03, đến12:50 chưa có completion; cần điều tra, không tự hard stop.",
+          "meaning": "Yêu cầu 12:30, ACPI 12:30:03, đến 12:50 chưa có completion; cần điều tra, không tự hard stop.",
           "commandId": "panel-probes",
           "aliases": [],
-          "why": "Xác nhận20phút chờ không chỉ là timestamp UI cũ."
+          "why": "Xác nhận 20 phút chờ không chỉ là timestamp UI cũ."
         },
         {
           "id": "G2",
@@ -5378,7 +5378,7 @@
           "command": "PANEL: storage latency",
           "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
           "purpose": "Đọc độ trễ ghi storage trong khoảng chờ.",
-          "meaning": "p95 write latency210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
+          "meaning": "p95 write latency 210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Shutdown chậm có thể liên quan flush hoặc I/O cần bảo vệ."
@@ -5391,7 +5391,7 @@
           "output": "Stopping 20m",
           "context": "panel",
           "purpose": "Đọc trạng thái lifecycle và thời gian chờ.",
-          "meaning": "Stopping20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
+          "meaning": "Stopping 20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Cần phân biệt shutdown đã hoàn tất với task đang chờ."
@@ -5413,10 +5413,10 @@
           "command": "PANEL: host task timeline",
           "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
           "purpose": "Đối chiếu timeline yêu cầu và hoàn tất.",
-          "meaning": "Yêu cầu12:30, ACPI12:30:03, đến12:50 chưa có completion; cần điều tra, không tự hard stop.",
+          "meaning": "Yêu cầu 12:30, ACPI 12:30:03, đến 12:50 chưa có completion; cần điều tra, không tự hard stop.",
           "commandId": "panel-probes",
           "aliases": [],
-          "why": "Xác nhận20phút chờ không chỉ là timestamp UI cũ."
+          "why": "Xác nhận 20 phút chờ không chỉ là timestamp UI cũ."
         },
         {
           "id": "G2",
@@ -5424,7 +5424,7 @@
           "command": "PANEL: storage latency",
           "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
           "purpose": "Đọc độ trễ ghi storage trong khoảng chờ.",
-          "meaning": "p95 write latency210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
+          "meaning": "p95 write latency 210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Shutdown chậm có thể liên quan flush hoặc I/O cần bảo vệ."
@@ -5522,7 +5522,7 @@
           "output": "Stopping 20m",
           "context": "panel",
           "purpose": "Đọc trạng thái lifecycle và thời gian chờ.",
-          "meaning": "Stopping20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
+          "meaning": "Stopping 20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Cần phân biệt shutdown đã hoàn tất với task đang chờ."
@@ -5544,10 +5544,10 @@
           "command": "PANEL: host task timeline",
           "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
           "purpose": "Đối chiếu timeline yêu cầu và hoàn tất.",
-          "meaning": "Yêu cầu12:30, ACPI12:30:03, đến12:50 chưa có completion; cần điều tra, không tự hard stop.",
+          "meaning": "Yêu cầu 12:30, ACPI 12:30:03, đến 12:50 chưa có completion; cần điều tra, không tự hard stop.",
           "commandId": "panel-probes",
           "aliases": [],
-          "why": "Xác nhận20phút chờ không chỉ là timestamp UI cũ."
+          "why": "Xác nhận 20 phút chờ không chỉ là timestamp UI cũ."
         },
         {
           "id": "G2",
@@ -5555,7 +5555,7 @@
           "command": "PANEL: storage latency",
           "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
           "purpose": "Đọc độ trễ ghi storage trong khoảng chờ.",
-          "meaning": "p95 write latency210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
+          "meaning": "p95 write latency 210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Shutdown chậm có thể liên quan flush hoặc I/O cần bảo vệ."
@@ -5568,7 +5568,7 @@
           "output": "Stopping 20m",
           "context": "panel",
           "purpose": "Đọc trạng thái lifecycle và thời gian chờ.",
-          "meaning": "Stopping20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
+          "meaning": "Stopping 20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Cần phân biệt shutdown đã hoàn tất với task đang chờ."
@@ -5590,10 +5590,10 @@
           "command": "PANEL: host task timeline",
           "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
           "purpose": "Đối chiếu timeline yêu cầu và hoàn tất.",
-          "meaning": "Yêu cầu12:30, ACPI12:30:03, đến12:50 chưa có completion; cần điều tra, không tự hard stop.",
+          "meaning": "Yêu cầu 12:30, ACPI 12:30:03, đến 12:50 chưa có completion; cần điều tra, không tự hard stop.",
           "commandId": "panel-probes",
           "aliases": [],
-          "why": "Xác nhận20phút chờ không chỉ là timestamp UI cũ."
+          "why": "Xác nhận 20 phút chờ không chỉ là timestamp UI cũ."
         },
         {
           "id": "G2",
@@ -5601,7 +5601,7 @@
           "command": "PANEL: storage latency",
           "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
           "purpose": "Đọc độ trễ ghi storage trong khoảng chờ.",
-          "meaning": "p95 write latency210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
+          "meaning": "p95 write latency 210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Shutdown chậm có thể liên quan flush hoặc I/O cần bảo vệ."
@@ -5697,7 +5697,7 @@
           "output": "Stopping 20m",
           "context": "panel",
           "purpose": "Đọc trạng thái lifecycle và thời gian chờ.",
-          "meaning": "Stopping20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
+          "meaning": "Stopping 20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Cần phân biệt shutdown đã hoàn tất với task đang chờ."
@@ -5719,10 +5719,10 @@
           "command": "PANEL: host task timeline",
           "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
           "purpose": "Đối chiếu timeline yêu cầu và hoàn tất.",
-          "meaning": "Yêu cầu12:30, ACPI12:30:03, đến12:50 chưa có completion; cần điều tra, không tự hard stop.",
+          "meaning": "Yêu cầu 12:30, ACPI 12:30:03, đến 12:50 chưa có completion; cần điều tra, không tự hard stop.",
           "commandId": "panel-probes",
           "aliases": [],
-          "why": "Xác nhận20phút chờ không chỉ là timestamp UI cũ."
+          "why": "Xác nhận 20 phút chờ không chỉ là timestamp UI cũ."
         },
         {
           "id": "G2",
@@ -5730,7 +5730,7 @@
           "command": "PANEL: storage latency",
           "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
           "purpose": "Đọc độ trễ ghi storage trong khoảng chờ.",
-          "meaning": "p95 write latency210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
+          "meaning": "p95 write latency 210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Shutdown chậm có thể liên quan flush hoặc I/O cần bảo vệ."
@@ -5743,7 +5743,7 @@
           "output": "Stopping 20m",
           "context": "panel",
           "purpose": "Đọc trạng thái lifecycle và thời gian chờ.",
-          "meaning": "Stopping20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
+          "meaning": "Stopping 20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Cần phân biệt shutdown đã hoàn tất với task đang chờ."
@@ -5765,10 +5765,10 @@
           "command": "PANEL: host task timeline",
           "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
           "purpose": "Đối chiếu timeline yêu cầu và hoàn tất.",
-          "meaning": "Yêu cầu12:30, ACPI12:30:03, đến12:50 chưa có completion; cần điều tra, không tự hard stop.",
+          "meaning": "Yêu cầu 12:30, ACPI 12:30:03, đến 12:50 chưa có completion; cần điều tra, không tự hard stop.",
           "commandId": "panel-probes",
           "aliases": [],
-          "why": "Xác nhận20phút chờ không chỉ là timestamp UI cũ."
+          "why": "Xác nhận 20 phút chờ không chỉ là timestamp UI cũ."
         },
         {
           "id": "G2",
@@ -5776,7 +5776,7 @@
           "command": "PANEL: storage latency",
           "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
           "purpose": "Đọc độ trễ ghi storage trong khoảng chờ.",
-          "meaning": "p95 write latency210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
+          "meaning": "p95 write latency 210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Shutdown chậm có thể liên quan flush hoặc I/O cần bảo vệ."
@@ -5871,7 +5871,7 @@
           "output": "Stopping 20m",
           "context": "panel",
           "purpose": "Đọc trạng thái lifecycle và thời gian chờ.",
-          "meaning": "Stopping20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
+          "meaning": "Stopping 20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Cần phân biệt shutdown đã hoàn tất với task đang chờ."
@@ -5893,10 +5893,10 @@
           "command": "PANEL: host task timeline",
           "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
           "purpose": "Đối chiếu timeline yêu cầu và hoàn tất.",
-          "meaning": "Yêu cầu12:30, ACPI12:30:03, đến12:50 chưa có completion; cần điều tra, không tự hard stop.",
+          "meaning": "Yêu cầu 12:30, ACPI 12:30:03, đến 12:50 chưa có completion; cần điều tra, không tự hard stop.",
           "commandId": "panel-probes",
           "aliases": [],
-          "why": "Xác nhận20phút chờ không chỉ là timestamp UI cũ."
+          "why": "Xác nhận 20 phút chờ không chỉ là timestamp UI cũ."
         },
         {
           "id": "G2",
@@ -5904,7 +5904,7 @@
           "command": "PANEL: storage latency",
           "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
           "purpose": "Đọc độ trễ ghi storage trong khoảng chờ.",
-          "meaning": "p95 write latency210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
+          "meaning": "p95 write latency 210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Shutdown chậm có thể liên quan flush hoặc I/O cần bảo vệ."
@@ -5975,7 +5975,7 @@
           "output": "Stopping 20m",
           "context": "panel",
           "purpose": "Đọc trạng thái lifecycle và thời gian chờ.",
-          "meaning": "Stopping20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
+          "meaning": "Stopping 20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Cần phân biệt shutdown đã hoàn tất với task đang chờ."
@@ -5997,10 +5997,10 @@
           "command": "PANEL: host task timeline",
           "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
           "purpose": "Đối chiếu timeline yêu cầu và hoàn tất.",
-          "meaning": "Yêu cầu12:30, ACPI12:30:03, đến12:50 chưa có completion; cần điều tra, không tự hard stop.",
+          "meaning": "Yêu cầu 12:30, ACPI 12:30:03, đến 12:50 chưa có completion; cần điều tra, không tự hard stop.",
           "commandId": "panel-probes",
           "aliases": [],
-          "why": "Xác nhận20phút chờ không chỉ là timestamp UI cũ."
+          "why": "Xác nhận 20 phút chờ không chỉ là timestamp UI cũ."
         },
         {
           "id": "G2",
@@ -6008,7 +6008,7 @@
           "command": "PANEL: storage latency",
           "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
           "purpose": "Đọc độ trễ ghi storage trong khoảng chờ.",
-          "meaning": "p95 write latency210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
+          "meaning": "p95 write latency 210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Shutdown chậm có thể liên quan flush hoặc I/O cần bảo vệ."

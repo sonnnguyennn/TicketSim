@@ -8,6 +8,6 @@
   "optionFeedback": {
     "p2": "Đây là sự kiện chấm dứt process, chưa giải thích nguồn tăng RAM.",
     "over": "Không có dữ liệu code/heap trong hai phép đọc.",
-    "p1": "Đúng các cột ps; xấp xỉ830MiB, không phải850000byte."
+    "p1": "Đúng các cột ps; xấp xỉ 830 MiB, không phải 850000 byte."
   }
 }

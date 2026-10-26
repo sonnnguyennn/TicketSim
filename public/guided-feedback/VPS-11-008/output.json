@@ -2,7 +2,7 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Bằng chứng hỗ trợ trùng IP trên mạng chung; cần nhắm đúngclone và giữ production.",
+  "explanation": "Bằng chứng hỗ trợ trùng IP trên mạng chung; cần nhắm đúng clone và giữ production.",
   "commandId": "panel-ip-allocation",
   "optionFeedback": {
     "over": "DNS không đổi IP mà NIC phát trên cùng mạng.",

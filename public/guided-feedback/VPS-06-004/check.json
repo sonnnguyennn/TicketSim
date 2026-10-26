@@ -6,7 +6,7 @@
   "commandId": "panel-reinstall-confirmation",
   "optionFeedback": {
     "direct": "Cảnh báo nêu main disk sẽ bị ghi đè.",
-    "wrong1": "Danh sáchbackup cho biết khả năng có bản sao, không mô tả phạm vi reinstall.",
+    "wrong1": "Danh sách backup cho biết khả năng có bản sao, không mô tả phạm vi reinstall.",
     "wrong2": "Template đích không xác định dữ liệu nào được giữ trong quá trình reinstall."
   }
 }

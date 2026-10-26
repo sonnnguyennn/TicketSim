@@ -6,6 +6,6 @@
   "optionFeedback": {
     "cause": "403 có thể liên quan index/access; chưa đọc nội dung disk.",
     "symptom": "Request tới server nhưng bị từ chối.",
-    "other": "Đã có HTTP403 nên không phải refused hoàn toàn."
+    "other": "Đã có HTTP 403 nên không phải refused hoàn toàn."
   }
 }

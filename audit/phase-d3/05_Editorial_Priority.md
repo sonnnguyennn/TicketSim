@@ -6,7 +6,7 @@ Review all 620 keys against the evidence in the topic JSON packets. The automate
 
 ## P1: concrete editorial flags
 
-The triage rules flagged 0 clarity, 6 distractor, and 46 feedback candidates. The CSV records a text excerpt and authored location for each.
+The triage rules flagged 0 clarity, 6 distractor, and 45 feedback candidates. The CSV records a text excerpt and authored location for each.
 
 | First review | Topic | Level | Labels | Source |
 |---|---|---|---|---|
@@ -26,7 +26,6 @@ The triage rules flagged 0 clarity, 6 distractor, and 46 feedback candidates. Th
 | VPS-12-005/evidence | Control Panel | L2 | EDIT_FEEDBACK | scripts/content/phase-b-11-14.mjs:2142 |
 | VPS-14-005/evidence | Billing & Lifecycle | L2 | EDIT_FEEDBACK | scripts/content/phase-b-11-14.mjs:90 |
 | VPS-07-006/check | Web Server & HTTP | L2 | EDIT_FEEDBACK | scripts/content/phase-b-06-10.mjs:776 |
-| VPS-07-006/evidence | Web Server & HTTP | L2 | EDIT_FEEDBACK | scripts/content/phase-b-06-10.mjs:778 |
 | VPS-07-005/check | Web Server & HTTP | L2 | EDIT_DISTRACTORS | scripts/content/phase-b-06-10.mjs:72 |
 | VPS-08-006/evidence | DNS & Domain | L2 | EDIT_FEEDBACK | scripts/content/phase-b-06-10.mjs:368 |
 | VPS-06-006/output | VPS Management | L2 | EDIT_DISTRACTORS | scripts/content/phase-b-06-10.mjs:919 |
@@ -65,7 +64,7 @@ The triage rules flagged 0 clarity, 6 distractor, and 46 feedback candidates. Th
 
 ## P2: human review queue
 
-The 568 KEEP rows still need a human pass for multiple defensible options, command behavior, hint leakage, level calibration, and evidence sufficiency. Compare each question with its full case packet and Command Library card. Mark SME approval only after that pass.
+The 569 KEEP rows still need a human pass for multiple defensible options, command behavior, hint leakage, level calibration, and evidence sufficiency. Compare each question with its full case packet and Command Library card. Mark SME approval only after that pass.
 
 ## Command Editorial
 

@@ -1,5 +1,5 @@
 {
-  "expected_diagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm13G nhưng journal chỉ1.2G. Chưa biết file/log nào tăng và có thể dọn.",
+  "expected_diagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm 13G nhưng journal chỉ 1.2G. Chưa biết file/log nào tăng và có thể dọn.",
   "recommended_next_checks": "Xác nhận mount của dữ liệu app, phân loại file/log lớn và nguồn phát sinh; đối chiếu retention/backup với owner.",
   "resolution_guidance": "Theo phê duyệt, dùng rotation/vacuum hoặc dọn phần đã xác định; có thể lập capacity change nếu nhu cầu hợp lệ, không xóa cả /var/log.",
   "verification": "Avail có lại, inode đủ và app lưu được dữ liệu kiểm tra; theo dõi nguồn log không tăng bất thường.",

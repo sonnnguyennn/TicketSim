@@ -12,5 +12,5 @@
     "safe_resolution": 2,
     "verification_or_escalation": 1
   },
-  "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received an api.example.com certificate and no shop server_name appeared in the shown Nginx configuration.\nNext Action: Review the vhost mapping and deploy a matching valid certificate under change control.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
+  "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received a certificate with CN api.example.com, and the shown Nginx configuration had no shop server_name; SAN coverage is still unknown.\nNext Action: Check SAN, chain and the active vhost mapping first; deploy a matching certificate only if the mismatch is confirmed and approved.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
 }

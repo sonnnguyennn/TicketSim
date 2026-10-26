@@ -410,7 +410,7 @@
         "case": "scripts/content/phase-b-11-14.mjs:1501",
         "gradingBase": "scripts/guided-content.mjs",
         "overrides": [
-          "scripts/guided-content.mjs:1374"
+          "scripts/guided-content.mjs:1377"
         ]
       },
       "classification": [
@@ -689,7 +689,7 @@
         "case": "scripts/content/phase-b-11-14.mjs:1501",
         "gradingBase": "scripts/guided-content.mjs",
         "overrides": [
-          "scripts/guided-content.mjs:1376"
+          "scripts/guided-content.mjs:1379"
         ]
       },
       "classification": [
@@ -1727,7 +1727,7 @@
           "source": "src/guided/commands.ts (id curl-head)"
         }
       ],
-      "prompt": "Mapping ở127.0.0.1 và local curl 200. Kết luận nào phù hợp?",
+      "prompt": "Mapping ở 127.0.0.1 và local curl 200. Kết luận nào phù hợp?",
       "options": [
         {
           "id": "over",
@@ -3147,7 +3147,7 @@
       "options": [
         {
           "id": "over",
-          "label": "Authoritative chắc chắn không cóArecord.",
+          "label": "Authoritative chắc chắn không có A record.",
           "feedback": "Timeout không là NXDOMAIN; host còn tra được entry."
         },
         {
@@ -3648,7 +3648,7 @@
         "resolution": "Admin host lập change forwarding/NAT/firewall theo policy, có phê duyệt và rollback. Support không tự bật forwarding hoặc mở firewall rộng trên host khách.",
         "verification": "Từ chính container thử IP, DNS và dịch vụ TCP được phép; kiểm tra firewall/NAT vẫn hạn chế đúng phạm vi và container khác không bị ảnh hưởng.",
         "escalation": "Cần thay đổi Docker host dùng chung, rule của provider, hoặc routing/NAT ngoài phạm vi quyền support.",
-        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Restore only the approved forwarding and NAT configuration in a controlled environment.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Have the host owner inspect forwarding, NAT and filter rules, then apply only the approved change with rollback.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:3400",
@@ -3797,7 +3797,7 @@
         "resolution": "Admin host lập change forwarding/NAT/firewall theo policy, có phê duyệt và rollback. Support không tự bật forwarding hoặc mở firewall rộng trên host khách.",
         "verification": "Từ chính container thử IP, DNS và dịch vụ TCP được phép; kiểm tra firewall/NAT vẫn hạn chế đúng phạm vi và container khác không bị ảnh hưởng.",
         "escalation": "Cần thay đổi Docker host dùng chung, rule của provider, hoặc routing/NAT ngoài phạm vi quyền support.",
-        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Restore only the approved forwarding and NAT configuration in a controlled environment.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Have the host owner inspect forwarding, NAT and filter rules, then apply only the approved change with rollback.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:3418",
@@ -4052,7 +4052,7 @@
         "resolution": "Admin host lập change forwarding/NAT/firewall theo policy, có phê duyệt và rollback. Support không tự bật forwarding hoặc mở firewall rộng trên host khách.",
         "verification": "Từ chính container thử IP, DNS và dịch vụ TCP được phép; kiểm tra firewall/NAT vẫn hạn chế đúng phạm vi và container khác không bị ảnh hưởng.",
         "escalation": "Cần thay đổi Docker host dùng chung, rule của provider, hoặc routing/NAT ngoài phạm vi quyền support.",
-        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Restore only the approved forwarding and NAT configuration in a controlled environment.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Have the host owner inspect forwarding, NAT and filter rules, then apply only the approved change with rollback.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:3436",
@@ -4238,7 +4238,7 @@
         "resolution": "Admin host lập change forwarding/NAT/firewall theo policy, có phê duyệt và rollback. Support không tự bật forwarding hoặc mở firewall rộng trên host khách.",
         "verification": "Từ chính container thử IP, DNS và dịch vụ TCP được phép; kiểm tra firewall/NAT vẫn hạn chế đúng phạm vi và container khác không bị ảnh hưởng.",
         "escalation": "Cần thay đổi Docker host dùng chung, rule của provider, hoặc routing/NAT ngoài phạm vi quyền support.",
-        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Restore only the approved forwarding and NAT configuration in a controlled environment.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Have the host owner inspect forwarding, NAT and filter rules, then apply only the approved change with rollback.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:3454",
@@ -4342,7 +4342,7 @@
         "resolution": "Admin host lập change forwarding/NAT/firewall theo policy, có phê duyệt và rollback. Support không tự bật forwarding hoặc mở firewall rộng trên host khách.",
         "verification": "Từ chính container thử IP, DNS và dịch vụ TCP được phép; kiểm tra firewall/NAT vẫn hạn chế đúng phạm vi và container khác không bị ảnh hưởng.",
         "escalation": "Cần thay đổi Docker host dùng chung, rule của provider, hoặc routing/NAT ngoài phạm vi quyền support.",
-        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Restore only the approved forwarding and NAT configuration in a controlled environment.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Have the host owner inspect forwarding, NAT and filter rules, then apply only the approved change with rollback.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:3472",
@@ -4448,7 +4448,7 @@
         "resolution": "Admin host lập change forwarding/NAT/firewall theo policy, có phê duyệt và rollback. Support không tự bật forwarding hoặc mở firewall rộng trên host khách.",
         "verification": "Từ chính container thử IP, DNS và dịch vụ TCP được phép; kiểm tra firewall/NAT vẫn hạn chế đúng phạm vi và container khác không bị ảnh hưởng.",
         "escalation": "Cần thay đổi Docker host dùng chung, rule của provider, hoặc routing/NAT ngoài phạm vi quyền support.",
-        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Restore only the approved forwarding and NAT configuration in a controlled environment.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Container bridge forwarding is disabled.\nFindings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.\nNext Action: Have the host owner inspect forwarding, NAT and filter rules, then apply only the approved change with rollback.\nVerification: Confirm the container reaches the intended external TCP service.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:3490",
@@ -4529,7 +4529,7 @@
         {
           "id": "other",
           "label": "Toàn Docker host đã tắt.",
-          "feedback": "API còn chạy, khách chưa nêu hostoff."
+          "feedback": "API còn chạy, khách chưa nêu host off."
         },
         {
           "id": "cause",
@@ -4681,7 +4681,7 @@
       "correctIds": [
         "direct"
       ],
-      "explanation": "Mặc định compose ps chỉ hiện running; cần--all khi tìm dependency đã thoát.",
+      "explanation": "Mặc định compose ps chỉ hiện running; cần --all khi tìm dependency đã thoát.",
       "hints": [
         "Mỗi service trong stack có trạng thái riêng.",
         "Dùng compose ps --all để thấy cả service đã dừng; đọc log db và memory limit.",
@@ -5129,7 +5129,7 @@
         {
           "id": "p1",
           "label": "API Up nhưng db Exited(1).",
-          "feedback": "Đọc được vì đã dùng--all."
+          "feedback": "Đọc được vì đã dùng --all."
         }
       ],
       "correctIds": [
@@ -5469,7 +5469,7 @@
         "resolution": "Owner duyệt config fix hoặc rollback chỉ sau kiểm tra tương thích data và kế hoạch khôi phục.",
         "verification": "Health/functional tests và dữ liệu ứng dụng đúng, không chỉ container Up hoặc đổi tag.",
         "escalation": "Cần app/vendor/DB owner quyết định compatibility hoặc migration.",
-        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: With approval, roll back to a validated image or migrate the configuration.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: Check data and schema compatibility before any rollback; have the owner approve a tested config fix or compatible recovery plan.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:1375",
@@ -5610,7 +5610,7 @@
         "resolution": "Owner duyệt config fix hoặc rollback chỉ sau kiểm tra tương thích data và kế hoạch khôi phục.",
         "verification": "Health/functional tests và dữ liệu ứng dụng đúng, không chỉ container Up hoặc đổi tag.",
         "escalation": "Cần app/vendor/DB owner quyết định compatibility hoặc migration.",
-        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: With approval, roll back to a validated image or migrate the configuration.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: Check data and schema compatibility before any rollback; have the owner approve a tested config fix or compatible recovery plan.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:1393",
@@ -5835,14 +5835,14 @@
         "resolution": "Owner duyệt config fix hoặc rollback chỉ sau kiểm tra tương thích data và kế hoạch khôi phục.",
         "verification": "Health/functional tests và dữ liệu ứng dụng đúng, không chỉ container Up hoặc đổi tag.",
         "escalation": "Cần app/vendor/DB owner quyết định compatibility hoặc migration.",
-        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: With approval, roll back to a validated image or migrate the configuration.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: Check data and schema compatibility before any rollback; have the owner approve a tested config fix or compatible recovery plan.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:1411",
         "case": "scripts/content/phase-b-11-14.mjs:1343",
         "gradingBase": "scripts/guided-content.mjs",
         "overrides": [
-          "scripts/guided-content.mjs:1381"
+          "scripts/guided-content.mjs:1384"
         ]
       },
       "classification": [
@@ -6026,7 +6026,7 @@
         "resolution": "Owner duyệt config fix hoặc rollback chỉ sau kiểm tra tương thích data và kế hoạch khôi phục.",
         "verification": "Health/functional tests và dữ liệu ứng dụng đúng, không chỉ container Up hoặc đổi tag.",
         "escalation": "Cần app/vendor/DB owner quyết định compatibility hoặc migration.",
-        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: With approval, roll back to a validated image or migrate the configuration.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: Check data and schema compatibility before any rollback; have the owner approve a tested config fix or compatible recovery plan.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:1429",
@@ -6137,7 +6137,7 @@
         "resolution": "Owner duyệt config fix hoặc rollback chỉ sau kiểm tra tương thích data và kế hoạch khôi phục.",
         "verification": "Health/functional tests và dữ liệu ứng dụng đúng, không chỉ container Up hoặc đổi tag.",
         "escalation": "Cần app/vendor/DB owner quyết định compatibility hoặc migration.",
-        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: With approval, roll back to a validated image or migrate the configuration.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: Check data and schema compatibility before any rollback; have the owner approve a tested config fix or compatible recovery plan.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:1447",
@@ -6243,7 +6243,7 @@
         "resolution": "Owner duyệt config fix hoặc rollback chỉ sau kiểm tra tương thích data và kế hoạch khôi phục.",
         "verification": "Health/functional tests và dữ liệu ứng dụng đúng, không chỉ container Up hoặc đổi tag.",
         "escalation": "Cần app/vendor/DB owner quyết định compatibility hoặc migration.",
-        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: With approval, roll back to a validated image or migrate the configuration.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: New container image rejects an old config option.\nFindings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.\nNext Action: Check data and schema compatibility before any rollback; have the owner approve a tested config fix or compatible recovery plan.\nVerification: Run health and functional checks after the selected fix.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:1465",

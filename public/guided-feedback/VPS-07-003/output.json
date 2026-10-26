@@ -5,8 +5,8 @@
   "explanation": "Sai khác path là giả thuyết mạnh; cần đúng vhost/config đang phục vụ trước sửa.",
   "commandId": "nginx-dump",
   "optionFeedback": {
-    "over": "File bổ sung vẫn tồn tại;404 có nhiều cách phát sinh.",
+    "over": "File bổ sung vẫn tồn tại; 404 có nhiều cách phát sinh.",
     "ignore": "Nginx có thể đọc root hoặc route khác.",
-    "supported": "File có ở release path nhưng request vẫn 404; cần runtime-vhost proof."
+    "supported": "File có ở release path nhưng request vẫn 404; cần bằng chứng về vhost đang phục vụ."
   }
 }

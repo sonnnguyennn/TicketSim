@@ -2,7 +2,7 @@
   "correctIds": [
     "symptom"
   ],
-  "explanation": "Stopping20phút là một task chưa kết thúc; không được coi VM đã tắt chỉ vì lệnh đã gửi.",
+  "explanation": "Stopping 20 phút là một task chưa kết thúc; không được coi VM đã tắt chỉ vì lệnh đã gửi.",
   "optionFeedback": {
     "other": "Không có dữ liệu DNS liên quan yêu cầu shutdown này.",
     "cause": "Guest có thể còn ghi dữ liệu hoặc bị chặn I/O; chưa đủ điều kiện hard stop.",

@@ -3,7 +3,7 @@
     "p1",
     "p2"
   ],
-  "explanation": "Running không làm cho handshake502 trở thành thành công; hai nguồn có phạm vi khác nhau.",
+  "explanation": "Running không làm cho handshake 502 trở thành thành công; hai nguồn có phạm vi khác nhau.",
   "commandId": "panel-probes",
   "optionFeedback": {
     "p2": "Đường console qua gateway hiện chưa mở được.",

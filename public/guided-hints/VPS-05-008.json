@@ -2,6 +2,6 @@
   "hints": [
     "Dung lượng disk, chỗ trống trong VG và dung lượng filesystem là các lớp khác nhau.",
     "So lsblk/vgs với lvs và df -hT /data để biết chỗ đang dừng ở đâu.",
-    "VG còn khoảng50G nhưng LV/filesystem30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
+    "VG còn khoảng 50G nhưng LV/filesystem 30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
   ]
 }

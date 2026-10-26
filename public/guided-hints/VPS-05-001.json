@@ -2,6 +2,6 @@
   "hints": [
     "Thông báo hết chỗ chưa chỉ ra block hay inode; đo cả hai trên đúng mount.",
     "Dùng df cho dung lượng/inode và du để khoanh thư mục chiếm nhiều; đừng xóa ngay tên thư mục lớn nhất.",
-    "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ1.2G; cần retention, owner và nguồn tăng trưởng."
+    "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ 1.2G; cần retention, owner và nguồn tăng trưởng."
   ]
 }

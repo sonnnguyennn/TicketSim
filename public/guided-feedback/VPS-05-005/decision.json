@@ -6,6 +6,6 @@
   "optionFeedback": {
     "safe": "Không bỏ qua lớp partition đang nhỏ và dùng công cụ đúng filesystem.",
     "unsafe": "Có thể tác động dữ liệu hoặc boot; cần kế hoạch đã duyệt.",
-    "close": "Khách vẫn chỉ có filesystem20G dùng cho dữ liệu."
+    "close": "Khách vẫn chỉ có filesystem 20G dùng cho dữ liệu."
   }
 }

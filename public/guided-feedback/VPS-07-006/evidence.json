@@ -6,7 +6,7 @@
   "explanation": "Hai nguồn xác định triệu chứng, journal mới giúp đọc lý do startup.",
   "commandId": "systemctl-service",
   "optionFeedback": {
-    "p2": "App chưa ổn định ởstate phục vụ.",
+    "p2": "App chưa ổn định ở trạng thái phục vụ.",
     "over": "Hai phép này không kiểm tra syntax Nginx.",
     "p1": "Có response Service Unavailable."
   }

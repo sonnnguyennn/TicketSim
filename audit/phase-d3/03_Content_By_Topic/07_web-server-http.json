@@ -33,7 +33,7 @@
           "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=730,fd=3))",
           "context": "guest",
           "purpose": "Liệt kê listener TCP trong guest.",
-          "meaning": "Danh sách không có:80; cổng22 hiện diện không chứng minh HTTP hoạt động.",
+          "meaning": "Danh sách không có:80; cổng 22 hiện diện không chứng minh HTTP hoạt động.",
           "commandId": "ss-ltnp",
           "aliases": [],
           "why": "Cần xem cổng 80 có thực sự được process nào mở không."
@@ -64,28 +64,28 @@
         }
       ],
       "commandLinks": [],
-      "prompt": "Connection refused khác HTTP403 ở điểm nào?",
+      "prompt": "Connection refused khác HTTP 403 ở điểm nào?",
       "options": [
         {
           "id": "dns",
           "label": "Hostname chắc chắn NXDOMAIN.",
-          "feedback": "curl báorefused không tự xác nhận lỗi phân giải tên."
+          "feedback": "curl báo refused không tự xác nhận lỗi phân giải tên."
         },
         {
           "id": "tcp",
           "label": "TCP chưa kết nối được tới cổng web.",
-          "feedback": "curl chưa nhận mãHTTP từ server."
+          "feedback": "curl chưa nhận mã HTTP từ server."
         },
         {
           "id": "403",
           "label": "Web server đã trả 403 Forbidden.",
-          "feedback": "403 là một phản hồiHTTP, khác refused."
+          "feedback": "403 là một phản hồi HTTP, khác refused."
         }
       ],
       "correctIds": [
         "tcp"
       ],
-      "explanation": "Refused là lỗi thiết lập kết nối TCP;403 chỉ xuất hiện sau khi đã nhận phản hồi HTTP.",
+      "explanation": "Refused là lỗi thiết lập kết nối TCP; 403 chỉ xuất hiện sau khi đã nhận phản hồi HTTP.",
       "hints": [
         "Connection refused xảy ra trước khi có mã HTTP.",
         "Xem trạng thái Nginx và listener cổng 80.",
@@ -155,7 +155,7 @@
           "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=730,fd=3))",
           "context": "guest",
           "purpose": "Liệt kê listener TCP trong guest.",
-          "meaning": "Danh sách không có:80; cổng22 hiện diện không chứng minh HTTP hoạt động.",
+          "meaning": "Danh sách không có:80; cổng 22 hiện diện không chứng minh HTTP hoạt động.",
           "commandId": "ss-ltnp",
           "aliases": [],
           "why": "Cần xem cổng 80 có thực sự được process nào mở không."
@@ -290,7 +290,7 @@
           "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=730,fd=3))",
           "context": "guest",
           "purpose": "Liệt kê listener TCP trong guest.",
-          "meaning": "Danh sách không có:80; cổng22 hiện diện không chứng minh HTTP hoạt động.",
+          "meaning": "Danh sách không có:80; cổng 22 hiện diện không chứng minh HTTP hoạt động.",
           "commandId": "ss-ltnp",
           "aliases": [],
           "why": "Cần xem cổng 80 có thực sự được process nào mở không."
@@ -316,7 +316,7 @@
           "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=730,fd=3))",
           "context": "guest",
           "purpose": "Liệt kê listener TCP trong guest.",
-          "meaning": "Danh sách không có:80; cổng22 hiện diện không chứng minh HTTP hoạt động.",
+          "meaning": "Danh sách không có:80; cổng 22 hiện diện không chứng minh HTTP hoạt động.",
           "commandId": "ss-ltnp",
           "aliases": [],
           "why": "Cần xem cổng 80 có thực sự được process nào mở không."
@@ -483,7 +483,7 @@
           "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=730,fd=3))",
           "context": "guest",
           "purpose": "Liệt kê listener TCP trong guest.",
-          "meaning": "Danh sách không có:80; cổng22 hiện diện không chứng minh HTTP hoạt động.",
+          "meaning": "Danh sách không có:80; cổng 22 hiện diện không chứng minh HTTP hoạt động.",
           "commandId": "ss-ltnp",
           "aliases": [],
           "why": "Cần xem cổng 80 có thực sự được process nào mở không."
@@ -509,7 +509,7 @@
           "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=730,fd=3))",
           "context": "guest",
           "purpose": "Liệt kê listener TCP trong guest.",
-          "meaning": "Danh sách không có:80; cổng22 hiện diện không chứng minh HTTP hoạt động.",
+          "meaning": "Danh sách không có:80; cổng 22 hiện diện không chứng minh HTTP hoạt động.",
           "commandId": "ss-ltnp",
           "aliases": [],
           "why": "Cần xem cổng 80 có thực sự được process nào mở không."
@@ -692,7 +692,7 @@
           "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=730,fd=3))",
           "context": "guest",
           "purpose": "Liệt kê listener TCP trong guest.",
-          "meaning": "Danh sách không có:80; cổng22 hiện diện không chứng minh HTTP hoạt động.",
+          "meaning": "Danh sách không có:80; cổng 22 hiện diện không chứng minh HTTP hoạt động.",
           "commandId": "ss-ltnp",
           "aliases": [],
           "why": "Cần xem cổng 80 có thực sự được process nào mở không."
@@ -820,7 +820,7 @@
           "output": "HTTP/1.1 403 Forbidden",
           "context": "guest",
           "purpose": "Đọc mã HTTP từ web server local.",
-          "meaning": "HTTP403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
+          "meaning": "HTTP 403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
           "commandId": "curl-head",
           "aliases": [],
           "why": "Xác định server đã phản hồi hay TCP còn lỗi."
@@ -830,7 +830,7 @@
           "command": "tail /var/log/nginx/error.log",
           "output": "directory index of /srv/site/ is forbidden",
           "context": "guest",
-          "purpose": "Đọc lỗi Nginx gần request403.",
+          "purpose": "Đọc lỗi Nginx gần request 403.",
           "meaning": "Directory index of /srv/site/ forbidden cần đối chiếu index/route/access; không tự cho phép bật listing.",
           "commandId": "nginx-error-tail",
           "aliases": [],
@@ -847,13 +847,13 @@
         },
         {
           "id": "symptom",
-          "label": "Web server phản hồi403 Forbidden.",
+          "label": "Web server phản hồi 403 Forbidden.",
           "feedback": "Request tới server nhưng bị từ chối."
         },
         {
           "id": "other",
           "label": "TCP hoàn toàn không kết nối được tới web server.",
-          "feedback": "Đã có HTTP403 nên không phải refused hoàn toàn."
+          "feedback": "Đã có HTTP 403 nên không phải refused hoàn toàn."
         }
       ],
       "correctIds": [
@@ -901,7 +901,7 @@
           "output": "HTTP/1.1 403 Forbidden",
           "context": "guest",
           "purpose": "Đọc mã HTTP từ web server local.",
-          "meaning": "HTTP403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
+          "meaning": "HTTP 403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
           "commandId": "curl-head",
           "aliases": [],
           "why": "Xác định server đã phản hồi hay TCP còn lỗi."
@@ -914,7 +914,7 @@
           "output": "HTTP/1.1 403 Forbidden",
           "context": "guest",
           "purpose": "Đọc mã HTTP từ web server local.",
-          "meaning": "HTTP403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
+          "meaning": "HTTP 403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
           "commandId": "curl-head",
           "aliases": [],
           "why": "Xác định server đã phản hồi hay TCP còn lỗi."
@@ -924,7 +924,7 @@
           "command": "tail /var/log/nginx/error.log",
           "output": "directory index of /srv/site/ is forbidden",
           "context": "guest",
-          "purpose": "Đọc lỗi Nginx gần request403.",
+          "purpose": "Đọc lỗi Nginx gần request 403.",
           "meaning": "Directory index of /srv/site/ forbidden cần đối chiếu index/route/access; không tự cho phép bật listing.",
           "commandId": "nginx-error-tail",
           "aliases": [],
@@ -975,7 +975,7 @@
         {
           "id": "direct",
           "label": "curl -I http://127.0.0.1",
-          "feedback": "Lệnh trả status/header để phân biệt403 với lỗi TCP."
+          "feedback": "Lệnh trả status/header để phân biệt 403 với lỗi TCP."
         },
         {
           "id": "wrong1",
@@ -986,7 +986,7 @@
       "correctIds": [
         "direct"
       ],
-      "explanation": "curl-I đọc header HTTP, không kiểm tra file deploy hoặc quyền filesystem.",
+      "explanation": "curl -I đọc header HTTP, không kiểm tra file deploy hoặc quyền filesystem.",
       "hints": [
         "403 là phản hồi HTTP, khác connection refused.",
         "Đọc error log và cấu hình root/index của site.",
@@ -1031,7 +1031,7 @@
           "output": "HTTP/1.1 403 Forbidden",
           "context": "guest",
           "purpose": "Đọc mã HTTP từ web server local.",
-          "meaning": "HTTP403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
+          "meaning": "HTTP 403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
           "commandId": "curl-head",
           "aliases": [],
           "why": "Xác định server đã phản hồi hay TCP còn lỗi."
@@ -1041,7 +1041,7 @@
           "command": "tail /var/log/nginx/error.log",
           "output": "directory index of /srv/site/ is forbidden",
           "context": "guest",
-          "purpose": "Đọc lỗi Nginx gần request403.",
+          "purpose": "Đọc lỗi Nginx gần request 403.",
           "meaning": "Directory index of /srv/site/ forbidden cần đối chiếu index/route/access; không tự cho phép bật listing.",
           "commandId": "nginx-error-tail",
           "aliases": [],
@@ -1055,7 +1055,7 @@
           "output": "HTTP/1.1 403 Forbidden",
           "context": "guest",
           "purpose": "Đọc mã HTTP từ web server local.",
-          "meaning": "HTTP403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
+          "meaning": "HTTP 403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
           "commandId": "curl-head",
           "aliases": [],
           "why": "Xác định server đã phản hồi hay TCP còn lỗi."
@@ -1065,7 +1065,7 @@
           "command": "tail /var/log/nginx/error.log",
           "output": "directory index of /srv/site/ is forbidden",
           "context": "guest",
-          "purpose": "Đọc lỗi Nginx gần request403.",
+          "purpose": "Đọc lỗi Nginx gần request 403.",
           "meaning": "Directory index of /srv/site/ forbidden cần đối chiếu index/route/access; không tự cho phép bật listing.",
           "commandId": "nginx-error-tail",
           "aliases": [],
@@ -1194,7 +1194,7 @@
           "output": "HTTP/1.1 403 Forbidden",
           "context": "guest",
           "purpose": "Đọc mã HTTP từ web server local.",
-          "meaning": "HTTP403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
+          "meaning": "HTTP 403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
           "commandId": "curl-head",
           "aliases": [],
           "why": "Xác định server đã phản hồi hay TCP còn lỗi."
@@ -1204,7 +1204,7 @@
           "command": "tail /var/log/nginx/error.log",
           "output": "directory index of /srv/site/ is forbidden",
           "context": "guest",
-          "purpose": "Đọc lỗi Nginx gần request403.",
+          "purpose": "Đọc lỗi Nginx gần request 403.",
           "meaning": "Directory index of /srv/site/ forbidden cần đối chiếu index/route/access; không tự cho phép bật listing.",
           "commandId": "nginx-error-tail",
           "aliases": [],
@@ -1218,7 +1218,7 @@
           "output": "HTTP/1.1 403 Forbidden",
           "context": "guest",
           "purpose": "Đọc mã HTTP từ web server local.",
-          "meaning": "HTTP403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
+          "meaning": "HTTP 403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
           "commandId": "curl-head",
           "aliases": [],
           "why": "Xác định server đã phản hồi hay TCP còn lỗi."
@@ -1228,7 +1228,7 @@
           "command": "tail /var/log/nginx/error.log",
           "output": "directory index of /srv/site/ is forbidden",
           "context": "guest",
-          "purpose": "Đọc lỗi Nginx gần request403.",
+          "purpose": "Đọc lỗi Nginx gần request 403.",
           "meaning": "Directory index of /srv/site/ forbidden cần đối chiếu index/route/access; không tự cho phép bật listing.",
           "commandId": "nginx-error-tail",
           "aliases": [],
@@ -1356,7 +1356,7 @@
           "output": "HTTP/1.1 403 Forbidden",
           "context": "guest",
           "purpose": "Đọc mã HTTP từ web server local.",
-          "meaning": "HTTP403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
+          "meaning": "HTTP 403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
           "commandId": "curl-head",
           "aliases": [],
           "why": "Xác định server đã phản hồi hay TCP còn lỗi."
@@ -1366,7 +1366,7 @@
           "command": "tail /var/log/nginx/error.log",
           "output": "directory index of /srv/site/ is forbidden",
           "context": "guest",
-          "purpose": "Đọc lỗi Nginx gần request403.",
+          "purpose": "Đọc lỗi Nginx gần request 403.",
           "meaning": "Directory index of /srv/site/ forbidden cần đối chiếu index/route/access; không tự cho phép bật listing.",
           "commandId": "nginx-error-tail",
           "aliases": [],
@@ -1374,7 +1374,7 @@
         }
       ],
       "commandLinks": [],
-      "prompt": "Sửa403 thế nào để không vô tình mở dữ liệu riêng tư?",
+      "prompt": "Sửa 403 thế nào để không vô tình mở dữ liệu riêng tư?",
       "options": [
         {
           "id": "safe",
@@ -1389,7 +1389,7 @@
         {
           "id": "close",
           "label": "Đóng ticket vì đã có phản hồi HTTP.",
-          "feedback": "Khách cần trang hợp lệ, không phải403."
+          "feedback": "Khách cần trang hợp lệ, không phải 403."
         }
       ],
       "correctIds": [
@@ -1438,7 +1438,7 @@
           "output": "active",
           "context": "guest",
           "purpose": "Đọc state Nginx.",
-          "meaning": "active không kiểm tra backend3000.",
+          "meaning": "active không kiểm tra backend 3000.",
           "commandId": "systemctl-nginx",
           "aliases": [],
           "why": "Tách proxy dừng khỏi proxy chạy nhưng lỗi backend."
@@ -1449,7 +1449,7 @@
           "output": "connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000",
           "context": "guest",
           "purpose": "Đọc lỗi kết nối upstream.",
-          "meaning": "Kết nối127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
+          "meaning": "Kết nối 127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
           "commandId": "nginx-error-tail",
           "aliases": [],
           "why": "502 cần khoanh đoạn proxy tới backend."
@@ -1465,13 +1465,13 @@
         },
         {
           "id": "symptom",
-          "label": "HTTP502 Bad Gateway.",
+          "label": "HTTP 502 Bad Gateway.",
           "feedback": "Đã nhận response ở lớp HTTP."
         },
         {
           "id": "other",
           "label": "TCP hoàn toàn không kết nối được.",
-          "feedback": "Khách đã nhận502, khác client refused."
+          "feedback": "Khách đã nhận 502, khác client refused."
         }
       ],
       "correctIds": [
@@ -1485,9 +1485,9 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Nginx active nhưng upstream 127.0.0.1:3000 refused. Chưa phân biệt backend dừng với target sai.",
-        "nextChecks": "Đọc listener3000, backend unit/log và proxy_pass cùng thời điểm request.",
+        "nextChecks": "Đọc listener 3000, backend unit/log và proxy_pass cùng thời điểm request.",
         "resolution": "Owner/admin sửa đúng backend hoặc target theo change; start chỉ sau kiểm tra và quyền.",
-        "verification": "Backend health và URL công khai trả nội dung đúng, không còn502 trong cửa sổ kiểm tra.",
+        "verification": "Backend health và URL công khai trả nội dung đúng, không còn 502 trong cửa sổ kiểm tra.",
         "escalation": "Chuyển app/backend owner nếu ngoài quyền hoặc dependency bên thứ ba.",
         "referenceNoteEn": "Issue: Reverse proxy returns HTTP 502.\nFindings: Nginx was running, but its error log showed a refused connection to upstream 127.0.0.1:3000. The upstream service or target may be unavailable.\nNext Action: Investigate backend state and the configured upstream address before an approved fix.\nVerification: Confirm backend health and public HTTP access.\nStatus: Pending authorized remediation and verification."
       },
@@ -1519,7 +1519,7 @@
           "output": "active",
           "context": "guest",
           "purpose": "Đọc state Nginx.",
-          "meaning": "active không kiểm tra backend3000.",
+          "meaning": "active không kiểm tra backend 3000.",
           "commandId": "systemctl-nginx",
           "aliases": [],
           "why": "Tách proxy dừng khỏi proxy chạy nhưng lỗi backend."
@@ -1532,7 +1532,7 @@
           "output": "active",
           "context": "guest",
           "purpose": "Đọc state Nginx.",
-          "meaning": "active không kiểm tra backend3000.",
+          "meaning": "active không kiểm tra backend 3000.",
           "commandId": "systemctl-nginx",
           "aliases": [],
           "why": "Tách proxy dừng khỏi proxy chạy nhưng lỗi backend."
@@ -1543,7 +1543,7 @@
           "output": "connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000",
           "context": "guest",
           "purpose": "Đọc lỗi kết nối upstream.",
-          "meaning": "Kết nối127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
+          "meaning": "Kết nối 127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
           "commandId": "nginx-error-tail",
           "aliases": [],
           "why": "502 cần khoanh đoạn proxy tới backend."
@@ -1604,9 +1604,9 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Nginx active nhưng upstream 127.0.0.1:3000 refused. Chưa phân biệt backend dừng với target sai.",
-        "nextChecks": "Đọc listener3000, backend unit/log và proxy_pass cùng thời điểm request.",
+        "nextChecks": "Đọc listener 3000, backend unit/log và proxy_pass cùng thời điểm request.",
         "resolution": "Owner/admin sửa đúng backend hoặc target theo change; start chỉ sau kiểm tra và quyền.",
-        "verification": "Backend health và URL công khai trả nội dung đúng, không còn502 trong cửa sổ kiểm tra.",
+        "verification": "Backend health và URL công khai trả nội dung đúng, không còn 502 trong cửa sổ kiểm tra.",
         "escalation": "Chuyển app/backend owner nếu ngoài quyền hoặc dependency bên thứ ba.",
         "referenceNoteEn": "Issue: Reverse proxy returns HTTP 502.\nFindings: Nginx was running, but its error log showed a refused connection to upstream 127.0.0.1:3000. The upstream service or target may be unavailable.\nNext Action: Investigate backend state and the configured upstream address before an approved fix.\nVerification: Confirm backend health and public HTTP access.\nStatus: Pending authorized remediation and verification."
       },
@@ -1641,7 +1641,7 @@
           "output": "active",
           "context": "guest",
           "purpose": "Đọc state Nginx.",
-          "meaning": "active không kiểm tra backend3000.",
+          "meaning": "active không kiểm tra backend 3000.",
           "commandId": "systemctl-nginx",
           "aliases": [],
           "why": "Tách proxy dừng khỏi proxy chạy nhưng lỗi backend."
@@ -1652,7 +1652,7 @@
           "output": "connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000",
           "context": "guest",
           "purpose": "Đọc lỗi kết nối upstream.",
-          "meaning": "Kết nối127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
+          "meaning": "Kết nối 127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
           "commandId": "nginx-error-tail",
           "aliases": [],
           "why": "502 cần khoanh đoạn proxy tới backend."
@@ -1665,7 +1665,7 @@
           "output": "active",
           "context": "guest",
           "purpose": "Đọc state Nginx.",
-          "meaning": "active không kiểm tra backend3000.",
+          "meaning": "active không kiểm tra backend 3000.",
           "commandId": "systemctl-nginx",
           "aliases": [],
           "why": "Tách proxy dừng khỏi proxy chạy nhưng lỗi backend."
@@ -1676,7 +1676,7 @@
           "output": "connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000",
           "context": "guest",
           "purpose": "Đọc lỗi kết nối upstream.",
-          "meaning": "Kết nối127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
+          "meaning": "Kết nối 127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
           "commandId": "nginx-error-tail",
           "aliases": [],
           "why": "502 cần khoanh đoạn proxy tới backend."
@@ -1730,7 +1730,7 @@
           "source": "src/guided/commands.ts (id nginx-error-tail)"
         }
       ],
-      "prompt": "Nginx active, upstream3000 refused. Nên khoanh lớp nào?",
+      "prompt": "Nginx active, upstream 3000 refused. Nên khoanh lớp nào?",
       "options": [
         {
           "id": "over",
@@ -1759,9 +1759,9 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Nginx active nhưng upstream 127.0.0.1:3000 refused. Chưa phân biệt backend dừng với target sai.",
-        "nextChecks": "Đọc listener3000, backend unit/log và proxy_pass cùng thời điểm request.",
+        "nextChecks": "Đọc listener 3000, backend unit/log và proxy_pass cùng thời điểm request.",
         "resolution": "Owner/admin sửa đúng backend hoặc target theo change; start chỉ sau kiểm tra và quyền.",
-        "verification": "Backend health và URL công khai trả nội dung đúng, không còn502 trong cửa sổ kiểm tra.",
+        "verification": "Backend health và URL công khai trả nội dung đúng, không còn 502 trong cửa sổ kiểm tra.",
         "escalation": "Chuyển app/backend owner nếu ngoài quyền hoặc dependency bên thứ ba.",
         "referenceNoteEn": "Issue: Reverse proxy returns HTTP 502.\nFindings: Nginx was running, but its error log showed a refused connection to upstream 127.0.0.1:3000. The upstream service or target may be unavailable.\nNext Action: Investigate backend state and the configured upstream address before an approved fix.\nVerification: Confirm backend health and public HTTP access.\nStatus: Pending authorized remediation and verification."
       },
@@ -1796,7 +1796,7 @@
           "output": "active",
           "context": "guest",
           "purpose": "Đọc state Nginx.",
-          "meaning": "active không kiểm tra backend3000.",
+          "meaning": "active không kiểm tra backend 3000.",
           "commandId": "systemctl-nginx",
           "aliases": [],
           "why": "Tách proxy dừng khỏi proxy chạy nhưng lỗi backend."
@@ -1807,7 +1807,7 @@
           "output": "connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000",
           "context": "guest",
           "purpose": "Đọc lỗi kết nối upstream.",
-          "meaning": "Kết nối127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
+          "meaning": "Kết nối 127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
           "commandId": "nginx-error-tail",
           "aliases": [],
           "why": "502 cần khoanh đoạn proxy tới backend."
@@ -1820,7 +1820,7 @@
           "output": "active",
           "context": "guest",
           "purpose": "Đọc state Nginx.",
-          "meaning": "active không kiểm tra backend3000.",
+          "meaning": "active không kiểm tra backend 3000.",
           "commandId": "systemctl-nginx",
           "aliases": [],
           "why": "Tách proxy dừng khỏi proxy chạy nhưng lỗi backend."
@@ -1831,7 +1831,7 @@
           "output": "connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000",
           "context": "guest",
           "purpose": "Đọc lỗi kết nối upstream.",
-          "meaning": "Kết nối127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
+          "meaning": "Kết nối 127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
           "commandId": "nginx-error-tail",
           "aliases": [],
           "why": "502 cần khoanh đoạn proxy tới backend."
@@ -1889,7 +1889,7 @@
       "options": [
         {
           "id": "p2",
-          "label": "Upstream127.0.0.1:3000 refused.",
+          "label": "Upstream 127.0.0.1:3000 refused.",
           "feedback": "Log ghi endpoint không kết nối được."
         },
         {
@@ -1915,9 +1915,9 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Nginx active nhưng upstream 127.0.0.1:3000 refused. Chưa phân biệt backend dừng với target sai.",
-        "nextChecks": "Đọc listener3000, backend unit/log và proxy_pass cùng thời điểm request.",
+        "nextChecks": "Đọc listener 3000, backend unit/log và proxy_pass cùng thời điểm request.",
         "resolution": "Owner/admin sửa đúng backend hoặc target theo change; start chỉ sau kiểm tra và quyền.",
-        "verification": "Backend health và URL công khai trả nội dung đúng, không còn502 trong cửa sổ kiểm tra.",
+        "verification": "Backend health và URL công khai trả nội dung đúng, không còn 502 trong cửa sổ kiểm tra.",
         "escalation": "Chuyển app/backend owner nếu ngoài quyền hoặc dependency bên thứ ba.",
         "referenceNoteEn": "Issue: Reverse proxy returns HTTP 502.\nFindings: Nginx was running, but its error log showed a refused connection to upstream 127.0.0.1:3000. The upstream service or target may be unavailable.\nNext Action: Investigate backend state and the configured upstream address before an approved fix.\nVerification: Confirm backend health and public HTTP access.\nStatus: Pending authorized remediation and verification."
       },
@@ -1950,7 +1950,7 @@
           "output": "active",
           "context": "guest",
           "purpose": "Đọc state Nginx.",
-          "meaning": "active không kiểm tra backend3000.",
+          "meaning": "active không kiểm tra backend 3000.",
           "commandId": "systemctl-nginx",
           "aliases": [],
           "why": "Tách proxy dừng khỏi proxy chạy nhưng lỗi backend."
@@ -1961,19 +1961,19 @@
           "output": "connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000",
           "context": "guest",
           "purpose": "Đọc lỗi kết nối upstream.",
-          "meaning": "Kết nối127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
+          "meaning": "Kết nối 127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
           "commandId": "nginx-error-tail",
           "aliases": [],
           "why": "502 cần khoanh đoạn proxy tới backend."
         }
       ],
       "commandLinks": [],
-      "prompt": "Nên xử lý502 theo bằng chứng hiện có thế nào?",
+      "prompt": "Nên xử lý 502 theo bằng chứng hiện có thế nào?",
       "options": [
         {
           "id": "close",
           "label": "Đóng ticket vì Nginx active.",
-          "feedback": "Khách vẫn nhận502."
+          "feedback": "Khách vẫn nhận 502."
         },
         {
           "id": "safe",
@@ -1997,9 +1997,9 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Nginx active nhưng upstream 127.0.0.1:3000 refused. Chưa phân biệt backend dừng với target sai.",
-        "nextChecks": "Đọc listener3000, backend unit/log và proxy_pass cùng thời điểm request.",
+        "nextChecks": "Đọc listener 3000, backend unit/log và proxy_pass cùng thời điểm request.",
         "resolution": "Owner/admin sửa đúng backend hoặc target theo change; start chỉ sau kiểm tra và quyền.",
-        "verification": "Backend health và URL công khai trả nội dung đúng, không còn502 trong cửa sổ kiểm tra.",
+        "verification": "Backend health và URL công khai trả nội dung đúng, không còn 502 trong cửa sổ kiểm tra.",
         "escalation": "Chuyển app/backend owner nếu ngoài quyền hoặc dependency bên thứ ba.",
         "referenceNoteEn": "Issue: Reverse proxy returns HTTP 502.\nFindings: Nginx was running, but its error log showed a refused connection to upstream 127.0.0.1:3000. The upstream service or target may be unavailable.\nNext Action: Investigate backend state and the configured upstream address before an approved fix.\nVerification: Confirm backend health and public HTTP access.\nStatus: Pending authorized remediation and verification."
       },
@@ -2032,10 +2032,10 @@
           "output": "HTTP/1.1 503 Service Unavailable",
           "context": "guest",
           "purpose": "Đọc HTTP status local.",
-          "meaning": "Local503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
+          "meaning": "Local 503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
           "commandId": "curl-head",
           "aliases": [],
-          "why": "Xác nhận503 xuất hiện trong đường phục vụ tại VPS."
+          "why": "Xác nhận 503 xuất hiện trong đường phục vụ tại VPS."
         },
         {
           "id": "P2",
@@ -2054,19 +2054,19 @@
           "command": "journalctl -u app -n 30 --no-pager",
           "output": "app.service: Main process exited, code=exited, status=1/FAILURE\napp: missing required APP_CONFIG",
           "purpose": "Đọc journal app sau deploy.",
-          "meaning": "Process exit1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
+          "meaning": "Process exit 1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần startup error cụ thể trước change."
         }
       ],
       "commandLinks": [],
-      "prompt": "Mốc nào giúp chọn dữ liệu điều tra503?",
+      "prompt": "Mốc nào giúp chọn dữ liệu điều tra 503?",
       "options": [
         {
           "id": "other",
           "label": "Domain chưa có A record.",
-          "feedback": "Khách đang nhận HTTP503, chưa có NXDOMAIN."
+          "feedback": "Khách đang nhận HTTP 503, chưa có NXDOMAIN."
         },
         {
           "id": "cause",
@@ -2124,10 +2124,10 @@
           "output": "HTTP/1.1 503 Service Unavailable",
           "context": "guest",
           "purpose": "Đọc HTTP status local.",
-          "meaning": "Local503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
+          "meaning": "Local 503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
           "commandId": "curl-head",
           "aliases": [],
-          "why": "Xác nhận503 xuất hiện trong đường phục vụ tại VPS."
+          "why": "Xác nhận 503 xuất hiện trong đường phục vụ tại VPS."
         }
       ],
       "allTicketProbes": [
@@ -2137,10 +2137,10 @@
           "output": "HTTP/1.1 503 Service Unavailable",
           "context": "guest",
           "purpose": "Đọc HTTP status local.",
-          "meaning": "Local503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
+          "meaning": "Local 503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
           "commandId": "curl-head",
           "aliases": [],
-          "why": "Xác nhận503 xuất hiện trong đường phục vụ tại VPS."
+          "why": "Xác nhận 503 xuất hiện trong đường phục vụ tại VPS."
         },
         {
           "id": "P2",
@@ -2159,7 +2159,7 @@
           "command": "journalctl -u app -n 30 --no-pager",
           "output": "app.service: Main process exited, code=exited, status=1/FAILURE\napp: missing required APP_CONFIG",
           "purpose": "Đọc journal app sau deploy.",
-          "meaning": "Process exit1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
+          "meaning": "Process exit 1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần startup error cụ thể trước change."
@@ -2273,10 +2273,10 @@
           "output": "HTTP/1.1 503 Service Unavailable",
           "context": "guest",
           "purpose": "Đọc HTTP status local.",
-          "meaning": "Local503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
+          "meaning": "Local 503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
           "commandId": "curl-head",
           "aliases": [],
-          "why": "Xác nhận503 xuất hiện trong đường phục vụ tại VPS."
+          "why": "Xác nhận 503 xuất hiện trong đường phục vụ tại VPS."
         },
         {
           "id": "P2",
@@ -2295,7 +2295,7 @@
           "command": "journalctl -u app -n 30 --no-pager",
           "output": "app.service: Main process exited, code=exited, status=1/FAILURE\napp: missing required APP_CONFIG",
           "purpose": "Đọc journal app sau deploy.",
-          "meaning": "Process exit1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
+          "meaning": "Process exit 1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần startup error cụ thể trước change."
@@ -2308,10 +2308,10 @@
           "output": "HTTP/1.1 503 Service Unavailable",
           "context": "guest",
           "purpose": "Đọc HTTP status local.",
-          "meaning": "Local503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
+          "meaning": "Local 503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
           "commandId": "curl-head",
           "aliases": [],
-          "why": "Xác nhận503 xuất hiện trong đường phục vụ tại VPS."
+          "why": "Xác nhận 503 xuất hiện trong đường phục vụ tại VPS."
         },
         {
           "id": "P2",
@@ -2330,7 +2330,7 @@
           "command": "journalctl -u app -n 30 --no-pager",
           "output": "app.service: Main process exited, code=exited, status=1/FAILURE\napp: missing required APP_CONFIG",
           "purpose": "Đọc journal app sau deploy.",
-          "meaning": "Process exit1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
+          "meaning": "Process exit 1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần startup error cụ thể trước change."
@@ -2428,7 +2428,7 @@
         {
           "id": "over",
           "label": "Nginx chắc chắn sai cú pháp.",
-          "feedback": "Không có nginx-t error, app journal lại nêu config thiếu."
+          "feedback": "Không có nginx -t error, app journal lại nêu config thiếu."
         },
         {
           "id": "ignore",
@@ -2484,10 +2484,10 @@
           "output": "HTTP/1.1 503 Service Unavailable",
           "context": "guest",
           "purpose": "Đọc HTTP status local.",
-          "meaning": "Local503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
+          "meaning": "Local 503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
           "commandId": "curl-head",
           "aliases": [],
-          "why": "Xác nhận503 xuất hiện trong đường phục vụ tại VPS."
+          "why": "Xác nhận 503 xuất hiện trong đường phục vụ tại VPS."
         },
         {
           "id": "P2",
@@ -2508,10 +2508,10 @@
           "output": "HTTP/1.1 503 Service Unavailable",
           "context": "guest",
           "purpose": "Đọc HTTP status local.",
-          "meaning": "Local503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
+          "meaning": "Local 503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
           "commandId": "curl-head",
           "aliases": [],
-          "why": "Xác nhận503 xuất hiện trong đường phục vụ tại VPS."
+          "why": "Xác nhận 503 xuất hiện trong đường phục vụ tại VPS."
         },
         {
           "id": "P2",
@@ -2530,7 +2530,7 @@
           "command": "journalctl -u app -n 30 --no-pager",
           "output": "app.service: Main process exited, code=exited, status=1/FAILURE\napp: missing required APP_CONFIG",
           "purpose": "Đọc journal app sau deploy.",
-          "meaning": "Process exit1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
+          "meaning": "Process exit 1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần startup error cụ thể trước change."
@@ -2599,7 +2599,7 @@
         {
           "id": "p2",
           "label": "App activating(auto-restart).",
-          "feedback": "App chưa ổn định ởstate phục vụ."
+          "feedback": "App chưa ổn định ở trạng thái phục vụ."
         },
         {
           "id": "over",
@@ -2637,16 +2637,9 @@
         "overrides": []
       },
       "classification": [
-        "EDIT_FEEDBACK"
+        "KEEP"
       ],
-      "findings": [
-        {
-          "label": "EDIT_FEEDBACK",
-          "reason": "2 option feedback dưới 34 ký tự; cần kiểm tra lý do cụ thể cho từng lựa chọn.",
-          "evidence": "p2: App chưa ổn định ởstate phục vụ. | p1: Có response Service Unavailable.",
-          "source": "scripts/content/phase-b-06-10.mjs:778"
-        }
-      ],
+      "findings": [],
       "reviewStatus": "AUTOMATED_EDITORIAL_TRIAGE; SME_PENDING"
     },
     {
@@ -2666,10 +2659,10 @@
           "output": "HTTP/1.1 503 Service Unavailable",
           "context": "guest",
           "purpose": "Đọc HTTP status local.",
-          "meaning": "Local503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
+          "meaning": "Local 503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
           "commandId": "curl-head",
           "aliases": [],
-          "why": "Xác nhận503 xuất hiện trong đường phục vụ tại VPS."
+          "why": "Xác nhận 503 xuất hiện trong đường phục vụ tại VPS."
         },
         {
           "id": "P2",
@@ -2688,7 +2681,7 @@
           "command": "journalctl -u app -n 30 --no-pager",
           "output": "app.service: Main process exited, code=exited, status=1/FAILURE\napp: missing required APP_CONFIG",
           "purpose": "Đọc journal app sau deploy.",
-          "meaning": "Process exit1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
+          "meaning": "Process exit 1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần startup error cụ thể trước change."
@@ -2759,10 +2752,10 @@
           "output": "HTTP/1.1 503 Service Unavailable",
           "context": "guest",
           "purpose": "Đọc HTTP status local.",
-          "meaning": "Local503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
+          "meaning": "Local 503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
           "commandId": "curl-head",
           "aliases": [],
-          "why": "Xác nhận503 xuất hiện trong đường phục vụ tại VPS."
+          "why": "Xác nhận 503 xuất hiện trong đường phục vụ tại VPS."
         },
         {
           "id": "P2",
@@ -2781,14 +2774,14 @@
           "command": "journalctl -u app -n 30 --no-pager",
           "output": "app.service: Main process exited, code=exited, status=1/FAILURE\napp: missing required APP_CONFIG",
           "purpose": "Đọc journal app sau deploy.",
-          "meaning": "Process exit1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
+          "meaning": "Process exit 1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần startup error cụ thể trước change."
         }
       ],
       "commandLinks": [],
-      "prompt": "Sắp xếp phục hồi503 sau deploy.",
+      "prompt": "Sắp xếp phục hồi 503 sau deploy.",
       "options": [
         {
           "id": "evidence",
@@ -2927,7 +2920,7 @@
         "resolution": "Người có quyền sửa ánh xạ hoặc triển khai chứng chỉ đúng hostname theo quy trình thay đổi; kiểm tra cấu hình và phương án hoàn tác trước khi nạp lại.",
         "verification": "Client dùng SNI shop xác minh chain, hostname, hạn dùng và nội dung trang; kiểm tra các domain chung IP nếu bị ảnh hưởng.",
         "escalation": "Chuyển nhóm TLS hoặc chủ site nếu thiếu quyền với chứng chỉ, hoặc chưa rõ cấu hình đang chạy trên nhiều endpoint.",
-        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received an api.example.com certificate and no shop server_name appeared in the shown Nginx configuration.\nNext Action: Review the vhost mapping and deploy a matching valid certificate under change control.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received a certificate with CN api.example.com, and the shown Nginx configuration had no shop server_name; SAN coverage is still unknown.\nNext Action: Check SAN, chain and the active vhost mapping first; deploy a matching certificate only if the mismatch is confirmed and approved.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:448",
@@ -3076,7 +3069,7 @@
         "resolution": "Người có quyền sửa ánh xạ hoặc triển khai chứng chỉ đúng hostname theo quy trình thay đổi; kiểm tra cấu hình và phương án hoàn tác trước khi nạp lại.",
         "verification": "Client dùng SNI shop xác minh chain, hostname, hạn dùng và nội dung trang; kiểm tra các domain chung IP nếu bị ảnh hưởng.",
         "escalation": "Chuyển nhóm TLS hoặc chủ site nếu thiếu quyền với chứng chỉ, hoặc chưa rõ cấu hình đang chạy trên nhiều endpoint.",
-        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received an api.example.com certificate and no shop server_name appeared in the shown Nginx configuration.\nNext Action: Review the vhost mapping and deploy a matching valid certificate under change control.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received a certificate with CN api.example.com, and the shown Nginx configuration had no shop server_name; SAN coverage is still unknown.\nNext Action: Check SAN, chain and the active vhost mapping first; deploy a matching certificate only if the mismatch is confirmed and approved.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:466",
@@ -3348,7 +3341,7 @@
         "resolution": "Người có quyền sửa ánh xạ hoặc triển khai chứng chỉ đúng hostname theo quy trình thay đổi; kiểm tra cấu hình và phương án hoàn tác trước khi nạp lại.",
         "verification": "Client dùng SNI shop xác minh chain, hostname, hạn dùng và nội dung trang; kiểm tra các domain chung IP nếu bị ảnh hưởng.",
         "escalation": "Chuyển nhóm TLS hoặc chủ site nếu thiếu quyền với chứng chỉ, hoặc chưa rõ cấu hình đang chạy trên nhiều endpoint.",
-        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received an api.example.com certificate and no shop server_name appeared in the shown Nginx configuration.\nNext Action: Review the vhost mapping and deploy a matching valid certificate under change control.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received a certificate with CN api.example.com, and the shown Nginx configuration had no shop server_name; SAN coverage is still unknown.\nNext Action: Check SAN, chain and the active vhost mapping first; deploy a matching certificate only if the mismatch is confirmed and approved.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:484",
@@ -3536,7 +3529,7 @@
         "resolution": "Người có quyền sửa ánh xạ hoặc triển khai chứng chỉ đúng hostname theo quy trình thay đổi; kiểm tra cấu hình và phương án hoàn tác trước khi nạp lại.",
         "verification": "Client dùng SNI shop xác minh chain, hostname, hạn dùng và nội dung trang; kiểm tra các domain chung IP nếu bị ảnh hưởng.",
         "escalation": "Chuyển nhóm TLS hoặc chủ site nếu thiếu quyền với chứng chỉ, hoặc chưa rõ cấu hình đang chạy trên nhiều endpoint.",
-        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received an api.example.com certificate and no shop server_name appeared in the shown Nginx configuration.\nNext Action: Review the vhost mapping and deploy a matching valid certificate under change control.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received a certificate with CN api.example.com, and the shown Nginx configuration had no shop server_name; SAN coverage is still unknown.\nNext Action: Check SAN, chain and the active vhost mapping first; deploy a matching certificate only if the mismatch is confirmed and approved.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:502",
@@ -3640,7 +3633,7 @@
         "resolution": "Người có quyền sửa ánh xạ hoặc triển khai chứng chỉ đúng hostname theo quy trình thay đổi; kiểm tra cấu hình và phương án hoàn tác trước khi nạp lại.",
         "verification": "Client dùng SNI shop xác minh chain, hostname, hạn dùng và nội dung trang; kiểm tra các domain chung IP nếu bị ảnh hưởng.",
         "escalation": "Chuyển nhóm TLS hoặc chủ site nếu thiếu quyền với chứng chỉ, hoặc chưa rõ cấu hình đang chạy trên nhiều endpoint.",
-        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received an api.example.com certificate and no shop server_name appeared in the shown Nginx configuration.\nNext Action: Review the vhost mapping and deploy a matching valid certificate under change control.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received a certificate with CN api.example.com, and the shown Nginx configuration had no shop server_name; SAN coverage is still unknown.\nNext Action: Check SAN, chain and the active vhost mapping first; deploy a matching certificate only if the mismatch is confirmed and approved.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:520",
@@ -3746,7 +3739,7 @@
         "resolution": "Người có quyền sửa ánh xạ hoặc triển khai chứng chỉ đúng hostname theo quy trình thay đổi; kiểm tra cấu hình và phương án hoàn tác trước khi nạp lại.",
         "verification": "Client dùng SNI shop xác minh chain, hostname, hạn dùng và nội dung trang; kiểm tra các domain chung IP nếu bị ảnh hưởng.",
         "escalation": "Chuyển nhóm TLS hoặc chủ site nếu thiếu quyền với chứng chỉ, hoặc chưa rõ cấu hình đang chạy trên nhiều endpoint.",
-        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received an api.example.com certificate and no shop server_name appeared in the shown Nginx configuration.\nNext Action: Review the vhost mapping and deploy a matching valid certificate under change control.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: TLS SNI selects the wrong site certificate.\nFindings: The requested shop hostname received a certificate with CN api.example.com, and the shown Nginx configuration had no shop server_name; SAN coverage is still unknown.\nNext Action: Check SAN, chain and the active vhost mapping first; deploy a matching certificate only if the mismatch is confirmed and approved.\nVerification: Test the requested SNI hostname against the intended endpoint and chain.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:538",
@@ -3847,7 +3840,7 @@
       "finalContext": {
         "expectedDiagnosis": "URL /start trả 404, file có ở /srv/myapp/public còn config disk dùng /var/www/html. Nghi root/vhost không khớp release; cần xác nhận config runtime.",
         "nextChecks": "So Host/server_name, root/location/rewrite, config đang load và quyền đọc release.",
-        "resolution": "Owner/admin sửa đúng server block, nginx-t và reload có duyệt/rollback; không xóa root để thử.",
+        "resolution": "Owner/admin sửa đúng server block, nginx -t và reload có duyệt/rollback; không xóa root để thử.",
         "verification": "URL khách qua đúng hostname trả nội dung release mong muốn.",
         "escalation": "Chuyển site/app owner nếu router, nhiều vhost hoặc config runtime chưa rõ.",
         "referenceNoteEn": "Issue: Requested URL returns HTTP 404.\nFindings: The local request returned 404 and the active configuration pointed at /var/www/html rather than the deployed /srv/myapp/public.\nNext Action: Review the intended vhost root or rewrite with the owner, test the config and reload if approved.\nVerification: Fetch the expected URL and content.\nStatus: Pending authorized remediation and verification."
@@ -4007,7 +4000,7 @@
       "finalContext": {
         "expectedDiagnosis": "URL /start trả 404, file có ở /srv/myapp/public còn config disk dùng /var/www/html. Nghi root/vhost không khớp release; cần xác nhận config runtime.",
         "nextChecks": "So Host/server_name, root/location/rewrite, config đang load và quyền đọc release.",
-        "resolution": "Owner/admin sửa đúng server block, nginx-t và reload có duyệt/rollback; không xóa root để thử.",
+        "resolution": "Owner/admin sửa đúng server block, nginx -t và reload có duyệt/rollback; không xóa root để thử.",
         "verification": "URL khách qua đúng hostname trả nội dung release mong muốn.",
         "escalation": "Chuyển site/app owner nếu router, nhiều vhost hoặc config runtime chưa rõ.",
         "referenceNoteEn": "Issue: Requested URL returns HTTP 404.\nFindings: The local request returned 404 and the active configuration pointed at /var/www/html rather than the deployed /srv/myapp/public.\nNext Action: Review the intended vhost root or rewrite with the owner, test the config and reload if approved.\nVerification: Fetch the expected URL and content.\nStatus: Pending authorized remediation and verification."
@@ -4176,7 +4169,7 @@
         {
           "id": "over",
           "label": "404 chứng minh file đã bị xóa.",
-          "feedback": "File bổ sung vẫn tồn tại;404 có nhiều cách phát sinh."
+          "feedback": "File bổ sung vẫn tồn tại; 404 có nhiều cách phát sinh."
         },
         {
           "id": "ignore",
@@ -4186,7 +4179,7 @@
         {
           "id": "supported",
           "label": "Nghi root/vhost chưa khớp release.",
-          "feedback": "File có ở release path nhưng request vẫn 404; cần runtime-vhost proof."
+          "feedback": "File có ở release path nhưng request vẫn 404; cần bằng chứng về vhost đang phục vụ."
         }
       ],
       "correctIds": [
@@ -4201,7 +4194,7 @@
       "finalContext": {
         "expectedDiagnosis": "URL /start trả 404, file có ở /srv/myapp/public còn config disk dùng /var/www/html. Nghi root/vhost không khớp release; cần xác nhận config runtime.",
         "nextChecks": "So Host/server_name, root/location/rewrite, config đang load và quyền đọc release.",
-        "resolution": "Owner/admin sửa đúng server block, nginx-t và reload có duyệt/rollback; không xóa root để thử.",
+        "resolution": "Owner/admin sửa đúng server block, nginx -t và reload có duyệt/rollback; không xóa root để thử.",
         "verification": "URL khách qua đúng hostname trả nội dung release mong muốn.",
         "escalation": "Chuyển site/app owner nếu router, nhiều vhost hoặc config runtime chưa rõ.",
         "referenceNoteEn": "Issue: Requested URL returns HTTP 404.\nFindings: The local request returned 404 and the active configuration pointed at /var/www/html rather than the deployed /srv/myapp/public.\nNext Action: Review the intended vhost root or rewrite with the owner, test the config and reload if approved.\nVerification: Fetch the expected URL and content.\nStatus: Pending authorized remediation and verification."
@@ -4389,7 +4382,7 @@
       "finalContext": {
         "expectedDiagnosis": "URL /start trả 404, file có ở /srv/myapp/public còn config disk dùng /var/www/html. Nghi root/vhost không khớp release; cần xác nhận config runtime.",
         "nextChecks": "So Host/server_name, root/location/rewrite, config đang load và quyền đọc release.",
-        "resolution": "Owner/admin sửa đúng server block, nginx-t và reload có duyệt/rollback; không xóa root để thử.",
+        "resolution": "Owner/admin sửa đúng server block, nginx -t và reload có duyệt/rollback; không xóa root để thử.",
         "verification": "URL khách qua đúng hostname trả nội dung release mong muốn.",
         "escalation": "Chuyển site/app owner nếu router, nhiều vhost hoặc config runtime chưa rõ.",
         "referenceNoteEn": "Issue: Requested URL returns HTTP 404.\nFindings: The local request returned 404 and the active configuration pointed at /var/www/html rather than the deployed /srv/myapp/public.\nNext Action: Review the intended vhost root or rewrite with the owner, test the config and reload if approved.\nVerification: Fetch the expected URL and content.\nStatus: Pending authorized remediation and verification."
@@ -4480,7 +4473,7 @@
         {
           "id": "safe",
           "label": "Xác nhận vhost/path rồi sửa có phép.",
-          "feedback": "Dùng nginx-t, rollback và kiểm tra URL sau reload."
+          "feedback": "Dùng nginx -t, rollback và kiểm tra URL sau reload."
         },
         {
           "id": "unsafe",
@@ -4500,7 +4493,7 @@
       "finalContext": {
         "expectedDiagnosis": "URL /start trả 404, file có ở /srv/myapp/public còn config disk dùng /var/www/html. Nghi root/vhost không khớp release; cần xác nhận config runtime.",
         "nextChecks": "So Host/server_name, root/location/rewrite, config đang load và quyền đọc release.",
-        "resolution": "Owner/admin sửa đúng server block, nginx-t và reload có duyệt/rollback; không xóa root để thử.",
+        "resolution": "Owner/admin sửa đúng server block, nginx -t và reload có duyệt/rollback; không xóa root để thử.",
         "verification": "URL khách qua đúng hostname trả nội dung release mong muốn.",
         "escalation": "Chuyển site/app owner nếu router, nhiều vhost hoặc config runtime chưa rõ.",
         "referenceNoteEn": "Issue: Requested URL returns HTTP 404.\nFindings: The local request returned 404 and the active configuration pointed at /var/www/html rather than the deployed /srv/myapp/public.\nNext Action: Review the intended vhost root or rewrite with the owner, test the config and reload if approved.\nVerification: Fetch the expected URL and content.\nStatus: Pending authorized remediation and verification."
@@ -4579,7 +4572,7 @@
         {
           "id": "other",
           "label": "Backend trả 502 sau khi TLS đã hợp lệ.",
-          "feedback": "Khách báo certificate expired, không phải một HTTP502 đã được đo."
+          "feedback": "Khách báo certificate expired, không phải một HTTP 502 đã được đo."
         },
         {
           "id": "cause",

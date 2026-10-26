@@ -20,7 +20,7 @@
           "output": "top - 08:00:00 up 1 day,  2:00,  1 user,  load average: 1.20, 0.80, 0.50\nTasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st\nMiB Mem : 2048.0 total, 800.0 free, 900.0 used, 348.0 buff/cache\nMiB Swap: 0.0 total, 0.0 free, 0.0 used. 1000.0 avail Mem\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n 2601 app       20   0  210000  80000  10000 R  97.4   3.8  20:00.00 python3",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process bằng top.",
-          "meaning": "us98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
+          "meaning": "us 98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
           "commandId": "top",
           "aliases": [],
           "why": "Khách chậm đúng lúc script chạy nên cần phân biệt CPU user với chờ I/O hay steal."
@@ -31,7 +31,7 @@
           "output": "  PID COMMAND         %CPU\n 2601 python3         97.4\n    1 systemd          0.1",
           "context": "guest",
           "purpose": "Liệt kê process theo tỷ lệ CPU của ps.",
-          "meaning": "PID2601 python3 có %CPU97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
+          "meaning": "PID 2601 python3 có %CPU 97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
           "commandId": "ps-cpu",
           "aliases": [],
           "why": "Tìm PID ứng viên để đối chiếu script định kỳ và owner."
@@ -66,7 +66,7 @@
         "top là mẫu theo khoảng đo, còn %CPU của ps là CPU time chia thời gian process tồn tại. Cần trend để biết script có đang dùng tải cao hợp lệ hay không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "CPU user cao trong mẫu top và python3 PID2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
+        "expectedDiagnosis": "CPU user cao trong mẫu top và python3 PID 2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
         "nextChecks": "Xác nhận owner, command/job schedule, số CPU và trend cùng độ trễ; phân biệt %CPU của ps theo lifetime với mẫu top.",
         "resolution": "Cùng owner chọn tối ưu, giới hạn hoặc dời lịch theo nhu cầu đã xác minh và phê duyệt; không kill mù.",
         "verification": "Trong lần chạy workload tương đương, độ trễ khách đạt mục tiêu và CPU/tải phù hợp baseline.",
@@ -101,7 +101,7 @@
           "output": "top - 08:00:00 up 1 day,  2:00,  1 user,  load average: 1.20, 0.80, 0.50\nTasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st\nMiB Mem : 2048.0 total, 800.0 free, 900.0 used, 348.0 buff/cache\nMiB Swap: 0.0 total, 0.0 free, 0.0 used. 1000.0 avail Mem\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n 2601 app       20   0  210000  80000  10000 R  97.4   3.8  20:00.00 python3",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process bằng top.",
-          "meaning": "us98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
+          "meaning": "us 98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
           "commandId": "top",
           "aliases": [],
           "why": "Khách chậm đúng lúc script chạy nên cần phân biệt CPU user với chờ I/O hay steal."
@@ -114,7 +114,7 @@
           "output": "top - 08:00:00 up 1 day,  2:00,  1 user,  load average: 1.20, 0.80, 0.50\nTasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st\nMiB Mem : 2048.0 total, 800.0 free, 900.0 used, 348.0 buff/cache\nMiB Swap: 0.0 total, 0.0 free, 0.0 used. 1000.0 avail Mem\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n 2601 app       20   0  210000  80000  10000 R  97.4   3.8  20:00.00 python3",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process bằng top.",
-          "meaning": "us98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
+          "meaning": "us 98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
           "commandId": "top",
           "aliases": [],
           "why": "Khách chậm đúng lúc script chạy nên cần phân biệt CPU user với chờ I/O hay steal."
@@ -125,7 +125,7 @@
           "output": "  PID COMMAND         %CPU\n 2601 python3         97.4\n    1 systemd          0.1",
           "context": "guest",
           "purpose": "Liệt kê process theo tỷ lệ CPU của ps.",
-          "meaning": "PID2601 python3 có %CPU97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
+          "meaning": "PID 2601 python3 có %CPU 97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
           "commandId": "ps-cpu",
           "aliases": [],
           "why": "Tìm PID ứng viên để đối chiếu script định kỳ và owner."
@@ -185,7 +185,7 @@
         "top là mẫu theo khoảng đo, còn %CPU của ps là CPU time chia thời gian process tồn tại. Cần trend để biết script có đang dùng tải cao hợp lệ hay không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "CPU user cao trong mẫu top và python3 PID2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
+        "expectedDiagnosis": "CPU user cao trong mẫu top và python3 PID 2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
         "nextChecks": "Xác nhận owner, command/job schedule, số CPU và trend cùng độ trễ; phân biệt %CPU của ps theo lifetime với mẫu top.",
         "resolution": "Cùng owner chọn tối ưu, giới hạn hoặc dời lịch theo nhu cầu đã xác minh và phê duyệt; không kill mù.",
         "verification": "Trong lần chạy workload tương đương, độ trễ khách đạt mục tiêu và CPU/tải phù hợp baseline.",
@@ -223,7 +223,7 @@
           "output": "top - 08:00:00 up 1 day,  2:00,  1 user,  load average: 1.20, 0.80, 0.50\nTasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st\nMiB Mem : 2048.0 total, 800.0 free, 900.0 used, 348.0 buff/cache\nMiB Swap: 0.0 total, 0.0 free, 0.0 used. 1000.0 avail Mem\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n 2601 app       20   0  210000  80000  10000 R  97.4   3.8  20:00.00 python3",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process bằng top.",
-          "meaning": "us98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
+          "meaning": "us 98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
           "commandId": "top",
           "aliases": [],
           "why": "Khách chậm đúng lúc script chạy nên cần phân biệt CPU user với chờ I/O hay steal."
@@ -234,7 +234,7 @@
           "output": "  PID COMMAND         %CPU\n 2601 python3         97.4\n    1 systemd          0.1",
           "context": "guest",
           "purpose": "Liệt kê process theo tỷ lệ CPU của ps.",
-          "meaning": "PID2601 python3 có %CPU97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
+          "meaning": "PID 2601 python3 có %CPU 97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
           "commandId": "ps-cpu",
           "aliases": [],
           "why": "Tìm PID ứng viên để đối chiếu script định kỳ và owner."
@@ -247,7 +247,7 @@
           "output": "top - 08:00:00 up 1 day,  2:00,  1 user,  load average: 1.20, 0.80, 0.50\nTasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st\nMiB Mem : 2048.0 total, 800.0 free, 900.0 used, 348.0 buff/cache\nMiB Swap: 0.0 total, 0.0 free, 0.0 used. 1000.0 avail Mem\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n 2601 app       20   0  210000  80000  10000 R  97.4   3.8  20:00.00 python3",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process bằng top.",
-          "meaning": "us98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
+          "meaning": "us 98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
           "commandId": "top",
           "aliases": [],
           "why": "Khách chậm đúng lúc script chạy nên cần phân biệt CPU user với chờ I/O hay steal."
@@ -258,7 +258,7 @@
           "output": "  PID COMMAND         %CPU\n 2601 python3         97.4\n    1 systemd          0.1",
           "context": "guest",
           "purpose": "Liệt kê process theo tỷ lệ CPU của ps.",
-          "meaning": "PID2601 python3 có %CPU97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
+          "meaning": "PID 2601 python3 có %CPU 97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
           "commandId": "ps-cpu",
           "aliases": [],
           "why": "Tìm PID ứng viên để đối chiếu script định kỳ và owner."
@@ -328,7 +328,7 @@
         },
         {
           "id": "supported",
-          "label": "Kiểm tra workload của python3 PID2601.",
+          "label": "Kiểm tra workload của python3 PID 2601.",
           "feedback": "top và ps cùng gợi ứng viên, nhưng chưa xác minh đó là script dự kiến."
         }
       ],
@@ -342,7 +342,7 @@
         "top là mẫu theo khoảng đo, còn %CPU của ps là CPU time chia thời gian process tồn tại. Cần trend để biết script có đang dùng tải cao hợp lệ hay không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "CPU user cao trong mẫu top và python3 PID2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
+        "expectedDiagnosis": "CPU user cao trong mẫu top và python3 PID 2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
         "nextChecks": "Xác nhận owner, command/job schedule, số CPU và trend cùng độ trễ; phân biệt %CPU của ps theo lifetime với mẫu top.",
         "resolution": "Cùng owner chọn tối ưu, giới hạn hoặc dời lịch theo nhu cầu đã xác minh và phê duyệt; không kill mù.",
         "verification": "Trong lần chạy workload tương đương, độ trễ khách đạt mục tiêu và CPU/tải phù hợp baseline.",
@@ -380,7 +380,7 @@
           "output": "top - 08:00:00 up 1 day,  2:00,  1 user,  load average: 1.20, 0.80, 0.50\nTasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st\nMiB Mem : 2048.0 total, 800.0 free, 900.0 used, 348.0 buff/cache\nMiB Swap: 0.0 total, 0.0 free, 0.0 used. 1000.0 avail Mem\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n 2601 app       20   0  210000  80000  10000 R  97.4   3.8  20:00.00 python3",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process bằng top.",
-          "meaning": "us98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
+          "meaning": "us 98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
           "commandId": "top",
           "aliases": [],
           "why": "Khách chậm đúng lúc script chạy nên cần phân biệt CPU user với chờ I/O hay steal."
@@ -391,7 +391,7 @@
           "output": "  PID COMMAND         %CPU\n 2601 python3         97.4\n    1 systemd          0.1",
           "context": "guest",
           "purpose": "Liệt kê process theo tỷ lệ CPU của ps.",
-          "meaning": "PID2601 python3 có %CPU97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
+          "meaning": "PID 2601 python3 có %CPU 97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
           "commandId": "ps-cpu",
           "aliases": [],
           "why": "Tìm PID ứng viên để đối chiếu script định kỳ và owner."
@@ -404,7 +404,7 @@
           "output": "top - 08:00:00 up 1 day,  2:00,  1 user,  load average: 1.20, 0.80, 0.50\nTasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st\nMiB Mem : 2048.0 total, 800.0 free, 900.0 used, 348.0 buff/cache\nMiB Swap: 0.0 total, 0.0 free, 0.0 used. 1000.0 avail Mem\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n 2601 app       20   0  210000  80000  10000 R  97.4   3.8  20:00.00 python3",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process bằng top.",
-          "meaning": "us98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
+          "meaning": "us 98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
           "commandId": "top",
           "aliases": [],
           "why": "Khách chậm đúng lúc script chạy nên cần phân biệt CPU user với chờ I/O hay steal."
@@ -415,7 +415,7 @@
           "output": "  PID COMMAND         %CPU\n 2601 python3         97.4\n    1 systemd          0.1",
           "context": "guest",
           "purpose": "Liệt kê process theo tỷ lệ CPU của ps.",
-          "meaning": "PID2601 python3 có %CPU97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
+          "meaning": "PID 2601 python3 có %CPU 97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
           "commandId": "ps-cpu",
           "aliases": [],
           "why": "Tìm PID ứng viên để đối chiếu script định kỳ và owner."
@@ -475,7 +475,7 @@
       "options": [
         {
           "id": "p2",
-          "label": "ps liệt kê PID2601 python3 ở %CPU97.4.",
+          "label": "ps liệt kê PID 2601 python3 ở %CPU 97.4.",
           "feedback": "Đó là tỷ lệ CPU time theo lifetime của process trong phép ps."
         },
         {
@@ -485,7 +485,7 @@
         },
         {
           "id": "p1",
-          "label": "Mẫu top có us98.5%.",
+          "label": "Mẫu top có us 98.5%.",
           "feedback": "us là CPU user trong dòng tổng của top."
         }
       ],
@@ -500,7 +500,7 @@
         "top là mẫu theo khoảng đo, còn %CPU của ps là CPU time chia thời gian process tồn tại. Cần trend để biết script có đang dùng tải cao hợp lệ hay không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "CPU user cao trong mẫu top và python3 PID2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
+        "expectedDiagnosis": "CPU user cao trong mẫu top và python3 PID 2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
         "nextChecks": "Xác nhận owner, command/job schedule, số CPU và trend cùng độ trễ; phân biệt %CPU của ps theo lifetime với mẫu top.",
         "resolution": "Cùng owner chọn tối ưu, giới hạn hoặc dời lịch theo nhu cầu đã xác minh và phê duyệt; không kill mù.",
         "verification": "Trong lần chạy workload tương đương, độ trễ khách đạt mục tiêu và CPU/tải phù hợp baseline.",
@@ -536,7 +536,7 @@
           "output": "top - 08:00:00 up 1 day,  2:00,  1 user,  load average: 1.20, 0.80, 0.50\nTasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st\nMiB Mem : 2048.0 total, 800.0 free, 900.0 used, 348.0 buff/cache\nMiB Swap: 0.0 total, 0.0 free, 0.0 used. 1000.0 avail Mem\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n 2601 app       20   0  210000  80000  10000 R  97.4   3.8  20:00.00 python3",
           "context": "guest",
           "purpose": "Lấy ảnh chụp CPU và process bằng top.",
-          "meaning": "us98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
+          "meaning": "us 98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
           "commandId": "top",
           "aliases": [],
           "why": "Khách chậm đúng lúc script chạy nên cần phân biệt CPU user với chờ I/O hay steal."
@@ -547,7 +547,7 @@
           "output": "  PID COMMAND         %CPU\n 2601 python3         97.4\n    1 systemd          0.1",
           "context": "guest",
           "purpose": "Liệt kê process theo tỷ lệ CPU của ps.",
-          "meaning": "PID2601 python3 có %CPU97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
+          "meaning": "PID 2601 python3 có %CPU 97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
           "commandId": "ps-cpu",
           "aliases": [],
           "why": "Tìm PID ứng viên để đối chiếu script định kỳ và owner."
@@ -568,7 +568,7 @@
         },
         {
           "id": "unsafe",
-          "label": "Kill PID2601 khi chưa biết nhiệm vụ.",
+          "label": "Kill PID 2601 khi chưa biết nhiệm vụ.",
           "feedback": "Có thể làm mất tiến trình xử lý dữ liệu hoặc công việc khách hàng."
         }
       ],
@@ -582,7 +582,7 @@
         "top là mẫu theo khoảng đo, còn %CPU của ps là CPU time chia thời gian process tồn tại. Cần trend để biết script có đang dùng tải cao hợp lệ hay không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "CPU user cao trong mẫu top và python3 PID2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
+        "expectedDiagnosis": "CPU user cao trong mẫu top và python3 PID 2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
         "nextChecks": "Xác nhận owner, command/job schedule, số CPU và trend cùng độ trễ; phân biệt %CPU của ps theo lifetime với mẫu top.",
         "resolution": "Cùng owner chọn tối ưu, giới hạn hoặc dời lịch theo nhu cầu đã xác minh và phê duyệt; không kill mù.",
         "verification": "Trong lần chạy workload tương đương, độ trễ khách đạt mục tiêu và CPU/tải phù hợp baseline.",
@@ -618,7 +618,7 @@
           "output": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       944Mi        20Mi         2Mi        60Mi        40Mi\nSwap:          512Mi       490Mi        22Mi",
           "context": "guest",
           "purpose": "Đọc bộ nhớ available và dung lượng swap.",
-          "meaning": "Còn40Mi available và swap dùng490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
+          "meaning": "Còn 40 MiB available và swap dùng 490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
           "commandId": "free-h",
           "aliases": [],
           "why": "CPU thấp không loại trừ chờ do bộ nhớ; cần xem còn RAM có thể cấp không."
@@ -629,7 +629,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b   swpd  free buff cache  si  so bi bo in cs us sy id wa st\n 1  1 501760 20480 1024 60416   4   5  4  5 50 80 10 5 70 15 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0",
           "context": "guest",
           "purpose": "Lấy ba báo cáo vmstat cách một giây.",
-          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si280/so310, cho thấy swap đang hoạt động trong khoảng đo.",
+          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si 280/so 310, cho thấy swap đang hoạt động trong khoảng đo.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Phân biệt swap lưu từ trước với việc đang swap in/out trong lúc chậm."
@@ -699,7 +699,7 @@
           "output": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       944Mi        20Mi         2Mi        60Mi        40Mi\nSwap:          512Mi       490Mi        22Mi",
           "context": "guest",
           "purpose": "Đọc bộ nhớ available và dung lượng swap.",
-          "meaning": "Còn40Mi available và swap dùng490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
+          "meaning": "Còn 40 MiB available và swap dùng 490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
           "commandId": "free-h",
           "aliases": [],
           "why": "CPU thấp không loại trừ chờ do bộ nhớ; cần xem còn RAM có thể cấp không."
@@ -712,7 +712,7 @@
           "output": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       944Mi        20Mi         2Mi        60Mi        40Mi\nSwap:          512Mi       490Mi        22Mi",
           "context": "guest",
           "purpose": "Đọc bộ nhớ available và dung lượng swap.",
-          "meaning": "Còn40Mi available và swap dùng490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
+          "meaning": "Còn 40 MiB available và swap dùng 490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
           "commandId": "free-h",
           "aliases": [],
           "why": "CPU thấp không loại trừ chờ do bộ nhớ; cần xem còn RAM có thể cấp không."
@@ -723,7 +723,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b   swpd  free buff cache  si  so bi bo in cs us sy id wa st\n 1  1 501760 20480 1024 60416   4   5  4  5 50 80 10 5 70 15 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0",
           "context": "guest",
           "purpose": "Lấy ba báo cáo vmstat cách một giây.",
-          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si280/so310, cho thấy swap đang hoạt động trong khoảng đo.",
+          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si 280/so 310, cho thấy swap đang hoạt động trong khoảng đo.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Phân biệt swap lưu từ trước với việc đang swap in/out trong lúc chậm."
@@ -829,7 +829,7 @@
           "output": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       944Mi        20Mi         2Mi        60Mi        40Mi\nSwap:          512Mi       490Mi        22Mi",
           "context": "guest",
           "purpose": "Đọc bộ nhớ available và dung lượng swap.",
-          "meaning": "Còn40Mi available và swap dùng490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
+          "meaning": "Còn 40 MiB available và swap dùng 490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
           "commandId": "free-h",
           "aliases": [],
           "why": "CPU thấp không loại trừ chờ do bộ nhớ; cần xem còn RAM có thể cấp không."
@@ -840,7 +840,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b   swpd  free buff cache  si  so bi bo in cs us sy id wa st\n 1  1 501760 20480 1024 60416   4   5  4  5 50 80 10 5 70 15 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0",
           "context": "guest",
           "purpose": "Lấy ba báo cáo vmstat cách một giây.",
-          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si280/so310, cho thấy swap đang hoạt động trong khoảng đo.",
+          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si 280/so 310, cho thấy swap đang hoạt động trong khoảng đo.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Phân biệt swap lưu từ trước với việc đang swap in/out trong lúc chậm."
@@ -853,7 +853,7 @@
           "output": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       944Mi        20Mi         2Mi        60Mi        40Mi\nSwap:          512Mi       490Mi        22Mi",
           "context": "guest",
           "purpose": "Đọc bộ nhớ available và dung lượng swap.",
-          "meaning": "Còn40Mi available và swap dùng490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
+          "meaning": "Còn 40 MiB available và swap dùng 490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
           "commandId": "free-h",
           "aliases": [],
           "why": "CPU thấp không loại trừ chờ do bộ nhớ; cần xem còn RAM có thể cấp không."
@@ -864,7 +864,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b   swpd  free buff cache  si  so bi bo in cs us sy id wa st\n 1  1 501760 20480 1024 60416   4   5  4  5 50 80 10 5 70 15 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0",
           "context": "guest",
           "purpose": "Lấy ba báo cáo vmstat cách một giây.",
-          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si280/so310, cho thấy swap đang hoạt động trong khoảng đo.",
+          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si 280/so 310, cho thấy swap đang hoạt động trong khoảng đo.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Phân biệt swap lưu từ trước với việc đang swap in/out trong lúc chậm."
@@ -926,7 +926,7 @@
           "source": "src/guided/commands.ts (id vmstat)"
         }
       ],
-      "prompt": "Available40Mi và si/so tiếp tục tăng hoạt động gợi điều gì?",
+      "prompt": "Available 40 MiB và si/so tiếp tục tăng hoạt động gợi điều gì?",
       "options": [
         {
           "id": "ignore",
@@ -992,7 +992,7 @@
           "output": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       944Mi        20Mi         2Mi        60Mi        40Mi\nSwap:          512Mi       490Mi        22Mi",
           "context": "guest",
           "purpose": "Đọc bộ nhớ available và dung lượng swap.",
-          "meaning": "Còn40Mi available và swap dùng490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
+          "meaning": "Còn 40 MiB available và swap dùng 490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
           "commandId": "free-h",
           "aliases": [],
           "why": "CPU thấp không loại trừ chờ do bộ nhớ; cần xem còn RAM có thể cấp không."
@@ -1003,7 +1003,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b   swpd  free buff cache  si  so bi bo in cs us sy id wa st\n 1  1 501760 20480 1024 60416   4   5  4  5 50 80 10 5 70 15 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0",
           "context": "guest",
           "purpose": "Lấy ba báo cáo vmstat cách một giây.",
-          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si280/so310, cho thấy swap đang hoạt động trong khoảng đo.",
+          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si 280/so 310, cho thấy swap đang hoạt động trong khoảng đo.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Phân biệt swap lưu từ trước với việc đang swap in/out trong lúc chậm."
@@ -1016,7 +1016,7 @@
           "output": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       944Mi        20Mi         2Mi        60Mi        40Mi\nSwap:          512Mi       490Mi        22Mi",
           "context": "guest",
           "purpose": "Đọc bộ nhớ available và dung lượng swap.",
-          "meaning": "Còn40Mi available và swap dùng490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
+          "meaning": "Còn 40 MiB available và swap dùng 490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
           "commandId": "free-h",
           "aliases": [],
           "why": "CPU thấp không loại trừ chờ do bộ nhớ; cần xem còn RAM có thể cấp không."
@@ -1027,7 +1027,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b   swpd  free buff cache  si  so bi bo in cs us sy id wa st\n 1  1 501760 20480 1024 60416   4   5  4  5 50 80 10 5 70 15 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0",
           "context": "guest",
           "purpose": "Lấy ba báo cáo vmstat cách một giây.",
-          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si280/so310, cho thấy swap đang hoạt động trong khoảng đo.",
+          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si 280/so 310, cho thấy swap đang hoạt động trong khoảng đo.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Phân biệt swap lưu từ trước với việc đang swap in/out trong lúc chậm."
@@ -1098,12 +1098,12 @@
         },
         {
           "id": "p1",
-          "label": "Available còn40Mi; swap dùng490Mi/512Mi.",
+          "label": "Available còn 40 MiB; swap dùng 490 MiB/512Mi.",
           "feedback": "Đúng các cột bộ nhớ được free trả."
         },
         {
           "id": "p2",
-          "label": "Các dòng interval có si280 và so310.",
+          "label": "Các dòng interval có si 280 và so 310.",
           "feedback": "Có hoạt động swap trong khoảng một giây, khác chỉ thấy swap đã dùng."
         }
       ],
@@ -1154,7 +1154,7 @@
           "output": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       944Mi        20Mi         2Mi        60Mi        40Mi\nSwap:          512Mi       490Mi        22Mi",
           "context": "guest",
           "purpose": "Đọc bộ nhớ available và dung lượng swap.",
-          "meaning": "Còn40Mi available và swap dùng490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
+          "meaning": "Còn 40 MiB available và swap dùng 490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
           "commandId": "free-h",
           "aliases": [],
           "why": "CPU thấp không loại trừ chờ do bộ nhớ; cần xem còn RAM có thể cấp không."
@@ -1165,7 +1165,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b   swpd  free buff cache  si  so bi bo in cs us sy id wa st\n 1  1 501760 20480 1024 60416   4   5  4  5 50 80 10 5 70 15 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0",
           "context": "guest",
           "purpose": "Lấy ba báo cáo vmstat cách một giây.",
-          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si280/so310, cho thấy swap đang hoạt động trong khoảng đo.",
+          "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si 280/so 310, cho thấy swap đang hoạt động trong khoảng đo.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Phân biệt swap lưu từ trước với việc đang swap in/out trong lúc chậm."
@@ -1236,7 +1236,7 @@
           "output": "Out of memory: Killed process 2525 (java)",
           "context": "guest",
           "purpose": "Tìm dòng kernel ghi process bị kill trong boot hiện tại.",
-          "meaning": "Kernel ghi kill java PID2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
+          "meaning": "Kernel ghi kill java PID 2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Ứng dụng biến mất không có lỗi UI có thể liên quan OOM killer."
@@ -1258,7 +1258,7 @@
           "command": "free -h",
           "output": "               total        used        free      shared  buff/cache   available\nMem:           2.0Gi       1.8Gi        40Mi         4Mi       160Mi        80Mi\nSwap:          1.0Gi       920Mi       104Mi",
           "purpose": "Đọc bộ nhớ hiện tại sau sự kiện.",
-          "meaning": "Available80Mi và swap920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
+          "meaning": "Available 80Mi và swap 920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
           "commandId": "free-h",
           "aliases": [],
           "why": "Kiểm tra VPS còn áp lực RAM không và bổ sung context cho điều tra capacity."
@@ -1328,7 +1328,7 @@
           "output": "Out of memory: Killed process 2525 (java)",
           "context": "guest",
           "purpose": "Tìm dòng kernel ghi process bị kill trong boot hiện tại.",
-          "meaning": "Kernel ghi kill java PID2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
+          "meaning": "Kernel ghi kill java PID 2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Ứng dụng biến mất không có lỗi UI có thể liên quan OOM killer."
@@ -1341,7 +1341,7 @@
           "output": "Out of memory: Killed process 2525 (java)",
           "context": "guest",
           "purpose": "Tìm dòng kernel ghi process bị kill trong boot hiện tại.",
-          "meaning": "Kernel ghi kill java PID2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
+          "meaning": "Kernel ghi kill java PID 2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Ứng dụng biến mất không có lỗi UI có thể liên quan OOM killer."
@@ -1363,7 +1363,7 @@
           "command": "free -h",
           "output": "               total        used        free      shared  buff/cache   available\nMem:           2.0Gi       1.8Gi        40Mi         4Mi       160Mi        80Mi\nSwap:          1.0Gi       920Mi       104Mi",
           "purpose": "Đọc bộ nhớ hiện tại sau sự kiện.",
-          "meaning": "Available80Mi và swap920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
+          "meaning": "Available 80Mi và swap 920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
           "commandId": "free-h",
           "aliases": [],
           "why": "Kiểm tra VPS còn áp lực RAM không và bổ sung context cho điều tra capacity."
@@ -1461,7 +1461,7 @@
           "output": "Out of memory: Killed process 2525 (java)",
           "context": "guest",
           "purpose": "Tìm dòng kernel ghi process bị kill trong boot hiện tại.",
-          "meaning": "Kernel ghi kill java PID2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
+          "meaning": "Kernel ghi kill java PID 2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Ứng dụng biến mất không có lỗi UI có thể liên quan OOM killer."
@@ -1485,7 +1485,7 @@
           "output": "Out of memory: Killed process 2525 (java)",
           "context": "guest",
           "purpose": "Tìm dòng kernel ghi process bị kill trong boot hiện tại.",
-          "meaning": "Kernel ghi kill java PID2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
+          "meaning": "Kernel ghi kill java PID 2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Ứng dụng biến mất không có lỗi UI có thể liên quan OOM killer."
@@ -1507,7 +1507,7 @@
           "command": "free -h",
           "output": "               total        used        free      shared  buff/cache   available\nMem:           2.0Gi       1.8Gi        40Mi         4Mi       160Mi        80Mi\nSwap:          1.0Gi       920Mi       104Mi",
           "purpose": "Đọc bộ nhớ hiện tại sau sự kiện.",
-          "meaning": "Available80Mi và swap920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
+          "meaning": "Available 80Mi và swap 920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
           "commandId": "free-h",
           "aliases": [],
           "why": "Kiểm tra VPS còn áp lực RAM không và bổ sung context cho điều tra capacity."
@@ -1629,7 +1629,7 @@
           "output": "Out of memory: Killed process 2525 (java)",
           "context": "guest",
           "purpose": "Tìm dòng kernel ghi process bị kill trong boot hiện tại.",
-          "meaning": "Kernel ghi kill java PID2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
+          "meaning": "Kernel ghi kill java PID 2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Ứng dụng biến mất không có lỗi UI có thể liên quan OOM killer."
@@ -1653,7 +1653,7 @@
           "output": "Out of memory: Killed process 2525 (java)",
           "context": "guest",
           "purpose": "Tìm dòng kernel ghi process bị kill trong boot hiện tại.",
-          "meaning": "Kernel ghi kill java PID2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
+          "meaning": "Kernel ghi kill java PID 2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Ứng dụng biến mất không có lỗi UI có thể liên quan OOM killer."
@@ -1675,7 +1675,7 @@
           "command": "free -h",
           "output": "               total        used        free      shared  buff/cache   available\nMem:           2.0Gi       1.8Gi        40Mi         4Mi       160Mi        80Mi\nSwap:          1.0Gi       920Mi       104Mi",
           "purpose": "Đọc bộ nhớ hiện tại sau sự kiện.",
-          "meaning": "Available80Mi và swap920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
+          "meaning": "Available 80Mi và swap 920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
           "commandId": "free-h",
           "aliases": [],
           "why": "Kiểm tra VPS còn áp lực RAM không và bổ sung context cho điều tra capacity."
@@ -1740,7 +1740,7 @@
         },
         {
           "id": "p1",
-          "label": "Kernel ghi OOM kill java PID2525.",
+          "label": "Kernel ghi OOM kill java PID 2525.",
           "feedback": "Đúng tên process và PID trong log."
         },
         {
@@ -1796,7 +1796,7 @@
           "output": "Out of memory: Killed process 2525 (java)",
           "context": "guest",
           "purpose": "Tìm dòng kernel ghi process bị kill trong boot hiện tại.",
-          "meaning": "Kernel ghi kill java PID2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
+          "meaning": "Kernel ghi kill java PID 2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Ứng dụng biến mất không có lỗi UI có thể liên quan OOM killer."
@@ -1818,7 +1818,7 @@
           "command": "free -h",
           "output": "               total        used        free      shared  buff/cache   available\nMem:           2.0Gi       1.8Gi        40Mi         4Mi       160Mi        80Mi\nSwap:          1.0Gi       920Mi       104Mi",
           "purpose": "Đọc bộ nhớ hiện tại sau sự kiện.",
-          "meaning": "Available80Mi và swap920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
+          "meaning": "Available 80Mi và swap 920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
           "commandId": "free-h",
           "aliases": [],
           "why": "Kiểm tra VPS còn áp lực RAM không và bổ sung context cho điều tra capacity."
@@ -1889,7 +1889,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 1  2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0",
           "context": "guest",
           "purpose": "Lấy các báo cáo CPU/memory/I/O cách một giây.",
-          "meaning": "Hai dòng interval có wa76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
+          "meaning": "Hai dòng interval có wa = 76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Cần phân biệt CPU user thấp với task đang chờ I/O."
@@ -1900,7 +1900,7 @@
           "output": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   20.00   0.00 71.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 20.00 128.00 10.00 1280.00 0.00 0.00 20.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 20.00 0.62 45.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   76.00   0.00 15.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 180.00 128.00 20.00 2560.00 0.00 0.00 180.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 5.00 180.00 18.90 99.00",
           "context": "guest",
           "purpose": "Đọc thống kê I/O mở rộng của thiết bị vda.",
-          "meaning": "Trong mẫu interval, r_await và w_await đều180ms, %util99.0. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
+          "meaning": "Trong mẫu interval, r_await và w_await đều 180 ms, %util 99.00%. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
           "commandId": "iostat",
           "aliases": [],
           "why": "Đối chiếu chờ I/O trong guest với độ trễ/queue của thiết bị."
@@ -1970,7 +1970,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 1  2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0",
           "context": "guest",
           "purpose": "Lấy các báo cáo CPU/memory/I/O cách một giây.",
-          "meaning": "Hai dòng interval có wa76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
+          "meaning": "Hai dòng interval có wa = 76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Cần phân biệt CPU user thấp với task đang chờ I/O."
@@ -1983,7 +1983,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 1  2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0",
           "context": "guest",
           "purpose": "Lấy các báo cáo CPU/memory/I/O cách một giây.",
-          "meaning": "Hai dòng interval có wa76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
+          "meaning": "Hai dòng interval có wa = 76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Cần phân biệt CPU user thấp với task đang chờ I/O."
@@ -1994,7 +1994,7 @@
           "output": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   20.00   0.00 71.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 20.00 128.00 10.00 1280.00 0.00 0.00 20.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 20.00 0.62 45.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   76.00   0.00 15.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 180.00 128.00 20.00 2560.00 0.00 0.00 180.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 5.00 180.00 18.90 99.00",
           "context": "guest",
           "purpose": "Đọc thống kê I/O mở rộng của thiết bị vda.",
-          "meaning": "Trong mẫu interval, r_await và w_await đều180ms, %util99.0. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
+          "meaning": "Trong mẫu interval, r_await và w_await đều 180 ms, %util 99.00%. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
           "commandId": "iostat",
           "aliases": [],
           "why": "Đối chiếu chờ I/O trong guest với độ trễ/queue của thiết bị."
@@ -2090,7 +2090,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 1  2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0",
           "context": "guest",
           "purpose": "Lấy các báo cáo CPU/memory/I/O cách một giây.",
-          "meaning": "Hai dòng interval có wa76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
+          "meaning": "Hai dòng interval có wa = 76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Cần phân biệt CPU user thấp với task đang chờ I/O."
@@ -2101,7 +2101,7 @@
           "output": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   20.00   0.00 71.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 20.00 128.00 10.00 1280.00 0.00 0.00 20.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 20.00 0.62 45.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   76.00   0.00 15.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 180.00 128.00 20.00 2560.00 0.00 0.00 180.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 5.00 180.00 18.90 99.00",
           "context": "guest",
           "purpose": "Đọc thống kê I/O mở rộng của thiết bị vda.",
-          "meaning": "Trong mẫu interval, r_await và w_await đều180ms, %util99.0. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
+          "meaning": "Trong mẫu interval, r_await và w_await đều 180 ms, %util 99.00%. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
           "commandId": "iostat",
           "aliases": [],
           "why": "Đối chiếu chờ I/O trong guest với độ trễ/queue của thiết bị."
@@ -2114,7 +2114,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 1  2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0",
           "context": "guest",
           "purpose": "Lấy các báo cáo CPU/memory/I/O cách một giây.",
-          "meaning": "Hai dòng interval có wa76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
+          "meaning": "Hai dòng interval có wa = 76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Cần phân biệt CPU user thấp với task đang chờ I/O."
@@ -2125,7 +2125,7 @@
           "output": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   20.00   0.00 71.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 20.00 128.00 10.00 1280.00 0.00 0.00 20.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 20.00 0.62 45.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   76.00   0.00 15.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 180.00 128.00 20.00 2560.00 0.00 0.00 180.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 5.00 180.00 18.90 99.00",
           "context": "guest",
           "purpose": "Đọc thống kê I/O mở rộng của thiết bị vda.",
-          "meaning": "Trong mẫu interval, r_await và w_await đều180ms, %util99.0. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
+          "meaning": "Trong mẫu interval, r_await và w_await đều 180 ms, %util 99.00%. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
           "commandId": "iostat",
           "aliases": [],
           "why": "Đối chiếu chờ I/O trong guest với độ trễ/queue của thiết bị."
@@ -2171,13 +2171,21 @@
               "interpretation": "r_await/w_await là thời gian I/O đọc/ghi trung bình, bao gồm chờ; tên cột tùy phiên bản sysstat. So với baseline và độ trễ ứng dụng.",
               "outputIsExcerpt": true,
               "context": "guest"
+            },
+            {
+              "command": "iostat -yxz 1 3",
+              "purpose": "Bỏ báo cáo từ boot để chỉ đọc các mẫu interval.",
+              "expectedOutput": "Device r/s rkB/s r_await w/s wkB/s w_await aqu-sz %util\nvda 10.00 40.00 3.00 20.00 80.00 4.10 0.11 35.00",
+              "interpretation": "Đây là trích đoạn một mẫu interval. Tên và số cột phụ thuộc phiên bản sysstat; so r_await/w_await với baseline và thời điểm ứng dụng chậm.",
+              "outputIsExcerpt": true,
+              "context": "guest"
             }
           ],
           "sourceUrls": [],
           "source": "src/guided/commands.ts (id iostat)"
         }
       ],
-      "prompt": "wa76% và đọc/ghi vda chờ khoảng180ms hỗ trợ nhận định nào?",
+      "prompt": "wa = 76% và đọc/ghi vda chờ khoảng 180 ms hỗ trợ nhận định nào?",
       "options": [
         {
           "id": "supported",
@@ -2243,7 +2251,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 1  2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0",
           "context": "guest",
           "purpose": "Lấy các báo cáo CPU/memory/I/O cách một giây.",
-          "meaning": "Hai dòng interval có wa76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
+          "meaning": "Hai dòng interval có wa = 76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Cần phân biệt CPU user thấp với task đang chờ I/O."
@@ -2254,7 +2262,7 @@
           "output": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   20.00   0.00 71.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 20.00 128.00 10.00 1280.00 0.00 0.00 20.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 20.00 0.62 45.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   76.00   0.00 15.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 180.00 128.00 20.00 2560.00 0.00 0.00 180.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 5.00 180.00 18.90 99.00",
           "context": "guest",
           "purpose": "Đọc thống kê I/O mở rộng của thiết bị vda.",
-          "meaning": "Trong mẫu interval, r_await và w_await đều180ms, %util99.0. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
+          "meaning": "Trong mẫu interval, r_await và w_await đều 180 ms, %util 99.00%. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
           "commandId": "iostat",
           "aliases": [],
           "why": "Đối chiếu chờ I/O trong guest với độ trễ/queue của thiết bị."
@@ -2267,7 +2275,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 1  2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0",
           "context": "guest",
           "purpose": "Lấy các báo cáo CPU/memory/I/O cách một giây.",
-          "meaning": "Hai dòng interval có wa76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
+          "meaning": "Hai dòng interval có wa = 76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Cần phân biệt CPU user thấp với task đang chờ I/O."
@@ -2278,7 +2286,7 @@
           "output": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   20.00   0.00 71.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 20.00 128.00 10.00 1280.00 0.00 0.00 20.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 20.00 0.62 45.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   76.00   0.00 15.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 180.00 128.00 20.00 2560.00 0.00 0.00 180.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 5.00 180.00 18.90 99.00",
           "context": "guest",
           "purpose": "Đọc thống kê I/O mở rộng của thiết bị vda.",
-          "meaning": "Trong mẫu interval, r_await và w_await đều180ms, %util99.0. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
+          "meaning": "Trong mẫu interval, r_await và w_await đều 180 ms, %util 99.00%. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
           "commandId": "iostat",
           "aliases": [],
           "why": "Đối chiếu chờ I/O trong guest với độ trễ/queue của thiết bị."
@@ -2324,6 +2332,14 @@
               "interpretation": "r_await/w_await là thời gian I/O đọc/ghi trung bình, bao gồm chờ; tên cột tùy phiên bản sysstat. So với baseline và độ trễ ứng dụng.",
               "outputIsExcerpt": true,
               "context": "guest"
+            },
+            {
+              "command": "iostat -yxz 1 3",
+              "purpose": "Bỏ báo cáo từ boot để chỉ đọc các mẫu interval.",
+              "expectedOutput": "Device r/s rkB/s r_await w/s wkB/s w_await aqu-sz %util\nvda 10.00 40.00 3.00 20.00 80.00 4.10 0.11 35.00",
+              "interpretation": "Đây là trích đoạn một mẫu interval. Tên và số cột phụ thuộc phiên bản sysstat; so r_await/w_await với baseline và thời điểm ứng dụng chậm.",
+              "outputIsExcerpt": true,
+              "context": "guest"
             }
           ],
           "sourceUrls": [],
@@ -2334,18 +2350,18 @@
       "options": [
         {
           "id": "p1",
-          "label": "Dòng interval vmstat có wa76%.",
+          "label": "Dòng interval vmstat có wa = 76%.",
           "feedback": "Đúng cột wa ở hai mẫu sau dòng đầu."
         },
         {
           "id": "p2",
-          "label": "vda có r_await/w_await180ms và %util99 trong interval.",
+          "label": "vda có r_await/w_await khoảng 180 ms và %util 99% trong interval.",
           "feedback": "Các cột riêng đọc/ghi của iostat cho số đo này."
         },
         {
           "id": "over",
           "label": "Đã nhận kết quả ổ vật lý hỏng.",
-          "feedback": "Không có SMART/hosterror hoặc kiểm tra vật lý trong hai output."
+          "feedback": "Không có SMART/host error hoặc kiểm tra vật lý trong hai output."
         }
       ],
       "correctIds": [
@@ -2395,7 +2411,7 @@
           "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 1  2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0",
           "context": "guest",
           "purpose": "Lấy các báo cáo CPU/memory/I/O cách một giây.",
-          "meaning": "Hai dòng interval có wa76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
+          "meaning": "Hai dòng interval có wa = 76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
           "commandId": "vmstat",
           "aliases": [],
           "why": "Cần phân biệt CPU user thấp với task đang chờ I/O."
@@ -2406,7 +2422,7 @@
           "output": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   20.00   0.00 71.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 20.00 128.00 10.00 1280.00 0.00 0.00 20.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 20.00 0.62 45.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   76.00   0.00 15.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 180.00 128.00 20.00 2560.00 0.00 0.00 180.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 5.00 180.00 18.90 99.00",
           "context": "guest",
           "purpose": "Đọc thống kê I/O mở rộng của thiết bị vda.",
-          "meaning": "Trong mẫu interval, r_await và w_await đều180ms, %util99.0. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
+          "meaning": "Trong mẫu interval, r_await và w_await đều 180 ms, %util 99.00%. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
           "commandId": "iostat",
           "aliases": [],
           "why": "Đối chiếu chờ I/O trong guest với độ trễ/queue của thiết bị."
@@ -2477,7 +2493,7 @@
           "output": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
           "context": "guest",
           "purpose": "Đọc bộ đếm CPU trong cgroup của container api.",
-          "meaning": "nr_throttled760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
+          "meaning": "nr_throttled 760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
           "commandId": "cgroup-cpu-stat",
           "aliases": [],
           "why": "Phải đọc đúng container đang chậm thay vì cpu.stat của cgroup gốc host."
@@ -2488,7 +2504,7 @@
           "output": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT   MEM %   NET I/O       BLOCK I/O   PIDS\nabc123def456   api    99.8%   220MiB / 512MiB     42.97%  12MB / 10MB   0B / 0B     8",
           "context": "guest",
           "purpose": "Lấy snapshot sử dụng tài nguyên container.",
-          "meaning": "api có CPU99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
+          "meaning": "api có CPU 99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
           "commandId": "docker-stats",
           "aliases": [],
           "why": "So CPU api với quota và thời điểm request chậm."
@@ -2569,7 +2585,7 @@
           "output": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
           "context": "guest",
           "purpose": "Đọc bộ đếm CPU trong cgroup của container api.",
-          "meaning": "nr_throttled760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
+          "meaning": "nr_throttled 760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
           "commandId": "cgroup-cpu-stat",
           "aliases": [],
           "why": "Phải đọc đúng container đang chậm thay vì cpu.stat của cgroup gốc host."
@@ -2582,7 +2598,7 @@
           "output": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
           "context": "guest",
           "purpose": "Đọc bộ đếm CPU trong cgroup của container api.",
-          "meaning": "nr_throttled760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
+          "meaning": "nr_throttled 760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
           "commandId": "cgroup-cpu-stat",
           "aliases": [],
           "why": "Phải đọc đúng container đang chậm thay vì cpu.stat của cgroup gốc host."
@@ -2593,7 +2609,7 @@
           "output": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT   MEM %   NET I/O       BLOCK I/O   PIDS\nabc123def456   api    99.8%   220MiB / 512MiB     42.97%  12MB / 10MB   0B / 0B     8",
           "context": "guest",
           "purpose": "Lấy snapshot sử dụng tài nguyên container.",
-          "meaning": "api có CPU99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
+          "meaning": "api có CPU 99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
           "commandId": "docker-stats",
           "aliases": [],
           "why": "So CPU api với quota và thời điểm request chậm."
@@ -2701,7 +2717,7 @@
           "output": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
           "context": "guest",
           "purpose": "Đọc bộ đếm CPU trong cgroup của container api.",
-          "meaning": "nr_throttled760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
+          "meaning": "nr_throttled 760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
           "commandId": "cgroup-cpu-stat",
           "aliases": [],
           "why": "Phải đọc đúng container đang chậm thay vì cpu.stat của cgroup gốc host."
@@ -2712,7 +2728,7 @@
           "output": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT   MEM %   NET I/O       BLOCK I/O   PIDS\nabc123def456   api    99.8%   220MiB / 512MiB     42.97%  12MB / 10MB   0B / 0B     8",
           "context": "guest",
           "purpose": "Lấy snapshot sử dụng tài nguyên container.",
-          "meaning": "api có CPU99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
+          "meaning": "api có CPU 99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
           "commandId": "docker-stats",
           "aliases": [],
           "why": "So CPU api với quota và thời điểm request chậm."
@@ -2736,7 +2752,7 @@
           "output": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
           "context": "guest",
           "purpose": "Đọc bộ đếm CPU trong cgroup của container api.",
-          "meaning": "nr_throttled760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
+          "meaning": "nr_throttled 760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
           "commandId": "cgroup-cpu-stat",
           "aliases": [],
           "why": "Phải đọc đúng container đang chậm thay vì cpu.stat của cgroup gốc host."
@@ -2747,7 +2763,7 @@
           "output": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT   MEM %   NET I/O       BLOCK I/O   PIDS\nabc123def456   api    99.8%   220MiB / 512MiB     42.97%  12MB / 10MB   0B / 0B     8",
           "context": "guest",
           "purpose": "Lấy snapshot sử dụng tài nguyên container.",
-          "meaning": "api có CPU99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
+          "meaning": "api có CPU 99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
           "commandId": "docker-stats",
           "aliases": [],
           "why": "So CPU api với quota và thời điểm request chậm."
@@ -2902,7 +2918,7 @@
           "output": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
           "context": "guest",
           "purpose": "Đọc bộ đếm CPU trong cgroup của container api.",
-          "meaning": "nr_throttled760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
+          "meaning": "nr_throttled 760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
           "commandId": "cgroup-cpu-stat",
           "aliases": [],
           "why": "Phải đọc đúng container đang chậm thay vì cpu.stat của cgroup gốc host."
@@ -2913,7 +2929,7 @@
           "output": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT   MEM %   NET I/O       BLOCK I/O   PIDS\nabc123def456   api    99.8%   220MiB / 512MiB     42.97%  12MB / 10MB   0B / 0B     8",
           "context": "guest",
           "purpose": "Lấy snapshot sử dụng tài nguyên container.",
-          "meaning": "api có CPU99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
+          "meaning": "api có CPU 99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
           "commandId": "docker-stats",
           "aliases": [],
           "why": "So CPU api với quota và thời điểm request chậm."
@@ -2926,7 +2942,7 @@
           "output": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
           "context": "guest",
           "purpose": "Đọc bộ đếm CPU trong cgroup của container api.",
-          "meaning": "nr_throttled760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
+          "meaning": "nr_throttled 760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
           "commandId": "cgroup-cpu-stat",
           "aliases": [],
           "why": "Phải đọc đúng container đang chậm thay vì cpu.stat của cgroup gốc host."
@@ -2937,7 +2953,7 @@
           "output": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT   MEM %   NET I/O       BLOCK I/O   PIDS\nabc123def456   api    99.8%   220MiB / 512MiB     42.97%  12MB / 10MB   0B / 0B     8",
           "context": "guest",
           "purpose": "Lấy snapshot sử dụng tài nguyên container.",
-          "meaning": "api có CPU99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
+          "meaning": "api có CPU 99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
           "commandId": "docker-stats",
           "aliases": [],
           "why": "So CPU api với quota và thời điểm request chậm."
@@ -3006,12 +3022,12 @@
       "options": [
         {
           "id": "p1",
-          "label": "Có760 chu kỳ bị throttle trong1400 chu kỳ tích lũy.",
+          "label": "Có 760 chu kỳ bị throttle trong 1400 chu kỳ tích lũy.",
           "feedback": "Đúng nr_throttled/nr_periods; chưa là tỷ lệ thời gian CPU bị mất."
         },
         {
           "id": "p2",
-          "label": "Docker báo CPU api99.8% trong snapshot.",
+          "label": "Docker báo CPU api 99.8% trong snapshot.",
           "feedback": "Đúng CPU% của container, không phải tổng mức bận host."
         },
         {
@@ -3067,7 +3083,7 @@
           "output": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
           "context": "guest",
           "purpose": "Đọc bộ đếm CPU trong cgroup của container api.",
-          "meaning": "nr_throttled760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
+          "meaning": "nr_throttled 760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
           "commandId": "cgroup-cpu-stat",
           "aliases": [],
           "why": "Phải đọc đúng container đang chậm thay vì cpu.stat của cgroup gốc host."
@@ -3078,7 +3094,7 @@
           "output": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT   MEM %   NET I/O       BLOCK I/O   PIDS\nabc123def456   api    99.8%   220MiB / 512MiB     42.97%  12MB / 10MB   0B / 0B     8",
           "context": "guest",
           "purpose": "Lấy snapshot sử dụng tài nguyên container.",
-          "meaning": "api có CPU99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
+          "meaning": "api có CPU 99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
           "commandId": "docker-stats",
           "aliases": [],
           "why": "So CPU api với quota và thời điểm request chậm."
@@ -3160,7 +3176,7 @@
           "output": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
           "context": "guest",
           "purpose": "Đọc bộ đếm CPU trong cgroup của container api.",
-          "meaning": "nr_throttled760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
+          "meaning": "nr_throttled 760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
           "commandId": "cgroup-cpu-stat",
           "aliases": [],
           "why": "Phải đọc đúng container đang chậm thay vì cpu.stat của cgroup gốc host."
@@ -3171,7 +3187,7 @@
           "output": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT   MEM %   NET I/O       BLOCK I/O   PIDS\nabc123def456   api    99.8%   220MiB / 512MiB     42.97%  12MB / 10MB   0B / 0B     8",
           "context": "guest",
           "purpose": "Lấy snapshot sử dụng tài nguyên container.",
-          "meaning": "api có CPU99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
+          "meaning": "api có CPU 99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
           "commandId": "docker-stats",
           "aliases": [],
           "why": "So CPU api với quota và thời điểm request chậm."
@@ -3254,8 +3270,8 @@
           "command": "ps -o pid,rss,etime,comm -p 1200",
           "output": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
           "context": "guest",
-          "purpose": "Đọc RSS và thời gian sống của PID1200.",
-          "meaning": "RSS850000 là KiB theo ps, xấp xỉ830MiB, sau9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
+          "purpose": "Đọc RSS và thời gian sống của PID 1200.",
+          "meaning": "RSS 850000 là KiB theo ps, xấp xỉ 830 MiB, sau 9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Cần mốc định lượng để đối chiếu bộ nhớ daemon tăng theo uptime."
@@ -3266,7 +3282,7 @@
           "output": "Out of memory: Killed process 1200 (myapp)",
           "context": "guest",
           "purpose": "Đọc kernel log trong boot hiện tại.",
-          "meaning": "Có OOM kill myapp PID1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
+          "meaning": "Có OOM kill myapp PID 1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Cần biết process kết thúc do OOM hay nguyên nhân khác."
@@ -3277,7 +3293,7 @@
           "command": "PANEL: myapp memory samples",
           "output": "00:00 RSS 240 MiB\n03:00 RSS 430 MiB\n06:00 RSS 660 MiB\n09:00 RSS 830 MiB",
           "purpose": "Đọc chuỗi mẫu bộ nhớ đã ghi trong panel.",
-          "meaning": "RSS tăng240→830MiB qua9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
+          "meaning": "RSS tăng 240→830MiB qua 9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "So nhiều thời điểm để xác nhận xu hướng thay vì suy từ một RSS."
@@ -3357,8 +3373,8 @@
           "command": "ps -o pid,rss,etime,comm -p 1200",
           "output": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
           "context": "guest",
-          "purpose": "Đọc RSS và thời gian sống của PID1200.",
-          "meaning": "RSS850000 là KiB theo ps, xấp xỉ830MiB, sau9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
+          "purpose": "Đọc RSS và thời gian sống của PID 1200.",
+          "meaning": "RSS 850000 là KiB theo ps, xấp xỉ 830 MiB, sau 9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Cần mốc định lượng để đối chiếu bộ nhớ daemon tăng theo uptime."
@@ -3370,8 +3386,8 @@
           "command": "ps -o pid,rss,etime,comm -p 1200",
           "output": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
           "context": "guest",
-          "purpose": "Đọc RSS và thời gian sống của PID1200.",
-          "meaning": "RSS850000 là KiB theo ps, xấp xỉ830MiB, sau9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
+          "purpose": "Đọc RSS và thời gian sống của PID 1200.",
+          "meaning": "RSS 850000 là KiB theo ps, xấp xỉ 830 MiB, sau 9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Cần mốc định lượng để đối chiếu bộ nhớ daemon tăng theo uptime."
@@ -3382,7 +3398,7 @@
           "output": "Out of memory: Killed process 1200 (myapp)",
           "context": "guest",
           "purpose": "Đọc kernel log trong boot hiện tại.",
-          "meaning": "Có OOM kill myapp PID1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
+          "meaning": "Có OOM kill myapp PID 1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Cần biết process kết thúc do OOM hay nguyên nhân khác."
@@ -3393,7 +3409,7 @@
           "command": "PANEL: myapp memory samples",
           "output": "00:00 RSS 240 MiB\n03:00 RSS 430 MiB\n06:00 RSS 660 MiB\n09:00 RSS 830 MiB",
           "purpose": "Đọc chuỗi mẫu bộ nhớ đã ghi trong panel.",
-          "meaning": "RSS tăng240→830MiB qua9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
+          "meaning": "RSS tăng 240→830MiB qua 9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "So nhiều thời điểm để xác nhận xu hướng thay vì suy từ một RSS."
@@ -3436,12 +3452,12 @@
           "source": "src/guided/commands.ts (id ps-process)"
         }
       ],
-      "prompt": "Muốn ghi RSS và uptime của đúng PID1200, đọc gì?",
+      "prompt": "Muốn ghi RSS và uptime của đúng PID 1200, đọc gì?",
       "options": [
         {
           "id": "wrong1",
           "label": "free -h",
-          "feedback": "RAM available của guest không cho RSS và elapsed của đúng PID1200."
+          "feedback": "RAM available của guest không cho RSS và elapsed của đúng PID 1200."
         },
         {
           "id": "wrong2",
@@ -3503,8 +3519,8 @@
           "command": "ps -o pid,rss,etime,comm -p 1200",
           "output": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
           "context": "guest",
-          "purpose": "Đọc RSS và thời gian sống của PID1200.",
-          "meaning": "RSS850000 là KiB theo ps, xấp xỉ830MiB, sau9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
+          "purpose": "Đọc RSS và thời gian sống của PID 1200.",
+          "meaning": "RSS 850000 là KiB theo ps, xấp xỉ 830 MiB, sau 9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Cần mốc định lượng để đối chiếu bộ nhớ daemon tăng theo uptime."
@@ -3515,7 +3531,7 @@
           "output": "Out of memory: Killed process 1200 (myapp)",
           "context": "guest",
           "purpose": "Đọc kernel log trong boot hiện tại.",
-          "meaning": "Có OOM kill myapp PID1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
+          "meaning": "Có OOM kill myapp PID 1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Cần biết process kết thúc do OOM hay nguyên nhân khác."
@@ -3526,7 +3542,7 @@
           "command": "PANEL: myapp memory samples",
           "output": "00:00 RSS 240 MiB\n03:00 RSS 430 MiB\n06:00 RSS 660 MiB\n09:00 RSS 830 MiB",
           "purpose": "Đọc chuỗi mẫu bộ nhớ đã ghi trong panel.",
-          "meaning": "RSS tăng240→830MiB qua9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
+          "meaning": "RSS tăng 240→830MiB qua 9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "So nhiều thời điểm để xác nhận xu hướng thay vì suy từ một RSS."
@@ -3549,8 +3565,8 @@
           "command": "ps -o pid,rss,etime,comm -p 1200",
           "output": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
           "context": "guest",
-          "purpose": "Đọc RSS và thời gian sống của PID1200.",
-          "meaning": "RSS850000 là KiB theo ps, xấp xỉ830MiB, sau9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
+          "purpose": "Đọc RSS và thời gian sống của PID 1200.",
+          "meaning": "RSS 850000 là KiB theo ps, xấp xỉ 830 MiB, sau 9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Cần mốc định lượng để đối chiếu bộ nhớ daemon tăng theo uptime."
@@ -3561,7 +3577,7 @@
           "output": "Out of memory: Killed process 1200 (myapp)",
           "context": "guest",
           "purpose": "Đọc kernel log trong boot hiện tại.",
-          "meaning": "Có OOM kill myapp PID1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
+          "meaning": "Có OOM kill myapp PID 1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Cần biết process kết thúc do OOM hay nguyên nhân khác."
@@ -3572,7 +3588,7 @@
           "command": "PANEL: myapp memory samples",
           "output": "00:00 RSS 240 MiB\n03:00 RSS 430 MiB\n06:00 RSS 660 MiB\n09:00 RSS 830 MiB",
           "purpose": "Đọc chuỗi mẫu bộ nhớ đã ghi trong panel.",
-          "meaning": "RSS tăng240→830MiB qua9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
+          "meaning": "RSS tăng 240→830MiB qua 9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "So nhiều thời điểm để xác nhận xu hướng thay vì suy từ một RSS."
@@ -3685,7 +3701,7 @@
           "source": "src/guided/commands.ts (id systemctl-service)"
         }
       ],
-      "prompt": "RSS tăng qua nhiều mốc và có OOM kill: điều nào chưa được chứng minh?",
+      "prompt": "RSS tăng qua nhiều mốc và có OOM kill: diễn giải nào phù hợp nhất?",
       "options": [
         {
           "id": "supported",
@@ -3750,8 +3766,8 @@
           "command": "ps -o pid,rss,etime,comm -p 1200",
           "output": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
           "context": "guest",
-          "purpose": "Đọc RSS và thời gian sống của PID1200.",
-          "meaning": "RSS850000 là KiB theo ps, xấp xỉ830MiB, sau9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
+          "purpose": "Đọc RSS và thời gian sống của PID 1200.",
+          "meaning": "RSS 850000 là KiB theo ps, xấp xỉ 830 MiB, sau 9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Cần mốc định lượng để đối chiếu bộ nhớ daemon tăng theo uptime."
@@ -3762,7 +3778,7 @@
           "output": "Out of memory: Killed process 1200 (myapp)",
           "context": "guest",
           "purpose": "Đọc kernel log trong boot hiện tại.",
-          "meaning": "Có OOM kill myapp PID1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
+          "meaning": "Có OOM kill myapp PID 1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Cần biết process kết thúc do OOM hay nguyên nhân khác."
@@ -3774,8 +3790,8 @@
           "command": "ps -o pid,rss,etime,comm -p 1200",
           "output": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
           "context": "guest",
-          "purpose": "Đọc RSS và thời gian sống của PID1200.",
-          "meaning": "RSS850000 là KiB theo ps, xấp xỉ830MiB, sau9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
+          "purpose": "Đọc RSS và thời gian sống của PID 1200.",
+          "meaning": "RSS 850000 là KiB theo ps, xấp xỉ 830 MiB, sau 9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Cần mốc định lượng để đối chiếu bộ nhớ daemon tăng theo uptime."
@@ -3786,7 +3802,7 @@
           "output": "Out of memory: Killed process 1200 (myapp)",
           "context": "guest",
           "purpose": "Đọc kernel log trong boot hiện tại.",
-          "meaning": "Có OOM kill myapp PID1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
+          "meaning": "Có OOM kill myapp PID 1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Cần biết process kết thúc do OOM hay nguyên nhân khác."
@@ -3797,7 +3813,7 @@
           "command": "PANEL: myapp memory samples",
           "output": "00:00 RSS 240 MiB\n03:00 RSS 430 MiB\n06:00 RSS 660 MiB\n09:00 RSS 830 MiB",
           "purpose": "Đọc chuỗi mẫu bộ nhớ đã ghi trong panel.",
-          "meaning": "RSS tăng240→830MiB qua9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
+          "meaning": "RSS tăng 240→830MiB qua 9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "So nhiều thời điểm để xác nhận xu hướng thay vì suy từ một RSS."
@@ -3868,7 +3884,7 @@
       "options": [
         {
           "id": "p2",
-          "label": "Kernel ghi OOM kill myapp PID1200.",
+          "label": "Kernel ghi OOM kill myapp PID 1200.",
           "feedback": "Đây là sự kiện chấm dứt process, chưa giải thích nguồn tăng RAM."
         },
         {
@@ -3878,8 +3894,8 @@
         },
         {
           "id": "p1",
-          "label": "PID1200 có RSS850000KiB và elapsed9 giờ.",
-          "feedback": "Đúng các cột ps; xấp xỉ830MiB, không phải850000byte."
+          "label": "PID 1200 có RSS 850000 KiB và elapsed 9 giờ.",
+          "feedback": "Đúng các cột ps; xấp xỉ 830 MiB, không phải 850000 byte."
         }
       ],
       "correctIds": [
@@ -3928,8 +3944,8 @@
           "command": "ps -o pid,rss,etime,comm -p 1200",
           "output": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
           "context": "guest",
-          "purpose": "Đọc RSS và thời gian sống của PID1200.",
-          "meaning": "RSS850000 là KiB theo ps, xấp xỉ830MiB, sau9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
+          "purpose": "Đọc RSS và thời gian sống của PID 1200.",
+          "meaning": "RSS 850000 là KiB theo ps, xấp xỉ 830 MiB, sau 9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Cần mốc định lượng để đối chiếu bộ nhớ daemon tăng theo uptime."
@@ -3940,7 +3956,7 @@
           "output": "Out of memory: Killed process 1200 (myapp)",
           "context": "guest",
           "purpose": "Đọc kernel log trong boot hiện tại.",
-          "meaning": "Có OOM kill myapp PID1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
+          "meaning": "Có OOM kill myapp PID 1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Cần biết process kết thúc do OOM hay nguyên nhân khác."
@@ -3951,7 +3967,7 @@
           "command": "PANEL: myapp memory samples",
           "output": "00:00 RSS 240 MiB\n03:00 RSS 430 MiB\n06:00 RSS 660 MiB\n09:00 RSS 830 MiB",
           "purpose": "Đọc chuỗi mẫu bộ nhớ đã ghi trong panel.",
-          "meaning": "RSS tăng240→830MiB qua9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
+          "meaning": "RSS tăng 240→830MiB qua 9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "So nhiều thời điểm để xác nhận xu hướng thay vì suy từ một RSS."
@@ -4032,8 +4048,8 @@
           "command": "ps -o pid,rss,etime,comm -p 1200",
           "output": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
           "context": "guest",
-          "purpose": "Đọc RSS và thời gian sống của PID1200.",
-          "meaning": "RSS850000 là KiB theo ps, xấp xỉ830MiB, sau9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
+          "purpose": "Đọc RSS và thời gian sống của PID 1200.",
+          "meaning": "RSS 850000 là KiB theo ps, xấp xỉ 830 MiB, sau 9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Cần mốc định lượng để đối chiếu bộ nhớ daemon tăng theo uptime."
@@ -4044,7 +4060,7 @@
           "output": "Out of memory: Killed process 1200 (myapp)",
           "context": "guest",
           "purpose": "Đọc kernel log trong boot hiện tại.",
-          "meaning": "Có OOM kill myapp PID1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
+          "meaning": "Có OOM kill myapp PID 1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
           "commandId": "journal-boot",
           "aliases": [],
           "why": "Cần biết process kết thúc do OOM hay nguyên nhân khác."
@@ -4055,7 +4071,7 @@
           "command": "PANEL: myapp memory samples",
           "output": "00:00 RSS 240 MiB\n03:00 RSS 430 MiB\n06:00 RSS 660 MiB\n09:00 RSS 830 MiB",
           "purpose": "Đọc chuỗi mẫu bộ nhớ đã ghi trong panel.",
-          "meaning": "RSS tăng240→830MiB qua9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
+          "meaning": "RSS tăng 240→830MiB qua 9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "So nhiều thời điểm để xác nhận xu hướng thay vì suy từ một RSS."
@@ -5006,7 +5022,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
           "context": "guest",
           "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",
@@ -5109,7 +5125,7 @@
       "relatedProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
           "context": "guest",
           "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",
@@ -5122,7 +5138,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
           "context": "guest",
           "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",
@@ -5205,7 +5221,7 @@
         },
         {
           "id": "direct",
-          "label": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "label": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "feedback": "Đọc đúng unit trong ngày 22/10/2026 và cửa sổ 02:00–02:30 UTC của sự cố."
         }
       ],
@@ -5240,8 +5256,8 @@
       "findings": [
         {
           "label": "EDIT_DISTRACTORS",
-          "reason": "Đáp án đúng dài trung bình 94 ký tự, phương án sai 16; độ dài có thể lộ key.",
-          "evidence": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "reason": "Đáp án đúng dài trung bình 100 ký tự, phương án sai 16; độ dài có thể lộ key.",
+          "evidence": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "source": "scripts/content/phase-b-01-05.mjs:519"
         }
       ],
@@ -5264,7 +5280,7 @@
       "relatedProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
           "context": "guest",
           "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",
@@ -5310,7 +5326,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
           "context": "guest",
           "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",
@@ -5393,6 +5409,14 @@
               "purpose": "Khi nghi disk IO chậm.",
               "expectedOutput": "Device r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 10.00 40.00 0.00 0.00 3.00 4.00 20.00 80.00 0.00 0.00 4.10 4.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.11 35.00",
               "interpretation": "r_await/w_await là thời gian I/O đọc/ghi trung bình, bao gồm chờ; tên cột tùy phiên bản sysstat. So với baseline và độ trễ ứng dụng.",
+              "outputIsExcerpt": true,
+              "context": "guest"
+            },
+            {
+              "command": "iostat -yxz 1 3",
+              "purpose": "Bỏ báo cáo từ boot để chỉ đọc các mẫu interval.",
+              "expectedOutput": "Device r/s rkB/s r_await w/s wkB/s w_await aqu-sz %util\nvda 10.00 40.00 3.00 20.00 80.00 4.10 0.11 35.00",
+              "interpretation": "Đây là trích đoạn một mẫu interval. Tên và số cột phụ thuộc phiên bản sysstat; so r_await/w_await với baseline và thời điểm ứng dụng chậm.",
               "outputIsExcerpt": true,
               "context": "guest"
             }
@@ -5484,7 +5508,9 @@
         "question": "scripts/content/phase-b-01-05.mjs:520",
         "case": "scripts/content/phase-b-01-05.mjs:507",
         "gradingBase": "scripts/guided-content.mjs:766",
-        "overrides": []
+        "overrides": [
+          "scripts/guided-content.mjs:1338"
+        ]
       },
       "classification": [
         "KEEP"
@@ -5507,7 +5533,7 @@
       "relatedProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
           "context": "guest",
           "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",
@@ -5531,7 +5557,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
           "context": "guest",
           "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",
@@ -5616,6 +5642,14 @@
               "interpretation": "r_await/w_await là thời gian I/O đọc/ghi trung bình, bao gồm chờ; tên cột tùy phiên bản sysstat. So với baseline và độ trễ ứng dụng.",
               "outputIsExcerpt": true,
               "context": "guest"
+            },
+            {
+              "command": "iostat -yxz 1 3",
+              "purpose": "Bỏ báo cáo từ boot để chỉ đọc các mẫu interval.",
+              "expectedOutput": "Device r/s rkB/s r_await w/s wkB/s w_await aqu-sz %util\nvda 10.00 40.00 3.00 20.00 80.00 4.10 0.11 35.00",
+              "interpretation": "Đây là trích đoạn một mẫu interval. Tên và số cột phụ thuộc phiên bản sysstat; so r_await/w_await với baseline và thời điểm ứng dụng chậm.",
+              "outputIsExcerpt": true,
+              "context": "guest"
             }
           ],
           "sourceUrls": [],
@@ -5683,7 +5717,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
           "context": "guest",
           "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",
@@ -5787,7 +5821,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+          "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
           "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
           "context": "guest",
           "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",

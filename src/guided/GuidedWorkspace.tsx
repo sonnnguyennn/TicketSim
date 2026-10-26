@@ -7,7 +7,7 @@ import { commandLibrary } from './commands'
 import { CommandQuickLookup } from './CommandLibrary'
 import { ReferenceNote } from './ReferenceNote'
 import { mistakeIds } from './review'
-import { GUIDED_CONTENT_REVISION, revisedGuidedTicketIds } from './contentRevision'
+import { guidedContentRevisionFor, hasRevisedGuidedContent } from './contentRevision'
 import type { GuidedAnswerKey, GuidedCase, GuidedQuestion } from './types'
 
 type Props = { ticket: Ticket; guidedCase: GuidedCase; progress: Progress; setProgress: React.Dispatch<React.SetStateAction<Progress>>; onBack: () => void; onOpenLibrary: (id?: string) => void }
@@ -16,8 +16,9 @@ const contextLabel = (context: GuidedCase['probes'][number]['context']) => ({ gu
 const contentRevisionOf = (record: object): string | undefined => 'contentRevision' in record && typeof record.contentRevision === 'string' ? record.contentRevision : undefined
 
 export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onBack, onOpenLibrary }: Props) {
+  const contentRevision = guidedContentRevisionFor(ticket.id)
   const draft = progress.guidedDrafts[ticket.id] ?? emptyGuidedDraft()
-  const staleDraft = revisedGuidedTicketIds.has(ticket.id) && !!progress.guidedDrafts[ticket.id] && !draft.submitted && contentRevisionOf(draft) !== GUIDED_CONTENT_REVISION
+  const staleDraft = hasRevisedGuidedContent(ticket.id) && !!progress.guidedDrafts[ticket.id] && !draft.submitted && contentRevisionOf(draft) !== contentRevision
   const input = draft.commandInput ?? ''
   const setInput = (commandInput: string) => update({ commandInput })
   const [hints, setHints] = useState<string[] | null>(null)
@@ -66,7 +67,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
 
   function update(patch: Partial<GuidedDraft> | ((current: GuidedDraft) => Partial<GuidedDraft>)) {
     setProgress(current => {
-      const previous = current.guidedDrafts[ticket.id] ?? { ...emptyGuidedDraft(), contentRevision: GUIDED_CONTENT_REVISION }
+      const previous = current.guidedDrafts[ticket.id] ?? { ...emptyGuidedDraft(), contentRevision }
       const changes = typeof patch === 'function' ? patch(previous) : patch
       return { ...current, guidedDrafts: { ...current.guidedDrafts, [ticket.id]: { ...previous, ...changes } } }
     })
@@ -117,21 +118,21 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
   function submit() {
     if (staleDraft || draft.submitted || !stageComplete(guidedCase, 'verify', draft)) return
     setProgress(current => {
-      const previous = current.guidedDrafts[ticket.id] ?? { ...emptyGuidedDraft(), contentRevision: GUIDED_CONTENT_REVISION }
+      const previous = current.guidedDrafts[ticket.id] ?? { ...emptyGuidedDraft(), contentRevision }
       if (previous.submitted) return current
       const { score, total } = objectiveScore(guidedCase, previous)
       const outcomes = Object.fromEntries(guidedCase.questions.filter(question => question.kind !== 'short_answer').map(question => [question.id, previous.feedback[question.id]?.correct === true]))
       return {
         ...current,
         guidedDrafts: { ...current.guidedDrafts, [ticket.id]: { ...previous, submitted: true } },
-        guidedAttempts: [{ id: crypto.randomUUID(), ticketId: ticket.id, createdAt: new Date().toISOString(), responses: previous.responses, commands: previous.commands, hintLevel: previous.hintLevel, note: previous.note, score, total, independent: false, outcomes, contentRevision: GUIDED_CONTENT_REVISION }, ...current.guidedAttempts],
+        guidedAttempts: [{ id: crypto.randomUUID(), ticketId: ticket.id, createdAt: new Date().toISOString(), responses: previous.responses, commands: previous.commands, hintLevel: previous.hintLevel, note: previous.note, score, total, independent: false, outcomes, contentRevision }, ...current.guidedAttempts],
       }
     })
   }
   function restart() {
     if (!window.confirm('Bắt đầu lại bài học? Lượt đã nộp vẫn được giữ trong lịch sử.')) return
     draftGeneration.current += 1
-    const newDraft = { ...emptyGuidedDraft(), contentRevision: GUIDED_CONTENT_REVISION }
+    const newDraft = { ...emptyGuidedDraft(), contentRevision }
     update(newDraft)
     setAnswer(null); setHints(null)
   }
@@ -170,7 +171,7 @@ export function GuidedWorkspace({ ticket, guidedCase, progress, setProgress, onB
         </form>
         <CommandQuickLookup />
       </section>}
-      {stage.id === 'verify' && <section className="guided-card"><h2>Tổng kết ticket</h2><p className="guided-muted">{guidedCase.verificationPrompt}</p><textarea aria-label="Ghi chú cuối ticket" rows={5} value={draft.note} onChange={event => update({ note: event.target.value })} placeholder={'Hiện tượng...\nBằng chứng...\nBước tiếp theo và xác minh...'} disabled={draft.submitted} />{!draft.submitted && draft.note.trim().length > 0 && draft.note.replace(/\s/g, '').length < 30 && <p className="guided-muted">Viết ít nhất 30 ký tự không tính khoảng trắng.</p>}{draft.submitted && <div className="guided-result"><h3>Bài học đã hoàn thành · {score.score}/{score.total} câu đúng</h3>{savedAttempt && revisedGuidedTicketIds.has(ticket.id) && contentRevisionOf(savedAttempt) !== GUIDED_CONTENT_REVISION && <p>Lượt này thuộc nội dung trước D1; điểm và đáp án đã nộp được giữ nguyên, không so trực tiếp với câu hỏi hiện tại.</p>}<p>Đối chiếu ghi chú của bạn với bản tóm tắt tiếng Anh bên dưới.</p>{mistakeIds(progress, guidedCase).length > 0 && <details className="guided-mistakes"><summary>Câu cần xem lại</summary><ul>{guidedCase.questions.filter(question => mistakeIds(progress, guidedCase).includes(question.id)).map(question => <li key={question.id}>{question.prompt}</li>)}</ul></details>}{answer?.referenceNoteEn && <ReferenceNote note={answer.referenceNoteEn} />}</div>}</section>}
+      {stage.id === 'verify' && <section className="guided-card"><h2>Tổng kết ticket</h2><p className="guided-muted">{guidedCase.verificationPrompt}</p><textarea aria-label="Ghi chú cuối ticket" rows={5} value={draft.note} onChange={event => update({ note: event.target.value })} placeholder={'Hiện tượng...\nBằng chứng...\nBước tiếp theo và xác minh...'} disabled={draft.submitted} />{!draft.submitted && draft.note.trim().length > 0 && draft.note.replace(/\s/g, '').length < 30 && <p className="guided-muted">Viết ít nhất 30 ký tự không tính khoảng trắng.</p>}{draft.submitted && <div className="guided-result"><h3>Bài học đã hoàn thành · {score.score}/{score.total} câu đúng</h3>{savedAttempt && hasRevisedGuidedContent(ticket.id) && contentRevisionOf(savedAttempt) !== contentRevision && <p>Lượt này thuộc phiên bản nội dung trước; điểm và đáp án đã nộp được giữ nguyên, không so trực tiếp với câu hỏi hiện tại.</p>}<p>Đối chiếu ghi chú của bạn với bản tóm tắt tiếng Anh bên dưới.</p>{mistakeIds(progress, guidedCase).length > 0 && <details className="guided-mistakes"><summary>Câu cần xem lại</summary><ul>{guidedCase.questions.filter(question => mistakeIds(progress, guidedCase).includes(question.id)).map(question => <li key={question.id}>{question.prompt}</li>)}</ul></details>}{answer?.referenceNoteEn && <ReferenceNote note={answer.referenceNoteEn} />}</div>}</section>}
       <details className="guided-hints"><summary><Lightbulb size={15} /> Gợi ý{draft.hintLevel > 0 ? ' · ' + draft.hintLevel + '/3 đã mở' : ''}</summary><button className="guided-secondary" onClick={revealHint} disabled={draft.hintLevel >= 3 || !hintReady}>{draft.hintLevel >= 3 ? 'Đã mở hết gợi ý' : draft.hintLevel ? 'Mở gợi ý tiếp' : 'Mở gợi ý'}</button>{!hintReady && <p>Thu thập thêm bằng chứng để mở gợi ý tiếp.</p>}{draft.hintLevel > 0 && hints && <ol>{hints.slice(0, draft.hintLevel).map(hint => <li key={hint}>{hint}</li>)}</ol>}</details>
       {stage.id === 'investigate' && remainingChecks > 0 && <p className="guided-step-note">Còn {remainingChecks} phép kiểm tra bắt buộc trước khi đọc bằng chứng.</p>}
       {error && <div className="notice error" role="alert">{error}</div>}

@@ -2639,7 +2639,7 @@
         "case": "scripts/content/phase-b-11-14.mjs:871",
         "gradingBase": "scripts/guided-content.mjs",
         "overrides": [
-          "scripts/guided-content.mjs:1382"
+          "scripts/guided-content.mjs:1385"
         ]
       },
       "classification": [
@@ -3539,10 +3539,10 @@
           "output": "Scheduled deletion 2026-10-25",
           "context": "panel",
           "purpose": "Đọc lịch xóa theo retention.",
-          "meaning": "Scheduled deletion 25/10 là lịch dự kiến; cần kiểm tra task/hold và quyền ngoại lệ.",
+          "meaning": "Scheduled deletion 25/10 là kế hoạch, không phải bằng chứng job đã chạy. Nếu đọc sau mốc đó, phải xem trạng thái job thực tế.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
-          "why": "Xác định deadline cần chuyển yêu cầu giữ dữ liệu."
+          "why": "Tại mốc tiếp nhận 22/10, xác định lịch xóa để chuyển yêu cầu giữ dữ liệu."
         },
         {
           "id": "G1",
@@ -3550,7 +3550,7 @@
           "command": "PANEL: retention hold state",
           "output": "service VPS-1406 hold=false; deletion_job=2026-10-25 00:00 UTC",
           "purpose": "Đọc hold hiện tại và deletion job.",
-          "meaning": "hold=false, job 25/10 00:00 UTC; chưa có lệnh giữ dữ liệu được xác nhận.",
+          "meaning": "Tại mốc 22/10, hold=false và job được lên lịch 25/10 00:00 UTC. Bản ghi này không chứng minh trạng thái job sau deadline.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
           "why": "Không coi ticket xin gia hạn là hold đã áp."
@@ -3593,15 +3593,15 @@
       "hints": [
         "Hết hạn dịch vụ không đồng nghĩa dữ liệu đã xóa.",
         "So expired date với scheduled deletion và hold state.",
-        "Ngày xóa 25/10, hold false và backup chưa thử restore. Chuyển billing/lifecycle xin hold có audit trước deadline, chưa bảo đảm được duyệt."
+        "Ở mốc 22/10, job mới được lên lịch 25/10 và hold=false. Chuyển billing/lifecycle xin hold có audit; nếu đã qua 25/10, kiểm tra job đã chạy chưa và backup có phục hồi được không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Dịch vụ hết hạn 20/10, xóa lịch 25/10, hold false; backup 19/10 chưa xác minh restore.",
-        "nextChecks": "Xác minh owner, renewal, retention job, policy và khả năng backup trước deadline.",
-        "resolution": "Chuyển billing/lifecycle on-call xin ngoại lệ hold có audit; chỉ hứa thời hạn đã được duyệt và áp.",
-        "verification": "Kiểm tra hold/renewal, deadline mới, data/backup status và khách xác nhận phương án.",
-        "escalation": "Cần policy owner hoặc quyết định khẩn trước deletion.",
-        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: Billing showed expiry on 20 October and panel retention scheduled deletion for 25 October 2026.\nNext Action: Urgently request a policy-approved retention decision and advise the authorized owner to preserve needed data.\nVerification: Confirm renewal or exception is recorded and the required data remains available.\nStatus: Urgent billing/retention escalation recommended."
+        "expectedDiagnosis": "Tại 22/10/2026 10:00 UTC: dịch vụ hết hạn 20/10, deletion job dự kiến 25/10, hold=false; backup 19/10 chưa thử restore. Không biết job đã chạy hay dữ liệu còn sau 25/10.",
+        "nextChecks": "Xác minh owner, policy, trạng thái deletion job tại lúc xử lý, hold hiện tại và khả năng phục hồi từ backup.",
+        "resolution": "Chuyển billing/lifecycle on-call xin quyết định hold có audit nếu còn áp dụng được; không hứa gia hạn hay phục hồi khi chưa xác nhận trạng thái job và dữ liệu.",
+        "verification": "Kiểm tra job đã chạy chưa, hold/renewal và deadline mới nếu được duyệt; kiểm tra dữ liệu/backup rồi báo khách kết quả xác minh.",
+        "escalation": "Cần policy owner quyết định khẩn về hold hoặc đánh giá khôi phục sau deadline.",
+        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: At receipt on 22 October 2026 10:00 UTC, billing showed expiry on 20 October, a deletion job scheduled for 25 October and no active hold. Neither the schedule nor the backup inventory proves current data availability.\nNext Action: Verify the owner and current deletion-job state, then ask Billing/Lifecycle for an audited hold if the data still qualifies; do not promise retention or restore.\nVerification: Confirm the approved hold or extension was applied, check the new deadline and test data or backup availability separately.\nStatus: Urgent billing/retention escalation recommended."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:192",
@@ -3655,10 +3655,10 @@
           "output": "Scheduled deletion 2026-10-25",
           "context": "panel",
           "purpose": "Đọc lịch xóa theo retention.",
-          "meaning": "Scheduled deletion 25/10 là lịch dự kiến; cần kiểm tra task/hold và quyền ngoại lệ.",
+          "meaning": "Scheduled deletion 25/10 là kế hoạch, không phải bằng chứng job đã chạy. Nếu đọc sau mốc đó, phải xem trạng thái job thực tế.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
-          "why": "Xác định deadline cần chuyển yêu cầu giữ dữ liệu."
+          "why": "Tại mốc tiếp nhận 22/10, xác định lịch xóa để chuyển yêu cầu giữ dữ liệu."
         },
         {
           "id": "G1",
@@ -3666,7 +3666,7 @@
           "command": "PANEL: retention hold state",
           "output": "service VPS-1406 hold=false; deletion_job=2026-10-25 00:00 UTC",
           "purpose": "Đọc hold hiện tại và deletion job.",
-          "meaning": "hold=false, job 25/10 00:00 UTC; chưa có lệnh giữ dữ liệu được xác nhận.",
+          "meaning": "Tại mốc 22/10, hold=false và job được lên lịch 25/10 00:00 UTC. Bản ghi này không chứng minh trạng thái job sau deadline.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
           "why": "Không coi ticket xin gia hạn là hold đã áp."
@@ -3732,15 +3732,15 @@
       "hints": [
         "Hết hạn dịch vụ không đồng nghĩa dữ liệu đã xóa.",
         "So expired date với scheduled deletion và hold state.",
-        "Ngày xóa 25/10, hold false và backup chưa thử restore. Chuyển billing/lifecycle xin hold có audit trước deadline, chưa bảo đảm được duyệt."
+        "Ở mốc 22/10, job mới được lên lịch 25/10 và hold=false. Chuyển billing/lifecycle xin hold có audit; nếu đã qua 25/10, kiểm tra job đã chạy chưa và backup có phục hồi được không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Dịch vụ hết hạn 20/10, xóa lịch 25/10, hold false; backup 19/10 chưa xác minh restore.",
-        "nextChecks": "Xác minh owner, renewal, retention job, policy và khả năng backup trước deadline.",
-        "resolution": "Chuyển billing/lifecycle on-call xin ngoại lệ hold có audit; chỉ hứa thời hạn đã được duyệt và áp.",
-        "verification": "Kiểm tra hold/renewal, deadline mới, data/backup status và khách xác nhận phương án.",
-        "escalation": "Cần policy owner hoặc quyết định khẩn trước deletion.",
-        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: Billing showed expiry on 20 October and panel retention scheduled deletion for 25 October 2026.\nNext Action: Urgently request a policy-approved retention decision and advise the authorized owner to preserve needed data.\nVerification: Confirm renewal or exception is recorded and the required data remains available.\nStatus: Urgent billing/retention escalation recommended."
+        "expectedDiagnosis": "Tại 22/10/2026 10:00 UTC: dịch vụ hết hạn 20/10, deletion job dự kiến 25/10, hold=false; backup 19/10 chưa thử restore. Không biết job đã chạy hay dữ liệu còn sau 25/10.",
+        "nextChecks": "Xác minh owner, policy, trạng thái deletion job tại lúc xử lý, hold hiện tại và khả năng phục hồi từ backup.",
+        "resolution": "Chuyển billing/lifecycle on-call xin quyết định hold có audit nếu còn áp dụng được; không hứa gia hạn hay phục hồi khi chưa xác nhận trạng thái job và dữ liệu.",
+        "verification": "Kiểm tra job đã chạy chưa, hold/renewal và deadline mới nếu được duyệt; kiểm tra dữ liệu/backup rồi báo khách kết quả xác minh.",
+        "escalation": "Cần policy owner quyết định khẩn về hold hoặc đánh giá khôi phục sau deadline.",
+        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: At receipt on 22 October 2026 10:00 UTC, billing showed expiry on 20 October, a deletion job scheduled for 25 October and no active hold. Neither the schedule nor the backup inventory proves current data availability.\nNext Action: Verify the owner and current deletion-job state, then ask Billing/Lifecycle for an audited hold if the data still qualifies; do not promise retention or restore.\nVerification: Confirm the approved hold or extension was applied, check the new deadline and test data or backup availability separately.\nStatus: Urgent billing/retention escalation recommended."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:210",
@@ -3793,10 +3793,10 @@
           "output": "Scheduled deletion 2026-10-25",
           "context": "panel",
           "purpose": "Đọc lịch xóa theo retention.",
-          "meaning": "Scheduled deletion 25/10 là lịch dự kiến; cần kiểm tra task/hold và quyền ngoại lệ.",
+          "meaning": "Scheduled deletion 25/10 là kế hoạch, không phải bằng chứng job đã chạy. Nếu đọc sau mốc đó, phải xem trạng thái job thực tế.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
-          "why": "Xác định deadline cần chuyển yêu cầu giữ dữ liệu."
+          "why": "Tại mốc tiếp nhận 22/10, xác định lịch xóa để chuyển yêu cầu giữ dữ liệu."
         },
         {
           "id": "G1",
@@ -3804,7 +3804,7 @@
           "command": "PANEL: retention hold state",
           "output": "service VPS-1406 hold=false; deletion_job=2026-10-25 00:00 UTC",
           "purpose": "Đọc hold hiện tại và deletion job.",
-          "meaning": "hold=false, job 25/10 00:00 UTC; chưa có lệnh giữ dữ liệu được xác nhận.",
+          "meaning": "Tại mốc 22/10, hold=false và job được lên lịch 25/10 00:00 UTC. Bản ghi này không chứng minh trạng thái job sau deadline.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
           "why": "Không coi ticket xin gia hạn là hold đã áp."
@@ -3839,10 +3839,10 @@
           "output": "Scheduled deletion 2026-10-25",
           "context": "panel",
           "purpose": "Đọc lịch xóa theo retention.",
-          "meaning": "Scheduled deletion 25/10 là lịch dự kiến; cần kiểm tra task/hold và quyền ngoại lệ.",
+          "meaning": "Scheduled deletion 25/10 là kế hoạch, không phải bằng chứng job đã chạy. Nếu đọc sau mốc đó, phải xem trạng thái job thực tế.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
-          "why": "Xác định deadline cần chuyển yêu cầu giữ dữ liệu."
+          "why": "Tại mốc tiếp nhận 22/10, xác định lịch xóa để chuyển yêu cầu giữ dữ liệu."
         },
         {
           "id": "G1",
@@ -3850,7 +3850,7 @@
           "command": "PANEL: retention hold state",
           "output": "service VPS-1406 hold=false; deletion_job=2026-10-25 00:00 UTC",
           "purpose": "Đọc hold hiện tại và deletion job.",
-          "meaning": "hold=false, job 25/10 00:00 UTC; chưa có lệnh giữ dữ liệu được xác nhận.",
+          "meaning": "Tại mốc 22/10, hold=false và job được lên lịch 25/10 00:00 UTC. Bản ghi này không chứng minh trạng thái job sau deadline.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
           "why": "Không coi ticket xin gia hạn là hold đã áp."
@@ -3935,17 +3935,17 @@
           "source": "src/guided/commands.ts (id panel-backup-status)"
         }
       ],
-      "prompt": "Expired 20/10, xóa 25/10 và hold false. Nên trả lời thế nào?",
+      "prompt": "Ở mốc tiếp nhận 22/10, expired 20/10, lịch xóa 25/10 và hold=false. Nên trả lời thế nào?",
       "options": [
         {
           "id": "ignore",
-          "label": "Expired nghĩa là dữ liệu đã xóa nên không cần xem job.",
-          "feedback": "Bản ghi còn scheduled deletion tươnglai cần được đối chiếu."
+          "label": "Hết hạn dịch vụ là đủ để báo dữ liệu đã bị xóa.",
+          "feedback": "Expired chỉ là trạng thái billing; cần trạng thái deletion job mới biết việc xóa đã xảy ra chưa."
         },
         {
           "id": "supported",
-          "label": "Cần chuyển khẩn xin hold theo quyền trước deadline.",
-          "feedback": "Hiện chưa có hold và backup cũng chưa verified restore."
+          "label": "Chuyển billing/lifecycle xin hold có audit; chưa hứa dữ liệu được giữ.",
+          "feedback": "Tại mốc 22/10, hold=false và backup chưa thử restore. Sau 25/10 phải kiểm tra trạng thái deletion job."
         },
         {
           "id": "over",
@@ -3956,19 +3956,19 @@
       "correctIds": [
         "supported"
       ],
-      "explanation": "Cần xử lý trước deadline nhưng không hứa ngoại lệ chưa được duyệt.",
+      "explanation": "Ngày 22/10 vẫn còn thời gian chuyển yêu cầu, nhưng chưa có hold được duyệt. Nếu mở lại sau 25/10, phải kiểm tra job đã chạy hay chưa.",
       "hints": [
         "Hết hạn dịch vụ không đồng nghĩa dữ liệu đã xóa.",
         "So expired date với scheduled deletion và hold state.",
-        "Ngày xóa 25/10, hold false và backup chưa thử restore. Chuyển billing/lifecycle xin hold có audit trước deadline, chưa bảo đảm được duyệt."
+        "Ở mốc 22/10, job mới được lên lịch 25/10 và hold=false. Chuyển billing/lifecycle xin hold có audit; nếu đã qua 25/10, kiểm tra job đã chạy chưa và backup có phục hồi được không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Dịch vụ hết hạn 20/10, xóa lịch 25/10, hold false; backup 19/10 chưa xác minh restore.",
-        "nextChecks": "Xác minh owner, renewal, retention job, policy và khả năng backup trước deadline.",
-        "resolution": "Chuyển billing/lifecycle on-call xin ngoại lệ hold có audit; chỉ hứa thời hạn đã được duyệt và áp.",
-        "verification": "Kiểm tra hold/renewal, deadline mới, data/backup status và khách xác nhận phương án.",
-        "escalation": "Cần policy owner hoặc quyết định khẩn trước deletion.",
-        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: Billing showed expiry on 20 October and panel retention scheduled deletion for 25 October 2026.\nNext Action: Urgently request a policy-approved retention decision and advise the authorized owner to preserve needed data.\nVerification: Confirm renewal or exception is recorded and the required data remains available.\nStatus: Urgent billing/retention escalation recommended."
+        "expectedDiagnosis": "Tại 22/10/2026 10:00 UTC: dịch vụ hết hạn 20/10, deletion job dự kiến 25/10, hold=false; backup 19/10 chưa thử restore. Không biết job đã chạy hay dữ liệu còn sau 25/10.",
+        "nextChecks": "Xác minh owner, policy, trạng thái deletion job tại lúc xử lý, hold hiện tại và khả năng phục hồi từ backup.",
+        "resolution": "Chuyển billing/lifecycle on-call xin quyết định hold có audit nếu còn áp dụng được; không hứa gia hạn hay phục hồi khi chưa xác nhận trạng thái job và dữ liệu.",
+        "verification": "Kiểm tra job đã chạy chưa, hold/renewal và deadline mới nếu được duyệt; kiểm tra dữ liệu/backup rồi báo khách kết quả xác minh.",
+        "escalation": "Cần policy owner quyết định khẩn về hold hoặc đánh giá khôi phục sau deadline.",
+        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: At receipt on 22 October 2026 10:00 UTC, billing showed expiry on 20 October, a deletion job scheduled for 25 October and no active hold. Neither the schedule nor the backup inventory proves current data availability.\nNext Action: Verify the owner and current deletion-job state, then ask Billing/Lifecycle for an audited hold if the data still qualifies; do not promise retention or restore.\nVerification: Confirm the approved hold or extension was applied, check the new deadline and test data or backup availability separately.\nStatus: Urgent billing/retention escalation recommended."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:228",
@@ -4012,10 +4012,10 @@
           "output": "Scheduled deletion 2026-10-25",
           "context": "panel",
           "purpose": "Đọc lịch xóa theo retention.",
-          "meaning": "Scheduled deletion 25/10 là lịch dự kiến; cần kiểm tra task/hold và quyền ngoại lệ.",
+          "meaning": "Scheduled deletion 25/10 là kế hoạch, không phải bằng chứng job đã chạy. Nếu đọc sau mốc đó, phải xem trạng thái job thực tế.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
-          "why": "Xác định deadline cần chuyển yêu cầu giữ dữ liệu."
+          "why": "Tại mốc tiếp nhận 22/10, xác định lịch xóa để chuyển yêu cầu giữ dữ liệu."
         },
         {
           "id": "G1",
@@ -4023,7 +4023,7 @@
           "command": "PANEL: retention hold state",
           "output": "service VPS-1406 hold=false; deletion_job=2026-10-25 00:00 UTC",
           "purpose": "Đọc hold hiện tại và deletion job.",
-          "meaning": "hold=false, job 25/10 00:00 UTC; chưa có lệnh giữ dữ liệu được xác nhận.",
+          "meaning": "Tại mốc 22/10, hold=false và job được lên lịch 25/10 00:00 UTC. Bản ghi này không chứng minh trạng thái job sau deadline.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
           "why": "Không coi ticket xin gia hạn là hold đã áp."
@@ -4047,10 +4047,10 @@
           "output": "Scheduled deletion 2026-10-25",
           "context": "panel",
           "purpose": "Đọc lịch xóa theo retention.",
-          "meaning": "Scheduled deletion 25/10 là lịch dự kiến; cần kiểm tra task/hold và quyền ngoại lệ.",
+          "meaning": "Scheduled deletion 25/10 là kế hoạch, không phải bằng chứng job đã chạy. Nếu đọc sau mốc đó, phải xem trạng thái job thực tế.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
-          "why": "Xác định deadline cần chuyển yêu cầu giữ dữ liệu."
+          "why": "Tại mốc tiếp nhận 22/10, xác định lịch xóa để chuyển yêu cầu giữ dữ liệu."
         },
         {
           "id": "G1",
@@ -4058,7 +4058,7 @@
           "command": "PANEL: retention hold state",
           "output": "service VPS-1406 hold=false; deletion_job=2026-10-25 00:00 UTC",
           "purpose": "Đọc hold hiện tại và deletion job.",
-          "meaning": "hold=false, job 25/10 00:00 UTC; chưa có lệnh giữ dữ liệu được xác nhận.",
+          "meaning": "Tại mốc 22/10, hold=false và job được lên lịch 25/10 00:00 UTC. Bản ghi này không chứng minh trạng thái job sau deadline.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
           "why": "Không coi ticket xin gia hạn là hold đã áp."
@@ -4126,7 +4126,7 @@
         {
           "id": "p2",
           "label": "Lịch xóa là 25/10.",
-          "feedback": "Đây là deadline cần đối chiếu task."
+          "feedback": "Đây là lịch dự kiến trong bản ghi 22/10, không phải trạng thái job sau 25/10."
         },
         {
           "id": "over",
@@ -4147,15 +4147,15 @@
       "hints": [
         "Hết hạn dịch vụ không đồng nghĩa dữ liệu đã xóa.",
         "So expired date với scheduled deletion và hold state.",
-        "Ngày xóa 25/10, hold false và backup chưa thử restore. Chuyển billing/lifecycle xin hold có audit trước deadline, chưa bảo đảm được duyệt."
+        "Ở mốc 22/10, job mới được lên lịch 25/10 và hold=false. Chuyển billing/lifecycle xin hold có audit; nếu đã qua 25/10, kiểm tra job đã chạy chưa và backup có phục hồi được không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Dịch vụ hết hạn 20/10, xóa lịch 25/10, hold false; backup 19/10 chưa xác minh restore.",
-        "nextChecks": "Xác minh owner, renewal, retention job, policy và khả năng backup trước deadline.",
-        "resolution": "Chuyển billing/lifecycle on-call xin ngoại lệ hold có audit; chỉ hứa thời hạn đã được duyệt và áp.",
-        "verification": "Kiểm tra hold/renewal, deadline mới, data/backup status và khách xác nhận phương án.",
-        "escalation": "Cần policy owner hoặc quyết định khẩn trước deletion.",
-        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: Billing showed expiry on 20 October and panel retention scheduled deletion for 25 October 2026.\nNext Action: Urgently request a policy-approved retention decision and advise the authorized owner to preserve needed data.\nVerification: Confirm renewal or exception is recorded and the required data remains available.\nStatus: Urgent billing/retention escalation recommended."
+        "expectedDiagnosis": "Tại 22/10/2026 10:00 UTC: dịch vụ hết hạn 20/10, deletion job dự kiến 25/10, hold=false; backup 19/10 chưa thử restore. Không biết job đã chạy hay dữ liệu còn sau 25/10.",
+        "nextChecks": "Xác minh owner, policy, trạng thái deletion job tại lúc xử lý, hold hiện tại và khả năng phục hồi từ backup.",
+        "resolution": "Chuyển billing/lifecycle on-call xin quyết định hold có audit nếu còn áp dụng được; không hứa gia hạn hay phục hồi khi chưa xác nhận trạng thái job và dữ liệu.",
+        "verification": "Kiểm tra job đã chạy chưa, hold/renewal và deadline mới nếu được duyệt; kiểm tra dữ liệu/backup rồi báo khách kết quả xác minh.",
+        "escalation": "Cần policy owner quyết định khẩn về hold hoặc đánh giá khôi phục sau deadline.",
+        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: At receipt on 22 October 2026 10:00 UTC, billing showed expiry on 20 October, a deletion job scheduled for 25 October and no active hold. Neither the schedule nor the backup inventory proves current data availability.\nNext Action: Verify the owner and current deletion-job state, then ask Billing/Lifecycle for an audited hold if the data still qualifies; do not promise retention or restore.\nVerification: Confirm the approved hold or extension was applied, check the new deadline and test data or backup availability separately.\nStatus: Urgent billing/retention escalation recommended."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:246",
@@ -4204,10 +4204,10 @@
           "output": "Scheduled deletion 2026-10-25",
           "context": "panel",
           "purpose": "Đọc lịch xóa theo retention.",
-          "meaning": "Scheduled deletion 25/10 là lịch dự kiến; cần kiểm tra task/hold và quyền ngoại lệ.",
+          "meaning": "Scheduled deletion 25/10 là kế hoạch, không phải bằng chứng job đã chạy. Nếu đọc sau mốc đó, phải xem trạng thái job thực tế.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
-          "why": "Xác định deadline cần chuyển yêu cầu giữ dữ liệu."
+          "why": "Tại mốc tiếp nhận 22/10, xác định lịch xóa để chuyển yêu cầu giữ dữ liệu."
         },
         {
           "id": "G1",
@@ -4215,7 +4215,7 @@
           "command": "PANEL: retention hold state",
           "output": "service VPS-1406 hold=false; deletion_job=2026-10-25 00:00 UTC",
           "purpose": "Đọc hold hiện tại và deletion job.",
-          "meaning": "hold=false, job 25/10 00:00 UTC; chưa có lệnh giữ dữ liệu được xác nhận.",
+          "meaning": "Tại mốc 22/10, hold=false và job được lên lịch 25/10 00:00 UTC. Bản ghi này không chứng minh trạng thái job sau deadline.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
           "why": "Không coi ticket xin gia hạn là hold đã áp."
@@ -4233,12 +4233,12 @@
         }
       ],
       "commandLinks": [],
-      "prompt": "Ai cần tiếp nhận yêu cầu giữ dữ liệu này?",
+      "prompt": "Ở mốc 22/10, ai cần tiếp nhận yêu cầu giữ dữ liệu?",
       "options": [
         {
           "id": "safe",
           "label": "Xác minh owner rồi chuyển billing/lifecycle xin hold có audit.",
-          "feedback": "Thông báo deadline và chỉ xác nhận gia hạn khi đã có task/decision."
+          "feedback": "Tại mốc 22/10, còn lịch xóa 25/10; chỉ xác nhận gia hạn khi có quyết định và trạng thái hold thực."
         },
         {
           "id": "unsafe",
@@ -4254,19 +4254,19 @@
       "correctIds": [
         "safe"
       ],
-      "explanation": "Đúng owner và đội policy cần quyết định, tránh hứa điều chưa áp.",
+      "explanation": "Xác minh chủ tài khoản rồi chuyển đội có quyền duyệt hold. Khi xử lý sau deadline, phải đọc trạng thái job trước khi nói dữ liệu còn hay đã xóa.",
       "hints": [
         "Hết hạn dịch vụ không đồng nghĩa dữ liệu đã xóa.",
         "So expired date với scheduled deletion và hold state.",
-        "Ngày xóa 25/10, hold false và backup chưa thử restore. Chuyển billing/lifecycle xin hold có audit trước deadline, chưa bảo đảm được duyệt."
+        "Ở mốc 22/10, job mới được lên lịch 25/10 và hold=false. Chuyển billing/lifecycle xin hold có audit; nếu đã qua 25/10, kiểm tra job đã chạy chưa và backup có phục hồi được không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Dịch vụ hết hạn 20/10, xóa lịch 25/10, hold false; backup 19/10 chưa xác minh restore.",
-        "nextChecks": "Xác minh owner, renewal, retention job, policy và khả năng backup trước deadline.",
-        "resolution": "Chuyển billing/lifecycle on-call xin ngoại lệ hold có audit; chỉ hứa thời hạn đã được duyệt và áp.",
-        "verification": "Kiểm tra hold/renewal, deadline mới, data/backup status và khách xác nhận phương án.",
-        "escalation": "Cần policy owner hoặc quyết định khẩn trước deletion.",
-        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: Billing showed expiry on 20 October and panel retention scheduled deletion for 25 October 2026.\nNext Action: Urgently request a policy-approved retention decision and advise the authorized owner to preserve needed data.\nVerification: Confirm renewal or exception is recorded and the required data remains available.\nStatus: Urgent billing/retention escalation recommended."
+        "expectedDiagnosis": "Tại 22/10/2026 10:00 UTC: dịch vụ hết hạn 20/10, deletion job dự kiến 25/10, hold=false; backup 19/10 chưa thử restore. Không biết job đã chạy hay dữ liệu còn sau 25/10.",
+        "nextChecks": "Xác minh owner, policy, trạng thái deletion job tại lúc xử lý, hold hiện tại và khả năng phục hồi từ backup.",
+        "resolution": "Chuyển billing/lifecycle on-call xin quyết định hold có audit nếu còn áp dụng được; không hứa gia hạn hay phục hồi khi chưa xác nhận trạng thái job và dữ liệu.",
+        "verification": "Kiểm tra job đã chạy chưa, hold/renewal và deadline mới nếu được duyệt; kiểm tra dữ liệu/backup rồi báo khách kết quả xác minh.",
+        "escalation": "Cần policy owner quyết định khẩn về hold hoặc đánh giá khôi phục sau deadline.",
+        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: At receipt on 22 October 2026 10:00 UTC, billing showed expiry on 20 October, a deletion job scheduled for 25 October and no active hold. Neither the schedule nor the backup inventory proves current data availability.\nNext Action: Verify the owner and current deletion-job state, then ask Billing/Lifecycle for an audited hold if the data still qualifies; do not promise retention or restore.\nVerification: Confirm the approved hold or extension was applied, check the new deadline and test data or backup availability separately.\nStatus: Urgent billing/retention escalation recommended."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:264",
@@ -4308,10 +4308,10 @@
           "output": "Scheduled deletion 2026-10-25",
           "context": "panel",
           "purpose": "Đọc lịch xóa theo retention.",
-          "meaning": "Scheduled deletion 25/10 là lịch dự kiến; cần kiểm tra task/hold và quyền ngoại lệ.",
+          "meaning": "Scheduled deletion 25/10 là kế hoạch, không phải bằng chứng job đã chạy. Nếu đọc sau mốc đó, phải xem trạng thái job thực tế.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
-          "why": "Xác định deadline cần chuyển yêu cầu giữ dữ liệu."
+          "why": "Tại mốc tiếp nhận 22/10, xác định lịch xóa để chuyển yêu cầu giữ dữ liệu."
         },
         {
           "id": "G1",
@@ -4319,7 +4319,7 @@
           "command": "PANEL: retention hold state",
           "output": "service VPS-1406 hold=false; deletion_job=2026-10-25 00:00 UTC",
           "purpose": "Đọc hold hiện tại và deletion job.",
-          "meaning": "hold=false, job 25/10 00:00 UTC; chưa có lệnh giữ dữ liệu được xác nhận.",
+          "meaning": "Tại mốc 22/10, hold=false và job được lên lịch 25/10 00:00 UTC. Bản ghi này không chứng minh trạng thái job sau deadline.",
           "commandId": "panel-lifecycle-policy",
           "aliases": [],
           "why": "Không coi ticket xin gia hạn là hold đã áp."
@@ -4337,12 +4337,12 @@
         }
       ],
       "commandLinks": [],
-      "prompt": "Sắp xếp xử lý gia hạn retention trước ngày xóa.",
+      "prompt": "Sắp xếp xử lý yêu cầu retention tại mốc tiếp nhận 22/10.",
       "options": [
         {
           "id": "evidence",
           "label": "Xác minh owner, expiration, deletion job, hold và backup.",
-          "feedback": "Biết rủi ro và thời gian còn lại."
+          "feedback": "Đọc trạng thái job tại thời điểm xử lý; lịch xóa không chứng minh dữ liệu còn hay mất."
         },
         {
           "id": "verify",
@@ -4351,7 +4351,7 @@
         },
         {
           "id": "act",
-          "label": "Đội được quyền xử lý ngoại lệ retention có audit trước deadline.",
+          "label": "Đội được quyền xử lý ngoại lệ retention có audit khi dữ liệu còn đủ điều kiện giữ.",
           "feedback": "Support không tự bỏ deletion task."
         }
       ],
@@ -4360,19 +4360,19 @@
         "act",
         "verify"
       ],
-      "explanation": "Xác nhận mốc và quyền trước, xin hold sau, kiểm tra trạng thái thật cuối.",
+      "explanation": "Xác nhận mốc, trạng thái job và quyền trước; xin hold sau, rồi kiểm tra trạng thái áp dụng. Sau 25/10 phải hỏi job đã chạy chưa.",
       "hints": [
         "Hết hạn dịch vụ không đồng nghĩa dữ liệu đã xóa.",
         "So expired date với scheduled deletion và hold state.",
-        "Ngày xóa 25/10, hold false và backup chưa thử restore. Chuyển billing/lifecycle xin hold có audit trước deadline, chưa bảo đảm được duyệt."
+        "Ở mốc 22/10, job mới được lên lịch 25/10 và hold=false. Chuyển billing/lifecycle xin hold có audit; nếu đã qua 25/10, kiểm tra job đã chạy chưa và backup có phục hồi được không."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Dịch vụ hết hạn 20/10, xóa lịch 25/10, hold false; backup 19/10 chưa xác minh restore.",
-        "nextChecks": "Xác minh owner, renewal, retention job, policy và khả năng backup trước deadline.",
-        "resolution": "Chuyển billing/lifecycle on-call xin ngoại lệ hold có audit; chỉ hứa thời hạn đã được duyệt và áp.",
-        "verification": "Kiểm tra hold/renewal, deadline mới, data/backup status và khách xác nhận phương án.",
-        "escalation": "Cần policy owner hoặc quyết định khẩn trước deletion.",
-        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: Billing showed expiry on 20 October and panel retention scheduled deletion for 25 October 2026.\nNext Action: Urgently request a policy-approved retention decision and advise the authorized owner to preserve needed data.\nVerification: Confirm renewal or exception is recorded and the required data remains available.\nStatus: Urgent billing/retention escalation recommended."
+        "expectedDiagnosis": "Tại 22/10/2026 10:00 UTC: dịch vụ hết hạn 20/10, deletion job dự kiến 25/10, hold=false; backup 19/10 chưa thử restore. Không biết job đã chạy hay dữ liệu còn sau 25/10.",
+        "nextChecks": "Xác minh owner, policy, trạng thái deletion job tại lúc xử lý, hold hiện tại và khả năng phục hồi từ backup.",
+        "resolution": "Chuyển billing/lifecycle on-call xin quyết định hold có audit nếu còn áp dụng được; không hứa gia hạn hay phục hồi khi chưa xác nhận trạng thái job và dữ liệu.",
+        "verification": "Kiểm tra job đã chạy chưa, hold/renewal và deadline mới nếu được duyệt; kiểm tra dữ liệu/backup rồi báo khách kết quả xác minh.",
+        "escalation": "Cần policy owner quyết định khẩn về hold hoặc đánh giá khôi phục sau deadline.",
+        "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: At receipt on 22 October 2026 10:00 UTC, billing showed expiry on 20 October, a deletion job scheduled for 25 October and no active hold. Neither the schedule nor the backup inventory proves current data availability.\nNext Action: Verify the owner and current deletion-job state, then ask Billing/Lifecycle for an audited hold if the data still qualifies; do not promise retention or restore.\nVerification: Confirm the approved hold or extension was applied, check the new deadline and test data or backup availability separately.\nStatus: Urgent billing/retention escalation recommended."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:282",

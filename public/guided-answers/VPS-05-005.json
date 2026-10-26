@@ -1,5 +1,5 @@
 {
-  "expected_diagnosis": "Virtual disk vda đã40G, partition vda1 và filesystem / còn20G. Root dùng XFS theo findmnt.",
+  "expected_diagnosis": "Virtual disk vda đã 40G, partition vda1 và filesystem / còn 20G. Root dùng XFS theo findmnt.",
   "recommended_next_checks": "Xác nhận toàn bộ layout, khoảng trống, boot/partition type, backup và mapping root; không mặc định có thể áp một lệnh grow chung.",
   "resolution_guidance": "Với kế hoạch/phê duyệt phù hợp, mở partition theo layout rồi mở filesystem bằng công cụ XFS; không format hoặc bỏ bước backup.",
   "verification": "lsblk và df phản ánh dung lượng dự kiến, root mount đúng và dữ liệu/app hoạt động sau change.",

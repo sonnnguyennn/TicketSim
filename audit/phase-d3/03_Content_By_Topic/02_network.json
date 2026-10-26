@@ -1340,7 +1340,7 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Phản hồi ICMP tới IP công cộng thành công, nhưng truy vấn qua resolver hiện tại timeout. Chưa xác định resolver service, đường mạng hay cấu hình gây lỗi.",
-        "nextChecks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP53 và policy khi cần.",
+        "nextChecks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP/53 và policy khi cần.",
         "resolution": "Đề xuất sửa resolver/profile đúng nguồn quản lý và đúng policy nếu đã xác định sai cấu hình; không ghi đè file do dịch vụ khác quản lý.",
         "verification": "Resolver được cấu hình trả lời đúng và site truy cập được theo đúng hostname, gồm Host/SNI khi cần.",
         "escalation": "Chuyển đội DNS/network nếu resolver dùng chung bị lỗi hoặc thuộc policy do đội khác quản lý.",
@@ -1457,7 +1457,7 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Phản hồi ICMP tới IP công cộng thành công, nhưng truy vấn qua resolver hiện tại timeout. Chưa xác định resolver service, đường mạng hay cấu hình gây lỗi.",
-        "nextChecks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP53 và policy khi cần.",
+        "nextChecks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP/53 và policy khi cần.",
         "resolution": "Đề xuất sửa resolver/profile đúng nguồn quản lý và đúng policy nếu đã xác định sai cấu hình; không ghi đè file do dịch vụ khác quản lý.",
         "verification": "Resolver được cấu hình trả lời đúng và site truy cập được theo đúng hostname, gồm Host/SNI khi cần.",
         "escalation": "Chuyển đội DNS/network nếu resolver dùng chung bị lỗi hoặc thuộc policy do đội khác quản lý.",
@@ -1620,7 +1620,7 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Phản hồi ICMP tới IP công cộng thành công, nhưng truy vấn qua resolver hiện tại timeout. Chưa xác định resolver service, đường mạng hay cấu hình gây lỗi.",
-        "nextChecks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP53 và policy khi cần.",
+        "nextChecks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP/53 và policy khi cần.",
         "resolution": "Đề xuất sửa resolver/profile đúng nguồn quản lý và đúng policy nếu đã xác định sai cấu hình; không ghi đè file do dịch vụ khác quản lý.",
         "verification": "Resolver được cấu hình trả lời đúng và site truy cập được theo đúng hostname, gồm Host/SNI khi cần.",
         "escalation": "Chuyển đội DNS/network nếu resolver dùng chung bị lỗi hoặc thuộc policy do đội khác quản lý.",
@@ -1784,7 +1784,7 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Phản hồi ICMP tới IP công cộng thành công, nhưng truy vấn qua resolver hiện tại timeout. Chưa xác định resolver service, đường mạng hay cấu hình gây lỗi.",
-        "nextChecks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP53 và policy khi cần.",
+        "nextChecks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP/53 và policy khi cần.",
         "resolution": "Đề xuất sửa resolver/profile đúng nguồn quản lý và đúng policy nếu đã xác định sai cấu hình; không ghi đè file do dịch vụ khác quản lý.",
         "verification": "Resolver được cấu hình trả lời đúng và site truy cập được theo đúng hostname, gồm Host/SNI khi cần.",
         "escalation": "Chuyển đội DNS/network nếu resolver dùng chung bị lỗi hoặc thuộc policy do đội khác quản lý.",
@@ -1866,7 +1866,7 @@
       ],
       "finalContext": {
         "expectedDiagnosis": "Phản hồi ICMP tới IP công cộng thành công, nhưng truy vấn qua resolver hiện tại timeout. Chưa xác định resolver service, đường mạng hay cấu hình gây lỗi.",
-        "nextChecks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP53 và policy khi cần.",
+        "nextChecks": "Đọc /etc/resolv.conf và nguồn cấu hình DNS thực tế; thử trực tiếp resolver được cấp, kiểm tra UDP/TCP/53 và policy khi cần.",
         "resolution": "Đề xuất sửa resolver/profile đúng nguồn quản lý và đúng policy nếu đã xác định sai cấu hình; không ghi đè file do dịch vụ khác quản lý.",
         "verification": "Resolver được cấu hình trả lời đúng và site truy cập được theo đúng hostname, gồm Host/SNI khi cần.",
         "escalation": "Chuyển đội DNS/network nếu resolver dùng chung bị lỗi hoặc thuộc policy do đội khác quản lý.",
@@ -4994,7 +4994,7 @@
         "case": "scripts/content/phase-b-01-05.mjs:29",
         "gradingBase": "scripts/guided-content.mjs:704",
         "overrides": [
-          "scripts/guided-content.mjs:1341"
+          "scripts/guided-content.mjs:1344"
         ]
       },
       "classification": [
@@ -5679,9 +5679,9 @@
           "id": "G1",
           "context": "client",
           "command": "tracepath 198.51.100.20",
-          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms\n 2:  no reply\n 3:  198.51.100.20  31.228ms",
+          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms pmtu 1400\n 2:  no reply\n 3:  198.51.100.20  31.228ms reached\n     Resume: pmtu 1400 hops 3",
           "purpose": "Thăm dò đường và thông tin PMTU bằng tracepath.",
-          "meaning": "Có hop không trả lời; tracepath này chưa xác nhận PMTU ở đó. Cần so với ICMP frag-needed, tunnel và luồng TCP.",
+          "meaning": "Tracepath dùng UDP ghi nhận PMTU 1400; hop im lặng không tự chứng minh lỗi tại đó. Kết quả phù hợp ICMP frag-needed nhưng chưa chứng minh HTTPS/TCP bị lỗi vì PMTUD; cần kiểm tra luồng TCP và thiết bị VPN.",
           "commandId": "mtr",
           "aliases": [],
           "why": "Bổ sung đường đo để đối chiếu tunnel thay vì gán MTU guest sai ngay."
@@ -5806,9 +5806,9 @@
           "id": "G1",
           "context": "client",
           "command": "tracepath 198.51.100.20",
-          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms\n 2:  no reply\n 3:  198.51.100.20  31.228ms",
+          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms pmtu 1400\n 2:  no reply\n 3:  198.51.100.20  31.228ms reached\n     Resume: pmtu 1400 hops 3",
           "purpose": "Thăm dò đường và thông tin PMTU bằng tracepath.",
-          "meaning": "Có hop không trả lời; tracepath này chưa xác nhận PMTU ở đó. Cần so với ICMP frag-needed, tunnel và luồng TCP.",
+          "meaning": "Tracepath dùng UDP ghi nhận PMTU 1400; hop im lặng không tự chứng minh lỗi tại đó. Kết quả phù hợp ICMP frag-needed nhưng chưa chứng minh HTTPS/TCP bị lỗi vì PMTUD; cần kiểm tra luồng TCP và thiết bị VPN.",
           "commandId": "mtr",
           "aliases": [],
           "why": "Bổ sung đường đo để đối chiếu tunnel thay vì gán MTU guest sai ngay."
@@ -5937,9 +5937,9 @@
           "id": "G1",
           "context": "client",
           "command": "tracepath 198.51.100.20",
-          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms\n 2:  no reply\n 3:  198.51.100.20  31.228ms",
+          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms pmtu 1400\n 2:  no reply\n 3:  198.51.100.20  31.228ms reached\n     Resume: pmtu 1400 hops 3",
           "purpose": "Thăm dò đường và thông tin PMTU bằng tracepath.",
-          "meaning": "Có hop không trả lời; tracepath này chưa xác nhận PMTU ở đó. Cần so với ICMP frag-needed, tunnel và luồng TCP.",
+          "meaning": "Tracepath dùng UDP ghi nhận PMTU 1400; hop im lặng không tự chứng minh lỗi tại đó. Kết quả phù hợp ICMP frag-needed nhưng chưa chứng minh HTTPS/TCP bị lỗi vì PMTUD; cần kiểm tra luồng TCP và thiết bị VPN.",
           "commandId": "mtr",
           "aliases": [],
           "why": "Bổ sung đường đo để đối chiếu tunnel thay vì gán MTU guest sai ngay."
@@ -5983,9 +5983,9 @@
           "id": "G1",
           "context": "client",
           "command": "tracepath 198.51.100.20",
-          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms\n 2:  no reply\n 3:  198.51.100.20  31.228ms",
+          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms pmtu 1400\n 2:  no reply\n 3:  198.51.100.20  31.228ms reached\n     Resume: pmtu 1400 hops 3",
           "purpose": "Thăm dò đường và thông tin PMTU bằng tracepath.",
-          "meaning": "Có hop không trả lời; tracepath này chưa xác nhận PMTU ở đó. Cần so với ICMP frag-needed, tunnel và luồng TCP.",
+          "meaning": "Tracepath dùng UDP ghi nhận PMTU 1400; hop im lặng không tự chứng minh lỗi tại đó. Kết quả phù hợp ICMP frag-needed nhưng chưa chứng minh HTTPS/TCP bị lỗi vì PMTUD; cần kiểm tra luồng TCP và thiết bị VPN.",
           "commandId": "mtr",
           "aliases": [],
           "why": "Bổ sung đường đo để đối chiếu tunnel thay vì gán MTU guest sai ngay."
@@ -6182,9 +6182,9 @@
           "id": "G1",
           "context": "client",
           "command": "tracepath 198.51.100.20",
-          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms\n 2:  no reply\n 3:  198.51.100.20  31.228ms",
+          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms pmtu 1400\n 2:  no reply\n 3:  198.51.100.20  31.228ms reached\n     Resume: pmtu 1400 hops 3",
           "purpose": "Thăm dò đường và thông tin PMTU bằng tracepath.",
-          "meaning": "Có hop không trả lời; tracepath này chưa xác nhận PMTU ở đó. Cần so với ICMP frag-needed, tunnel và luồng TCP.",
+          "meaning": "Tracepath dùng UDP ghi nhận PMTU 1400; hop im lặng không tự chứng minh lỗi tại đó. Kết quả phù hợp ICMP frag-needed nhưng chưa chứng minh HTTPS/TCP bị lỗi vì PMTUD; cần kiểm tra luồng TCP và thiết bị VPN.",
           "commandId": "mtr",
           "aliases": [],
           "why": "Bổ sung đường đo để đối chiếu tunnel thay vì gán MTU guest sai ngay."
@@ -6230,7 +6230,7 @@
         {
           "id": "p1",
           "label": "Gói lớn có DF nhận thông báo cần phân mảnh.",
-          "feedback": "Thông báo Frag needed và mtu1400 cho biết đường không mang gói đó như hiện tại."
+          "feedback": "Thông báo Frag needed và mtu 1400 cho biết đường không mang gói đó như hiện tại."
         },
         {
           "id": "p2",
@@ -6310,9 +6310,9 @@
           "id": "G1",
           "context": "client",
           "command": "tracepath 198.51.100.20",
-          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms\n 2:  no reply\n 3:  198.51.100.20  31.228ms",
+          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms pmtu 1400\n 2:  no reply\n 3:  198.51.100.20  31.228ms reached\n     Resume: pmtu 1400 hops 3",
           "purpose": "Thăm dò đường và thông tin PMTU bằng tracepath.",
-          "meaning": "Có hop không trả lời; tracepath này chưa xác nhận PMTU ở đó. Cần so với ICMP frag-needed, tunnel và luồng TCP.",
+          "meaning": "Tracepath dùng UDP ghi nhận PMTU 1400; hop im lặng không tự chứng minh lỗi tại đó. Kết quả phù hợp ICMP frag-needed nhưng chưa chứng minh HTTPS/TCP bị lỗi vì PMTUD; cần kiểm tra luồng TCP và thiết bị VPN.",
           "commandId": "mtr",
           "aliases": [],
           "why": "Bổ sung đường đo để đối chiếu tunnel thay vì gán MTU guest sai ngay."
@@ -6414,9 +6414,9 @@
           "id": "G1",
           "context": "client",
           "command": "tracepath 198.51.100.20",
-          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms\n 2:  no reply\n 3:  198.51.100.20  31.228ms",
+          "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms pmtu 1400\n 2:  no reply\n 3:  198.51.100.20  31.228ms reached\n     Resume: pmtu 1400 hops 3",
           "purpose": "Thăm dò đường và thông tin PMTU bằng tracepath.",
-          "meaning": "Có hop không trả lời; tracepath này chưa xác nhận PMTU ở đó. Cần so với ICMP frag-needed, tunnel và luồng TCP.",
+          "meaning": "Tracepath dùng UDP ghi nhận PMTU 1400; hop im lặng không tự chứng minh lỗi tại đó. Kết quả phù hợp ICMP frag-needed nhưng chưa chứng minh HTTPS/TCP bị lỗi vì PMTUD; cần kiểm tra luồng TCP và thiết bị VPN.",
           "commandId": "mtr",
           "aliases": [],
           "why": "Bổ sung đường đo để đối chiếu tunnel thay vì gán MTU guest sai ngay."

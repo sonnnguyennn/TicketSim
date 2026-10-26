@@ -2,7 +2,7 @@
   "correctIds": [
     "safe"
   ],
-  "explanation": "Giải thích cụ thể phạm vi xóa, kiểm tra bản sao và quyền; không áp dụng thay đổi phá hủy chỉ từ một yêu cầuOS.",
+  "explanation": "Giải thích cụ thể phạm vi xóa, kiểm tra bản sao và quyền; không áp dụng thay đổi phá hủy chỉ từ một yêu cầu OS.",
   "optionFeedback": {
     "unsafe": "Có thể mất dữ liệu khách muốn giữ mà chưa có bản phục hồi.",
     "close": "Cần thống nhất bước tiếp theo; cảnh báo đơn thuần chưa giải quyết yêu cầu.",

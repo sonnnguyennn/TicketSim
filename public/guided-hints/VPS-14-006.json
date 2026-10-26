@@ -2,6 +2,6 @@
   "hints": [
     "Hết hạn dịch vụ không đồng nghĩa dữ liệu đã xóa.",
     "So expired date với scheduled deletion và hold state.",
-    "Ngày xóa 25/10, hold false và backup chưa thử restore. Chuyển billing/lifecycle xin hold có audit trước deadline, chưa bảo đảm được duyệt."
+    "Ở mốc 22/10, job mới được lên lịch 25/10 và hold=false. Chuyển billing/lifecycle xin hold có audit; nếu đã qua 25/10, kiểm tra job đã chạy chưa và backup có phục hồi được không."
   ]
 }

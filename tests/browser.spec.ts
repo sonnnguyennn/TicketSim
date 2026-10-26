@@ -85,6 +85,19 @@ test('D3-B firewalld lookup distinguishes default zone from the zone handling tr
   await expect(detail).toContainText('interface/source')
 })
 
+test('D3-C2 card removes repeated command blocks but keeps examples and Quick Lookup', async ({ page }) => {
+  await page.goto('/')
+  await page.getByTitle('Thư viện lệnh', { exact: true }).click()
+  await page.getByRole('textbox', { name: 'Tìm lệnh', exact: true }).fill('iostat -xz')
+  const detail = page.locator('.library-detail')
+  await expect(detail.locator('h2 code')).toHaveText('iostat -xz 1 5')
+  await expect(detail.getByRole('heading', { name: 'Cú pháp' })).toHaveCount(0)
+  await expect(detail.locator('.library-usage').first().locator('pre.library-syntax')).toHaveCount(0)
+  await expect(detail).toContainText('iostat -yxz 1 3')
+  await expect(detail).toContainText('Output mẫu — trích đoạn')
+  await expect(detail).not.toContainText(/SOURCE_VERIFIED|LAB_PENDING|SOP_PENDING/)
+})
+
 test('D2.1 getent lookup distinguishes database, key, found and missing entry', async ({ page }) => {
   await page.goto('/')
   await page.getByTitle('Thư viện lệnh', { exact: true }).click()
@@ -283,6 +296,27 @@ test('a pre-D1 draft is preserved until the learner explicitly starts the revise
   await page.getByRole('button', { name: 'Bắt đầu bản mới' }).click()
   await expect(page.getByRole('navigation', { name: 'Các bước bài học' })).toBeVisible()
   expect((await stored(page)).guidedDrafts['VPS-02-006'].note).toBe('')
+})
+
+test('D3-C2 asks to restart only a semantically changed draft and preserves its saved data', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(key => {
+    const progress = JSON.parse(localStorage.getItem(key)!)
+    progress.guidedDrafts['VPS-14-006'] = { stage: 1, responses: {}, feedback: {}, commands: [], hintLevel: 0, note: 'Historical retention draft', submitted: false, contentRevision: 'D1-2026-10-26' }
+    progress.guidedAttempts.unshift({ id: 'historical-14', ticketId: 'VPS-14-006', createdAt: '2026-10-22T10:00:00Z', responses: {}, commands: [], hintLevel: 0, note: 'Historical attempt', score: 2, total: 6, independent: false, outcomes: {}, contentRevision: 'D1-2026-10-26' })
+    localStorage.setItem(key, JSON.stringify(progress))
+  }, STORAGE_KEY)
+  await page.reload()
+  await page.getByRole('textbox', { name: 'Tìm ticket', exact: true }).fill('VPS-14-006')
+  await page.locator('[data-ticket-id="VPS-14-006"]').click()
+  await page.locator('.guided-entry').getByRole('button', { name: /Học ticket|Tiếp tục/ }).click()
+  await expect(page.getByRole('heading', { name: 'Nội dung ticket đã được sửa' })).toBeVisible()
+  expect((await stored(page)).guidedDrafts['VPS-14-006'].note).toBe('Historical retention draft')
+  expect((await stored(page)).guidedAttempts[0].score).toBe(2)
+  page.once('dialog', dialog => dialog.accept())
+  await page.getByRole('button', { name: 'Bắt đầu bản mới' }).click()
+  expect((await stored(page)).guidedDrafts['VPS-14-006'].contentRevision).toBe('D3-C2-2026-10-26')
+  expect((await stored(page)).guidedAttempts[0].score).toBe(2)
 })
 
 test('stored command history and independent setting survive Guided continuation, ticket changes and refresh', async ({ page }) => {

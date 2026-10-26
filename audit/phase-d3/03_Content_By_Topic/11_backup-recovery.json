@@ -5334,7 +5334,7 @@
         "resolution": "Đội ảo hóa cách ly đúng NIC clone; owner duyệt IP/mạng test riêng trước nối lại.",
         "verification": "Hết conflict, production truy cập được và clone chỉ hoạt động trong mạng test đã thống nhất.",
         "escalation": "Cần đội network/virtualization thao tác host hoặc production đang bị ảnh hưởng.",
-        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Keep the clone isolated and assign a nonconflicting address before network connection.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Ask the virtualization team to isolate the currently connected clone, then plan a nonconflicting test address with the owner.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:4203",
@@ -5484,7 +5484,7 @@
         "resolution": "Đội ảo hóa cách ly đúng NIC clone; owner duyệt IP/mạng test riêng trước nối lại.",
         "verification": "Hết conflict, production truy cập được và clone chỉ hoạt động trong mạng test đã thống nhất.",
         "escalation": "Cần đội network/virtualization thao tác host hoặc production đang bị ảnh hưởng.",
-        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Keep the clone isolated and assign a nonconflicting address before network connection.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Ask the virtualization team to isolate the currently connected clone, then plan a nonconflicting test address with the owner.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:4221",
@@ -5654,7 +5654,7 @@
       "options": [
         {
           "id": "over",
-          "label": "ĐổiDNSA là đủ hết duplicate IP của hai NIC.",
+          "label": "Đổi DNS A là đủ hết duplicate IP của hai NIC.",
           "feedback": "DNS không đổi IP mà NIC phát trên cùng mạng."
         },
         {
@@ -5671,7 +5671,7 @@
       "correctIds": [
         "supported"
       ],
-      "explanation": "Bằng chứng hỗ trợ trùng IP trên mạng chung; cần nhắm đúngclone và giữ production.",
+      "explanation": "Bằng chứng hỗ trợ trùng IP trên mạng chung; cần nhắm đúng clone và giữ production.",
       "hints": [
         "Clone có thể mang IP cũ; chưa thể nói production là máy cần tắt.",
         "So IP hai NIC, trạng thái clone và ARP theo timestamp.",
@@ -5683,7 +5683,7 @@
         "resolution": "Đội ảo hóa cách ly đúng NIC clone; owner duyệt IP/mạng test riêng trước nối lại.",
         "verification": "Hết conflict, production truy cập được và clone chỉ hoạt động trong mạng test đã thống nhất.",
         "escalation": "Cần đội network/virtualization thao tác host hoặc production đang bị ảnh hưởng.",
-        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Keep the clone isolated and assign a nonconflicting address before network connection.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Ask the virtualization team to isolate the currently connected clone, then plan a nonconflicting test address with the owner.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:4239",
@@ -5837,7 +5837,7 @@
         "resolution": "Đội ảo hóa cách ly đúng NIC clone; owner duyệt IP/mạng test riêng trước nối lại.",
         "verification": "Hết conflict, production truy cập được và clone chỉ hoạt động trong mạng test đã thống nhất.",
         "escalation": "Cần đội network/virtualization thao tác host hoặc production đang bị ảnh hưởng.",
-        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Keep the clone isolated and assign a nonconflicting address before network connection.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Ask the virtualization team to isolate the currently connected clone, then plan a nonconflicting test address with the owner.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:4257",
@@ -5948,7 +5948,7 @@
         "resolution": "Đội ảo hóa cách ly đúng NIC clone; owner duyệt IP/mạng test riêng trước nối lại.",
         "verification": "Hết conflict, production truy cập được và clone chỉ hoạt động trong mạng test đã thống nhất.",
         "escalation": "Cần đội network/virtualization thao tác host hoặc production đang bị ảnh hưởng.",
-        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Keep the clone isolated and assign a nonconflicting address before network connection.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Ask the virtualization team to isolate the currently connected clone, then plan a nonconflicting test address with the owner.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:4275",
@@ -6054,7 +6054,7 @@
         "resolution": "Đội ảo hóa cách ly đúng NIC clone; owner duyệt IP/mạng test riêng trước nối lại.",
         "verification": "Hết conflict, production truy cập được và clone chỉ hoạt động trong mạng test đã thống nhất.",
         "escalation": "Cần đội network/virtualization thao tác host hoặc production đang bị ảnh hưởng.",
-        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Keep the clone isolated and assign a nonconflicting address before network connection.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Restored VM duplicates the live IPv4 address.\nFindings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.\nNext Action: Ask the virtualization team to isolate the currently connected clone, then plan a nonconflicting test address with the owner.\nVerification: Confirm no address conflict and reachability through the intended endpoint.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-11-14.mjs:4293",

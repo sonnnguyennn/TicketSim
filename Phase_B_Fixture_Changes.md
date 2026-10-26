@@ -232,7 +232,7 @@ Tham khảo: https://man7.org/linux/man-pages/man1/df.1.html, https://www.gnu.or
 
 ## VPS-05-002/P2
 
-Thay IUse100%prose bằng bảnginodeIFree0.
+Thay IUse100%prose bằng bảnginodeIFree 0.
 
 Command trước: `df -i /`; sau: `df -i /`.
 
@@ -1069,7 +1069,7 @@ Tham khảo: https://man7.org/linux/man-pages/man1/free.1.html, https://man7.org
 
 ## VPS-04-003/G1
 
-Chuẩn hóa free-h từ Memprose, giữavailable80Mi/swap920Mi.
+Chuẩn hóa free-h từ Memprose, giữavailable80Mi/swap 920Mi.
 
 Command trước: `free -h`; sau: `free -h`.
 
@@ -1189,7 +1189,7 @@ Tham khảo: https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html, 
 
 ## VPS-05-003/P1
 
-Hoàn thiện dòngdiskusage journal chuẩn.
+Hoàn thiện dòngdisk usage journal chuẩn.
 
 Command trước: `journalctl --disk-usage`; sau: `journalctl --disk-usage`.
 
@@ -1418,7 +1418,7 @@ Tham khảo: https://bind9.readthedocs.io/en/v9.18.41/manpages.html#dig-dns-look
 
 ## VPS-01-008/P2
 
-Thay dòng mô tả Mem/swap bằng bảng free -h, giữ available64Mi và swap0.
+Thay dòng mô tả Mem/swap bằng bảng free -h, giữ available64Mi và swap 0.
 
 Command trước: `free -h`; sau: `free -h`.
 
@@ -1442,7 +1442,7 @@ Tham khảo: https://www.kernel.org/doc/html/latest/accounting/psi.html, https:/
 
 Khóa ngày và timezone UTC của SSH journal theo incident 22/10/2026; không dùng yesterday biến đổi theo ngày chạy.
 
-Command trước: `journalctl -u sshd --since "yesterday 23:00" --no-pager`; sau: `journalctl -u sshd --since "2026-10-22 23:00:00 UTC" --until "2026-10-22 23:30:00 UTC" --no-pager`.
+Command trước: `journalctl -u sshd --since "yesterday 23:00" --no-pager`; sau: `journalctl -u sshd --since "2026-10-22 23:00:00 UTC" --until "2026-10-22 23:30:00 UTC" --utc --no-pager`.
 
 Trước:
 
@@ -1590,7 +1590,7 @@ Tham khảo: https://man7.org/linux/man-pages/man8/e2fsck.8.html, https://man7.o
 
 ## VPS-04-006/P1
 
-Thêmheaderps; giữ850000KiB vàelapsed9h.
+Thêmheaderps; giữ850000KiB vàelapsed 9h.
 
 Command trước: `ps -o pid,rss,etime,comm -p 1200`; sau: `ps -o pid,rss,etime,comm -p 1200`.
 
@@ -1633,6 +1633,28 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
 ```
 
 Tham khảo: https://man7.org/linux/man-pages/man8/vmstat.8.html, https://man7.org/linux/man-pages/man1/top.1.html
+
+## VPS-04-008/P1
+
+Bỏ prose chấm phẩy, dùng hai dòng journalstarted/finished cótimestamp.
+
+Command trước: `journalctl -u backup-agent --since "2026-10-22 02:00:00 UTC" --until "2026-10-22 02:30:00 UTC"`; sau: `journalctl -u backup-agent --since "2026-10-22 02:00:00 UTC" --until "2026-10-22 02:30:00 UTC" --utc`.
+
+Trước:
+
+```text
+Oct 22 02:00:00 vps backup-agent[901]: backup started
+Oct 22 02:20:00 vps backup-agent[901]: backup finished
+```
+
+Sau:
+
+```text
+Oct 22 02:00:00 vps backup-agent[901]: backup started
+Oct 22 02:20:00 vps backup-agent[901]: backup finished
+```
+
+Tham khảo: https://man7.org/linux/man-pages/man8/iostat.8.html, https://www.freedesktop.org/software/systemd/man/latest/journalctl.html
 
 ## VPS-04-008/P2
 
@@ -1998,9 +2020,9 @@ Tham khảo: https://man7.org/linux/man-pages/man8/ss.8.html
 
 ## VPS-09-007/P1
 
-Fingerprint mẫu ban đầu quá ngắn so với SHA256 fingerprint OpenSSH; thay chuỗi mẫu 43 ký tự.
+Fingerprint mẫu ban đầu quá ngắn so với SHA-256 fingerprint OpenSSH; thay chuỗi mẫu 43 ký tự.
 
-Command trước: `journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC"`; sau: `journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC"`.
+Command trước: `journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC"`; sau: `journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC" --utc`.
 
 Trước:
 
@@ -2099,7 +2121,7 @@ Tham khảo: https://man7.org/linux/man-pages/man1/getent.1.html
 
 ## VPS-13-007/P1
 
-Compose ps mặc định chỉ running; dùng--all và bảng đủ cột để hiện db Exited, không alias lệnh cũ sai.
+Compose ps mặc định chỉ running; dùng --all và bảng đủ cột để hiện db Exited, không alias lệnh cũ sai.
 
 Command trước: `docker compose ps`; sau: `docker compose ps --all`.
 

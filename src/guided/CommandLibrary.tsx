@@ -16,15 +16,15 @@ function ShellCard({ selected }: { selected: CommandDoc }) {
   const needsApproval = selected.safety === 'change' && !/quyền|approval|phê duyệt/i.test(selected.pitfalls)
   const followUp = !same(selected.followUp, selected.pitfalls) ? selected.followUp : ''
   const hasNotes = !!(selected.pitfalls || followUp || needsApproval || selected.safety === 'privileged_read' || showDistro)
+  const showSyntax = !same(knowledge.syntax, selected.command)
   return <article className="library-detail">
     <h2><code>{selected.command}</code></h2>
     <p className="library-lead">{selected.purpose}</p>
-    {!same(selected.whenToUse, knowledge.examples[0]?.purpose ?? '') && <p className="library-context"><strong>Khi dùng:</strong> {selected.whenToUse}</p>}
-    <section className="library-section"><h3>Cú pháp</h3><pre className="library-syntax"><code>{knowledge.syntax}</code></pre>
-    </section>
+    {!same(selected.whenToUse, selected.purpose) && !same(selected.whenToUse, knowledge.examples[0]?.purpose ?? '') && <p className="library-context"><strong>Khi dùng:</strong> {selected.whenToUse}</p>}
+    {showSyntax && <section className="library-section"><h3>Cú pháp</h3><pre className="library-syntax"><code>{knowledge.syntax}</code></pre></section>}
     {options.length > 0 && <section className="library-section"><h3>Thành phần cần biết</h3><ul className="library-options">{options.map(option => <li key={option.name}>{partLabel[option.kind] && <><span className="library-part-kind">{partLabel[option.kind]}</span>{' '}</>}<code>{option.name}</code> — {option.purpose}{option.kind === 'flag' && !same(option.when, option.purpose) && <small>{option.when}</small>}{option.osNote && (!showDistro || !/Ubuntu|CentOS/i.test(option.osNote)) && <small>{option.osNote}</small>}</li>)}</ul></section>}
     <section className="library-section"><h3>Ví dụ và cách đọc</h3>{knowledge.examples.slice(0, 3).map((example, index) => <section className="library-usage" key={index}>
-        <h4>{example.purpose}</h4><pre className="library-syntax"><code>{example.command}</code></pre>
+        <h4>{example.purpose}</h4>{(index > 0 || !same(example.command, selected.command)) && <pre className="library-syntax"><code>{example.command}</code></pre>}
         <p className="library-caption">{example.outputIsExcerpt ? 'Output mẫu — trích đoạn' : 'Output mẫu'}{example.expectedOutput === '' ? ' — stdout rỗng' : ''}{example.exitStatus !== undefined ? ` · exit status ${example.exitStatus}` : ''}</p>
         {example.expectedOutput !== '' && <pre className="library-example">{example.expectedOutput}</pre>}
         <p>{example.interpretation}</p>

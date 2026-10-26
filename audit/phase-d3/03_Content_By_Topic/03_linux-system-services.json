@@ -559,7 +559,7 @@
         "case": "scripts/content/phase-b-01-05.mjs:531",
         "gradingBase": "scripts/guided-content.mjs",
         "overrides": [
-          "scripts/guided-content.mjs:1356"
+          "scripts/guided-content.mjs:1359"
         ]
       },
       "classification": [
@@ -1940,7 +1940,7 @@
           "source": "src/guided/commands.ts (id id-user)"
         }
       ],
-      "prompt": "uploads 755 root:root và webapp UID1001 cho thấy hạn chế nào?",
+      "prompt": "uploads 755 root:root và webapp UID 1001 cho thấy hạn chế nào?",
       "options": [
         {
           "id": "ignore",
@@ -2107,7 +2107,7 @@
         },
         {
           "id": "p2",
-          "label": "Account webapp có UID/GID1001.",
+          "label": "Account webapp có UID/GID 1001.",
           "feedback": "Đúng các trường uid/gid mà id trả."
         }
       ],
@@ -4366,7 +4366,7 @@
           "output": "OSError: [Errno 24] Too many open files",
           "context": "guest",
           "purpose": "Đọc lỗi gần đây của service API.",
-          "meaning": "Errno24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
+          "meaning": "Errno 24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần xác nhận thông báo có phải lỗi file descriptor hay lỗi dung lượng/path."
@@ -4376,8 +4376,8 @@
           "command": "cat /proc/1234/limits",
           "output": "Limit                     Soft Limit           Hard Limit           Units\nMax open files            1024                 1024                 files",
           "context": "guest",
-          "purpose": "Đọc giới hạn tài nguyên của PID1234.",
-          "meaning": "Soft/hard open files đều1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
+          "purpose": "Đọc giới hạn tài nguyên của PID 1234.",
+          "meaning": "Soft/hard open files đều 1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Giới hạn thực của process mới dùng để so với số FD, không chỉ shell ulimit."
@@ -4387,8 +4387,8 @@
           "context": "guest",
           "command": "ls /proc/1234/fd | wc -l",
           "output": "1008",
-          "purpose": "Đếm entry FD hiện mở của PID1234.",
-          "meaning": "Đếm được1008 FD, gần1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
+          "purpose": "Đếm entry FD hiện mở của PID 1234.",
+          "meaning": "Đếm được 1008 FD, gần 1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "So mức sử dụng gần thời điểm lỗi với soft limit thực của process."
@@ -4399,7 +4399,7 @@
           "command": "systemctl show myapp -p LimitNOFILE",
           "output": "LimitNOFILE=1024",
           "purpose": "Đọc LimitNOFILE của unit myapp.",
-          "meaning": "Unit hiển thị1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
+          "meaning": "Unit hiển thị 1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
           "commandId": "systemctl-service",
           "aliases": [],
           "why": "Đối chiếu cấu hình systemd với giới hạn process trước khi lập change."
@@ -4431,10 +4431,10 @@
       "hints": [
         "Too many open files có thể nói về file descriptor, gồm cả socket, không chỉ file trên ổ đĩa.",
         "So Max open files của đúng PID với số entry trong /proc/PID/fd và thời điểm lỗi.",
-        "1008 gần giới hạn1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
+        "1008 gần giới hạn 1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
       ],
       "finalContext": {
-        "expectedDiagnosis": "myapp đã ghi EMFILE; PID1234 có limit1024 và hiện đếm1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
+        "expectedDiagnosis": "myapp đã ghi EMFILE; PID 1234 có limit 1024 và hiện đếm 1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
         "nextChecks": "Lấy trend FD theo traffic, phân loại socket/file và đối chiếu process/limit; kiểm tra drop-in/unit và tài nguyên liên quan.",
         "resolution": "Owner ứng dụng sửa vòng đời FD hoặc lập change limit hữu hạn phù hợp sau đánh giá capacity; xác minh process mới nhận đúng limit nếu restart được duyệt.",
         "verification": "Dưới tải đại diện, FD không tăng không kiểm soát, còn khoảng trống dưới limit, không EMFILE và API xử lý request đúng.",
@@ -4469,7 +4469,7 @@
           "output": "OSError: [Errno 24] Too many open files",
           "context": "guest",
           "purpose": "Đọc lỗi gần đây của service API.",
-          "meaning": "Errno24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
+          "meaning": "Errno 24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần xác nhận thông báo có phải lỗi file descriptor hay lỗi dung lượng/path."
@@ -4482,7 +4482,7 @@
           "output": "OSError: [Errno 24] Too many open files",
           "context": "guest",
           "purpose": "Đọc lỗi gần đây của service API.",
-          "meaning": "Errno24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
+          "meaning": "Errno 24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần xác nhận thông báo có phải lỗi file descriptor hay lỗi dung lượng/path."
@@ -4492,8 +4492,8 @@
           "command": "cat /proc/1234/limits",
           "output": "Limit                     Soft Limit           Hard Limit           Units\nMax open files            1024                 1024                 files",
           "context": "guest",
-          "purpose": "Đọc giới hạn tài nguyên của PID1234.",
-          "meaning": "Soft/hard open files đều1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
+          "purpose": "Đọc giới hạn tài nguyên của PID 1234.",
+          "meaning": "Soft/hard open files đều 1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Giới hạn thực của process mới dùng để so với số FD, không chỉ shell ulimit."
@@ -4503,8 +4503,8 @@
           "context": "guest",
           "command": "ls /proc/1234/fd | wc -l",
           "output": "1008",
-          "purpose": "Đếm entry FD hiện mở của PID1234.",
-          "meaning": "Đếm được1008 FD, gần1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
+          "purpose": "Đếm entry FD hiện mở của PID 1234.",
+          "meaning": "Đếm được 1008 FD, gần 1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "So mức sử dụng gần thời điểm lỗi với soft limit thực của process."
@@ -4515,7 +4515,7 @@
           "command": "systemctl show myapp -p LimitNOFILE",
           "output": "LimitNOFILE=1024",
           "purpose": "Đọc LimitNOFILE của unit myapp.",
-          "meaning": "Unit hiển thị1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
+          "meaning": "Unit hiển thị 1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
           "commandId": "systemctl-service",
           "aliases": [],
           "why": "Đối chiếu cấu hình systemd với giới hạn process trước khi lập change."
@@ -4572,10 +4572,10 @@
       "hints": [
         "Too many open files có thể nói về file descriptor, gồm cả socket, không chỉ file trên ổ đĩa.",
         "So Max open files của đúng PID với số entry trong /proc/PID/fd và thời điểm lỗi.",
-        "1008 gần giới hạn1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
+        "1008 gần giới hạn 1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
       ],
       "finalContext": {
-        "expectedDiagnosis": "myapp đã ghi EMFILE; PID1234 có limit1024 và hiện đếm1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
+        "expectedDiagnosis": "myapp đã ghi EMFILE; PID 1234 có limit 1024 và hiện đếm 1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
         "nextChecks": "Lấy trend FD theo traffic, phân loại socket/file và đối chiếu process/limit; kiểm tra drop-in/unit và tài nguyên liên quan.",
         "resolution": "Owner ứng dụng sửa vòng đời FD hoặc lập change limit hữu hạn phù hợp sau đánh giá capacity; xác minh process mới nhận đúng limit nếu restart được duyệt.",
         "verification": "Dưới tải đại diện, FD không tăng không kiểm soát, còn khoảng trống dưới limit, không EMFILE và API xử lý request đúng.",
@@ -4615,7 +4615,7 @@
           "output": "OSError: [Errno 24] Too many open files",
           "context": "guest",
           "purpose": "Đọc lỗi gần đây của service API.",
-          "meaning": "Errno24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
+          "meaning": "Errno 24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần xác nhận thông báo có phải lỗi file descriptor hay lỗi dung lượng/path."
@@ -4625,8 +4625,8 @@
           "command": "cat /proc/1234/limits",
           "output": "Limit                     Soft Limit           Hard Limit           Units\nMax open files            1024                 1024                 files",
           "context": "guest",
-          "purpose": "Đọc giới hạn tài nguyên của PID1234.",
-          "meaning": "Soft/hard open files đều1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
+          "purpose": "Đọc giới hạn tài nguyên của PID 1234.",
+          "meaning": "Soft/hard open files đều 1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Giới hạn thực của process mới dùng để so với số FD, không chỉ shell ulimit."
@@ -4636,8 +4636,8 @@
           "context": "guest",
           "command": "ls /proc/1234/fd | wc -l",
           "output": "1008",
-          "purpose": "Đếm entry FD hiện mở của PID1234.",
-          "meaning": "Đếm được1008 FD, gần1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
+          "purpose": "Đếm entry FD hiện mở của PID 1234.",
+          "meaning": "Đếm được 1008 FD, gần 1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "So mức sử dụng gần thời điểm lỗi với soft limit thực của process."
@@ -4648,7 +4648,7 @@
           "command": "systemctl show myapp -p LimitNOFILE",
           "output": "LimitNOFILE=1024",
           "purpose": "Đọc LimitNOFILE của unit myapp.",
-          "meaning": "Unit hiển thị1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
+          "meaning": "Unit hiển thị 1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
           "commandId": "systemctl-service",
           "aliases": [],
           "why": "Đối chiếu cấu hình systemd với giới hạn process trước khi lập change."
@@ -4661,7 +4661,7 @@
           "output": "OSError: [Errno 24] Too many open files",
           "context": "guest",
           "purpose": "Đọc lỗi gần đây của service API.",
-          "meaning": "Errno24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
+          "meaning": "Errno 24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần xác nhận thông báo có phải lỗi file descriptor hay lỗi dung lượng/path."
@@ -4671,8 +4671,8 @@
           "command": "cat /proc/1234/limits",
           "output": "Limit                     Soft Limit           Hard Limit           Units\nMax open files            1024                 1024                 files",
           "context": "guest",
-          "purpose": "Đọc giới hạn tài nguyên của PID1234.",
-          "meaning": "Soft/hard open files đều1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
+          "purpose": "Đọc giới hạn tài nguyên của PID 1234.",
+          "meaning": "Soft/hard open files đều 1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Giới hạn thực của process mới dùng để so với số FD, không chỉ shell ulimit."
@@ -4682,8 +4682,8 @@
           "context": "guest",
           "command": "ls /proc/1234/fd | wc -l",
           "output": "1008",
-          "purpose": "Đếm entry FD hiện mở của PID1234.",
-          "meaning": "Đếm được1008 FD, gần1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
+          "purpose": "Đếm entry FD hiện mở của PID 1234.",
+          "meaning": "Đếm được 1008 FD, gần 1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "So mức sử dụng gần thời điểm lỗi với soft limit thực của process."
@@ -4694,7 +4694,7 @@
           "command": "systemctl show myapp -p LimitNOFILE",
           "output": "LimitNOFILE=1024",
           "purpose": "Đọc LimitNOFILE của unit myapp.",
-          "meaning": "Unit hiển thị1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
+          "meaning": "Unit hiển thị 1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
           "commandId": "systemctl-service",
           "aliases": [],
           "why": "Đối chiếu cấu hình systemd với giới hạn process trước khi lập change."
@@ -4774,11 +4774,11 @@
           "source": "src/guided/commands.ts (id systemctl-service)"
         }
       ],
-      "prompt": "EMFILE, limit1024 và1008 FD hiện tại cho phép kết luận gì?",
+      "prompt": "EMFILE, limit 1024 và 1008 FD hiện tại cho phép kết luận gì?",
       "options": [
         {
           "id": "ignore",
-          "label": "FD chưa đủ1024 ở ảnh chụp nên log EMFILE chắc sai.",
+          "label": "FD chưa đủ 1024 ở ảnh chụp nên log EMFILE chắc sai.",
           "feedback": "Thời điểm log và lần đếm khác nhau; FD có thể đã đóng bớt."
         },
         {
@@ -4799,10 +4799,10 @@
       "hints": [
         "Too many open files có thể nói về file descriptor, gồm cả socket, không chỉ file trên ổ đĩa.",
         "So Max open files của đúng PID với số entry trong /proc/PID/fd và thời điểm lỗi.",
-        "1008 gần giới hạn1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
+        "1008 gần giới hạn 1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
       ],
       "finalContext": {
-        "expectedDiagnosis": "myapp đã ghi EMFILE; PID1234 có limit1024 và hiện đếm1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
+        "expectedDiagnosis": "myapp đã ghi EMFILE; PID 1234 có limit 1024 và hiện đếm 1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
         "nextChecks": "Lấy trend FD theo traffic, phân loại socket/file và đối chiếu process/limit; kiểm tra drop-in/unit và tài nguyên liên quan.",
         "resolution": "Owner ứng dụng sửa vòng đời FD hoặc lập change limit hữu hạn phù hợp sau đánh giá capacity; xác minh process mới nhận đúng limit nếu restart được duyệt.",
         "verification": "Dưới tải đại diện, FD không tăng không kiểm soát, còn khoảng trống dưới limit, không EMFILE và API xử lý request đúng.",
@@ -4842,7 +4842,7 @@
           "output": "OSError: [Errno 24] Too many open files",
           "context": "guest",
           "purpose": "Đọc lỗi gần đây của service API.",
-          "meaning": "Errno24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
+          "meaning": "Errno 24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần xác nhận thông báo có phải lỗi file descriptor hay lỗi dung lượng/path."
@@ -4852,8 +4852,8 @@
           "command": "cat /proc/1234/limits",
           "output": "Limit                     Soft Limit           Hard Limit           Units\nMax open files            1024                 1024                 files",
           "context": "guest",
-          "purpose": "Đọc giới hạn tài nguyên của PID1234.",
-          "meaning": "Soft/hard open files đều1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
+          "purpose": "Đọc giới hạn tài nguyên của PID 1234.",
+          "meaning": "Soft/hard open files đều 1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Giới hạn thực của process mới dùng để so với số FD, không chỉ shell ulimit."
@@ -4863,8 +4863,8 @@
           "context": "guest",
           "command": "ls /proc/1234/fd | wc -l",
           "output": "1008",
-          "purpose": "Đếm entry FD hiện mở của PID1234.",
-          "meaning": "Đếm được1008 FD, gần1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
+          "purpose": "Đếm entry FD hiện mở của PID 1234.",
+          "meaning": "Đếm được 1008 FD, gần 1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "So mức sử dụng gần thời điểm lỗi với soft limit thực của process."
@@ -4877,7 +4877,7 @@
           "output": "OSError: [Errno 24] Too many open files",
           "context": "guest",
           "purpose": "Đọc lỗi gần đây của service API.",
-          "meaning": "Errno24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
+          "meaning": "Errno 24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần xác nhận thông báo có phải lỗi file descriptor hay lỗi dung lượng/path."
@@ -4887,8 +4887,8 @@
           "command": "cat /proc/1234/limits",
           "output": "Limit                     Soft Limit           Hard Limit           Units\nMax open files            1024                 1024                 files",
           "context": "guest",
-          "purpose": "Đọc giới hạn tài nguyên của PID1234.",
-          "meaning": "Soft/hard open files đều1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
+          "purpose": "Đọc giới hạn tài nguyên của PID 1234.",
+          "meaning": "Soft/hard open files đều 1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Giới hạn thực của process mới dùng để so với số FD, không chỉ shell ulimit."
@@ -4898,8 +4898,8 @@
           "context": "guest",
           "command": "ls /proc/1234/fd | wc -l",
           "output": "1008",
-          "purpose": "Đếm entry FD hiện mở của PID1234.",
-          "meaning": "Đếm được1008 FD, gần1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
+          "purpose": "Đếm entry FD hiện mở của PID 1234.",
+          "meaning": "Đếm được 1008 FD, gần 1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "So mức sử dụng gần thời điểm lỗi với soft limit thực của process."
@@ -4910,7 +4910,7 @@
           "command": "systemctl show myapp -p LimitNOFILE",
           "output": "LimitNOFILE=1024",
           "purpose": "Đọc LimitNOFILE của unit myapp.",
-          "meaning": "Unit hiển thị1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
+          "meaning": "Unit hiển thị 1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
           "commandId": "systemctl-service",
           "aliases": [],
           "why": "Đối chiếu cấu hình systemd với giới hạn process trước khi lập change."
@@ -4975,12 +4975,12 @@
         },
         {
           "id": "p1",
-          "label": "Log myapp có OSError Errno24.",
+          "label": "Log myapp có OSError Errno 24.",
           "feedback": "Thông báo này là EMFILE của process."
         },
         {
           "id": "p2",
-          "label": "PID1234 có soft/hard Max open files1024.",
+          "label": "PID 1234 có soft/hard Max open files 1024.",
           "feedback": "Đúng các cột trong limits; cần giữ đúng PID."
         }
       ],
@@ -4992,10 +4992,10 @@
       "hints": [
         "Too many open files có thể nói về file descriptor, gồm cả socket, không chỉ file trên ổ đĩa.",
         "So Max open files của đúng PID với số entry trong /proc/PID/fd và thời điểm lỗi.",
-        "1008 gần giới hạn1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
+        "1008 gần giới hạn 1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
       ],
       "finalContext": {
-        "expectedDiagnosis": "myapp đã ghi EMFILE; PID1234 có limit1024 và hiện đếm1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
+        "expectedDiagnosis": "myapp đã ghi EMFILE; PID 1234 có limit 1024 và hiện đếm 1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
         "nextChecks": "Lấy trend FD theo traffic, phân loại socket/file và đối chiếu process/limit; kiểm tra drop-in/unit và tài nguyên liên quan.",
         "resolution": "Owner ứng dụng sửa vòng đời FD hoặc lập change limit hữu hạn phù hợp sau đánh giá capacity; xác minh process mới nhận đúng limit nếu restart được duyệt.",
         "verification": "Dưới tải đại diện, FD không tăng không kiểm soát, còn khoảng trống dưới limit, không EMFILE và API xử lý request đúng.",
@@ -5033,7 +5033,7 @@
           "output": "OSError: [Errno 24] Too many open files",
           "context": "guest",
           "purpose": "Đọc lỗi gần đây của service API.",
-          "meaning": "Errno24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
+          "meaning": "Errno 24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần xác nhận thông báo có phải lỗi file descriptor hay lỗi dung lượng/path."
@@ -5043,8 +5043,8 @@
           "command": "cat /proc/1234/limits",
           "output": "Limit                     Soft Limit           Hard Limit           Units\nMax open files            1024                 1024                 files",
           "context": "guest",
-          "purpose": "Đọc giới hạn tài nguyên của PID1234.",
-          "meaning": "Soft/hard open files đều1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
+          "purpose": "Đọc giới hạn tài nguyên của PID 1234.",
+          "meaning": "Soft/hard open files đều 1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Giới hạn thực của process mới dùng để so với số FD, không chỉ shell ulimit."
@@ -5054,8 +5054,8 @@
           "context": "guest",
           "command": "ls /proc/1234/fd | wc -l",
           "output": "1008",
-          "purpose": "Đếm entry FD hiện mở của PID1234.",
-          "meaning": "Đếm được1008 FD, gần1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
+          "purpose": "Đếm entry FD hiện mở của PID 1234.",
+          "meaning": "Đếm được 1008 FD, gần 1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "So mức sử dụng gần thời điểm lỗi với soft limit thực của process."
@@ -5066,7 +5066,7 @@
           "command": "systemctl show myapp -p LimitNOFILE",
           "output": "LimitNOFILE=1024",
           "purpose": "Đọc LimitNOFILE của unit myapp.",
-          "meaning": "Unit hiển thị1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
+          "meaning": "Unit hiển thị 1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
           "commandId": "systemctl-service",
           "aliases": [],
           "why": "Đối chiếu cấu hình systemd với giới hạn process trước khi lập change."
@@ -5077,7 +5077,7 @@
       "options": [
         {
           "id": "close",
-          "label": "Đóng ticket vì lần đếm hiện tại còn thấp hơn1024.",
+          "label": "Đóng ticket vì lần đếm hiện tại còn thấp hơn 1024.",
           "feedback": "Lỗi ngắt quãng cần đo dưới tải tương đương, không chỉ một ảnh chụp."
         },
         {
@@ -5098,10 +5098,10 @@
       "hints": [
         "Too many open files có thể nói về file descriptor, gồm cả socket, không chỉ file trên ổ đĩa.",
         "So Max open files của đúng PID với số entry trong /proc/PID/fd và thời điểm lỗi.",
-        "1008 gần giới hạn1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
+        "1008 gần giới hạn 1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
       ],
       "finalContext": {
-        "expectedDiagnosis": "myapp đã ghi EMFILE; PID1234 có limit1024 và hiện đếm1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
+        "expectedDiagnosis": "myapp đã ghi EMFILE; PID 1234 có limit 1024 và hiện đếm 1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
         "nextChecks": "Lấy trend FD theo traffic, phân loại socket/file và đối chiếu process/limit; kiểm tra drop-in/unit và tài nguyên liên quan.",
         "resolution": "Owner ứng dụng sửa vòng đời FD hoặc lập change limit hữu hạn phù hợp sau đánh giá capacity; xác minh process mới nhận đúng limit nếu restart được duyệt.",
         "verification": "Dưới tải đại diện, FD không tăng không kiểm soát, còn khoảng trống dưới limit, không EMFILE và API xử lý request đúng.",
@@ -5137,7 +5137,7 @@
           "output": "OSError: [Errno 24] Too many open files",
           "context": "guest",
           "purpose": "Đọc lỗi gần đây của service API.",
-          "meaning": "Errno24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
+          "meaning": "Errno 24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
           "commandId": "journalctl-service",
           "aliases": [],
           "why": "Cần xác nhận thông báo có phải lỗi file descriptor hay lỗi dung lượng/path."
@@ -5147,8 +5147,8 @@
           "command": "cat /proc/1234/limits",
           "output": "Limit                     Soft Limit           Hard Limit           Units\nMax open files            1024                 1024                 files",
           "context": "guest",
-          "purpose": "Đọc giới hạn tài nguyên của PID1234.",
-          "meaning": "Soft/hard open files đều1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
+          "purpose": "Đọc giới hạn tài nguyên của PID 1234.",
+          "meaning": "Soft/hard open files đều 1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "Giới hạn thực của process mới dùng để so với số FD, không chỉ shell ulimit."
@@ -5158,8 +5158,8 @@
           "context": "guest",
           "command": "ls /proc/1234/fd | wc -l",
           "output": "1008",
-          "purpose": "Đếm entry FD hiện mở của PID1234.",
-          "meaning": "Đếm được1008 FD, gần1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
+          "purpose": "Đếm entry FD hiện mở của PID 1234.",
+          "meaning": "Đếm được 1008 FD, gần 1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
           "commandId": "ps-process",
           "aliases": [],
           "why": "So mức sử dụng gần thời điểm lỗi với soft limit thực của process."
@@ -5170,7 +5170,7 @@
           "command": "systemctl show myapp -p LimitNOFILE",
           "output": "LimitNOFILE=1024",
           "purpose": "Đọc LimitNOFILE của unit myapp.",
-          "meaning": "Unit hiển thị1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
+          "meaning": "Unit hiển thị 1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
           "commandId": "systemctl-service",
           "aliases": [],
           "why": "Đối chiếu cấu hình systemd với giới hạn process trước khi lập change."
@@ -5204,10 +5204,10 @@
       "hints": [
         "Too many open files có thể nói về file descriptor, gồm cả socket, không chỉ file trên ổ đĩa.",
         "So Max open files của đúng PID với số entry trong /proc/PID/fd và thời điểm lỗi.",
-        "1008 gần giới hạn1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
+        "1008 gần giới hạn 1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
       ],
       "finalContext": {
-        "expectedDiagnosis": "myapp đã ghi EMFILE; PID1234 có limit1024 và hiện đếm1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
+        "expectedDiagnosis": "myapp đã ghi EMFILE; PID 1234 có limit 1024 và hiện đếm 1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
         "nextChecks": "Lấy trend FD theo traffic, phân loại socket/file và đối chiếu process/limit; kiểm tra drop-in/unit và tài nguyên liên quan.",
         "resolution": "Owner ứng dụng sửa vòng đời FD hoặc lập change limit hữu hạn phù hợp sau đánh giá capacity; xác minh process mới nhận đúng limit nếu restart được duyệt.",
         "verification": "Dưới tải đại diện, FD không tăng không kiểm soát, còn khoảng trống dưới limit, không EMFILE và API xử lý request đúng.",

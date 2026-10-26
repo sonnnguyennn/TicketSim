@@ -6,6 +6,6 @@
   "optionFeedback": {
     "cause": "Chưa biết backend hoặc upstream target.",
     "symptom": "Đã nhận response ở lớp HTTP.",
-    "other": "Khách đã nhận502, khác client refused."
+    "other": "Khách đã nhận 502, khác client refused."
   }
 }

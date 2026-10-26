@@ -3622,7 +3622,7 @@
         "resolution": "Network và security review điều kiện kích hoạt, bảo vệ và gỡ chặn theo policy; không bypass trong guest.",
         "verification": "Route được khôi phục theo phê duyệt, client từ nhiều nguồn tới được dịch vụ và monitoring ổn định.",
         "escalation": "Chuyển đội network và security có quyền provider, theo dõi incident đến khi có kết quả xác minh.",
-        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm mitigation is cleared and allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm the approved mitigation state and that allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:314",
@@ -3794,7 +3794,7 @@
         "resolution": "Network và security review điều kiện kích hoạt, bảo vệ và gỡ chặn theo policy; không bypass trong guest.",
         "verification": "Route được khôi phục theo phê duyệt, client từ nhiều nguồn tới được dịch vụ và monitoring ổn định.",
         "escalation": "Chuyển đội network và security có quyền provider, theo dõi incident đến khi có kết quả xác minh.",
-        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm mitigation is cleared and allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm the approved mitigation state and that allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:314",
@@ -3971,7 +3971,7 @@
         "resolution": "Network và security review điều kiện kích hoạt, bảo vệ và gỡ chặn theo policy; không bypass trong guest.",
         "verification": "Route được khôi phục theo phê duyệt, client từ nhiều nguồn tới được dịch vụ và monitoring ổn định.",
         "escalation": "Chuyển đội network và security có quyền provider, theo dõi incident đến khi có kết quả xác minh.",
-        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm mitigation is cleared and allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm the approved mitigation state and that allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:314",
@@ -4147,7 +4147,7 @@
         "resolution": "Network và security review điều kiện kích hoạt, bảo vệ và gỡ chặn theo policy; không bypass trong guest.",
         "verification": "Route được khôi phục theo phê duyệt, client từ nhiều nguồn tới được dịch vụ và monitoring ổn định.",
         "escalation": "Chuyển đội network và security có quyền provider, theo dõi incident đến khi có kết quả xác minh.",
-        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm mitigation is cleared and allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm the approved mitigation state and that allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:314",
@@ -4251,7 +4251,7 @@
         "resolution": "Network và security review điều kiện kích hoạt, bảo vệ và gỡ chặn theo policy; không bypass trong guest.",
         "verification": "Route được khôi phục theo phê duyệt, client từ nhiều nguồn tới được dịch vụ và monitoring ổn định.",
         "escalation": "Chuyển đội network và security có quyền provider, theo dõi incident đến khi có kết quả xác minh.",
-        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm mitigation is cleared and allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm the approved mitigation state and that allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:314",
@@ -4357,7 +4357,7 @@
         "resolution": "Network và security review điều kiện kích hoạt, bảo vệ và gỡ chặn theo policy; không bypass trong guest.",
         "verification": "Route được khôi phục theo phê duyệt, client từ nhiều nguồn tới được dịch vụ và monitoring ổn định.",
         "escalation": "Chuyển đội network và security có quyền provider, theo dõi incident đến khi có kết quả xác minh.",
-        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm mitigation is cleared and allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Provider DDoS mitigation affects the service.\nFindings: The panel recorded mitigation and an upstream null route for the destination IP.\nNext Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.\nVerification: Confirm the approved mitigation state and that allowed traffic reaches the service.\nStatus: Network escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:314",
@@ -4384,7 +4384,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
           "context": "guest",
           "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -4487,7 +4487,7 @@
       "relatedProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
           "context": "guest",
           "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -4511,7 +4511,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
           "context": "guest",
           "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -4597,7 +4597,7 @@
         },
         {
           "id": "direct",
-          "label": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "label": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "feedback": "Đọc sự kiện Accepted trong cửa sổ 09:00–09:30 UTC ngày 22/10/2026."
         },
         {
@@ -4637,8 +4637,8 @@
       "findings": [
         {
           "label": "EDIT_DISTRACTORS",
-          "reason": "Đáp án đúng dài trung bình 86 ký tự, phương án sai 12; độ dài có thể lộ key.",
-          "evidence": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "reason": "Đáp án đúng dài trung bình 92 ký tự, phương án sai 12; độ dài có thể lộ key.",
+          "evidence": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "source": "scripts/content/phase-b-06-10.mjs:158"
         }
       ],
@@ -4661,7 +4661,7 @@
       "relatedProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
           "context": "guest",
           "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -4707,7 +4707,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
           "context": "guest",
           "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -4892,7 +4892,7 @@
       "relatedProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
           "context": "guest",
           "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -4916,7 +4916,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
           "context": "guest",
           "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -5078,7 +5078,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
           "context": "guest",
           "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -5182,7 +5182,7 @@
       "allTicketProbes": [
         {
           "id": "P1",
-          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+          "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
           "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
           "context": "guest",
           "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -5365,7 +5365,7 @@
         "resolution": "Security xác định nguồn và containment hoặc recovery theo incident runbook; không xóa binary trước khi giữ bằng chứng.",
         "verification": "Scheduler và binary được giải thích hoặc xử lý theo kế hoạch, monitoring không thấy process xuất hiện lại và integrity được đánh giá.",
         "escalation": "Chuyển security incident response cùng binary, thời gian, hash và quyền root liên quan.",
-        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After authorized recovery, verify task removal and host integrity.\nStatus: Security escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After the authorized disposition, verify the task and script state and assess host integrity.\nStatus: Security escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:323",
@@ -5504,7 +5504,7 @@
         "resolution": "Security xác định nguồn và containment hoặc recovery theo incident runbook; không xóa binary trước khi giữ bằng chứng.",
         "verification": "Scheduler và binary được giải thích hoặc xử lý theo kế hoạch, monitoring không thấy process xuất hiện lại và integrity được đánh giá.",
         "escalation": "Chuyển security incident response cùng binary, thời gian, hash và quyền root liên quan.",
-        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After authorized recovery, verify task removal and host integrity.\nStatus: Security escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After the authorized disposition, verify the task and script state and assess host integrity.\nStatus: Security escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:323",
@@ -5749,7 +5749,7 @@
         "resolution": "Security xác định nguồn và containment hoặc recovery theo incident runbook; không xóa binary trước khi giữ bằng chứng.",
         "verification": "Scheduler và binary được giải thích hoặc xử lý theo kế hoạch, monitoring không thấy process xuất hiện lại và integrity được đánh giá.",
         "escalation": "Chuyển security incident response cùng binary, thời gian, hash và quyền root liên quan.",
-        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After authorized recovery, verify task removal and host integrity.\nStatus: Security escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After the authorized disposition, verify the task and script state and assess host integrity.\nStatus: Security escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:323",
@@ -5895,7 +5895,7 @@
       "options": [
         {
           "id": "p2",
-          "label": "Binary có hash SHA256 được ghi nhận.",
+          "label": "Binary có hash SHA-256 được ghi nhận.",
           "feedback": "Cần so với baseline, đường dẫn và version tin cậy."
         },
         {
@@ -5925,7 +5925,7 @@
         "resolution": "Security xác định nguồn và containment hoặc recovery theo incident runbook; không xóa binary trước khi giữ bằng chứng.",
         "verification": "Scheduler và binary được giải thích hoặc xử lý theo kế hoạch, monitoring không thấy process xuất hiện lại và integrity được đánh giá.",
         "escalation": "Chuyển security incident response cùng binary, thời gian, hash và quyền root liên quan.",
-        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After authorized recovery, verify task removal and host integrity.\nStatus: Security escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After the authorized disposition, verify the task and script state and assess host integrity.\nStatus: Security escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:323",
@@ -6029,7 +6029,7 @@
         "resolution": "Security xác định nguồn và containment hoặc recovery theo incident runbook; không xóa binary trước khi giữ bằng chứng.",
         "verification": "Scheduler và binary được giải thích hoặc xử lý theo kế hoạch, monitoring không thấy process xuất hiện lại và integrity được đánh giá.",
         "escalation": "Chuyển security incident response cùng binary, thời gian, hash và quyền root liên quan.",
-        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After authorized recovery, verify task removal and host integrity.\nStatus: Security escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After the authorized disposition, verify the task and script state and assess host integrity.\nStatus: Security escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:323",
@@ -6135,7 +6135,7 @@
         "resolution": "Security xác định nguồn và containment hoặc recovery theo incident runbook; không xóa binary trước khi giữ bằng chứng.",
         "verification": "Scheduler và binary được giải thích hoặc xử lý theo kế hoạch, monitoring không thấy process xuất hiện lại và integrity được đánh giá.",
         "escalation": "Chuyển security incident response cùng binary, thời gian, hash và quyền root liên quan.",
-        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After authorized recovery, verify task removal and host integrity.\nStatus: Security escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Unknown root cron job and changed script hash.\nFindings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.\nNext Action: Preserve the task and script for forensic review; coordinate containment with the security team.\nVerification: After the authorized disposition, verify the task and script state and assess host integrity.\nStatus: Security escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:323",

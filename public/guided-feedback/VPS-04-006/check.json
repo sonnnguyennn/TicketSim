@@ -5,7 +5,7 @@
   "explanation": "ps cho ảnh chụp theo PID, đơn vị RSS là KiB; chuỗi mẫu cần thu riêng.",
   "commandId": "ps-process",
   "optionFeedback": {
-    "wrong1": "RAM available của guest không cho RSS và elapsed của đúng PID1200.",
+    "wrong1": "RAM available của guest không cho RSS và elapsed của đúng PID 1200.",
     "wrong2": "Trạng thái unit không cho số RSS KiB và tuổi process.",
     "direct": "Lấy các trường đúng process để so với lịch sử."
   }

@@ -6,6 +6,6 @@
   "optionFeedback": {
     "safe": "Giữ access control và tránh mở directory listing rộng.",
     "unsafe": "Có thể lộ file và không đáp ứng ý định ứng dụng.",
-    "close": "Khách cần trang hợp lệ, không phải403."
+    "close": "Khách cần trang hợp lệ, không phải 403."
   }
 }

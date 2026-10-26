@@ -4,8 +4,8 @@
   ],
   "explanation": "Khách vừa muốn reinstall vừa cần bảo vệ dữ liệu; hai nhu cầu phải được thống nhất rõ.",
   "optionFeedback": {
-    "other": "ReinstallOS có thể ghi đè disk, không phải chỉ đổi công cụ quản lý package.",
-    "cause": "TênOS không phải sự chấp thuận có hiểu biết về phạm vi dữ liệu mất.",
+    "other": "Reinstall OS có thể ghi đè disk, không phải chỉ đổi công cụ quản lý package.",
+    "cause": "Tên OS không phải sự chấp thuận có hiểu biết về phạm vi dữ liệu mất.",
     "symptom": "Cần làm rõ dữ liệu và phương án migration/backup trước reinstall."
   }
 }

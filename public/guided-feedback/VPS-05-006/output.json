@@ -7,6 +7,6 @@
   "optionFeedback": {
     "over": "Có thể làm mất công việc/dữ liệu và ảnh hưởng service khác.",
     "ignore": "Tên file mất nhưng handle mở vẫn có thể giữ storage của file.",
-    "supported": "nlink0 cùng process/FD cho thấy file đã unlink nhưng vẫn được giữ."
+    "supported": "nlink 0 cùng process/FD cho thấy file đã unlink nhưng vẫn được giữ."
   }
 }

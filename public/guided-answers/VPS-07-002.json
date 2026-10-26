@@ -4,7 +4,7 @@
   "resolution_guidance": "Owner/admin chọn index hoặc route đúng, sửa có phép và giữ access control; không bật autoindex chỉ để thử.",
   "verification": "URL mong muốn trả nội dung đúng và không lộ listing hoặc file cần riêng tư.",
   "escalate_when": "Chuyển site owner/admin nếu access bị từ chối có chủ đích hoặc cấu hình route không rõ.",
-  "production_warning": "Không chmod777 hoặc mở listing toàn site để hết403; hết mã lỗi chưa đồng nghĩa đúng quyền.",
+  "production_warning": "Không chmod 777 hoặc mở listing toàn site để hết 403; hết mã lỗi chưa đồng nghĩa đúng quyền.",
   "scoring_rubric": {
     "symptom_identification": 2,
     "evidence_reasoning": 3,

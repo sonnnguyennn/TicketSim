@@ -1,8 +1,8 @@
 {
   "expected_diagnosis": "Nginx active nhưng upstream 127.0.0.1:3000 refused. Chưa phân biệt backend dừng với target sai.",
-  "recommended_next_checks": "Đọc listener3000, backend unit/log và proxy_pass cùng thời điểm request.",
+  "recommended_next_checks": "Đọc listener 3000, backend unit/log và proxy_pass cùng thời điểm request.",
   "resolution_guidance": "Owner/admin sửa đúng backend hoặc target theo change; start chỉ sau kiểm tra và quyền.",
-  "verification": "Backend health và URL công khai trả nội dung đúng, không còn502 trong cửa sổ kiểm tra.",
+  "verification": "Backend health và URL công khai trả nội dung đúng, không còn 502 trong cửa sổ kiểm tra.",
   "escalate_when": "Chuyển app/backend owner nếu ngoài quyền hoặc dependency bên thứ ba.",
   "production_warning": "Không restart proxy liên tục để che lỗi backend chưa được xác định.",
   "scoring_rubric": {

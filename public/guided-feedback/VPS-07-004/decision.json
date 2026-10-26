@@ -4,7 +4,7 @@
   ],
   "explanation": "Tìm listener/log backend và target rồi sửa đúng lớp có quyền.",
   "optionFeedback": {
-    "close": "Khách vẫn nhận502.",
+    "close": "Khách vẫn nhận 502.",
     "safe": "Owner duyệt sửa đúng backend/config rồi thử cả health và public URL.",
     "unsafe": "Có thể không tác động backend bị refused."
   }

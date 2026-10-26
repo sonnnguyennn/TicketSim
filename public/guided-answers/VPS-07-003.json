@@ -1,7 +1,7 @@
 {
   "expected_diagnosis": "URL /start trả 404, file có ở /srv/myapp/public còn config disk dùng /var/www/html. Nghi root/vhost không khớp release; cần xác nhận config runtime.",
   "recommended_next_checks": "So Host/server_name, root/location/rewrite, config đang load và quyền đọc release.",
-  "resolution_guidance": "Owner/admin sửa đúng server block, nginx-t và reload có duyệt/rollback; không xóa root để thử.",
+  "resolution_guidance": "Owner/admin sửa đúng server block, nginx -t và reload có duyệt/rollback; không xóa root để thử.",
   "verification": "URL khách qua đúng hostname trả nội dung release mong muốn.",
   "escalate_when": "Chuyển site/app owner nếu router, nhiều vhost hoặc config runtime chưa rõ.",
   "production_warning": "Không xóa document root hay reinstall khi chưa biết dữ liệu/site đang sử dụng.",

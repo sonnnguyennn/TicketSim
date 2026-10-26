@@ -1,5 +1,5 @@
 {
-  "expected_diagnosis": "myapp đã ghi EMFILE; PID1234 có limit1024 và hiện đếm1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
+  "expected_diagnosis": "myapp đã ghi EMFILE; PID 1234 có limit 1024 và hiện đếm 1008 FD. Gần giới hạn nhưng chưa chứng minh leak hay mức tải hợp lệ.",
   "recommended_next_checks": "Lấy trend FD theo traffic, phân loại socket/file và đối chiếu process/limit; kiểm tra drop-in/unit và tài nguyên liên quan.",
   "resolution_guidance": "Owner ứng dụng sửa vòng đời FD hoặc lập change limit hữu hạn phù hợp sau đánh giá capacity; xác minh process mới nhận đúng limit nếu restart được duyệt.",
   "verification": "Dưới tải đại diện, FD không tăng không kiểm soát, còn khoảng trống dưới limit, không EMFILE và API xử lý request đúng.",

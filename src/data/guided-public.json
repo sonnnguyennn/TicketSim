@@ -1387,7 +1387,7 @@
         "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
         "context": "guest",
         "purpose": "Đọc block space của filesystem chứa /.",
-        "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+        "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
         "commandId": "df-h",
         "aliases": [],
         "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -1398,7 +1398,7 @@
         "output": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
         "context": "guest",
         "purpose": "Đo dung lượng các thư mục ngay dưới /var trong cùng filesystem.",
-        "meaning": "/var/log chiếm13G và /var tổng14G. Dung lượng không cho biết file nào được phép xóa.",
+        "meaning": "/var/log chiếm 13G và /var tổng 14G. Dung lượng không cho biết file nào được phép xóa.",
         "commandId": "du-var",
         "aliases": [
           "sudo du -xhd1 /var"
@@ -1411,7 +1411,7 @@
         "command": "df -i /",
         "output": "Filesystem      Inodes  IUsed  IFree IUse% Mounted on\n/dev/vda1      1310720 550502 760218   42% /",
         "purpose": "Đọc mức sử dụng inode của /.",
-        "meaning": "Inode dùng42%, chưa đầy trong mẫu, trong khi block đã đầy.",
+        "meaning": "Inode dùng 42%, chưa đầy trong mẫu, trong khi block đã đầy.",
         "commandId": "df-i",
         "aliases": [],
         "why": "Hết inode cũng gây không tạo file; cần phân biệt với hết block."
@@ -1422,7 +1422,7 @@
         "command": "journalctl --disk-usage",
         "output": "Archived and active journals take up 1.2G in the file system.",
         "purpose": "Đọc dung lượng active và archived systemd journal.",
-        "meaning": "Journal chiếm1.2G, chỉ một phần trong13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
+        "meaning": "Journal chiếm 1.2G, chỉ một phần trong 13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
         "commandId": "journal-disk-usage",
         "aliases": [],
         "why": "Cần biết bao nhiêu phần /var/log thực sự là journal trước đề xuất vacuum."
@@ -1471,7 +1471,7 @@
           },
           {
             "id": "login",
-            "label": "Kết nối SSH bị từ chối ở cổng22."
+            "label": "Kết nối SSH bị từ chối ở cổng 22."
           }
         ],
         "skill": "triage"
@@ -1502,7 +1502,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Avail0 và Use%100 trên / xác nhận điều gì?",
+        "prompt": "Avail 0 và Use%100 trên / xác nhận điều gì?",
         "options": [
           {
             "id": "inode",
@@ -1535,15 +1535,15 @@
           },
           {
             "id": "inode",
-            "label": "Inode của / đang100%."
+            "label": "Inode của / đang 100%."
           },
           {
             "id": "full",
-            "label": "Block space của / đang100%."
+            "label": "Block space của / đang 100%."
           },
           {
             "id": "logs",
-            "label": "/var/log chiếm13G."
+            "label": "/var/log chiếm 13G."
           }
         ],
         "requiredProbeIds": [
@@ -1773,7 +1773,7 @@
         "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G 9.0G   11G  45% /",
         "context": "guest",
         "purpose": "Đọc dung lượng block của filesystem gốc.",
-        "meaning": "Block dùng45% và còn11G trong mẫu. Điều này chưa chứng minh còn inode.",
+        "meaning": "Block dùng 45% và còn 11G trong mẫu. Điều này chưa chứng minh còn inode.",
         "commandId": "df-h",
         "aliases": [],
         "why": "Khách còn GB nhưng không tạo file; cần xác nhận block chưa cạn."
@@ -1784,7 +1784,7 @@
         "output": "Filesystem      Inodes   IUsed IFree IUse% Mounted on\n/dev/vda1      1048576 1048576     0  100% /",
         "context": "guest",
         "purpose": "Đọc số inode dùng và còn trống của /.",
-        "meaning": "Inode dùng100%, IFree0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
+        "meaning": "Inode dùng 100%, IFree 0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
         "commandId": "df-i",
         "aliases": [],
         "why": "Tạo file cần metadata/inode, không chỉ GB trống."
@@ -1795,7 +1795,7 @@
         "command": "find /var -xdev -type f | wc -l",
         "output": "850000",
         "purpose": "Đếm file thường dưới /var trong cùng filesystem.",
-        "meaning": "Đếm850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
+        "meaning": "Đếm 850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
         "commandId": "find-files",
         "aliases": [],
         "why": "Tìm phạm vi có thể chứa nhiều file nhỏ mà chưa xóa dữ liệu."
@@ -1806,7 +1806,7 @@
         "command": "du -xhd1 /var",
         "output": "1.1G /var",
         "purpose": "Đo dung lượng /var và các thư mục con trong cùng filesystem.",
-        "meaning": "/var khoảng1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
+        "meaning": "/var khoảng 1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
         "commandId": "du-var",
         "aliases": [],
         "why": "So lượng GB với số file để tránh chỉ tìm file lớn."
@@ -1860,7 +1860,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "IFree0 và IUse%100 nghĩa là tài nguyên nào đã hết?",
+        "prompt": "IFree 0 và IUse%100 nghĩa là tài nguyên nào đã hết?",
         "options": [
           {
             "id": "blocks",
@@ -1968,7 +1968,7 @@
         "output": "State Recv-Q Send-Q Local Address:Port Peer Address:Port Process\nLISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((\"sshd\",pid=730,fd=3))",
         "context": "guest",
         "purpose": "Liệt kê listener TCP trong guest.",
-        "meaning": "Danh sách không có:80; cổng22 hiện diện không chứng minh HTTP hoạt động.",
+        "meaning": "Danh sách không có:80; cổng 22 hiện diện không chứng minh HTTP hoạt động.",
         "commandId": "ss-ltnp",
         "aliases": [],
         "why": "Cần xem cổng 80 có thực sự được process nào mở không."
@@ -2003,7 +2003,7 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Connection refused khác HTTP403 ở điểm nào?",
+        "prompt": "Connection refused khác HTTP 403 ở điểm nào?",
         "options": [
           {
             "id": "dns",
@@ -5047,7 +5047,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "uploads 755 root:root và webapp UID1001 cho thấy hạn chế nào?",
+        "prompt": "uploads 755 root:root và webapp UID 1001 cho thấy hạn chế nào?",
         "options": [
           {
             "id": "ignore",
@@ -5085,7 +5085,7 @@
           },
           {
             "id": "p2",
-            "label": "Account webapp có UID/GID1001."
+            "label": "Account webapp có UID/GID 1001."
           }
         ],
         "requiredProbeIds": [
@@ -5672,7 +5672,7 @@
         "output": "top - 08:00:00 up 1 day,  2:00,  1 user,  load average: 1.20, 0.80, 0.50\nTasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie\n%Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st\nMiB Mem : 2048.0 total, 800.0 free, 900.0 used, 348.0 buff/cache\nMiB Swap: 0.0 total, 0.0 free, 0.0 used. 1000.0 avail Mem\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n 2601 app       20   0  210000  80000  10000 R  97.4   3.8  20:00.00 python3",
         "context": "guest",
         "purpose": "Lấy ảnh chụp CPU và process bằng top.",
-        "meaning": "us98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
+        "meaning": "us 98.5% cho thấy CPU user rất cao trong mẫu; chưa xác định script hoặc ý định của workload.",
         "commandId": "top",
         "aliases": [],
         "why": "Khách chậm đúng lúc script chạy nên cần phân biệt CPU user với chờ I/O hay steal."
@@ -5683,7 +5683,7 @@
         "output": "  PID COMMAND         %CPU\n 2601 python3         97.4\n    1 systemd          0.1",
         "context": "guest",
         "purpose": "Liệt kê process theo tỷ lệ CPU của ps.",
-        "meaning": "PID2601 python3 có %CPU97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
+        "meaning": "PID 2601 python3 có %CPU 97.4 theo CPU time/elapsed lifetime. Cần lấy mẫu theo thời gian, không coi đây là đúng khoảng đo tức thời của top.",
         "commandId": "ps-cpu",
         "aliases": [],
         "why": "Tìm PID ứng viên để đối chiếu script định kỳ và owner."
@@ -5749,7 +5749,7 @@
           },
           {
             "id": "supported",
-            "label": "Kiểm tra workload của python3 PID2601."
+            "label": "Kiểm tra workload của python3 PID 2601."
           }
         ],
         "requiredProbeIds": [
@@ -5767,7 +5767,7 @@
         "options": [
           {
             "id": "p2",
-            "label": "ps liệt kê PID2601 python3 ở %CPU97.4."
+            "label": "ps liệt kê PID 2601 python3 ở %CPU 97.4."
           },
           {
             "id": "over",
@@ -5775,7 +5775,7 @@
           },
           {
             "id": "p1",
-            "label": "Mẫu top có us98.5%."
+            "label": "Mẫu top có us 98.5%."
           }
         ],
         "requiredProbeIds": [
@@ -5801,7 +5801,7 @@
           },
           {
             "id": "unsafe",
-            "label": "Kill PID2601 khi chưa biết nhiệm vụ."
+            "label": "Kill PID 2601 khi chưa biết nhiệm vụ."
           }
         ],
         "skill": "cpu-process"
@@ -5828,7 +5828,7 @@
         "output": "               total        used        free      shared  buff/cache   available\nMem:           1.0Gi       944Mi        20Mi         2Mi        60Mi        40Mi\nSwap:          512Mi       490Mi        22Mi",
         "context": "guest",
         "purpose": "Đọc bộ nhớ available và dung lượng swap.",
-        "meaning": "Còn40Mi available và swap dùng490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
+        "meaning": "Còn 40 MiB available và swap dùng 490/512Mi. Mẫu này chưa chỉ ra process gây áp lực.",
         "commandId": "free-h",
         "aliases": [],
         "why": "CPU thấp không loại trừ chờ do bộ nhớ; cần xem còn RAM có thể cấp không."
@@ -5839,7 +5839,7 @@
         "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b   swpd  free buff cache  si  so bi bo in cs us sy id wa st\n 1  1 501760 20480 1024 60416   4   5  4  5 50 80 10 5 70 15 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0\n 1  2 501760 20480 1024 60416 280 310 40 50 80 90 10 5 40 45 0",
         "context": "guest",
         "purpose": "Lấy ba báo cáo vmstat cách một giây.",
-        "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si280/so310, cho thấy swap đang hoạt động trong khoảng đo.",
+        "meaning": "Dòng đầu trung bình từ boot; hai dòng sau có si 280/so 310, cho thấy swap đang hoạt động trong khoảng đo.",
         "commandId": "vmstat",
         "aliases": [],
         "why": "Phân biệt swap lưu từ trước với việc đang swap in/out trong lúc chậm."
@@ -5893,7 +5893,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Available40Mi và si/so tiếp tục tăng hoạt động gợi điều gì?",
+        "prompt": "Available 40 MiB và si/so tiếp tục tăng hoạt động gợi điều gì?",
         "options": [
           {
             "id": "ignore",
@@ -5927,11 +5927,11 @@
           },
           {
             "id": "p1",
-            "label": "Available còn40Mi; swap dùng490Mi/512Mi."
+            "label": "Available còn 40 MiB; swap dùng 490 MiB/512Mi."
           },
           {
             "id": "p2",
-            "label": "Các dòng interval có si280 và so310."
+            "label": "Các dòng interval có si 280 và so 310."
           }
         ],
         "requiredProbeIds": [
@@ -5984,7 +5984,7 @@
         "output": "Out of memory: Killed process 2525 (java)",
         "context": "guest",
         "purpose": "Tìm dòng kernel ghi process bị kill trong boot hiện tại.",
-        "meaning": "Kernel ghi kill java PID2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
+        "meaning": "Kernel ghi kill java PID 2525 do thiếu bộ nhớ. Cần so timestamp với lần khách thấy ứng dụng kết thúc.",
         "commandId": "journal-boot",
         "aliases": [],
         "why": "Ứng dụng biến mất không có lỗi UI có thể liên quan OOM killer."
@@ -6006,7 +6006,7 @@
         "command": "free -h",
         "output": "               total        used        free      shared  buff/cache   available\nMem:           2.0Gi       1.8Gi        40Mi         4Mi       160Mi        80Mi\nSwap:          1.0Gi       920Mi       104Mi",
         "purpose": "Đọc bộ nhớ hiện tại sau sự kiện.",
-        "meaning": "Available80Mi và swap920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
+        "meaning": "Available 80Mi và swap 920Mi/1Gi trong ảnh chụp. Không thể dùng số sau sự kiện để suy chính xác peak lúc kill.",
         "commandId": "free-h",
         "aliases": [],
         "why": "Kiểm tra VPS còn áp lực RAM không và bổ sung context cho điều tra capacity."
@@ -6094,7 +6094,7 @@
           },
           {
             "id": "p1",
-            "label": "Kernel ghi OOM kill java PID2525."
+            "label": "Kernel ghi OOM kill java PID 2525."
           },
           {
             "id": "p2",
@@ -6151,7 +6151,7 @@
         "output": "procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----\n r  b swpd free buff cache si so bi bo in cs us sy id wa st\n 1  2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0\n 1  8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4 15 76 0",
         "context": "guest",
         "purpose": "Lấy các báo cáo CPU/memory/I/O cách một giây.",
-        "meaning": "Hai dòng interval có wa76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
+        "meaning": "Hai dòng interval có wa = 76%; dòng đầu là trung bình từ boot. I/O wait không tự định danh process hay thiết bị gây ra.",
         "commandId": "vmstat",
         "aliases": [],
         "why": "Cần phân biệt CPU user thấp với task đang chờ I/O."
@@ -6162,7 +6162,7 @@
         "output": "avg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   20.00   0.00 71.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 20.00 2560.00 0.00 0.00 20.00 128.00 10.00 1280.00 0.00 0.00 20.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 1.00 20.00 0.62 45.00\n\navg-cpu:  %user %nice %system %iowait %steal %idle\n           5.00  0.00    4.00   76.00   0.00 15.00\nDevice r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s wkB/s wrqm/s %wrqm w_await wareq-sz d/s dkB/s drqm/s %drqm d_await dareq-sz f/s f_await aqu-sz %util\nvda 80.00 10240.00 0.00 0.00 180.00 128.00 20.00 2560.00 0.00 0.00 180.00 128.00 0.00 0.00 0.00 0.00 0.00 0.00 5.00 180.00 18.90 99.00",
         "context": "guest",
         "purpose": "Đọc thống kê I/O mở rộng của thiết bị vda.",
-        "meaning": "Trong mẫu interval, r_await và w_await đều180ms, %util99.0. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
+        "meaning": "Trong mẫu interval, r_await và w_await đều 180 ms, %util 99.00%. Cần baseline/workload; utilization cao ở thiết bị nhiều queue không tự chứng minh bão hòa vật lý.",
         "commandId": "iostat",
         "aliases": [],
         "why": "Đối chiếu chờ I/O trong guest với độ trễ/queue của thiết bị."
@@ -6216,7 +6216,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "wa76% và đọc/ghi vda chờ khoảng180ms hỗ trợ nhận định nào?",
+        "prompt": "wa = 76% và đọc/ghi vda chờ khoảng 180 ms hỗ trợ nhận định nào?",
         "options": [
           {
             "id": "supported",
@@ -6246,11 +6246,11 @@
         "options": [
           {
             "id": "p1",
-            "label": "Dòng interval vmstat có wa76%."
+            "label": "Dòng interval vmstat có wa = 76%."
           },
           {
             "id": "p2",
-            "label": "vda có r_await/w_await180ms và %util99 trong interval."
+            "label": "vda có r_await/w_await khoảng 180 ms và %util 99% trong interval."
           },
           {
             "id": "over",
@@ -6307,7 +6307,7 @@
         "output": "usage_usec 139800000\nuser_usec 130000000\nsystem_usec 9800000\nnr_periods 1400\nnr_throttled 760\nthrottled_usec 45000000",
         "context": "guest",
         "purpose": "Đọc bộ đếm CPU trong cgroup của container api.",
-        "meaning": "nr_throttled760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
+        "meaning": "nr_throttled 760/1400 là bộ đếm chu kỳ tích lũy của api; chưa biết tốc độ tăng ở giờ cao điểm hoặc phần trăm CPU mất.",
         "commandId": "cgroup-cpu-stat",
         "aliases": [],
         "why": "Phải đọc đúng container đang chậm thay vì cpu.stat của cgroup gốc host."
@@ -6318,7 +6318,7 @@
         "output": "CONTAINER ID   NAME   CPU %   MEM USAGE / LIMIT   MEM %   NET I/O       BLOCK I/O   PIDS\nabc123def456   api    99.8%   220MiB / 512MiB     42.97%  12MB / 10MB   0B / 0B     8",
         "context": "guest",
         "purpose": "Lấy snapshot sử dụng tài nguyên container.",
-        "meaning": "api có CPU99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
+        "meaning": "api có CPU 99.8% trong snapshot. Cần đọc cùng giới hạn một CPU và cách Docker tính phần trăm, không suy host hết CPU.",
         "commandId": "docker-stats",
         "aliases": [],
         "why": "So CPU api với quota và thời điểm request chậm."
@@ -6414,11 +6414,11 @@
         "options": [
           {
             "id": "p1",
-            "label": "Có760 chu kỳ bị throttle trong1400 chu kỳ tích lũy."
+            "label": "Có 760 chu kỳ bị throttle trong 1400 chu kỳ tích lũy."
           },
           {
             "id": "p2",
-            "label": "Docker báo CPU api99.8% trong snapshot."
+            "label": "Docker báo CPU api 99.8% trong snapshot."
           },
           {
             "id": "over",
@@ -6496,7 +6496,7 @@
         "output": "Archived and active journals take up 8.0G in the file system.",
         "context": "guest",
         "purpose": "Đọc tổng dung lượng active và archived journal.",
-        "meaning": "Journal dùng8G tổng active+archived. Kết quả không nói8G đều được phép hoặc có thể vacuum.",
+        "meaning": "Journal dùng 8G tổng active+archived. Kết quả không nói 8G đều được phép hoặc có thể vacuum.",
         "commandId": "journal-disk-usage",
         "aliases": [],
         "why": "Khách báo log lớn, nên cần tách journal khỏi các log ứng dụng khác."
@@ -6507,7 +6507,7 @@
         "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.2G  94% /",
         "context": "guest",
         "purpose": "Đọc block usage của filesystem gốc.",
-        "meaning": "/ đang dùng94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
+        "meaning": "/ đang dùng 94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
         "commandId": "df-h",
         "aliases": [],
         "why": "Cần biết journal lớn đang tạo rủi ro dung lượng đến mức nào."
@@ -6561,7 +6561,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Journal8G và / dùng94% cho phép đề xuất gì trước dọn?",
+        "prompt": "Journal 8G và / dùng 94% cho phép đề xuất gì trước dọn?",
         "options": [
           {
             "id": "over",
@@ -6569,7 +6569,7 @@
           },
           {
             "id": "ignore",
-            "label": "Còn6% nên không cần xem nguồn tăng log."
+            "label": "Còn 6% nên không cần xem nguồn tăng log."
           },
           {
             "id": "supported",
@@ -6595,11 +6595,11 @@
           },
           {
             "id": "p1",
-            "label": "Tổng active và archived journal đang8G."
+            "label": "Tổng active và archived journal đang 8G."
           },
           {
             "id": "p2",
-            "label": "Filesystem / đang94%."
+            "label": "Filesystem / đang 94%."
           }
         ],
         "requiredProbeIds": [
@@ -6634,12 +6634,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi journal usage và filesystem94%, phân biệt active/archived với lượng có thể dọn; nêu retention/quyền cần xác nhận và cách đo lại tăng trưởng/log sau xử lý.",
+        "prompt": "Ghi journal usage và filesystem 94%, phân biệt active/archived với lượng có thể dọn; nêu retention/quyền cần xác nhận và cách đo lại tăng trưởng/log sau xử lý.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi journal usage và filesystem94%, phân biệt active/archived với lượng có thể dọn; nêu retention/quyền cần xác nhận và cách đo lại tăng trưởng/log sau xử lý."
+    "verificationPrompt": "Ghi journal usage và filesystem 94%, phân biệt active/archived với lượng có thể dọn; nêu retention/quyền cần xác nhận và cách đo lại tăng trưởng/log sau xử lý."
   },
   {
     "id": "VPS-05-005",
@@ -6652,7 +6652,7 @@
         "output": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
         "context": "guest",
         "purpose": "Đọc cây block device và kích thước từng lớp.",
-        "meaning": "vda40G trong khi partition vda1 còn20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
+        "meaning": "vda 40G trong khi partition vda1 còn 20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
         "commandId": "lsblk",
         "aliases": [],
         "why": "Cần biết dung lượng mới đã tới guest disk hay dừng ở lớp nào."
@@ -6663,7 +6663,7 @@
         "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  12G  8.0G  60% /",
         "context": "guest",
         "purpose": "Đọc kích thước filesystem đang mount ở /.",
-        "meaning": "Filesystem /dev/vda1 vẫn20G. df không tự thay partition hoặc filesystem.",
+        "meaning": "Filesystem /dev/vda1 vẫn 20G. df không tự thay partition hoặc filesystem.",
         "commandId": "df-h",
         "aliases": [],
         "why": "So dung lượng ứng dụng dùng với kích thước disk/partition."
@@ -6693,7 +6693,7 @@
           },
           {
             "id": "symptom",
-            "label": "Virtual disk đã nâng nhưng / vẫn thấy20G."
+            "label": "Virtual disk đã nâng nhưng / vẫn thấy 20G."
           },
           {
             "id": "other",
@@ -6728,15 +6728,15 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "vda40G, vda1 và /20G: lớp nào còn giữ kích thước cũ?",
+        "prompt": "vda 40G, vda1 và /20G: lớp nào còn giữ kích thước cũ?",
         "options": [
           {
             "id": "ignore",
-            "label": "Chỉ cần disk40G thì df20G là chắc chắn lỗi hiển thị."
+            "label": "Chỉ cần disk 40G thì df 20G là chắc chắn lỗi hiển thị."
           },
           {
             "id": "supported",
-            "label": "Partition và filesystem còn20G."
+            "label": "Partition và filesystem còn 20G."
           },
           {
             "id": "over",
@@ -6763,11 +6763,11 @@
           },
           {
             "id": "p1",
-            "label": "vda40G nhưng partition vda1 còn20G."
+            "label": "vda 40G nhưng partition vda1 còn 20G."
           },
           {
             "id": "p2",
-            "label": "Filesystem /dev/vda1 vẫn20G."
+            "label": "Filesystem /dev/vda1 vẫn 20G."
           }
         ],
         "requiredProbeIds": [
@@ -6793,7 +6793,7 @@
           },
           {
             "id": "close",
-            "label": "Đóng ticket vì vda đã báo40G."
+            "label": "Đóng ticket vì vda đã báo 40G."
           }
         ],
         "skill": "disk-grow-layers"
@@ -6841,7 +6841,7 @@
         "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
         "context": "guest",
         "purpose": "Đọc block usage sau khi khách đã xóa log.",
-        "meaning": "/ vẫn95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
+        "meaning": "/ vẫn 95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
         "commandId": "df-h",
         "aliases": [],
         "why": "Cần xác nhận dung lượng thực của filesystem chứ không chỉ tên file đã mất."
@@ -6948,7 +6948,7 @@
         "options": [
           {
             "id": "p1",
-            "label": "Filesystem / vẫn dùng95%."
+            "label": "Filesystem / vẫn dùng 95%."
           },
           {
             "id": "p2",
@@ -7231,7 +7231,7 @@
         "output": "HTTP/1.1 403 Forbidden",
         "context": "guest",
         "purpose": "Đọc mã HTTP từ web server local.",
-        "meaning": "HTTP403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
+        "meaning": "HTTP 403 cho biết request bị từ chối; chưa chỉ ra rule cụ thể.",
         "commandId": "curl-head",
         "aliases": [],
         "why": "Xác định server đã phản hồi hay TCP còn lỗi."
@@ -7241,7 +7241,7 @@
         "command": "tail /var/log/nginx/error.log",
         "output": "directory index of /srv/site/ is forbidden",
         "context": "guest",
-        "purpose": "Đọc lỗi Nginx gần request403.",
+        "purpose": "Đọc lỗi Nginx gần request 403.",
         "meaning": "Directory index of /srv/site/ forbidden cần đối chiếu index/route/access; không tự cho phép bật listing.",
         "commandId": "nginx-error-tail",
         "aliases": [],
@@ -7261,7 +7261,7 @@
           },
           {
             "id": "symptom",
-            "label": "Web server phản hồi403 Forbidden."
+            "label": "Web server phản hồi 403 Forbidden."
           },
           {
             "id": "other",
@@ -7348,7 +7348,7 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Sửa403 thế nào để không vô tình mở dữ liệu riêng tư?",
+        "prompt": "Sửa 403 thế nào để không vô tình mở dữ liệu riêng tư?",
         "options": [
           {
             "id": "safe",
@@ -7387,7 +7387,7 @@
         "output": "active",
         "context": "guest",
         "purpose": "Đọc state Nginx.",
-        "meaning": "active không kiểm tra backend3000.",
+        "meaning": "active không kiểm tra backend 3000.",
         "commandId": "systemctl-nginx",
         "aliases": [],
         "why": "Tách proxy dừng khỏi proxy chạy nhưng lỗi backend."
@@ -7398,7 +7398,7 @@
         "output": "connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000",
         "context": "guest",
         "purpose": "Đọc lỗi kết nối upstream.",
-        "meaning": "Kết nối127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
+        "meaning": "Kết nối 127.0.0.1:3000 bị refused; cần listener/backend và upstream target để định nguyên nhân.",
         "commandId": "nginx-error-tail",
         "aliases": [],
         "why": "502 cần khoanh đoạn proxy tới backend."
@@ -7417,7 +7417,7 @@
           },
           {
             "id": "symptom",
-            "label": "HTTP502 Bad Gateway."
+            "label": "HTTP 502 Bad Gateway."
           },
           {
             "id": "other",
@@ -7452,7 +7452,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Nginx active, upstream3000 refused. Nên khoanh lớp nào?",
+        "prompt": "Nginx active, upstream 3000 refused. Nên khoanh lớp nào?",
         "options": [
           {
             "id": "over",
@@ -7482,7 +7482,7 @@
         "options": [
           {
             "id": "p2",
-            "label": "Upstream127.0.0.1:3000 refused."
+            "label": "Upstream 127.0.0.1:3000 refused."
           },
           {
             "id": "over",
@@ -7504,7 +7504,7 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Nên xử lý502 theo bằng chứng hiện có thế nào?",
+        "prompt": "Nên xử lý 502 theo bằng chứng hiện có thế nào?",
         "options": [
           {
             "id": "close",
@@ -7543,10 +7543,10 @@
         "output": "HTTP/1.1 503 Service Unavailable",
         "context": "guest",
         "purpose": "Đọc HTTP status local.",
-        "meaning": "Local503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
+        "meaning": "Local 503 chưa phân biệt proxy tạo lỗi với app chưa ready.",
         "commandId": "curl-head",
         "aliases": [],
-        "why": "Xác nhận503 xuất hiện trong đường phục vụ tại VPS."
+        "why": "Xác nhận 503 xuất hiện trong đường phục vụ tại VPS."
       },
       {
         "id": "P2",
@@ -7565,7 +7565,7 @@
         "command": "journalctl -u app -n 30 --no-pager",
         "output": "app.service: Main process exited, code=exited, status=1/FAILURE\napp: missing required APP_CONFIG",
         "purpose": "Đọc journal app sau deploy.",
-        "meaning": "Process exit1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
+        "meaning": "Process exit 1 và thiếu APP_CONFIG; đối chiếu môi trường/secret với owner.",
         "commandId": "journalctl-service",
         "aliases": [],
         "why": "Cần startup error cụ thể trước change."
@@ -7576,7 +7576,7 @@
         "id": "triage",
         "stage": "triage",
         "kind": "single_choice",
-        "prompt": "Mốc nào giúp chọn dữ liệu điều tra503?",
+        "prompt": "Mốc nào giúp chọn dữ liệu điều tra 503?",
         "options": [
           {
             "id": "other",
@@ -7693,7 +7693,7 @@
         "id": "order",
         "stage": "verify",
         "kind": "step_order",
-        "prompt": "Sắp xếp phục hồi503 sau deploy.",
+        "prompt": "Sắp xếp phục hồi 503 sau deploy.",
         "options": [
           {
             "id": "evidence",
@@ -7714,12 +7714,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi503, auto-restart và lỗi app. Nêu cách so release/config, quyền rollback/sửa và tiêu chí app ổn định.",
+        "prompt": "Ghi 503, auto-restart và lỗi app. Nêu cách so release/config, quyền rollback/sửa và tiêu chí app ổn định.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi503, auto-restart và lỗi app. Nêu cách so release/config, quyền rollback/sửa và tiêu chí app ổn định."
+    "verificationPrompt": "Ghi 503, auto-restart và lỗi app. Nêu cách so release/config, quyền rollback/sửa và tiêu chí app ổn định."
   },
   {
     "id": "VPS-07-007",
@@ -8654,7 +8654,7 @@
       {
         "id": "G1",
         "context": "guest",
-        "command": "journalctl -u sshd --since \"2026-10-22 23:00:00 UTC\" --until \"2026-10-22 23:30:00 UTC\" --no-pager",
+        "command": "journalctl -u sshd --since \"2026-10-22 23:00:00 UTC\" --until \"2026-10-22 23:30:00 UTC\" --utc --no-pager",
         "output": "Oct 22 23:12:04 vps sshd[842]: pam_unix(sshd:session): session closed for user ops",
         "purpose": "Đọc phiên SSH trong cửa sổ job ngày 22/10/2026 UTC.",
         "meaning": "Có session closed cho user ops; dòng này không nêu nguyên nhân đóng phiên.",
@@ -8700,7 +8700,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Muốn tìm sự kiện OOM gần thời gian job, nên đọc gì trước?",
+        "prompt": "Muốn tìm sự kiện OOM trong kernel log của boot này, nên đọc gì trước?",
         "options": [
           {
             "id": "wrong2",
@@ -9259,9 +9259,9 @@
         "id": "G1",
         "context": "client",
         "command": "tracepath 198.51.100.20",
-        "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms\n 2:  no reply\n 3:  198.51.100.20  31.228ms",
+        "output": " 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms pmtu 1400\n 2:  no reply\n 3:  198.51.100.20  31.228ms reached\n     Resume: pmtu 1400 hops 3",
         "purpose": "Thăm dò đường và thông tin PMTU bằng tracepath.",
-        "meaning": "Có hop không trả lời; tracepath này chưa xác nhận PMTU ở đó. Cần so với ICMP frag-needed, tunnel và luồng TCP.",
+        "meaning": "Tracepath dùng UDP ghi nhận PMTU 1400; hop im lặng không tự chứng minh lỗi tại đó. Kết quả phù hợp ICMP frag-needed nhưng chưa chứng minh HTTPS/TCP bị lỗi vì PMTUD; cần kiểm tra luồng TCP và thiết bị VPN.",
         "commandId": "mtr",
         "aliases": [],
         "why": "Bổ sung đường đo để đối chiếu tunnel thay vì gán MTU guest sai ngay."
@@ -9440,7 +9440,7 @@
         "output": "OSError: [Errno 24] Too many open files",
         "context": "guest",
         "purpose": "Đọc lỗi gần đây của service API.",
-        "meaning": "Errno24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
+        "meaning": "Errno 24 là EMFILE của process. Log không cho biết các FD nào mở hoặc có leak không.",
         "commandId": "journalctl-service",
         "aliases": [],
         "why": "Cần xác nhận thông báo có phải lỗi file descriptor hay lỗi dung lượng/path."
@@ -9450,8 +9450,8 @@
         "command": "cat /proc/1234/limits",
         "output": "Limit                     Soft Limit           Hard Limit           Units\nMax open files            1024                 1024                 files",
         "context": "guest",
-        "purpose": "Đọc giới hạn tài nguyên của PID1234.",
-        "meaning": "Soft/hard open files đều1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
+        "purpose": "Đọc giới hạn tài nguyên của PID 1234.",
+        "meaning": "Soft/hard open files đều 1024. Cần đúng PID/time; đây không phải giới hạn số file của toàn filesystem.",
         "commandId": "ps-process",
         "aliases": [],
         "why": "Giới hạn thực của process mới dùng để so với số FD, không chỉ shell ulimit."
@@ -9461,8 +9461,8 @@
         "context": "guest",
         "command": "ls /proc/1234/fd | wc -l",
         "output": "1008",
-        "purpose": "Đếm entry FD hiện mở của PID1234.",
-        "meaning": "Đếm được1008 FD, gần1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
+        "purpose": "Đếm entry FD hiện mở của PID 1234.",
+        "meaning": "Đếm được 1008 FD, gần 1024. Số đo có thể thay đổi trong lúc đọc và chưa cho xu hướng leak.",
         "commandId": "ps-process",
         "aliases": [],
         "why": "So mức sử dụng gần thời điểm lỗi với soft limit thực của process."
@@ -9473,7 +9473,7 @@
         "command": "systemctl show myapp -p LimitNOFILE",
         "output": "LimitNOFILE=1024",
         "purpose": "Đọc LimitNOFILE của unit myapp.",
-        "meaning": "Unit hiển thị1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
+        "meaning": "Unit hiển thị 1024; cần xem drop-in, workload và process mới sau change để biết giới hạn thực đã áp dụng.",
         "commandId": "systemctl-service",
         "aliases": [],
         "why": "Đối chiếu cấu hình systemd với giới hạn process trước khi lập change."
@@ -9527,11 +9527,11 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "EMFILE, limit1024 và1008 FD hiện tại cho phép kết luận gì?",
+        "prompt": "EMFILE, limit 1024 và 1008 FD hiện tại cho phép kết luận gì?",
         "options": [
           {
             "id": "ignore",
-            "label": "FD chưa đủ1024 ở ảnh chụp nên log EMFILE chắc sai."
+            "label": "FD chưa đủ 1024 ở ảnh chụp nên log EMFILE chắc sai."
           },
           {
             "id": "supported",
@@ -9563,11 +9563,11 @@
           },
           {
             "id": "p1",
-            "label": "Log myapp có OSError Errno24."
+            "label": "Log myapp có OSError Errno 24."
           },
           {
             "id": "p2",
-            "label": "PID1234 có soft/hard Max open files1024."
+            "label": "PID 1234 có soft/hard Max open files 1024."
           }
         ],
         "requiredProbeIds": [
@@ -9585,7 +9585,7 @@
         "options": [
           {
             "id": "close",
-            "label": "Đóng ticket vì lần đếm hiện tại còn thấp hơn1024."
+            "label": "Đóng ticket vì lần đếm hiện tại còn thấp hơn 1024."
           },
           {
             "id": "safe",
@@ -9942,8 +9942,8 @@
         "command": "ps -o pid,rss,etime,comm -p 1200",
         "output": "  PID   RSS     ELAPSED COMMAND\n 1200 850000   09:00:00 myapp",
         "context": "guest",
-        "purpose": "Đọc RSS và thời gian sống của PID1200.",
-        "meaning": "RSS850000 là KiB theo ps, xấp xỉ830MiB, sau9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
+        "purpose": "Đọc RSS và thời gian sống của PID 1200.",
+        "meaning": "RSS 850000 là KiB theo ps, xấp xỉ 830 MiB, sau 9 giờ. Một mẫu chưa chứng minh tốc độ tăng.",
         "commandId": "ps-process",
         "aliases": [],
         "why": "Cần mốc định lượng để đối chiếu bộ nhớ daemon tăng theo uptime."
@@ -9954,7 +9954,7 @@
         "output": "Out of memory: Killed process 1200 (myapp)",
         "context": "guest",
         "purpose": "Đọc kernel log trong boot hiện tại.",
-        "meaning": "Có OOM kill myapp PID1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
+        "meaning": "Có OOM kill myapp PID 1200. Chưa biết do leak, cache hợp lệ, traffic hay giới hạn tài nguyên.",
         "commandId": "journal-boot",
         "aliases": [],
         "why": "Cần biết process kết thúc do OOM hay nguyên nhân khác."
@@ -9965,7 +9965,7 @@
         "command": "PANEL: myapp memory samples",
         "output": "00:00 RSS 240 MiB\n03:00 RSS 430 MiB\n06:00 RSS 660 MiB\n09:00 RSS 830 MiB",
         "purpose": "Đọc chuỗi mẫu bộ nhớ đã ghi trong panel.",
-        "meaning": "RSS tăng240→830MiB qua9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
+        "meaning": "RSS tăng 240→830MiB qua 9 giờ; cần đối chiếu lưu lượng/cache và phiên bản deploy để phân biệt nguyên nhân.",
         "commandId": "panel-probes",
         "aliases": [],
         "why": "So nhiều thời điểm để xác nhận xu hướng thay vì suy từ một RSS."
@@ -10008,7 +10008,7 @@
         "id": "check",
         "stage": "investigate",
         "kind": "command_choice",
-        "prompt": "Muốn ghi RSS và uptime của đúng PID1200, đọc gì?",
+        "prompt": "Muốn ghi RSS và uptime của đúng PID 1200, đọc gì?",
         "options": [
           {
             "id": "wrong1",
@@ -10030,7 +10030,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "RSS tăng qua nhiều mốc và có OOM kill: điều nào chưa được chứng minh?",
+        "prompt": "RSS tăng qua nhiều mốc và có OOM kill: diễn giải nào phù hợp nhất?",
         "options": [
           {
             "id": "supported",
@@ -10062,7 +10062,7 @@
         "options": [
           {
             "id": "p2",
-            "label": "Kernel ghi OOM kill myapp PID1200."
+            "label": "Kernel ghi OOM kill myapp PID 1200."
           },
           {
             "id": "over",
@@ -10070,7 +10070,7 @@
           },
           {
             "id": "p1",
-            "label": "PID1200 có RSS850000KiB và elapsed9 giờ."
+            "label": "PID 1200 có RSS 850000 KiB và elapsed 9 giờ."
           }
         ],
         "requiredProbeIds": [
@@ -10442,7 +10442,7 @@
     "probes": [
       {
         "id": "P1",
-        "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\"",
+        "command": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc",
         "output": "Oct 22 02:00:00 vps backup-agent[901]: backup started\nOct 22 02:20:00 vps backup-agent[901]: backup finished",
         "context": "guest",
         "purpose": "Đọc log backup-agent trong cửa sổ 02:00–02:30.",
@@ -10523,7 +10523,7 @@
           },
           {
             "id": "direct",
-            "label": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\""
+            "label": "journalctl -u backup-agent --since \"2026-10-22 02:00:00 UTC\" --until \"2026-10-22 02:30:00 UTC\" --utc"
           }
         ],
         "commandId": "journalctl-service",
@@ -10647,7 +10647,7 @@
         "output": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
         "context": "guest",
         "purpose": "Đọc cây disk/partition/LV của guest.",
-        "meaning": "vdb và vdb1 là80G, LV vgdata-lvdata còn30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
+        "meaning": "vdb và vdb1 là 80G, LV vgdata-lvdata còn 30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
         "commandId": "lsblk",
         "aliases": [],
         "why": "Xác định dung lượng resize đã tới disk/partition hay chưa và LV nào đang mount /data."
@@ -10658,7 +10658,7 @@
         "output": "VG      #PV #LV #SN Attr   VSize   VFree\nvgdata    1   1   0 wz--n- 79.99g 49.99g",
         "context": "guest",
         "purpose": "Đọc dung lượng và free extents của volume group.",
-        "meaning": "vgdata còn49.99g free trong79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
+        "meaning": "vgdata còn 49.99g free trong 79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
         "commandId": "lvm-report",
         "aliases": [],
         "why": "Cần biết VG còn chỗ cấp cho LV hay không trước đề xuất lvextend."
@@ -10669,7 +10669,7 @@
         "command": "lvs -o lv_name,vg_name,lv_size,lv_path",
         "output": "LV     VG     LSize  Path\nlvdata vgdata 30.00g /dev/vgdata/lvdata",
         "purpose": "Đọc tên, path và kích thước LV.",
-        "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện30G. Phải đối chiếu với mount /data trước change.",
+        "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện 30G. Phải đối chiếu với mount /data trước change.",
         "commandId": "lvm-report",
         "aliases": [],
         "why": "Tránh mở nhầm LV khi có nhiều volume hoặc mapping phức tạp."
@@ -10680,7 +10680,7 @@
         "command": "df -hT /data",
         "output": "Filesystem                Type Size Used Avail Use% Mounted on\n/dev/mapper/vgdata-lvdata xfs   30G  29G  1.0G  97% /data",
         "purpose": "Đọc loại filesystem và dung lượng của /data.",
-        "meaning": "/data là XFS30G dùng97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
+        "meaning": "/data là XFS 30G dùng 97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
         "commandId": "df-hT",
         "aliases": [],
         "why": "Công cụ mở filesystem phải phù hợp XFS và lớp LV bên dưới."
@@ -10734,7 +10734,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "VG còn49.99g nhưng LV/FS30G gần đầy: chỗ trống đang ở đâu?",
+        "prompt": "VG còn 49.99g nhưng LV/FS 30G gần đầy: chỗ trống đang ở đâu?",
         "options": [
           {
             "id": "supported",
@@ -10742,11 +10742,11 @@
           },
           {
             "id": "over",
-            "label": "vdb80G nghĩa là filesystem đã có80G."
+            "label": "vdb 80G nghĩa là filesystem đã có 80G."
           },
           {
             "id": "ignore",
-            "label": "Filesystem97% chứng minh VG không còn extents."
+            "label": "Filesystem 97% chứng minh VG không còn extents."
           }
         ],
         "requiredProbeIds": [
@@ -10766,15 +10766,15 @@
         "options": [
           {
             "id": "p2",
-            "label": "VG vgdata còn khoảng50G free."
+            "label": "VG vgdata còn khoảng 50G free."
           },
           {
             "id": "over",
-            "label": "Chỉ cần disk80G là /data đã80G."
+            "label": "Chỉ cần disk 80G là /data đã 80G."
           },
           {
             "id": "p1",
-            "label": "vdb/vdb1 là80G, LV đang30G."
+            "label": "vdb/vdb1 là 80G, LV đang 30G."
           }
         ],
         "requiredProbeIds": [
@@ -12311,7 +12311,7 @@
         "output": "top - 02:11:02 up 4 days, 2:14, 1 user, load average: 2.89, 2.11, 1.40\n%Cpu(s): 96.2 us, 2.0 sy, 1.8 id\n  PID USER      %CPU COMMAND\n 2418 mysql      94.7 mariabackup",
         "context": "guest",
         "purpose": "Lấy ảnh chụp CPU và process.",
-        "meaning": "CPU user cao và mariabackup PID2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
+        "meaning": "CPU user cao và mariabackup PID 2418 dùng 94,7%; một mẫu chưa chứng minh job bất thường.",
         "commandId": "top",
         "aliases": [],
         "why": "Cần biết trong lúc chậm, CPU dành cho workload nào."
@@ -12322,7 +12322,7 @@
         "command": "PANEL: backup job state",
         "output": "database-backup task running since 02:00 UTC; progress 72%",
         "purpose": "Đọc tiến độ backup database.",
-        "meaning": "Task chạy từ02:00, tiến độ72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
+        "meaning": "Task chạy từ 02:00, tiến độ 72%; cần hỏi owner mức ảnh hưởng và theo dõi tiến triển.",
         "commandId": "panel-backup-status",
         "aliases": [],
         "why": "Reboot giữa backup có thể làm job thất bại và tăng rủi ro vận hành."
@@ -12376,7 +12376,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "VM Running, mariabackup dùng nhiều CPU và job mới hoàn thành72%. Nên nhận định thế nào?",
+        "prompt": "VM Running, mariabackup dùng nhiều CPU và job mới hoàn thành 72%. Nên nhận định thế nào?",
         "options": [
           {
             "id": "supported",
@@ -12637,7 +12637,7 @@
         "meaning": "Panel cảnh báo toàn bộ main disk bị ghi đè; không thể hứa giữ /home hoặc database.",
         "commandId": "panel-reinstall-confirmation",
         "aliases": [],
-        "why": "Cần biết yêu cầu đổiOS có phá nội dung main disk hay không."
+        "why": "Cần biết yêu cầu đổi OS có phá nội dung main disk hay không."
       },
       {
         "id": "P2",
@@ -12722,7 +12722,7 @@
           },
           {
             "id": "ignore",
-            "label": "Khách yêu cầu đổiOS nên backup không còn cần thiết."
+            "label": "Khách yêu cầu đổi OS nên backup không còn cần thiết."
           }
         ],
         "requiredProbeIds": [
@@ -13024,7 +13024,7 @@
         "command": "PANEL: boot activity",
         "output": "07:40 UTC rescue ISO attached by recovery-team; ticket REC-420 open",
         "purpose": "Đọc tài khoản gắn ISO và ticket liên quan.",
-        "meaning": "Recovery-team gắn ISO lúc07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
+        "meaning": "Recovery-team gắn ISO lúc 07:40, REC-420 còn mở; cần xác nhận công việc đã xong.",
         "commandId": "panel-probes",
         "aliases": [],
         "why": "Không được ngắt recovery của đội khác."
@@ -13225,7 +13225,7 @@
         "command": "PANEL: console gateway health",
         "output": "gateway-c2 status=degraded; websocket 5xx rate=38% at 08:15 UTC",
         "purpose": "Đọc tình trạng gateway cùng thời điểm.",
-        "meaning": "gateway-c2 degraded và38% websocket5xx lúc08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
+        "meaning": "gateway-c2 degraded và 38% websocket 5xx lúc 08:15 hỗ trợ lỗi gateway; cần incident/log để định nguyên nhân.",
         "commandId": "panel-probes",
         "aliases": [],
         "why": "Xem lỗi có ảnh hưởng rộng tới hạ tầng console không."
@@ -13236,7 +13236,7 @@
         "command": "PANEL: VM heartbeat",
         "output": "vm-102 qemu process heartbeat at 08:16 UTC: present",
         "purpose": "Đọc heartbeat process VM từ host.",
-        "meaning": "QEMU heartbeat hiện diện lúc08:16; chưa xác nhận guest boot hoặc app phản hồi.",
+        "meaning": "QEMU heartbeat hiện diện lúc 08:16; chưa xác nhận guest boot hoặc app phản hồi.",
         "commandId": "panel-probes",
         "aliases": [],
         "why": "Một tín hiệu độc lập giúp tránh reset guest chỉ vì UI đen."
@@ -13322,7 +13322,7 @@
         "options": [
           {
             "id": "p2",
-            "label": "Websocket handshake thất bại với502."
+            "label": "Websocket handshake thất bại với 502."
           },
           {
             "id": "over",
@@ -13505,7 +13505,7 @@
         "output": "Stopping 20m",
         "context": "panel",
         "purpose": "Đọc trạng thái lifecycle và thời gian chờ.",
-        "meaning": "Stopping20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
+        "meaning": "Stopping 20m cho biết quá trình chưa hoàn tất trong panel; cần đối chiếu host.",
         "commandId": "panel-probes",
         "aliases": [],
         "why": "Cần phân biệt shutdown đã hoàn tất với task đang chờ."
@@ -13527,10 +13527,10 @@
         "command": "PANEL: host task timeline",
         "output": "12:30:00 shutdown requested\n12:30:03 ACPI event delivered\n12:50:00 guest shutdown completion absent",
         "purpose": "Đối chiếu timeline yêu cầu và hoàn tất.",
-        "meaning": "Yêu cầu12:30, ACPI12:30:03, đến12:50 chưa có completion; cần điều tra, không tự hard stop.",
+        "meaning": "Yêu cầu 12:30, ACPI 12:30:03, đến 12:50 chưa có completion; cần điều tra, không tự hard stop.",
         "commandId": "panel-probes",
         "aliases": [],
-        "why": "Xác nhận20phút chờ không chỉ là timestamp UI cũ."
+        "why": "Xác nhận 20 phút chờ không chỉ là timestamp UI cũ."
       },
       {
         "id": "G2",
@@ -13538,7 +13538,7 @@
         "command": "PANEL: storage latency",
         "output": "vm-102 vda write latency p95 210 ms at 12:48 UTC; host review pending",
         "purpose": "Đọc độ trễ ghi storage trong khoảng chờ.",
-        "meaning": "p95 write latency210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
+        "meaning": "p95 write latency 210ms là tín hiệu cần host review; không chứng minh một process hoặc disk cụ thể hỏng.",
         "commandId": "panel-probes",
         "aliases": [],
         "why": "Shutdown chậm có thể liên quan flush hoặc I/O cần bảo vệ."
@@ -13895,7 +13895,7 @@
         "command": "PANEL: expected vNIC",
         "output": "vm-102 expected NIC count=1; MAC=52:54:00:ab:10:02; network=br-public",
         "purpose": "Đọc NIC/MAC/network dự kiến của VM.",
-        "meaning": "Inventory yêu cầu một NIC, MAC52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
+        "meaning": "Inventory yêu cầu một NIC, MAC 52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
         "commandId": "panel-probes",
         "aliases": [],
         "why": "Gắn lại phải đúng network và MAC được cấp, không chọn một bridge bất kỳ."
@@ -14062,7 +14062,7 @@
         "command": "PANEL: network allocation",
         "output": "vm-102 network=public-vlan-12; bridge=br-public; gateway=198.51.100.1",
         "purpose": "Đọc network allocation gồm gateway.",
-        "meaning": "VM thuộc public-vlan-12/br-public với gateway198.51.100.1; cần host network team đối chiếu mapping.",
+        "meaning": "VM thuộc public-vlan-12/br-public với gateway 198.51.100.1; cần host network team đối chiếu mapping.",
         "commandId": "panel-ip-allocation",
         "aliases": [],
         "why": "Xác minh bridge đúng network chứ không chỉ trùng tên."
@@ -16345,7 +16345,7 @@
     "probes": [
       {
         "id": "P1",
-        "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\"",
+        "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc",
         "output": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
         "context": "guest",
         "purpose": "Đọc sự kiện xác thực SSH của root.",
@@ -16422,7 +16422,7 @@
           },
           {
             "id": "direct",
-            "label": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\""
+            "label": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc"
           },
           {
             "id": "wrong1",
@@ -16770,7 +16770,7 @@
         "options": [
           {
             "id": "p2",
-            "label": "Binary có hash SHA256 được ghi nhận."
+            "label": "Binary có hash SHA-256 được ghi nhận."
           },
           {
             "id": "over",
@@ -17262,7 +17262,7 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Mapping ở127.0.0.1 và local curl 200. Kết luận nào phù hợp?",
+        "prompt": "Mapping ở 127.0.0.1 và local curl 200. Kết luận nào phù hợp?",
         "options": [
           {
             "id": "over",
@@ -17611,7 +17611,7 @@
         "options": [
           {
             "id": "over",
-            "label": "Authoritative chắc chắn không cóArecord."
+            "label": "Authoritative chắc chắn không có A record."
           },
           {
             "id": "ignore",
@@ -19888,7 +19888,7 @@
         "options": [
           {
             "id": "over",
-            "label": "ĐổiDNSA là đủ hết duplicate IP của hai NIC."
+            "label": "Đổi DNS A là đủ hết duplicate IP của hai NIC."
           },
           {
             "id": "ignore",
@@ -22431,8 +22431,8 @@
   },
   {
     "id": "VPS-14-006",
-    "objective": "Đọc thời hạn xóa dữ liệu và trạng thái hold để chuyển yêu cầu gia hạn đúng người trước deadline.",
-    "customerExplanation": "Khách nhận thông báo hết hạn và muốn giữ dữ liệu lâu hơn. Cần xác minh thời hạn xóa và policy, chưa thể hứa giữ vô hạn.",
+    "objective": "Tại thời điểm tiếp nhận 22/10/2026 10:00 UTC, phân biệt lịch xóa với xóa đã hoàn tất và chuyển yêu cầu giữ dữ liệu đúng người.",
+    "customerExplanation": "Đây là ticket lịch sử được tiếp nhận lúc 10:00 UTC ngày 22/10/2026, trước lịch xóa 25/10. Khách muốn giữ dữ liệu lâu hơn. Các bản ghi trong bài phản ánh thời điểm tiếp nhận; nếu xử lý lại sau deadline, phải hỏi trạng thái deletion job hiện tại trước khi hứa còn dữ liệu hoặc còn thời gian xin hold.",
     "probes": [
       {
         "id": "P1",
@@ -22451,10 +22451,10 @@
         "output": "Scheduled deletion 2026-10-25",
         "context": "panel",
         "purpose": "Đọc lịch xóa theo retention.",
-        "meaning": "Scheduled deletion 25/10 là lịch dự kiến; cần kiểm tra task/hold và quyền ngoại lệ.",
+        "meaning": "Scheduled deletion 25/10 là kế hoạch, không phải bằng chứng job đã chạy. Nếu đọc sau mốc đó, phải xem trạng thái job thực tế.",
         "commandId": "panel-lifecycle-policy",
         "aliases": [],
-        "why": "Xác định deadline cần chuyển yêu cầu giữ dữ liệu."
+        "why": "Tại mốc tiếp nhận 22/10, xác định lịch xóa để chuyển yêu cầu giữ dữ liệu."
       },
       {
         "id": "G1",
@@ -22462,7 +22462,7 @@
         "command": "PANEL: retention hold state",
         "output": "service VPS-1406 hold=false; deletion_job=2026-10-25 00:00 UTC",
         "purpose": "Đọc hold hiện tại và deletion job.",
-        "meaning": "hold=false, job 25/10 00:00 UTC; chưa có lệnh giữ dữ liệu được xác nhận.",
+        "meaning": "Tại mốc 22/10, hold=false và job được lên lịch 25/10 00:00 UTC. Bản ghi này không chứng minh trạng thái job sau deadline.",
         "commandId": "panel-lifecycle-policy",
         "aliases": [],
         "why": "Không coi ticket xin gia hạn là hold đã áp."
@@ -22527,15 +22527,15 @@
         "id": "output",
         "stage": "interpret",
         "kind": "output_interpretation",
-        "prompt": "Expired 20/10, xóa 25/10 và hold false. Nên trả lời thế nào?",
+        "prompt": "Ở mốc tiếp nhận 22/10, expired 20/10, lịch xóa 25/10 và hold=false. Nên trả lời thế nào?",
         "options": [
           {
             "id": "ignore",
-            "label": "Expired nghĩa là dữ liệu đã xóa nên không cần xem job."
+            "label": "Hết hạn dịch vụ là đủ để báo dữ liệu đã bị xóa."
           },
           {
             "id": "supported",
-            "label": "Cần chuyển khẩn xin hold theo quyền trước deadline."
+            "label": "Chuyển billing/lifecycle xin hold có audit; chưa hứa dữ liệu được giữ."
           },
           {
             "id": "over",
@@ -22581,7 +22581,7 @@
         "id": "decision",
         "stage": "decide",
         "kind": "single_choice",
-        "prompt": "Ai cần tiếp nhận yêu cầu giữ dữ liệu này?",
+        "prompt": "Ở mốc 22/10, ai cần tiếp nhận yêu cầu giữ dữ liệu?",
         "options": [
           {
             "id": "safe",
@@ -22602,7 +22602,7 @@
         "id": "order",
         "stage": "verify",
         "kind": "step_order",
-        "prompt": "Sắp xếp xử lý gia hạn retention trước ngày xóa.",
+        "prompt": "Sắp xếp xử lý yêu cầu retention tại mốc tiếp nhận 22/10.",
         "options": [
           {
             "id": "evidence",
@@ -22614,7 +22614,7 @@
           },
           {
             "id": "act",
-            "label": "Đội được quyền xử lý ngoại lệ retention có audit trước deadline."
+            "label": "Đội được quyền xử lý ngoại lệ retention có audit khi dữ liệu còn đủ điều kiện giữ."
           }
         ],
         "skill": "retention-deletion-risk"
@@ -22623,12 +22623,12 @@
         "id": "note",
         "stage": "verify",
         "kind": "short_answer",
-        "prompt": "Ghi expiration, deletion deadline, hold và backup. Nêu bước chuyển khẩn, quyền duyệt, thời hạn mới cần xác nhận và cách kiểm tra dữ liệu.",
+        "prompt": "Ghi thời điểm ticket 22/10, expiration, lịch xóa, hold và backup. Nêu ai duyệt hold; nếu xử lý sau 25/10, cần đọc trạng thái deletion job và kiểm tra khả năng khôi phục trước khi báo khách.",
         "options": [],
         "skill": "verify"
       }
     ],
-    "verificationPrompt": "Ghi expiration, deletion deadline, hold và backup. Nêu bước chuyển khẩn, quyền duyệt, thời hạn mới cần xác nhận và cách kiểm tra dữ liệu."
+    "verificationPrompt": "Ghi thời điểm ticket 22/10, expiration, lịch xóa, hold và backup. Nêu ai duyệt hold; nếu xử lý sau 25/10, cần đọc trạng thái deletion job và kiểm tra khả năng khôi phục trước khi báo khách."
   },
   {
     "id": "VPS-14-007",

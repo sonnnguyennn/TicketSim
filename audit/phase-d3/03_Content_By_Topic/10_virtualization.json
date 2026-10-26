@@ -230,7 +230,7 @@
         "case": "scripts/content/phase-b-06-10.mjs:234",
         "gradingBase": "scripts/guided-content.mjs",
         "overrides": [
-          "scripts/guided-content.mjs:1372"
+          "scripts/guided-content.mjs:1375"
         ]
       },
       "classification": [
@@ -667,7 +667,7 @@
           "command": "PANEL: expected vNIC",
           "output": "vm-102 expected NIC count=1; MAC=52:54:00:ab:10:02; network=br-public",
           "purpose": "Đọc NIC/MAC/network dự kiến của VM.",
-          "meaning": "Inventory yêu cầu một NIC, MAC52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
+          "meaning": "Inventory yêu cầu một NIC, MAC 52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Gắn lại phải đúng network và MAC được cấp, không chọn một bridge bất kỳ."
@@ -772,7 +772,7 @@
           "command": "PANEL: expected vNIC",
           "output": "vm-102 expected NIC count=1; MAC=52:54:00:ab:10:02; network=br-public",
           "purpose": "Đọc NIC/MAC/network dự kiến của VM.",
-          "meaning": "Inventory yêu cầu một NIC, MAC52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
+          "meaning": "Inventory yêu cầu một NIC, MAC 52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Gắn lại phải đúng network và MAC được cấp, không chọn một bridge bất kỳ."
@@ -916,7 +916,7 @@
           "command": "PANEL: expected vNIC",
           "output": "vm-102 expected NIC count=1; MAC=52:54:00:ab:10:02; network=br-public",
           "purpose": "Đọc NIC/MAC/network dự kiến của VM.",
-          "meaning": "Inventory yêu cầu một NIC, MAC52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
+          "meaning": "Inventory yêu cầu một NIC, MAC 52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Gắn lại phải đúng network và MAC được cấp, không chọn một bridge bất kỳ."
@@ -1084,7 +1084,7 @@
           "command": "PANEL: expected vNIC",
           "output": "vm-102 expected NIC count=1; MAC=52:54:00:ab:10:02; network=br-public",
           "purpose": "Đọc NIC/MAC/network dự kiến của VM.",
-          "meaning": "Inventory yêu cầu một NIC, MAC52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
+          "meaning": "Inventory yêu cầu một NIC, MAC 52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Gắn lại phải đúng network và MAC được cấp, không chọn một bridge bất kỳ."
@@ -1227,7 +1227,7 @@
           "command": "PANEL: expected vNIC",
           "output": "vm-102 expected NIC count=1; MAC=52:54:00:ab:10:02; network=br-public",
           "purpose": "Đọc NIC/MAC/network dự kiến của VM.",
-          "meaning": "Inventory yêu cầu một NIC, MAC52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
+          "meaning": "Inventory yêu cầu một NIC, MAC 52:54:00:ab:10:02 trên br-public; chưa chứng minh attachment đã phục hồi.",
           "commandId": "panel-probes",
           "aliases": [],
           "why": "Gắn lại phải đúng network và MAC được cấp, không chọn một bridge bất kỳ."
@@ -1320,7 +1320,7 @@
           "command": "PANEL: network allocation",
           "output": "vm-102 network=public-vlan-12; bridge=br-public; gateway=198.51.100.1",
           "purpose": "Đọc network allocation gồm gateway.",
-          "meaning": "VM thuộc public-vlan-12/br-public với gateway198.51.100.1; cần host network team đối chiếu mapping.",
+          "meaning": "VM thuộc public-vlan-12/br-public với gateway 198.51.100.1; cần host network team đối chiếu mapping.",
           "commandId": "panel-ip-allocation",
           "aliases": [],
           "why": "Xác minh bridge đúng network chứ không chỉ trùng tên."
@@ -1425,7 +1425,7 @@
           "command": "PANEL: network allocation",
           "output": "vm-102 network=public-vlan-12; bridge=br-public; gateway=198.51.100.1",
           "purpose": "Đọc network allocation gồm gateway.",
-          "meaning": "VM thuộc public-vlan-12/br-public với gateway198.51.100.1; cần host network team đối chiếu mapping.",
+          "meaning": "VM thuộc public-vlan-12/br-public với gateway 198.51.100.1; cần host network team đối chiếu mapping.",
           "commandId": "panel-ip-allocation",
           "aliases": [],
           "why": "Xác minh bridge đúng network chứ không chỉ trùng tên."
@@ -1569,7 +1569,7 @@
           "command": "PANEL: network allocation",
           "output": "vm-102 network=public-vlan-12; bridge=br-public; gateway=198.51.100.1",
           "purpose": "Đọc network allocation gồm gateway.",
-          "meaning": "VM thuộc public-vlan-12/br-public với gateway198.51.100.1; cần host network team đối chiếu mapping.",
+          "meaning": "VM thuộc public-vlan-12/br-public với gateway 198.51.100.1; cần host network team đối chiếu mapping.",
           "commandId": "panel-ip-allocation",
           "aliases": [],
           "why": "Xác minh bridge đúng network chứ không chỉ trùng tên."
@@ -1735,7 +1735,7 @@
           "command": "PANEL: network allocation",
           "output": "vm-102 network=public-vlan-12; bridge=br-public; gateway=198.51.100.1",
           "purpose": "Đọc network allocation gồm gateway.",
-          "meaning": "VM thuộc public-vlan-12/br-public với gateway198.51.100.1; cần host network team đối chiếu mapping.",
+          "meaning": "VM thuộc public-vlan-12/br-public với gateway 198.51.100.1; cần host network team đối chiếu mapping.",
           "commandId": "panel-ip-allocation",
           "aliases": [],
           "why": "Xác minh bridge đúng network chứ không chỉ trùng tên."
@@ -1883,7 +1883,7 @@
           "command": "PANEL: network allocation",
           "output": "vm-102 network=public-vlan-12; bridge=br-public; gateway=198.51.100.1",
           "purpose": "Đọc network allocation gồm gateway.",
-          "meaning": "VM thuộc public-vlan-12/br-public với gateway198.51.100.1; cần host network team đối chiếu mapping.",
+          "meaning": "VM thuộc public-vlan-12/br-public với gateway 198.51.100.1; cần host network team đối chiếu mapping.",
           "commandId": "panel-ip-allocation",
           "aliases": [],
           "why": "Xác minh bridge đúng network chứ không chỉ trùng tên."
@@ -2016,7 +2016,7 @@
         "resolution": "Chuyển virtualization/host team cân bằng tải hoặc điều chỉnh capacity theo quy trình được duyệt; support không tự chuyển VM.",
         "verification": "Độ trễ khách giảm, st và CPU ready về mức bình thường qua nhiều mẫu; kiểm tra ứng dụng từ client.",
         "escalation": "Chuyển đội hạ tầng vì support không có quyền host hoặc nhiều VM cùng ảnh hưởng.",
-        "referenceNoteEn": "Issue: Host CPU contention likely.\nFindings: The guest sample showed 60% steal time and panel host metrics reported saturation.\nNext Action: Ask the node team to assess placement and capacity before changing guest settings.\nVerification: Confirm steal time and application latency return to baseline.\nStatus: Node escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Host CPU contention likely.\nFindings: The guest sample showed 60% steal time and panel host metrics reported contention; the affected node workload still needs investigation.\nNext Action: Ask the node team to assess placement and capacity before changing guest settings.\nVerification: Confirm steal time and application latency return to baseline.\nStatus: Node escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:939",
@@ -2146,7 +2146,7 @@
         "resolution": "Chuyển virtualization/host team cân bằng tải hoặc điều chỉnh capacity theo quy trình được duyệt; support không tự chuyển VM.",
         "verification": "Độ trễ khách giảm, st và CPU ready về mức bình thường qua nhiều mẫu; kiểm tra ứng dụng từ client.",
         "escalation": "Chuyển đội hạ tầng vì support không có quyền host hoặc nhiều VM cùng ảnh hưởng.",
-        "referenceNoteEn": "Issue: Host CPU contention likely.\nFindings: The guest sample showed 60% steal time and panel host metrics reported saturation.\nNext Action: Ask the node team to assess placement and capacity before changing guest settings.\nVerification: Confirm steal time and application latency return to baseline.\nStatus: Node escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Host CPU contention likely.\nFindings: The guest sample showed 60% steal time and panel host metrics reported contention; the affected node workload still needs investigation.\nNext Action: Ask the node team to assess placement and capacity before changing guest settings.\nVerification: Confirm steal time and application latency return to baseline.\nStatus: Node escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:940",
@@ -2323,7 +2323,7 @@
         "resolution": "Chuyển virtualization/host team cân bằng tải hoặc điều chỉnh capacity theo quy trình được duyệt; support không tự chuyển VM.",
         "verification": "Độ trễ khách giảm, st và CPU ready về mức bình thường qua nhiều mẫu; kiểm tra ứng dụng từ client.",
         "escalation": "Chuyển đội hạ tầng vì support không có quyền host hoặc nhiều VM cùng ảnh hưởng.",
-        "referenceNoteEn": "Issue: Host CPU contention likely.\nFindings: The guest sample showed 60% steal time and panel host metrics reported saturation.\nNext Action: Ask the node team to assess placement and capacity before changing guest settings.\nVerification: Confirm steal time and application latency return to baseline.\nStatus: Node escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Host CPU contention likely.\nFindings: The guest sample showed 60% steal time and panel host metrics reported contention; the affected node workload still needs investigation.\nNext Action: Ask the node team to assess placement and capacity before changing guest settings.\nVerification: Confirm steal time and application latency return to baseline.\nStatus: Node escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:941",
@@ -2501,7 +2501,7 @@
         "resolution": "Chuyển virtualization/host team cân bằng tải hoặc điều chỉnh capacity theo quy trình được duyệt; support không tự chuyển VM.",
         "verification": "Độ trễ khách giảm, st và CPU ready về mức bình thường qua nhiều mẫu; kiểm tra ứng dụng từ client.",
         "escalation": "Chuyển đội hạ tầng vì support không có quyền host hoặc nhiều VM cùng ảnh hưởng.",
-        "referenceNoteEn": "Issue: Host CPU contention likely.\nFindings: The guest sample showed 60% steal time and panel host metrics reported saturation.\nNext Action: Ask the node team to assess placement and capacity before changing guest settings.\nVerification: Confirm steal time and application latency return to baseline.\nStatus: Node escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Host CPU contention likely.\nFindings: The guest sample showed 60% steal time and panel host metrics reported contention; the affected node workload still needs investigation.\nNext Action: Ask the node team to assess placement and capacity before changing guest settings.\nVerification: Confirm steal time and application latency return to baseline.\nStatus: Node escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:942",
@@ -2594,7 +2594,7 @@
         "resolution": "Chuyển virtualization/host team cân bằng tải hoặc điều chỉnh capacity theo quy trình được duyệt; support không tự chuyển VM.",
         "verification": "Độ trễ khách giảm, st và CPU ready về mức bình thường qua nhiều mẫu; kiểm tra ứng dụng từ client.",
         "escalation": "Chuyển đội hạ tầng vì support không có quyền host hoặc nhiều VM cùng ảnh hưởng.",
-        "referenceNoteEn": "Issue: Host CPU contention likely.\nFindings: The guest sample showed 60% steal time and panel host metrics reported saturation.\nNext Action: Ask the node team to assess placement and capacity before changing guest settings.\nVerification: Confirm steal time and application latency return to baseline.\nStatus: Node escalation recommended; unresolved."
+        "referenceNoteEn": "Issue: Host CPU contention likely.\nFindings: The guest sample showed 60% steal time and panel host metrics reported contention; the affected node workload still needs investigation.\nNext Action: Ask the node team to assess placement and capacity before changing guest settings.\nVerification: Confirm steal time and application latency return to baseline.\nStatus: Node escalation recommended; unresolved."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:943",
@@ -3732,7 +3732,7 @@
         "case": "scripts/content/phase-b-06-10.mjs:950",
         "gradingBase": "scripts/guided-content.mjs",
         "overrides": [
-          "scripts/guided-content.mjs:1349"
+          "scripts/guided-content.mjs:1352"
         ]
       },
       "classification": [
@@ -5291,7 +5291,7 @@
         "resolution": "Admin cấu hình đồng bộ thời gian theo policy sau khi đánh giá ứng dụng nhạy thời gian; không chỉnh giờ thủ công thiếu kế hoạch.",
         "verification": "Guest synchronized theo nguồn tin cậy; thời gian đúng và kiểm tra chain, hostname, hạn cert/TLS từ guest thành công.",
         "escalation": "Chuyển host/time-service team nếu nguồn thời gian host/migration có vấn đề hoặc guest không tới được NTP sau kiểm tra.",
-        "referenceNoteEn": "Issue: Guest clock is significantly behind.\nFindings: timedatectl showed no synchronization and inactive NTP; guest UTC time was about a day behind the stated host time.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Guest time synchronization is unconfirmed.\nFindings: timedatectl showed no synchronization and inactive NTP. The guest printed a UTC time, but no trusted simultaneous host timestamp was captured to quantify drift.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:1007",
@@ -5430,7 +5430,7 @@
         "resolution": "Admin cấu hình đồng bộ thời gian theo policy sau khi đánh giá ứng dụng nhạy thời gian; không chỉnh giờ thủ công thiếu kế hoạch.",
         "verification": "Guest synchronized theo nguồn tin cậy; thời gian đúng và kiểm tra chain, hostname, hạn cert/TLS từ guest thành công.",
         "escalation": "Chuyển host/time-service team nếu nguồn thời gian host/migration có vấn đề hoặc guest không tới được NTP sau kiểm tra.",
-        "referenceNoteEn": "Issue: Guest clock is significantly behind.\nFindings: timedatectl showed no synchronization and inactive NTP; guest UTC time was about a day behind the stated host time.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Guest time synchronization is unconfirmed.\nFindings: timedatectl showed no synchronization and inactive NTP. The guest printed a UTC time, but no trusted simultaneous host timestamp was captured to quantify drift.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:1008",
@@ -5675,7 +5675,7 @@
         "resolution": "Admin cấu hình đồng bộ thời gian theo policy sau khi đánh giá ứng dụng nhạy thời gian; không chỉnh giờ thủ công thiếu kế hoạch.",
         "verification": "Guest synchronized theo nguồn tin cậy; thời gian đúng và kiểm tra chain, hostname, hạn cert/TLS từ guest thành công.",
         "escalation": "Chuyển host/time-service team nếu nguồn thời gian host/migration có vấn đề hoặc guest không tới được NTP sau kiểm tra.",
-        "referenceNoteEn": "Issue: Guest clock is significantly behind.\nFindings: timedatectl showed no synchronization and inactive NTP; guest UTC time was about a day behind the stated host time.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Guest time synchronization is unconfirmed.\nFindings: timedatectl showed no synchronization and inactive NTP. The guest printed a UTC time, but no trusted simultaneous host timestamp was captured to quantify drift.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:1009",
@@ -5851,7 +5851,7 @@
         "resolution": "Admin cấu hình đồng bộ thời gian theo policy sau khi đánh giá ứng dụng nhạy thời gian; không chỉnh giờ thủ công thiếu kế hoạch.",
         "verification": "Guest synchronized theo nguồn tin cậy; thời gian đúng và kiểm tra chain, hostname, hạn cert/TLS từ guest thành công.",
         "escalation": "Chuyển host/time-service team nếu nguồn thời gian host/migration có vấn đề hoặc guest không tới được NTP sau kiểm tra.",
-        "referenceNoteEn": "Issue: Guest clock is significantly behind.\nFindings: timedatectl showed no synchronization and inactive NTP; guest UTC time was about a day behind the stated host time.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Guest time synchronization is unconfirmed.\nFindings: timedatectl showed no synchronization and inactive NTP. The guest printed a UTC time, but no trusted simultaneous host timestamp was captured to quantify drift.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:1010",
@@ -5955,7 +5955,7 @@
         "resolution": "Admin cấu hình đồng bộ thời gian theo policy sau khi đánh giá ứng dụng nhạy thời gian; không chỉnh giờ thủ công thiếu kế hoạch.",
         "verification": "Guest synchronized theo nguồn tin cậy; thời gian đúng và kiểm tra chain, hostname, hạn cert/TLS từ guest thành công.",
         "escalation": "Chuyển host/time-service team nếu nguồn thời gian host/migration có vấn đề hoặc guest không tới được NTP sau kiểm tra.",
-        "referenceNoteEn": "Issue: Guest clock is significantly behind.\nFindings: timedatectl showed no synchronization and inactive NTP; guest UTC time was about a day behind the stated host time.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Guest time synchronization is unconfirmed.\nFindings: timedatectl showed no synchronization and inactive NTP. The guest printed a UTC time, but no trusted simultaneous host timestamp was captured to quantify drift.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:1011",
@@ -6061,7 +6061,7 @@
         "resolution": "Admin cấu hình đồng bộ thời gian theo policy sau khi đánh giá ứng dụng nhạy thời gian; không chỉnh giờ thủ công thiếu kế hoạch.",
         "verification": "Guest synchronized theo nguồn tin cậy; thời gian đúng và kiểm tra chain, hostname, hạn cert/TLS từ guest thành công.",
         "escalation": "Chuyển host/time-service team nếu nguồn thời gian host/migration có vấn đề hoặc guest không tới được NTP sau kiểm tra.",
-        "referenceNoteEn": "Issue: Guest clock is significantly behind.\nFindings: timedatectl showed no synchronization and inactive NTP; guest UTC time was about a day behind the stated host time.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
+        "referenceNoteEn": "Issue: Guest time synchronization is unconfirmed.\nFindings: timedatectl showed no synchronization and inactive NTP. The guest printed a UTC time, but no trusted simultaneous host timestamp was captured to quantify drift.\nNext Action: Validate the trusted time source and restore approved guest time synchronization.\nVerification: Confirm synchronized clock and successful TLS validation.\nStatus: Pending authorized remediation and verification."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:1012",

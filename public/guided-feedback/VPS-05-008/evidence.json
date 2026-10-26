@@ -6,8 +6,8 @@
   "explanation": "Số đo device và free VG không tự bảo đảm mapping/type/backup đã sẵn sàng cho change.",
   "commandId": "lvm-report",
   "optionFeedback": {
-    "p2": "VFree49.99g là free extents ở VG.",
-    "over": "Chưa thể bỏ qua LV30G và filesystem30G.",
+    "p2": "VFree 49.99g là free extents ở VG.",
+    "over": "Chưa thể bỏ qua LV 30G và filesystem 30G.",
     "p1": "Đúng các lớp trong cây block device."
   }
 }

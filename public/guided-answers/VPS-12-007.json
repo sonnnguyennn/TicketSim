@@ -12,5 +12,5 @@
     "safe_resolution": 2,
     "verification_or_escalation": 1
   },
-  "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Retry the approved API action and confirm its effect.\nStatus: Authorization pending."
+  "referenceNoteEn": "Issue: API mutation denied by token scope.\nFindings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.\nNext Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.\nVerification: Check the endpoint permission under the approved scope; perform a real reboot only at an owner-approved time.\nStatus: Authorization pending."
 }

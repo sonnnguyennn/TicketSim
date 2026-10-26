@@ -2,11 +2,11 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Cần xử lý trước deadline nhưng không hứa ngoại lệ chưa được duyệt.",
+  "explanation": "Ngày 22/10 vẫn còn thời gian chuyển yêu cầu, nhưng chưa có hold được duyệt. Nếu mở lại sau 25/10, phải kiểm tra job đã chạy hay chưa.",
   "commandId": "panel-lifecycle-policy",
   "optionFeedback": {
-    "ignore": "Bản ghi còn scheduled deletion tươnglai cần được đối chiếu.",
-    "supported": "Hiện chưa có hold và backup cũng chưa verified restore.",
+    "ignore": "Expired chỉ là trạng thái billing; cần trạng thái deletion job mới biết việc xóa đã xảy ra chưa.",
+    "supported": "Tại mốc 22/10, hold=false và backup chưa thử restore. Sau 25/10 phải kiểm tra trạng thái deletion job.",
     "over": "Policy và người duyệt quyết định phạm vi gia hạn."
   }
 }

@@ -2,6 +2,6 @@
   "hints": [
     "Virtual disk lớn hơn chưa tự làm partition/filesystem lớn hơn.",
     "So lsblk, df và loại filesystem từ findmnt để xác định lớp đang giữ kích thước cũ.",
-    "vda40G nhưng vda1/filesystem20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
+    "vda 40G nhưng vda1/filesystem 20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
   ]
 }

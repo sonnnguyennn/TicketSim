@@ -6,7 +6,7 @@
   "commandId": "systemctl-service",
   "optionFeedback": {
     "supported": "Auto-restart cùng missing config chỉ vào startup chưa đúng.",
-    "over": "Không có nginx-t error, app journal lại nêu config thiếu.",
+    "over": "Không có nginx -t error, app journal lại nêu config thiếu.",
     "ignore": "Restart loop không chứng minh phục vụ request."
   }
 }

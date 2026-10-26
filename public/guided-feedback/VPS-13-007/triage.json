@@ -5,7 +5,7 @@
   "explanation": "Cần theo dõi dependency DB, không chỉ trạng thái API.",
   "optionFeedback": {
     "symptom": "Đúng triệu chứng khách báo.",
-    "other": "API còn chạy, khách chưa nêu hostoff.",
+    "other": "API còn chạy, khách chưa nêu host off.",
     "cause": "Service khác nhau có trạng thái riêng."
   }
 }

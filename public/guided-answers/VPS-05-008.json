@@ -1,5 +1,5 @@
 {
-  "expected_diagnosis": "Disk/partition80G, VG còn49.99g free nhưng LV và XFS /data còn30G, dùng97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
+  "expected_diagnosis": "Disk/partition 80G, VG còn 49.99g free nhưng LV và XFS /data còn 30G, dùng 97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
   "recommended_next_checks": "Xác nhận mapping LV/mount, type XFS, layout LVM/thin/snapshot/encryption nếu có và bản phục hồi trước change.",
   "resolution_guidance": "Sau phê duyệt, mở đúng LV rồi grow filesystem bằng công cụ phù hợp; không format lại volume.",
   "verification": "lvs và df cho dung lượng dự kiến, mount đúng và dữ liệu/app đọc ghi được sau change.",

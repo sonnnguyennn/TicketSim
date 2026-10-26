@@ -7,7 +7,7 @@
   "commandId": "du-var",
   "optionFeedback": {
     "delete": "du không có retention, owner hay yêu cầu lưu bằng chứng.",
-    "inode": "Phép df -i bổ sung ghi42%, không phải100%.",
+    "inode": "Phép df -i bổ sung ghi 42%, không phải 100%.",
     "full": "Đúng dòng df -h.",
     "logs": "Đúng dòng du, chưa phân loại file cụ thể."
   }

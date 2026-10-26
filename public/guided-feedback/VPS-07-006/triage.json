@@ -4,7 +4,7 @@
   ],
   "explanation": "Deploy là mốc so sánh, chưa tự kết luận nguyên nhân cụ thể.",
   "optionFeedback": {
-    "other": "Khách đang nhận HTTP503, chưa có NXDOMAIN.",
+    "other": "Khách đang nhận HTTP 503, chưa có NXDOMAIN.",
     "cause": "Cần log app/proxy trước kết luận.",
     "symptom": "So release/config và readiness cùng thời điểm."
   }

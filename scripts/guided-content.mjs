@@ -718,7 +718,7 @@ addBatchCase({
   safeNext:'Thu tracepath, MTU/MSS VPN và thử upload có giám sát; chuyển đội VPN/network với source, thời điểm, kích thước.',unsafe:'Tự hạ MTU interface khách từ phiên SSH duy nhất.',verify:'Upload lớn qua đúng VPN hoàn tất, không retransmit bất thường và request nhỏ vẫn hoạt động.',wrongChecks:['df -h /','systemctl status sshd'],
   outputPrompt:'1472 byte báo DF/fragmentation, 1200 byte nhận được; điều này hỗ trợ giả thuyết nào?',
   extras:[
-    {command:'tracepath 198.51.100.20',output:' 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms\n 2:  no reply\n 3:  198.51.100.20  31.228ms',purpose:'Quan sát PMTU và hop từ client VPN.',meaning:'Tracepath không xác nhận được PMTU thấp ở hop im lặng; cần kiểm tra TCP và thiết bị VPN.',commandId:'mtr',aliases:[],context:'client'},
+    {command:'tracepath 198.51.100.20',output:' 1?: [LOCALHOST] pmtu 1500\n 1:  10.8.0.1  4.104ms pmtu 1400\n 2:  no reply\n 3:  198.51.100.20  31.228ms reached\n     Resume: pmtu 1400 hops 3',purpose:'Quan sát PMTU và hop từ client VPN.',meaning:'UDP probe ghi nhận PMTU 1400, phù hợp ICMP frag-needed nhưng chưa chứng minh HTTPS/TCP bị lỗi vì PMTUD; cần kiểm tra luồng TCP và thiết bị VPN.',commandId:'mtr',aliases:[],context:'client'},
     {command:'PANEL: VPN tunnel settings',output:'Tunnel interface MTU: 1400; TCP MSS clamp: disabled',purpose:'Đọc cấu hình tunnel được phép xem.',meaning:'MTU tunnel nhỏ hơn 1500 là một giả thuyết phù hợp; cấu hình chưa chứng minh đây là nguyên nhân duy nhất.',commandId:'panel-probes',aliases:[],context:'panel'},
   ],
 })
@@ -1322,9 +1322,9 @@ const d1Option = (id, questionId, optionId) => d1Question(id, questionId).option
 // The authored incidents are on 2026-10-22 UTC. Relative dates would query a
 // different day when a learner opens the case later. The explicit UTC suffix
 // also avoids interpreting the fixture through the guest's local timezone.
-const backupWindow = 'journalctl -u backup-agent --since "2026-10-22 02:00:00 UTC" --until "2026-10-22 02:30:00 UTC"'
-const rootLoginWindow = 'journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC"'
-const sshDropWindow = 'journalctl -u sshd --since "2026-10-22 23:00:00 UTC" --until "2026-10-22 23:30:00 UTC" --no-pager'
+const backupWindow = 'journalctl -u backup-agent --since "2026-10-22 02:00:00 UTC" --until "2026-10-22 02:30:00 UTC" --utc'
+const rootLoginWindow = 'journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC" --utc'
+const sshDropWindow = 'journalctl -u sshd --since "2026-10-22 23:00:00 UTC" --until "2026-10-22 23:30:00 UTC" --utc --no-pager'
 d1['VPS-04-008'].probeCommandOverrides = { ...d1['VPS-04-008'].probeCommandOverrides, P1: backupWindow }
 d1Option('VPS-04-008', 'check', 'direct').label = backupWindow
 d1Option('VPS-04-008', 'check', 'direct').feedback = 'Đọc đúng unit trong ngày 22/10/2026 và cửa sổ 02:00–02:30 UTC của sự cố.'
@@ -1333,7 +1333,10 @@ d1Option('VPS-09-007', 'check', 'direct').label = rootLoginWindow
 d1Option('VPS-09-007', 'check', 'direct').feedback = 'Đọc sự kiện Accepted trong cửa sổ 09:00–09:30 UTC ngày 22/10/2026.'
 d1['VPS-01-008'].extras[0].command = sshDropWindow
 d1['VPS-01-008'].extras[0].purpose = 'Đọc phiên SSH trong cửa sổ job ngày 22/10/2026 UTC.'
+d1Question('VPS-01-008', 'check').prompt = 'Muốn tìm sự kiện OOM trong kernel log của boot này, nên đọc gì trước?'
 phaseBEdits['VPS-01-008'].review.fixtureChanges.push({ probeId: 'G1', reason: 'Khóa ngày và timezone UTC của SSH journal theo incident 22/10/2026; không dùng yesterday biến đổi theo ngày chạy.' })
+phaseBEdits['VPS-04-008'].review.fixtureChanges.push({ probeId: 'P1', reason: 'Guided-only command thêm --utc để timestamp hiển thị của log khớp giờ UTC của incident; giữ output và original ticket fixture.' })
+phaseBEdits['VPS-09-007'].review.fixtureChanges.push({ probeId: 'P1', reason: 'Guided-only command thêm --utc để timestamp hiển thị của Accepted event khớp giờ UTC; giữ output và original ticket fixture.' })
 d1Question('VPS-01-008', 'output').explanation = 'OOM kill python3, RAM thấp và session closed đều được quan sát; các mẫu chưa có timestamp chung để gắn chúng với cùng lần rớt SSH.'
 d1Option('VPS-01-008', 'output', 'supported').label = 'Có dấu hiệu áp lực RAM; liên hệ thời gian và tác động tới SSH còn cần xác minh.'
 d1Option('VPS-01-008', 'output', 'supported').feedback = 'Kernel nêu python3, còn free và PSI là ảnh chụp riêng; cần timeline có timestamp.'

@@ -20,7 +20,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
           "context": "guest",
           "purpose": "Đọc block space của filesystem chứa /.",
-          "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+          "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -31,7 +31,7 @@
           "output": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
           "context": "guest",
           "purpose": "Đo dung lượng các thư mục ngay dưới /var trong cùng filesystem.",
-          "meaning": "/var/log chiếm13G và /var tổng14G. Dung lượng không cho biết file nào được phép xóa.",
+          "meaning": "/var/log chiếm 13G và /var tổng 14G. Dung lượng không cho biết file nào được phép xóa.",
           "commandId": "du-var",
           "aliases": [
             "sudo du -xhd1 /var"
@@ -44,7 +44,7 @@
           "command": "df -i /",
           "output": "Filesystem      Inodes  IUsed  IFree IUse% Mounted on\n/dev/vda1      1310720 550502 760218   42% /",
           "purpose": "Đọc mức sử dụng inode của /.",
-          "meaning": "Inode dùng42%, chưa đầy trong mẫu, trong khi block đã đầy.",
+          "meaning": "Inode dùng 42%, chưa đầy trong mẫu, trong khi block đã đầy.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Hết inode cũng gây không tạo file; cần phân biệt với hết block."
@@ -55,7 +55,7 @@
           "command": "journalctl --disk-usage",
           "output": "Archived and active journals take up 1.2G in the file system.",
           "purpose": "Đọc dung lượng active và archived systemd journal.",
-          "meaning": "Journal chiếm1.2G, chỉ một phần trong13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
+          "meaning": "Journal chiếm 1.2G, chỉ một phần trong 13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Cần biết bao nhiêu phần /var/log thực sự là journal trước đề xuất vacuum."
@@ -102,7 +102,7 @@
         },
         {
           "id": "login",
-          "label": "Kết nối SSH bị từ chối ở cổng22.",
+          "label": "Kết nối SSH bị từ chối ở cổng 22.",
           "feedback": "Không phải triệu chứng được nêu trong ticket ghi dữ liệu."
         }
       ],
@@ -113,10 +113,10 @@
       "hints": [
         "Thông báo hết chỗ chưa chỉ ra block hay inode; đo cả hai trên đúng mount.",
         "Dùng df cho dung lượng/inode và du để khoanh thư mục chiếm nhiều; đừng xóa ngay tên thư mục lớn nhất.",
-        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ1.2G; cần retention, owner và nguồn tăng trưởng."
+        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ 1.2G; cần retention, owner và nguồn tăng trưởng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm13G nhưng journal chỉ1.2G. Chưa biết file/log nào tăng và có thể dọn.",
+        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm 13G nhưng journal chỉ 1.2G. Chưa biết file/log nào tăng và có thể dọn.",
         "nextChecks": "Xác nhận mount của dữ liệu app, phân loại file/log lớn và nguồn phát sinh; đối chiếu retention/backup với owner.",
         "resolution": "Theo phê duyệt, dùng rotation/vacuum hoặc dọn phần đã xác định; có thể lập capacity change nếu nhu cầu hợp lệ, không xóa cả /var/log.",
         "verification": "Avail có lại, inode đủ và app lưu được dữ liệu kiểm tra; theo dõi nguồn log không tăng bất thường.",
@@ -151,7 +151,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
           "context": "guest",
           "purpose": "Đọc block space của filesystem chứa /.",
-          "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+          "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -177,7 +177,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
           "context": "guest",
           "purpose": "Đọc block space của filesystem chứa /.",
-          "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+          "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -188,7 +188,7 @@
           "output": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
           "context": "guest",
           "purpose": "Đo dung lượng các thư mục ngay dưới /var trong cùng filesystem.",
-          "meaning": "/var/log chiếm13G và /var tổng14G. Dung lượng không cho biết file nào được phép xóa.",
+          "meaning": "/var/log chiếm 13G và /var tổng 14G. Dung lượng không cho biết file nào được phép xóa.",
           "commandId": "du-var",
           "aliases": [
             "sudo du -xhd1 /var"
@@ -201,7 +201,7 @@
           "command": "df -i /",
           "output": "Filesystem      Inodes  IUsed  IFree IUse% Mounted on\n/dev/vda1      1310720 550502 760218   42% /",
           "purpose": "Đọc mức sử dụng inode của /.",
-          "meaning": "Inode dùng42%, chưa đầy trong mẫu, trong khi block đã đầy.",
+          "meaning": "Inode dùng 42%, chưa đầy trong mẫu, trong khi block đã đầy.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Hết inode cũng gây không tạo file; cần phân biệt với hết block."
@@ -212,7 +212,7 @@
           "command": "journalctl --disk-usage",
           "output": "Archived and active journals take up 1.2G in the file system.",
           "purpose": "Đọc dung lượng active và archived systemd journal.",
-          "meaning": "Journal chiếm1.2G, chỉ một phần trong13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
+          "meaning": "Journal chiếm 1.2G, chỉ một phần trong 13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Cần biết bao nhiêu phần /var/log thực sự là journal trước đề xuất vacuum."
@@ -303,10 +303,10 @@
       "hints": [
         "Thông báo hết chỗ chưa chỉ ra block hay inode; đo cả hai trên đúng mount.",
         "Dùng df cho dung lượng/inode và du để khoanh thư mục chiếm nhiều; đừng xóa ngay tên thư mục lớn nhất.",
-        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ1.2G; cần retention, owner và nguồn tăng trưởng."
+        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ 1.2G; cần retention, owner và nguồn tăng trưởng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm13G nhưng journal chỉ1.2G. Chưa biết file/log nào tăng và có thể dọn.",
+        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm 13G nhưng journal chỉ 1.2G. Chưa biết file/log nào tăng và có thể dọn.",
         "nextChecks": "Xác nhận mount của dữ liệu app, phân loại file/log lớn và nguồn phát sinh; đối chiếu retention/backup với owner.",
         "resolution": "Theo phê duyệt, dùng rotation/vacuum hoặc dọn phần đã xác định; có thể lập capacity change nếu nhu cầu hợp lệ, không xóa cả /var/log.",
         "verification": "Avail có lại, inode đủ và app lưu được dữ liệu kiểm tra; theo dõi nguồn log không tăng bất thường.",
@@ -343,7 +343,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
           "context": "guest",
           "purpose": "Đọc block space của filesystem chứa /.",
-          "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+          "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -369,7 +369,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
           "context": "guest",
           "purpose": "Đọc block space của filesystem chứa /.",
-          "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+          "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -380,7 +380,7 @@
           "output": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
           "context": "guest",
           "purpose": "Đo dung lượng các thư mục ngay dưới /var trong cùng filesystem.",
-          "meaning": "/var/log chiếm13G và /var tổng14G. Dung lượng không cho biết file nào được phép xóa.",
+          "meaning": "/var/log chiếm 13G và /var tổng 14G. Dung lượng không cho biết file nào được phép xóa.",
           "commandId": "du-var",
           "aliases": [
             "sudo du -xhd1 /var"
@@ -393,7 +393,7 @@
           "command": "df -i /",
           "output": "Filesystem      Inodes  IUsed  IFree IUse% Mounted on\n/dev/vda1      1310720 550502 760218   42% /",
           "purpose": "Đọc mức sử dụng inode của /.",
-          "meaning": "Inode dùng42%, chưa đầy trong mẫu, trong khi block đã đầy.",
+          "meaning": "Inode dùng 42%, chưa đầy trong mẫu, trong khi block đã đầy.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Hết inode cũng gây không tạo file; cần phân biệt với hết block."
@@ -404,7 +404,7 @@
           "command": "journalctl --disk-usage",
           "output": "Archived and active journals take up 1.2G in the file system.",
           "purpose": "Đọc dung lượng active và archived systemd journal.",
-          "meaning": "Journal chiếm1.2G, chỉ một phần trong13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
+          "meaning": "Journal chiếm 1.2G, chỉ một phần trong 13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Cần biết bao nhiêu phần /var/log thực sự là journal trước đề xuất vacuum."
@@ -470,12 +470,12 @@
           "source": "src/guided/commands.ts (id df-h)"
         }
       ],
-      "prompt": "Avail0 và Use%100 trên / xác nhận điều gì?",
+      "prompt": "Avail 0 và Use%100 trên / xác nhận điều gì?",
       "options": [
         {
           "id": "inode",
           "label": "Inode chắc chắn dùng hết.",
-          "feedback": "df -h không đo inode; df -i bổ sung còn42%."
+          "feedback": "df -h không đo inode; df -i bổ sung còn 42%."
         },
         {
           "id": "ram",
@@ -485,7 +485,7 @@
         {
           "id": "full",
           "label": "Filesystem / hết block space khả dụng.",
-          "feedback": "Đúng các cột Avail0 và Use%100 của df."
+          "feedback": "Đúng các cột Avail 0 và Use%100 của df."
         }
       ],
       "correctIds": [
@@ -495,10 +495,10 @@
       "hints": [
         "Thông báo hết chỗ chưa chỉ ra block hay inode; đo cả hai trên đúng mount.",
         "Dùng df cho dung lượng/inode và du để khoanh thư mục chiếm nhiều; đừng xóa ngay tên thư mục lớn nhất.",
-        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ1.2G; cần retention, owner và nguồn tăng trưởng."
+        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ 1.2G; cần retention, owner và nguồn tăng trưởng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm13G nhưng journal chỉ1.2G. Chưa biết file/log nào tăng và có thể dọn.",
+        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm 13G nhưng journal chỉ 1.2G. Chưa biết file/log nào tăng và có thể dọn.",
         "nextChecks": "Xác nhận mount của dữ liệu app, phân loại file/log lớn và nguồn phát sinh; đối chiếu retention/backup với owner.",
         "resolution": "Theo phê duyệt, dùng rotation/vacuum hoặc dọn phần đã xác định; có thể lập capacity change nếu nhu cầu hợp lệ, không xóa cả /var/log.",
         "verification": "Avail có lại, inode đủ và app lưu được dữ liệu kiểm tra; theo dõi nguồn log không tăng bất thường.",
@@ -536,7 +536,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
           "context": "guest",
           "purpose": "Đọc block space của filesystem chứa /.",
-          "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+          "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -547,7 +547,7 @@
           "output": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
           "context": "guest",
           "purpose": "Đo dung lượng các thư mục ngay dưới /var trong cùng filesystem.",
-          "meaning": "/var/log chiếm13G và /var tổng14G. Dung lượng không cho biết file nào được phép xóa.",
+          "meaning": "/var/log chiếm 13G và /var tổng 14G. Dung lượng không cho biết file nào được phép xóa.",
           "commandId": "du-var",
           "aliases": [
             "sudo du -xhd1 /var"
@@ -562,7 +562,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
           "context": "guest",
           "purpose": "Đọc block space của filesystem chứa /.",
-          "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+          "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -573,7 +573,7 @@
           "output": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
           "context": "guest",
           "purpose": "Đo dung lượng các thư mục ngay dưới /var trong cùng filesystem.",
-          "meaning": "/var/log chiếm13G và /var tổng14G. Dung lượng không cho biết file nào được phép xóa.",
+          "meaning": "/var/log chiếm 13G và /var tổng 14G. Dung lượng không cho biết file nào được phép xóa.",
           "commandId": "du-var",
           "aliases": [
             "sudo du -xhd1 /var"
@@ -586,7 +586,7 @@
           "command": "df -i /",
           "output": "Filesystem      Inodes  IUsed  IFree IUse% Mounted on\n/dev/vda1      1310720 550502 760218   42% /",
           "purpose": "Đọc mức sử dụng inode của /.",
-          "meaning": "Inode dùng42%, chưa đầy trong mẫu, trong khi block đã đầy.",
+          "meaning": "Inode dùng 42%, chưa đầy trong mẫu, trong khi block đã đầy.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Hết inode cũng gây không tạo file; cần phân biệt với hết block."
@@ -597,7 +597,7 @@
           "command": "journalctl --disk-usage",
           "output": "Archived and active journals take up 1.2G in the file system.",
           "purpose": "Đọc dung lượng active và archived systemd journal.",
-          "meaning": "Journal chiếm1.2G, chỉ một phần trong13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
+          "meaning": "Journal chiếm 1.2G, chỉ một phần trong 13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Cần biết bao nhiêu phần /var/log thực sự là journal trước đề xuất vacuum."
@@ -704,17 +704,17 @@
         },
         {
           "id": "inode",
-          "label": "Inode của / đang100%.",
-          "feedback": "Phép df -i bổ sung ghi42%, không phải100%."
+          "label": "Inode của / đang 100%.",
+          "feedback": "Phép df -i bổ sung ghi 42%, không phải 100%."
         },
         {
           "id": "full",
-          "label": "Block space của / đang100%.",
+          "label": "Block space của / đang 100%.",
           "feedback": "Đúng dòng df -h."
         },
         {
           "id": "logs",
-          "label": "/var/log chiếm13G.",
+          "label": "/var/log chiếm 13G.",
           "feedback": "Đúng dòng du, chưa phân loại file cụ thể."
         }
       ],
@@ -726,10 +726,10 @@
       "hints": [
         "Thông báo hết chỗ chưa chỉ ra block hay inode; đo cả hai trên đúng mount.",
         "Dùng df cho dung lượng/inode và du để khoanh thư mục chiếm nhiều; đừng xóa ngay tên thư mục lớn nhất.",
-        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ1.2G; cần retention, owner và nguồn tăng trưởng."
+        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ 1.2G; cần retention, owner và nguồn tăng trưởng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm13G nhưng journal chỉ1.2G. Chưa biết file/log nào tăng và có thể dọn.",
+        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm 13G nhưng journal chỉ 1.2G. Chưa biết file/log nào tăng và có thể dọn.",
         "nextChecks": "Xác nhận mount của dữ liệu app, phân loại file/log lớn và nguồn phát sinh; đối chiếu retention/backup với owner.",
         "resolution": "Theo phê duyệt, dùng rotation/vacuum hoặc dọn phần đã xác định; có thể lập capacity change nếu nhu cầu hợp lệ, không xóa cả /var/log.",
         "verification": "Avail có lại, inode đủ và app lưu được dữ liệu kiểm tra; theo dõi nguồn log không tăng bất thường.",
@@ -764,7 +764,7 @@
           "output": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
           "context": "guest",
           "purpose": "Đo dung lượng các thư mục ngay dưới /var trong cùng filesystem.",
-          "meaning": "/var/log chiếm13G và /var tổng14G. Dung lượng không cho biết file nào được phép xóa.",
+          "meaning": "/var/log chiếm 13G và /var tổng 14G. Dung lượng không cho biết file nào được phép xóa.",
           "commandId": "du-var",
           "aliases": [
             "sudo du -xhd1 /var"
@@ -779,7 +779,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
           "context": "guest",
           "purpose": "Đọc block space của filesystem chứa /.",
-          "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+          "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -790,7 +790,7 @@
           "output": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
           "context": "guest",
           "purpose": "Đo dung lượng các thư mục ngay dưới /var trong cùng filesystem.",
-          "meaning": "/var/log chiếm13G và /var tổng14G. Dung lượng không cho biết file nào được phép xóa.",
+          "meaning": "/var/log chiếm 13G và /var tổng 14G. Dung lượng không cho biết file nào được phép xóa.",
           "commandId": "du-var",
           "aliases": [
             "sudo du -xhd1 /var"
@@ -803,7 +803,7 @@
           "command": "df -i /",
           "output": "Filesystem      Inodes  IUsed  IFree IUse% Mounted on\n/dev/vda1      1310720 550502 760218   42% /",
           "purpose": "Đọc mức sử dụng inode của /.",
-          "meaning": "Inode dùng42%, chưa đầy trong mẫu, trong khi block đã đầy.",
+          "meaning": "Inode dùng 42%, chưa đầy trong mẫu, trong khi block đã đầy.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Hết inode cũng gây không tạo file; cần phân biệt với hết block."
@@ -814,7 +814,7 @@
           "command": "journalctl --disk-usage",
           "output": "Archived and active journals take up 1.2G in the file system.",
           "purpose": "Đọc dung lượng active và archived systemd journal.",
-          "meaning": "Journal chiếm1.2G, chỉ một phần trong13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
+          "meaning": "Journal chiếm 1.2G, chỉ một phần trong 13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Cần biết bao nhiêu phần /var/log thực sự là journal trước đề xuất vacuum."
@@ -905,10 +905,10 @@
       "hints": [
         "Thông báo hết chỗ chưa chỉ ra block hay inode; đo cả hai trên đúng mount.",
         "Dùng df cho dung lượng/inode và du để khoanh thư mục chiếm nhiều; đừng xóa ngay tên thư mục lớn nhất.",
-        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ1.2G; cần retention, owner và nguồn tăng trưởng."
+        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ 1.2G; cần retention, owner và nguồn tăng trưởng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm13G nhưng journal chỉ1.2G. Chưa biết file/log nào tăng và có thể dọn.",
+        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm 13G nhưng journal chỉ 1.2G. Chưa biết file/log nào tăng và có thể dọn.",
         "nextChecks": "Xác nhận mount của dữ liệu app, phân loại file/log lớn và nguồn phát sinh; đối chiếu retention/backup với owner.",
         "resolution": "Theo phê duyệt, dùng rotation/vacuum hoặc dọn phần đã xác định; có thể lập capacity change nếu nhu cầu hợp lệ, không xóa cả /var/log.",
         "verification": "Avail có lại, inode đủ và app lưu được dữ liệu kiểm tra; theo dõi nguồn log không tăng bất thường.",
@@ -946,7 +946,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
           "context": "guest",
           "purpose": "Đọc block space của filesystem chứa /.",
-          "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+          "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -957,7 +957,7 @@
           "output": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
           "context": "guest",
           "purpose": "Đo dung lượng các thư mục ngay dưới /var trong cùng filesystem.",
-          "meaning": "/var/log chiếm13G và /var tổng14G. Dung lượng không cho biết file nào được phép xóa.",
+          "meaning": "/var/log chiếm 13G và /var tổng 14G. Dung lượng không cho biết file nào được phép xóa.",
           "commandId": "du-var",
           "aliases": [
             "sudo du -xhd1 /var"
@@ -985,7 +985,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  20G     0 100% /",
           "context": "guest",
           "purpose": "Đọc block space của filesystem chứa /.",
-          "meaning": "Filesystem gốc dùng100%, Avail0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
+          "meaning": "Filesystem gốc dùng 100%, Avail 0 theo mẫu. Cần chắc đường dữ liệu app nằm trên filesystem này.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Ứng dụng không ghi thêm được nên cần biết filesystem đang đầy thật hay không."
@@ -996,7 +996,7 @@
           "output": "13G\t/var/log\n1.0G\t/var/lib\n14G\t/var",
           "context": "guest",
           "purpose": "Đo dung lượng các thư mục ngay dưới /var trong cùng filesystem.",
-          "meaning": "/var/log chiếm13G và /var tổng14G. Dung lượng không cho biết file nào được phép xóa.",
+          "meaning": "/var/log chiếm 13G và /var tổng 14G. Dung lượng không cho biết file nào được phép xóa.",
           "commandId": "du-var",
           "aliases": [
             "sudo du -xhd1 /var"
@@ -1009,7 +1009,7 @@
           "command": "df -i /",
           "output": "Filesystem      Inodes  IUsed  IFree IUse% Mounted on\n/dev/vda1      1310720 550502 760218   42% /",
           "purpose": "Đọc mức sử dụng inode của /.",
-          "meaning": "Inode dùng42%, chưa đầy trong mẫu, trong khi block đã đầy.",
+          "meaning": "Inode dùng 42%, chưa đầy trong mẫu, trong khi block đã đầy.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Hết inode cũng gây không tạo file; cần phân biệt với hết block."
@@ -1020,7 +1020,7 @@
           "command": "journalctl --disk-usage",
           "output": "Archived and active journals take up 1.2G in the file system.",
           "purpose": "Đọc dung lượng active và archived systemd journal.",
-          "meaning": "Journal chiếm1.2G, chỉ một phần trong13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
+          "meaning": "Journal chiếm 1.2G, chỉ một phần trong 13G /var/log. Vacuum chỉ ảnh hưởng archived journal đủ điều kiện, không toàn bộ log.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Cần biết bao nhiêu phần /var/log thực sự là journal trước đề xuất vacuum."
@@ -1151,10 +1151,10 @@
       "hints": [
         "Thông báo hết chỗ chưa chỉ ra block hay inode; đo cả hai trên đúng mount.",
         "Dùng df cho dung lượng/inode và du để khoanh thư mục chiếm nhiều; đừng xóa ngay tên thư mục lớn nhất.",
-        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ1.2G; cần retention, owner và nguồn tăng trưởng."
+        "/var/log13G không có nghĩa tất cả là journal hoặc có thể xóa. Journal chỉ 1.2G; cần retention, owner và nguồn tăng trưởng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm13G nhưng journal chỉ1.2G. Chưa biết file/log nào tăng và có thể dọn.",
+        "expectedDiagnosis": "Filesystem gốc hết block space trong mẫu, inode chưa đầy; /var/log chiếm 13G nhưng journal chỉ 1.2G. Chưa biết file/log nào tăng và có thể dọn.",
         "nextChecks": "Xác nhận mount của dữ liệu app, phân loại file/log lớn và nguồn phát sinh; đối chiếu retention/backup với owner.",
         "resolution": "Theo phê duyệt, dùng rotation/vacuum hoặc dọn phần đã xác định; có thể lập capacity change nếu nhu cầu hợp lệ, không xóa cả /var/log.",
         "verification": "Avail có lại, inode đủ và app lưu được dữ liệu kiểm tra; theo dõi nguồn log không tăng bất thường.",
@@ -1190,7 +1190,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G 9.0G   11G  45% /",
           "context": "guest",
           "purpose": "Đọc dung lượng block của filesystem gốc.",
-          "meaning": "Block dùng45% và còn11G trong mẫu. Điều này chưa chứng minh còn inode.",
+          "meaning": "Block dùng 45% và còn 11G trong mẫu. Điều này chưa chứng minh còn inode.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Khách còn GB nhưng không tạo file; cần xác nhận block chưa cạn."
@@ -1201,7 +1201,7 @@
           "output": "Filesystem      Inodes   IUsed IFree IUse% Mounted on\n/dev/vda1      1048576 1048576     0  100% /",
           "context": "guest",
           "purpose": "Đọc số inode dùng và còn trống của /.",
-          "meaning": "Inode dùng100%, IFree0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
+          "meaning": "Inode dùng 100%, IFree 0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Tạo file cần metadata/inode, không chỉ GB trống."
@@ -1212,7 +1212,7 @@
           "command": "find /var -xdev -type f | wc -l",
           "output": "850000",
           "purpose": "Đếm file thường dưới /var trong cùng filesystem.",
-          "meaning": "Đếm850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
+          "meaning": "Đếm 850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
           "commandId": "find-files",
           "aliases": [],
           "why": "Tìm phạm vi có thể chứa nhiều file nhỏ mà chưa xóa dữ liệu."
@@ -1223,7 +1223,7 @@
           "command": "du -xhd1 /var",
           "output": "1.1G /var",
           "purpose": "Đo dung lượng /var và các thư mục con trong cùng filesystem.",
-          "meaning": "/var khoảng1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
+          "meaning": "/var khoảng 1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
           "commandId": "du-var",
           "aliases": [],
           "why": "So lượng GB với số file để tránh chỉ tìm file lớn."
@@ -1293,7 +1293,7 @@
           "output": "Filesystem      Inodes   IUsed IFree IUse% Mounted on\n/dev/vda1      1048576 1048576     0  100% /",
           "context": "guest",
           "purpose": "Đọc số inode dùng và còn trống của /.",
-          "meaning": "Inode dùng100%, IFree0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
+          "meaning": "Inode dùng 100%, IFree 0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Tạo file cần metadata/inode, không chỉ GB trống."
@@ -1306,7 +1306,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G 9.0G   11G  45% /",
           "context": "guest",
           "purpose": "Đọc dung lượng block của filesystem gốc.",
-          "meaning": "Block dùng45% và còn11G trong mẫu. Điều này chưa chứng minh còn inode.",
+          "meaning": "Block dùng 45% và còn 11G trong mẫu. Điều này chưa chứng minh còn inode.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Khách còn GB nhưng không tạo file; cần xác nhận block chưa cạn."
@@ -1317,7 +1317,7 @@
           "output": "Filesystem      Inodes   IUsed IFree IUse% Mounted on\n/dev/vda1      1048576 1048576     0  100% /",
           "context": "guest",
           "purpose": "Đọc số inode dùng và còn trống của /.",
-          "meaning": "Inode dùng100%, IFree0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
+          "meaning": "Inode dùng 100%, IFree 0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Tạo file cần metadata/inode, không chỉ GB trống."
@@ -1328,7 +1328,7 @@
           "command": "find /var -xdev -type f | wc -l",
           "output": "850000",
           "purpose": "Đếm file thường dưới /var trong cùng filesystem.",
-          "meaning": "Đếm850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
+          "meaning": "Đếm 850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
           "commandId": "find-files",
           "aliases": [],
           "why": "Tìm phạm vi có thể chứa nhiều file nhỏ mà chưa xóa dữ liệu."
@@ -1339,7 +1339,7 @@
           "command": "du -xhd1 /var",
           "output": "1.1G /var",
           "purpose": "Đo dung lượng /var và các thư mục con trong cùng filesystem.",
-          "meaning": "/var khoảng1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
+          "meaning": "/var khoảng 1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
           "commandId": "du-var",
           "aliases": [],
           "why": "So lượng GB với số file để tránh chỉ tìm file lớn."
@@ -1444,7 +1444,7 @@
           "output": "Filesystem      Inodes   IUsed IFree IUse% Mounted on\n/dev/vda1      1048576 1048576     0  100% /",
           "context": "guest",
           "purpose": "Đọc số inode dùng và còn trống của /.",
-          "meaning": "Inode dùng100%, IFree0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
+          "meaning": "Inode dùng 100%, IFree 0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Tạo file cần metadata/inode, không chỉ GB trống."
@@ -1457,7 +1457,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G 9.0G   11G  45% /",
           "context": "guest",
           "purpose": "Đọc dung lượng block của filesystem gốc.",
-          "meaning": "Block dùng45% và còn11G trong mẫu. Điều này chưa chứng minh còn inode.",
+          "meaning": "Block dùng 45% và còn 11G trong mẫu. Điều này chưa chứng minh còn inode.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Khách còn GB nhưng không tạo file; cần xác nhận block chưa cạn."
@@ -1468,7 +1468,7 @@
           "output": "Filesystem      Inodes   IUsed IFree IUse% Mounted on\n/dev/vda1      1048576 1048576     0  100% /",
           "context": "guest",
           "purpose": "Đọc số inode dùng và còn trống của /.",
-          "meaning": "Inode dùng100%, IFree0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
+          "meaning": "Inode dùng 100%, IFree 0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Tạo file cần metadata/inode, không chỉ GB trống."
@@ -1479,7 +1479,7 @@
           "command": "find /var -xdev -type f | wc -l",
           "output": "850000",
           "purpose": "Đếm file thường dưới /var trong cùng filesystem.",
-          "meaning": "Đếm850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
+          "meaning": "Đếm 850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
           "commandId": "find-files",
           "aliases": [],
           "why": "Tìm phạm vi có thể chứa nhiều file nhỏ mà chưa xóa dữ liệu."
@@ -1490,7 +1490,7 @@
           "command": "du -xhd1 /var",
           "output": "1.1G /var",
           "purpose": "Đo dung lượng /var và các thư mục con trong cùng filesystem.",
-          "meaning": "/var khoảng1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
+          "meaning": "/var khoảng 1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
           "commandId": "du-var",
           "aliases": [],
           "why": "So lượng GB với số file để tránh chỉ tìm file lớn."
@@ -1530,7 +1530,7 @@
           "source": "src/guided/commands.ts (id df-i)"
         }
       ],
-      "prompt": "IFree0 và IUse%100 nghĩa là tài nguyên nào đã hết?",
+      "prompt": "IFree 0 và IUse%100 nghĩa là tài nguyên nào đã hết?",
       "options": [
         {
           "id": "blocks",
@@ -1596,7 +1596,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G 9.0G   11G  45% /",
           "context": "guest",
           "purpose": "Đọc dung lượng block của filesystem gốc.",
-          "meaning": "Block dùng45% và còn11G trong mẫu. Điều này chưa chứng minh còn inode.",
+          "meaning": "Block dùng 45% và còn 11G trong mẫu. Điều này chưa chứng minh còn inode.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Khách còn GB nhưng không tạo file; cần xác nhận block chưa cạn."
@@ -1607,7 +1607,7 @@
           "output": "Filesystem      Inodes   IUsed IFree IUse% Mounted on\n/dev/vda1      1048576 1048576     0  100% /",
           "context": "guest",
           "purpose": "Đọc số inode dùng và còn trống của /.",
-          "meaning": "Inode dùng100%, IFree0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
+          "meaning": "Inode dùng 100%, IFree 0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Tạo file cần metadata/inode, không chỉ GB trống."
@@ -1620,7 +1620,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G 9.0G   11G  45% /",
           "context": "guest",
           "purpose": "Đọc dung lượng block của filesystem gốc.",
-          "meaning": "Block dùng45% và còn11G trong mẫu. Điều này chưa chứng minh còn inode.",
+          "meaning": "Block dùng 45% và còn 11G trong mẫu. Điều này chưa chứng minh còn inode.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Khách còn GB nhưng không tạo file; cần xác nhận block chưa cạn."
@@ -1631,7 +1631,7 @@
           "output": "Filesystem      Inodes   IUsed IFree IUse% Mounted on\n/dev/vda1      1048576 1048576     0  100% /",
           "context": "guest",
           "purpose": "Đọc số inode dùng và còn trống của /.",
-          "meaning": "Inode dùng100%, IFree0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
+          "meaning": "Inode dùng 100%, IFree 0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Tạo file cần metadata/inode, không chỉ GB trống."
@@ -1642,7 +1642,7 @@
           "command": "find /var -xdev -type f | wc -l",
           "output": "850000",
           "purpose": "Đếm file thường dưới /var trong cùng filesystem.",
-          "meaning": "Đếm850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
+          "meaning": "Đếm 850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
           "commandId": "find-files",
           "aliases": [],
           "why": "Tìm phạm vi có thể chứa nhiều file nhỏ mà chưa xóa dữ liệu."
@@ -1653,7 +1653,7 @@
           "command": "du -xhd1 /var",
           "output": "1.1G /var",
           "purpose": "Đo dung lượng /var và các thư mục con trong cùng filesystem.",
-          "meaning": "/var khoảng1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
+          "meaning": "/var khoảng 1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
           "commandId": "du-var",
           "aliases": [],
           "why": "So lượng GB với số file để tránh chỉ tìm file lớn."
@@ -1794,7 +1794,7 @@
           "command": "find /var -xdev -type f | wc -l",
           "output": "850000",
           "purpose": "Đếm file thường dưới /var trong cùng filesystem.",
-          "meaning": "Đếm850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
+          "meaning": "Đếm 850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
           "commandId": "find-files",
           "aliases": [],
           "why": "Tìm phạm vi có thể chứa nhiều file nhỏ mà chưa xóa dữ liệu."
@@ -1807,7 +1807,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G 9.0G   11G  45% /",
           "context": "guest",
           "purpose": "Đọc dung lượng block của filesystem gốc.",
-          "meaning": "Block dùng45% và còn11G trong mẫu. Điều này chưa chứng minh còn inode.",
+          "meaning": "Block dùng 45% và còn 11G trong mẫu. Điều này chưa chứng minh còn inode.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Khách còn GB nhưng không tạo file; cần xác nhận block chưa cạn."
@@ -1818,7 +1818,7 @@
           "output": "Filesystem      Inodes   IUsed IFree IUse% Mounted on\n/dev/vda1      1048576 1048576     0  100% /",
           "context": "guest",
           "purpose": "Đọc số inode dùng và còn trống của /.",
-          "meaning": "Inode dùng100%, IFree0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
+          "meaning": "Inode dùng 100%, IFree 0. Trên filesystem này không còn inode để cấp cho file mới trong mẫu.",
           "commandId": "df-i",
           "aliases": [],
           "why": "Tạo file cần metadata/inode, không chỉ GB trống."
@@ -1829,7 +1829,7 @@
           "command": "find /var -xdev -type f | wc -l",
           "output": "850000",
           "purpose": "Đếm file thường dưới /var trong cùng filesystem.",
-          "meaning": "Đếm850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
+          "meaning": "Đếm 850000 file thường. Chưa biết chúng nằm thư mục nào hoặc file nào có thể hết hạn.",
           "commandId": "find-files",
           "aliases": [],
           "why": "Tìm phạm vi có thể chứa nhiều file nhỏ mà chưa xóa dữ liệu."
@@ -1840,7 +1840,7 @@
           "command": "du -xhd1 /var",
           "output": "1.1G /var",
           "purpose": "Đo dung lượng /var và các thư mục con trong cùng filesystem.",
-          "meaning": "/var khoảng1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
+          "meaning": "/var khoảng 1.1G dù có nhiều file. Cần phân loại sâu hơn theo owner/retention trước dọn.",
           "commandId": "du-var",
           "aliases": [],
           "why": "So lượng GB với số file để tránh chỉ tìm file lớn."
@@ -2754,7 +2754,7 @@
           "output": "Archived and active journals take up 8.0G in the file system.",
           "context": "guest",
           "purpose": "Đọc tổng dung lượng active và archived journal.",
-          "meaning": "Journal dùng8G tổng active+archived. Kết quả không nói8G đều được phép hoặc có thể vacuum.",
+          "meaning": "Journal dùng 8G tổng active+archived. Kết quả không nói 8G đều được phép hoặc có thể vacuum.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Khách báo log lớn, nên cần tách journal khỏi các log ứng dụng khác."
@@ -2765,7 +2765,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.2G  94% /",
           "context": "guest",
           "purpose": "Đọc block usage của filesystem gốc.",
-          "meaning": "/ đang dùng94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
+          "meaning": "/ đang dùng 94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần biết journal lớn đang tạo rủi ro dung lượng đến mức nào."
@@ -2800,7 +2800,7 @@
         "Vacuum chỉ tác động archived journal đủ điều kiện; không coi tổng8G là phần chắc chắn có thể giải phóng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Journal chiếm8G gồm active và archived; root dùng94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
+        "expectedDiagnosis": "Journal chiếm 8G gồm active và archived; root dùng 94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
         "nextChecks": "Đọc nguồn log theo unit/time, cấu hình journald và yêu cầu lưu giữ/security; xác minh filesystem chứa journal.",
         "resolution": "Được owner/policy phê duyệt thì dùng retention/vacuum phù hợp cho archived journal và sửa nguồn tăng; không xóa cả /var/log.",
         "verification": "Dung lượng đủ, log mới vẫn được ghi và tốc độ tăng phù hợp; không chỉ nhìn exit status của vacuum.",
@@ -2835,7 +2835,7 @@
           "output": "Archived and active journals take up 8.0G in the file system.",
           "context": "guest",
           "purpose": "Đọc tổng dung lượng active và archived journal.",
-          "meaning": "Journal dùng8G tổng active+archived. Kết quả không nói8G đều được phép hoặc có thể vacuum.",
+          "meaning": "Journal dùng 8G tổng active+archived. Kết quả không nói 8G đều được phép hoặc có thể vacuum.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Khách báo log lớn, nên cần tách journal khỏi các log ứng dụng khác."
@@ -2848,7 +2848,7 @@
           "output": "Archived and active journals take up 8.0G in the file system.",
           "context": "guest",
           "purpose": "Đọc tổng dung lượng active và archived journal.",
-          "meaning": "Journal dùng8G tổng active+archived. Kết quả không nói8G đều được phép hoặc có thể vacuum.",
+          "meaning": "Journal dùng 8G tổng active+archived. Kết quả không nói 8G đều được phép hoặc có thể vacuum.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Khách báo log lớn, nên cần tách journal khỏi các log ứng dụng khác."
@@ -2859,7 +2859,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.2G  94% /",
           "context": "guest",
           "purpose": "Đọc block usage của filesystem gốc.",
-          "meaning": "/ đang dùng94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
+          "meaning": "/ đang dùng 94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần biết journal lớn đang tạo rủi ro dung lượng đến mức nào."
@@ -2919,7 +2919,7 @@
         "Vacuum chỉ tác động archived journal đủ điều kiện; không coi tổng8G là phần chắc chắn có thể giải phóng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Journal chiếm8G gồm active và archived; root dùng94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
+        "expectedDiagnosis": "Journal chiếm 8G gồm active và archived; root dùng 94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
         "nextChecks": "Đọc nguồn log theo unit/time, cấu hình journald và yêu cầu lưu giữ/security; xác minh filesystem chứa journal.",
         "resolution": "Được owner/policy phê duyệt thì dùng retention/vacuum phù hợp cho archived journal và sửa nguồn tăng; không xóa cả /var/log.",
         "verification": "Dung lượng đủ, log mới vẫn được ghi và tốc độ tăng phù hợp; không chỉ nhìn exit status của vacuum.",
@@ -2957,7 +2957,7 @@
           "output": "Archived and active journals take up 8.0G in the file system.",
           "context": "guest",
           "purpose": "Đọc tổng dung lượng active và archived journal.",
-          "meaning": "Journal dùng8G tổng active+archived. Kết quả không nói8G đều được phép hoặc có thể vacuum.",
+          "meaning": "Journal dùng 8G tổng active+archived. Kết quả không nói 8G đều được phép hoặc có thể vacuum.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Khách báo log lớn, nên cần tách journal khỏi các log ứng dụng khác."
@@ -2968,7 +2968,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.2G  94% /",
           "context": "guest",
           "purpose": "Đọc block usage của filesystem gốc.",
-          "meaning": "/ đang dùng94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
+          "meaning": "/ đang dùng 94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần biết journal lớn đang tạo rủi ro dung lượng đến mức nào."
@@ -2981,7 +2981,7 @@
           "output": "Archived and active journals take up 8.0G in the file system.",
           "context": "guest",
           "purpose": "Đọc tổng dung lượng active và archived journal.",
-          "meaning": "Journal dùng8G tổng active+archived. Kết quả không nói8G đều được phép hoặc có thể vacuum.",
+          "meaning": "Journal dùng 8G tổng active+archived. Kết quả không nói 8G đều được phép hoặc có thể vacuum.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Khách báo log lớn, nên cần tách journal khỏi các log ứng dụng khác."
@@ -2992,7 +2992,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.2G  94% /",
           "context": "guest",
           "purpose": "Đọc block usage của filesystem gốc.",
-          "meaning": "/ đang dùng94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
+          "meaning": "/ đang dùng 94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần biết journal lớn đang tạo rủi ro dung lượng đến mức nào."
@@ -3056,7 +3056,7 @@
           "source": "src/guided/commands.ts (id df-h)"
         }
       ],
-      "prompt": "Journal8G và / dùng94% cho phép đề xuất gì trước dọn?",
+      "prompt": "Journal 8G và / dùng 94% cho phép đề xuất gì trước dọn?",
       "options": [
         {
           "id": "over",
@@ -3065,7 +3065,7 @@
         },
         {
           "id": "ignore",
-          "label": "Còn6% nên không cần xem nguồn tăng log.",
+          "label": "Còn 6% nên không cần xem nguồn tăng log.",
           "feedback": "Log tiếp tục tăng có thể làm filesystem đầy; cần trend và policy."
         },
         {
@@ -3077,14 +3077,14 @@
       "correctIds": [
         "supported"
       ],
-      "explanation": "Cần retention, nguồn tăng và lượng archived có thể dọn; tổng diskusage không phải giấy phép xóa toàn bộ log.",
+      "explanation": "Cần retention, nguồn tăng và lượng archived có thể dọn; tổng disk usage không phải giấy phép xóa toàn bộ log.",
       "hints": [
         "journalctl --disk-usage tính cả active và archived journal.",
         "So dung lượng journal với filesystem chứa chúng, rồi xem nguồn log nào phát nhiều.",
         "Vacuum chỉ tác động archived journal đủ điều kiện; không coi tổng8G là phần chắc chắn có thể giải phóng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Journal chiếm8G gồm active và archived; root dùng94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
+        "expectedDiagnosis": "Journal chiếm 8G gồm active và archived; root dùng 94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
         "nextChecks": "Đọc nguồn log theo unit/time, cấu hình journald và yêu cầu lưu giữ/security; xác minh filesystem chứa journal.",
         "resolution": "Được owner/policy phê duyệt thì dùng retention/vacuum phù hợp cho archived journal và sửa nguồn tăng; không xóa cả /var/log.",
         "verification": "Dung lượng đủ, log mới vẫn được ghi và tốc độ tăng phù hợp; không chỉ nhìn exit status của vacuum.",
@@ -3122,7 +3122,7 @@
           "output": "Archived and active journals take up 8.0G in the file system.",
           "context": "guest",
           "purpose": "Đọc tổng dung lượng active và archived journal.",
-          "meaning": "Journal dùng8G tổng active+archived. Kết quả không nói8G đều được phép hoặc có thể vacuum.",
+          "meaning": "Journal dùng 8G tổng active+archived. Kết quả không nói 8G đều được phép hoặc có thể vacuum.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Khách báo log lớn, nên cần tách journal khỏi các log ứng dụng khác."
@@ -3133,7 +3133,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.2G  94% /",
           "context": "guest",
           "purpose": "Đọc block usage của filesystem gốc.",
-          "meaning": "/ đang dùng94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
+          "meaning": "/ đang dùng 94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần biết journal lớn đang tạo rủi ro dung lượng đến mức nào."
@@ -3146,7 +3146,7 @@
           "output": "Archived and active journals take up 8.0G in the file system.",
           "context": "guest",
           "purpose": "Đọc tổng dung lượng active và archived journal.",
-          "meaning": "Journal dùng8G tổng active+archived. Kết quả không nói8G đều được phép hoặc có thể vacuum.",
+          "meaning": "Journal dùng 8G tổng active+archived. Kết quả không nói 8G đều được phép hoặc có thể vacuum.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Khách báo log lớn, nên cần tách journal khỏi các log ứng dụng khác."
@@ -3157,7 +3157,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.2G  94% /",
           "context": "guest",
           "purpose": "Đọc block usage của filesystem gốc.",
-          "meaning": "/ đang dùng94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
+          "meaning": "/ đang dùng 94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần biết journal lớn đang tạo rủi ro dung lượng đến mức nào."
@@ -3230,12 +3230,12 @@
         },
         {
           "id": "p1",
-          "label": "Tổng active và archived journal đang8G.",
+          "label": "Tổng active và archived journal đang 8G.",
           "feedback": "Đúng nội dung journalctl --disk-usage."
         },
         {
           "id": "p2",
-          "label": "Filesystem / đang94%.",
+          "label": "Filesystem / đang 94%.",
           "feedback": "Đúng cột Use% của df."
         }
       ],
@@ -3250,7 +3250,7 @@
         "Vacuum chỉ tác động archived journal đủ điều kiện; không coi tổng8G là phần chắc chắn có thể giải phóng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Journal chiếm8G gồm active và archived; root dùng94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
+        "expectedDiagnosis": "Journal chiếm 8G gồm active và archived; root dùng 94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
         "nextChecks": "Đọc nguồn log theo unit/time, cấu hình journald và yêu cầu lưu giữ/security; xác minh filesystem chứa journal.",
         "resolution": "Được owner/policy phê duyệt thì dùng retention/vacuum phù hợp cho archived journal và sửa nguồn tăng; không xóa cả /var/log.",
         "verification": "Dung lượng đủ, log mới vẫn được ghi và tốc độ tăng phù hợp; không chỉ nhìn exit status của vacuum.",
@@ -3286,7 +3286,7 @@
           "output": "Archived and active journals take up 8.0G in the file system.",
           "context": "guest",
           "purpose": "Đọc tổng dung lượng active và archived journal.",
-          "meaning": "Journal dùng8G tổng active+archived. Kết quả không nói8G đều được phép hoặc có thể vacuum.",
+          "meaning": "Journal dùng 8G tổng active+archived. Kết quả không nói 8G đều được phép hoặc có thể vacuum.",
           "commandId": "journal-disk-usage",
           "aliases": [],
           "why": "Khách báo log lớn, nên cần tách journal khỏi các log ứng dụng khác."
@@ -3297,7 +3297,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.2G  94% /",
           "context": "guest",
           "purpose": "Đọc block usage của filesystem gốc.",
-          "meaning": "/ đang dùng94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
+          "meaning": "/ đang dùng 94%, còn chỗ nhưng dễ đầy nếu nguồn log tiếp tục tăng.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần biết journal lớn đang tạo rủi ro dung lượng đến mức nào."
@@ -3332,7 +3332,7 @@
         "Vacuum chỉ tác động archived journal đủ điều kiện; không coi tổng8G là phần chắc chắn có thể giải phóng."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Journal chiếm8G gồm active và archived; root dùng94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
+        "expectedDiagnosis": "Journal chiếm 8G gồm active và archived; root dùng 94%. Chưa xác định nguồn phát log hoặc lượng có thể dọn theo retention.",
         "nextChecks": "Đọc nguồn log theo unit/time, cấu hình journald và yêu cầu lưu giữ/security; xác minh filesystem chứa journal.",
         "resolution": "Được owner/policy phê duyệt thì dùng retention/vacuum phù hợp cho archived journal và sửa nguồn tăng; không xóa cả /var/log.",
         "verification": "Dung lượng đủ, log mới vẫn được ghi và tốc độ tăng phù hợp; không chỉ nhìn exit status của vacuum.",
@@ -3368,7 +3368,7 @@
           "output": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
           "context": "guest",
           "purpose": "Đọc cây block device và kích thước từng lớp.",
-          "meaning": "vda40G trong khi partition vda1 còn20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
+          "meaning": "vda 40G trong khi partition vda1 còn 20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Cần biết dung lượng mới đã tới guest disk hay dừng ở lớp nào."
@@ -3379,7 +3379,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  12G  8.0G  60% /",
           "context": "guest",
           "purpose": "Đọc kích thước filesystem đang mount ở /.",
-          "meaning": "Filesystem /dev/vda1 vẫn20G. df không tự thay partition hoặc filesystem.",
+          "meaning": "Filesystem /dev/vda1 vẫn 20G. df không tự thay partition hoặc filesystem.",
           "commandId": "df-h",
           "aliases": [],
           "why": "So dung lượng ứng dụng dùng với kích thước disk/partition."
@@ -3406,7 +3406,7 @@
         },
         {
           "id": "symptom",
-          "label": "Virtual disk đã nâng nhưng / vẫn thấy20G.",
+          "label": "Virtual disk đã nâng nhưng / vẫn thấy 20G.",
           "feedback": "Đúng chênh lệch khách nêu cần đối chiếu trong guest."
         },
         {
@@ -3422,10 +3422,10 @@
       "hints": [
         "Virtual disk lớn hơn chưa tự làm partition/filesystem lớn hơn.",
         "So lsblk, df và loại filesystem từ findmnt để xác định lớp đang giữ kích thước cũ.",
-        "vda40G nhưng vda1/filesystem20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
+        "vda 40G nhưng vda1/filesystem 20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Virtual disk vda đã40G, partition vda1 và filesystem / còn20G. Root dùng XFS theo findmnt.",
+        "expectedDiagnosis": "Virtual disk vda đã 40G, partition vda1 và filesystem / còn 20G. Root dùng XFS theo findmnt.",
         "nextChecks": "Xác nhận toàn bộ layout, khoảng trống, boot/partition type, backup và mapping root; không mặc định có thể áp một lệnh grow chung.",
         "resolution": "Với kế hoạch/phê duyệt phù hợp, mở partition theo layout rồi mở filesystem bằng công cụ XFS; không format hoặc bỏ bước backup.",
         "verification": "lsblk và df phản ánh dung lượng dự kiến, root mount đúng và dữ liệu/app hoạt động sau change.",
@@ -3460,7 +3460,7 @@
           "output": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
           "context": "guest",
           "purpose": "Đọc cây block device và kích thước từng lớp.",
-          "meaning": "vda40G trong khi partition vda1 còn20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
+          "meaning": "vda 40G trong khi partition vda1 còn 20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Cần biết dung lượng mới đã tới guest disk hay dừng ở lớp nào."
@@ -3473,7 +3473,7 @@
           "output": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
           "context": "guest",
           "purpose": "Đọc cây block device và kích thước từng lớp.",
-          "meaning": "vda40G trong khi partition vda1 còn20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
+          "meaning": "vda 40G trong khi partition vda1 còn 20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Cần biết dung lượng mới đã tới guest disk hay dừng ở lớp nào."
@@ -3484,7 +3484,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  12G  8.0G  60% /",
           "context": "guest",
           "purpose": "Đọc kích thước filesystem đang mount ở /.",
-          "meaning": "Filesystem /dev/vda1 vẫn20G. df không tự thay partition hoặc filesystem.",
+          "meaning": "Filesystem /dev/vda1 vẫn 20G. df không tự thay partition hoặc filesystem.",
           "commandId": "df-h",
           "aliases": [],
           "why": "So dung lượng ứng dụng dùng với kích thước disk/partition."
@@ -3560,10 +3560,10 @@
       "hints": [
         "Virtual disk lớn hơn chưa tự làm partition/filesystem lớn hơn.",
         "So lsblk, df và loại filesystem từ findmnt để xác định lớp đang giữ kích thước cũ.",
-        "vda40G nhưng vda1/filesystem20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
+        "vda 40G nhưng vda1/filesystem 20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Virtual disk vda đã40G, partition vda1 và filesystem / còn20G. Root dùng XFS theo findmnt.",
+        "expectedDiagnosis": "Virtual disk vda đã 40G, partition vda1 và filesystem / còn 20G. Root dùng XFS theo findmnt.",
         "nextChecks": "Xác nhận toàn bộ layout, khoảng trống, boot/partition type, backup và mapping root; không mặc định có thể áp một lệnh grow chung.",
         "resolution": "Với kế hoạch/phê duyệt phù hợp, mở partition theo layout rồi mở filesystem bằng công cụ XFS; không format hoặc bỏ bước backup.",
         "verification": "lsblk và df phản ánh dung lượng dự kiến, root mount đúng và dữ liệu/app hoạt động sau change.",
@@ -3602,7 +3602,7 @@
           "output": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
           "context": "guest",
           "purpose": "Đọc cây block device và kích thước từng lớp.",
-          "meaning": "vda40G trong khi partition vda1 còn20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
+          "meaning": "vda 40G trong khi partition vda1 còn 20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Cần biết dung lượng mới đã tới guest disk hay dừng ở lớp nào."
@@ -3613,7 +3613,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  12G  8.0G  60% /",
           "context": "guest",
           "purpose": "Đọc kích thước filesystem đang mount ở /.",
-          "meaning": "Filesystem /dev/vda1 vẫn20G. df không tự thay partition hoặc filesystem.",
+          "meaning": "Filesystem /dev/vda1 vẫn 20G. df không tự thay partition hoặc filesystem.",
           "commandId": "df-h",
           "aliases": [],
           "why": "So dung lượng ứng dụng dùng với kích thước disk/partition."
@@ -3637,7 +3637,7 @@
           "output": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
           "context": "guest",
           "purpose": "Đọc cây block device và kích thước từng lớp.",
-          "meaning": "vda40G trong khi partition vda1 còn20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
+          "meaning": "vda 40G trong khi partition vda1 còn 20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Cần biết dung lượng mới đã tới guest disk hay dừng ở lớp nào."
@@ -3648,7 +3648,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  12G  8.0G  60% /",
           "context": "guest",
           "purpose": "Đọc kích thước filesystem đang mount ở /.",
-          "meaning": "Filesystem /dev/vda1 vẫn20G. df không tự thay partition hoặc filesystem.",
+          "meaning": "Filesystem /dev/vda1 vẫn 20G. df không tự thay partition hoặc filesystem.",
           "commandId": "df-h",
           "aliases": [],
           "why": "So dung lượng ứng dụng dùng với kích thước disk/partition."
@@ -3755,16 +3755,16 @@
           "source": "src/guided/commands.ts (id findmnt)"
         }
       ],
-      "prompt": "vda40G, vda1 và /20G: lớp nào còn giữ kích thước cũ?",
+      "prompt": "vda 40G, vda1 và /20G: lớp nào còn giữ kích thước cũ?",
       "options": [
         {
           "id": "ignore",
-          "label": "Chỉ cần disk40G thì df20G là chắc chắn lỗi hiển thị.",
+          "label": "Chỉ cần disk 40G thì df 20G là chắc chắn lỗi hiển thị.",
           "feedback": "df đo filesystem thật, khác kích thước thiết bị disk."
         },
         {
           "id": "supported",
-          "label": "Partition và filesystem còn20G.",
+          "label": "Partition và filesystem còn 20G.",
           "feedback": "Cả lsblk và df cho kích thước lớp trên nhỏ hơn disk."
         },
         {
@@ -3780,10 +3780,10 @@
       "hints": [
         "Virtual disk lớn hơn chưa tự làm partition/filesystem lớn hơn.",
         "So lsblk, df và loại filesystem từ findmnt để xác định lớp đang giữ kích thước cũ.",
-        "vda40G nhưng vda1/filesystem20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
+        "vda 40G nhưng vda1/filesystem 20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Virtual disk vda đã40G, partition vda1 và filesystem / còn20G. Root dùng XFS theo findmnt.",
+        "expectedDiagnosis": "Virtual disk vda đã 40G, partition vda1 và filesystem / còn 20G. Root dùng XFS theo findmnt.",
         "nextChecks": "Xác nhận toàn bộ layout, khoảng trống, boot/partition type, backup và mapping root; không mặc định có thể áp một lệnh grow chung.",
         "resolution": "Với kế hoạch/phê duyệt phù hợp, mở partition theo layout rồi mở filesystem bằng công cụ XFS; không format hoặc bỏ bước backup.",
         "verification": "lsblk và df phản ánh dung lượng dự kiến, root mount đúng và dữ liệu/app hoạt động sau change.",
@@ -3821,7 +3821,7 @@
           "output": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
           "context": "guest",
           "purpose": "Đọc cây block device và kích thước từng lớp.",
-          "meaning": "vda40G trong khi partition vda1 còn20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
+          "meaning": "vda 40G trong khi partition vda1 còn 20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Cần biết dung lượng mới đã tới guest disk hay dừng ở lớp nào."
@@ -3832,7 +3832,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  12G  8.0G  60% /",
           "context": "guest",
           "purpose": "Đọc kích thước filesystem đang mount ở /.",
-          "meaning": "Filesystem /dev/vda1 vẫn20G. df không tự thay partition hoặc filesystem.",
+          "meaning": "Filesystem /dev/vda1 vẫn 20G. df không tự thay partition hoặc filesystem.",
           "commandId": "df-h",
           "aliases": [],
           "why": "So dung lượng ứng dụng dùng với kích thước disk/partition."
@@ -3845,7 +3845,7 @@
           "output": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
           "context": "guest",
           "purpose": "Đọc cây block device và kích thước từng lớp.",
-          "meaning": "vda40G trong khi partition vda1 còn20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
+          "meaning": "vda 40G trong khi partition vda1 còn 20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Cần biết dung lượng mới đã tới guest disk hay dừng ở lớp nào."
@@ -3856,7 +3856,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  12G  8.0G  60% /",
           "context": "guest",
           "purpose": "Đọc kích thước filesystem đang mount ở /.",
-          "meaning": "Filesystem /dev/vda1 vẫn20G. df không tự thay partition hoặc filesystem.",
+          "meaning": "Filesystem /dev/vda1 vẫn 20G. df không tự thay partition hoặc filesystem.",
           "commandId": "df-h",
           "aliases": [],
           "why": "So dung lượng ứng dụng dùng với kích thước disk/partition."
@@ -3948,12 +3948,12 @@
         },
         {
           "id": "p1",
-          "label": "vda40G nhưng partition vda1 còn20G.",
+          "label": "vda 40G nhưng partition vda1 còn 20G.",
           "feedback": "Đúng hai dòng block device trong lsblk."
         },
         {
           "id": "p2",
-          "label": "Filesystem /dev/vda1 vẫn20G.",
+          "label": "Filesystem /dev/vda1 vẫn 20G.",
           "feedback": "Đúng cột Size trong df -h /."
         }
       ],
@@ -3965,10 +3965,10 @@
       "hints": [
         "Virtual disk lớn hơn chưa tự làm partition/filesystem lớn hơn.",
         "So lsblk, df và loại filesystem từ findmnt để xác định lớp đang giữ kích thước cũ.",
-        "vda40G nhưng vda1/filesystem20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
+        "vda 40G nhưng vda1/filesystem 20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Virtual disk vda đã40G, partition vda1 và filesystem / còn20G. Root dùng XFS theo findmnt.",
+        "expectedDiagnosis": "Virtual disk vda đã 40G, partition vda1 và filesystem / còn 20G. Root dùng XFS theo findmnt.",
         "nextChecks": "Xác nhận toàn bộ layout, khoảng trống, boot/partition type, backup và mapping root; không mặc định có thể áp một lệnh grow chung.",
         "resolution": "Với kế hoạch/phê duyệt phù hợp, mở partition theo layout rồi mở filesystem bằng công cụ XFS; không format hoặc bỏ bước backup.",
         "verification": "lsblk và df phản ánh dung lượng dự kiến, root mount đúng và dữ liệu/app hoạt động sau change.",
@@ -4004,7 +4004,7 @@
           "output": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
           "context": "guest",
           "purpose": "Đọc cây block device và kích thước từng lớp.",
-          "meaning": "vda40G trong khi partition vda1 còn20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
+          "meaning": "vda 40G trong khi partition vda1 còn 20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Cần biết dung lượng mới đã tới guest disk hay dừng ở lớp nào."
@@ -4015,7 +4015,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  12G  8.0G  60% /",
           "context": "guest",
           "purpose": "Đọc kích thước filesystem đang mount ở /.",
-          "meaning": "Filesystem /dev/vda1 vẫn20G. df không tự thay partition hoặc filesystem.",
+          "meaning": "Filesystem /dev/vda1 vẫn 20G. df không tự thay partition hoặc filesystem.",
           "commandId": "df-h",
           "aliases": [],
           "why": "So dung lượng ứng dụng dùng với kích thước disk/partition."
@@ -4047,8 +4047,8 @@
         },
         {
           "id": "close",
-          "label": "Đóng ticket vì vda đã báo40G.",
-          "feedback": "Khách vẫn chỉ có filesystem20G dùng cho dữ liệu."
+          "label": "Đóng ticket vì vda đã báo 40G.",
+          "feedback": "Khách vẫn chỉ có filesystem 20G dùng cho dữ liệu."
         }
       ],
       "correctIds": [
@@ -4058,10 +4058,10 @@
       "hints": [
         "Virtual disk lớn hơn chưa tự làm partition/filesystem lớn hơn.",
         "So lsblk, df và loại filesystem từ findmnt để xác định lớp đang giữ kích thước cũ.",
-        "vda40G nhưng vda1/filesystem20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
+        "vda 40G nhưng vda1/filesystem 20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Virtual disk vda đã40G, partition vda1 và filesystem / còn20G. Root dùng XFS theo findmnt.",
+        "expectedDiagnosis": "Virtual disk vda đã 40G, partition vda1 và filesystem / còn 20G. Root dùng XFS theo findmnt.",
         "nextChecks": "Xác nhận toàn bộ layout, khoảng trống, boot/partition type, backup và mapping root; không mặc định có thể áp một lệnh grow chung.",
         "resolution": "Với kế hoạch/phê duyệt phù hợp, mở partition theo layout rồi mở filesystem bằng công cụ XFS; không format hoặc bỏ bước backup.",
         "verification": "lsblk và df phản ánh dung lượng dự kiến, root mount đúng và dữ liệu/app hoạt động sau change.",
@@ -4097,7 +4097,7 @@
           "output": "NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvda    252:0    0  40G  0 disk\n└─vda1 252:1    0  20G  0 part /",
           "context": "guest",
           "purpose": "Đọc cây block device và kích thước từng lớp.",
-          "meaning": "vda40G trong khi partition vda1 còn20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
+          "meaning": "vda 40G trong khi partition vda1 còn 20G; chưa thể dùng toàn dung lượng mới ở lớp trên.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Cần biết dung lượng mới đã tới guest disk hay dừng ở lớp nào."
@@ -4108,7 +4108,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  12G  8.0G  60% /",
           "context": "guest",
           "purpose": "Đọc kích thước filesystem đang mount ở /.",
-          "meaning": "Filesystem /dev/vda1 vẫn20G. df không tự thay partition hoặc filesystem.",
+          "meaning": "Filesystem /dev/vda1 vẫn 20G. df không tự thay partition hoặc filesystem.",
           "commandId": "df-h",
           "aliases": [],
           "why": "So dung lượng ứng dụng dùng với kích thước disk/partition."
@@ -4153,10 +4153,10 @@
       "hints": [
         "Virtual disk lớn hơn chưa tự làm partition/filesystem lớn hơn.",
         "So lsblk, df và loại filesystem từ findmnt để xác định lớp đang giữ kích thước cũ.",
-        "vda40G nhưng vda1/filesystem20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
+        "vda 40G nhưng vda1/filesystem 20G; bài này dùng XFS. Cần backup/layout/quyền trước mở partition rồi filesystem, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Virtual disk vda đã40G, partition vda1 và filesystem / còn20G. Root dùng XFS theo findmnt.",
+        "expectedDiagnosis": "Virtual disk vda đã 40G, partition vda1 và filesystem / còn 20G. Root dùng XFS theo findmnt.",
         "nextChecks": "Xác nhận toàn bộ layout, khoảng trống, boot/partition type, backup và mapping root; không mặc định có thể áp một lệnh grow chung.",
         "resolution": "Với kế hoạch/phê duyệt phù hợp, mở partition theo layout rồi mở filesystem bằng công cụ XFS; không format hoặc bỏ bước backup.",
         "verification": "lsblk và df phản ánh dung lượng dự kiến, root mount đúng và dữ liệu/app hoạt động sau change.",
@@ -4192,7 +4192,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
           "context": "guest",
           "purpose": "Đọc block usage sau khi khách đã xóa log.",
-          "meaning": "/ vẫn95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
+          "meaning": "/ vẫn 95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần xác nhận dung lượng thực của filesystem chứ không chỉ tên file đã mất."
@@ -4284,7 +4284,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
           "context": "guest",
           "purpose": "Đọc block usage sau khi khách đã xóa log.",
-          "meaning": "/ vẫn95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
+          "meaning": "/ vẫn 95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần xác nhận dung lượng thực của filesystem chứ không chỉ tên file đã mất."
@@ -4297,7 +4297,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
           "context": "guest",
           "purpose": "Đọc block usage sau khi khách đã xóa log.",
-          "meaning": "/ vẫn95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
+          "meaning": "/ vẫn 95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần xác nhận dung lượng thực của filesystem chứ không chỉ tên file đã mất."
@@ -4426,7 +4426,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
           "context": "guest",
           "purpose": "Đọc block usage sau khi khách đã xóa log.",
-          "meaning": "/ vẫn95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
+          "meaning": "/ vẫn 95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần xác nhận dung lượng thực của filesystem chứ không chỉ tên file đã mất."
@@ -4461,7 +4461,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
           "context": "guest",
           "purpose": "Đọc block usage sau khi khách đã xóa log.",
-          "meaning": "/ vẫn95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
+          "meaning": "/ vẫn 95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần xác nhận dung lượng thực của filesystem chứ không chỉ tên file đã mất."
@@ -4586,7 +4586,7 @@
         {
           "id": "supported",
           "label": "Handle đang mở là ứng viên giữ block.",
-          "feedback": "nlink0 cùng process/FD cho thấy file đã unlink nhưng vẫn được giữ."
+          "feedback": "nlink 0 cùng process/FD cho thấy file đã unlink nhưng vẫn được giữ."
         }
       ],
       "correctIds": [
@@ -4611,7 +4611,7 @@
         "case": "scripts/content/phase-b-01-05.mjs:349",
         "gradingBase": "scripts/guided-content.mjs",
         "overrides": [
-          "scripts/guided-content.mjs:1389"
+          "scripts/guided-content.mjs:1392"
         ]
       },
       "classification": [
@@ -4639,7 +4639,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
           "context": "guest",
           "purpose": "Đọc block usage sau khi khách đã xóa log.",
-          "meaning": "/ vẫn95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
+          "meaning": "/ vẫn 95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần xác nhận dung lượng thực của filesystem chứ không chỉ tên file đã mất."
@@ -4663,7 +4663,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
           "context": "guest",
           "purpose": "Đọc block usage sau khi khách đã xóa log.",
-          "meaning": "/ vẫn95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
+          "meaning": "/ vẫn 95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần xác nhận dung lượng thực của filesystem chứ không chỉ tên file đã mất."
@@ -4753,13 +4753,13 @@
       "options": [
         {
           "id": "p1",
-          "label": "Filesystem / vẫn dùng95%.",
+          "label": "Filesystem / vẫn dùng 95%.",
           "feedback": "Đúng cột Use% của df."
         },
         {
           "id": "p2",
           "label": "Java PID 2300 giữ app.log đã unlink, khoảng 5 GiB.",
-          "feedback": "lsof có PID/FD, nlink0, kích thước và tên deleted."
+          "feedback": "lsof có PID/FD, nlink 0, kích thước và tên deleted."
         },
         {
           "id": "over",
@@ -4790,7 +4790,7 @@
         "case": "scripts/content/phase-b-01-05.mjs:349",
         "gradingBase": "scripts/guided-content.mjs",
         "overrides": [
-          "scripts/guided-content.mjs:1390"
+          "scripts/guided-content.mjs:1393"
         ]
       },
       "classification": [
@@ -4816,7 +4816,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
           "context": "guest",
           "purpose": "Đọc block usage sau khi khách đã xóa log.",
-          "meaning": "/ vẫn95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
+          "meaning": "/ vẫn 95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần xác nhận dung lượng thực của filesystem chứ không chỉ tên file đã mất."
@@ -4885,7 +4885,7 @@
         "case": "scripts/content/phase-b-01-05.mjs:349",
         "gradingBase": "scripts/guided-content.mjs",
         "overrides": [
-          "scripts/guided-content.mjs:1391"
+          "scripts/guided-content.mjs:1394"
         ]
       },
       "classification": [
@@ -4911,7 +4911,7 @@
           "output": "Filesystem     Size Used Avail Use% Mounted on\n/dev/vda1       20G  19G  1.0G  95% /",
           "context": "guest",
           "purpose": "Đọc block usage sau khi khách đã xóa log.",
-          "meaning": "/ vẫn95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
+          "meaning": "/ vẫn 95% trong mẫu. Chưa biết block do file khác hay file đã unlink còn mở.",
           "commandId": "df-h",
           "aliases": [],
           "why": "Cần xác nhận dung lượng thực của filesystem chứ không chỉ tên file đã mất."
@@ -5890,7 +5890,7 @@
           "output": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
           "context": "guest",
           "purpose": "Đọc cây disk/partition/LV của guest.",
-          "meaning": "vdb và vdb1 là80G, LV vgdata-lvdata còn30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
+          "meaning": "vdb và vdb1 là 80G, LV vgdata-lvdata còn 30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Xác định dung lượng resize đã tới disk/partition hay chưa và LV nào đang mount /data."
@@ -5901,7 +5901,7 @@
           "output": "VG      #PV #LV #SN Attr   VSize   VFree\nvgdata    1   1   0 wz--n- 79.99g 49.99g",
           "context": "guest",
           "purpose": "Đọc dung lượng và free extents của volume group.",
-          "meaning": "vgdata còn49.99g free trong79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
+          "meaning": "vgdata còn 49.99g free trong 79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Cần biết VG còn chỗ cấp cho LV hay không trước đề xuất lvextend."
@@ -5912,7 +5912,7 @@
           "command": "lvs -o lv_name,vg_name,lv_size,lv_path",
           "output": "LV     VG     LSize  Path\nlvdata vgdata 30.00g /dev/vgdata/lvdata",
           "purpose": "Đọc tên, path và kích thước LV.",
-          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện30G. Phải đối chiếu với mount /data trước change.",
+          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện 30G. Phải đối chiếu với mount /data trước change.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Tránh mở nhầm LV khi có nhiều volume hoặc mapping phức tạp."
@@ -5923,7 +5923,7 @@
           "command": "df -hT /data",
           "output": "Filesystem                Type Size Used Avail Use% Mounted on\n/dev/mapper/vgdata-lvdata xfs   30G  29G  1.0G  97% /data",
           "purpose": "Đọc loại filesystem và dung lượng của /data.",
-          "meaning": "/data là XFS30G dùng97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
+          "meaning": "/data là XFS 30G dùng 97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
           "commandId": "df-hT",
           "aliases": [],
           "why": "Công cụ mở filesystem phải phù hợp XFS và lớp LV bên dưới."
@@ -5955,10 +5955,10 @@
       "hints": [
         "Dung lượng disk, chỗ trống trong VG và dung lượng filesystem là các lớp khác nhau.",
         "So lsblk/vgs với lvs và df -hT /data để biết chỗ đang dừng ở đâu.",
-        "VG còn khoảng50G nhưng LV/filesystem30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
+        "VG còn khoảng 50G nhưng LV/filesystem 30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Disk/partition80G, VG còn49.99g free nhưng LV và XFS /data còn30G, dùng97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
+        "expectedDiagnosis": "Disk/partition 80G, VG còn 49.99g free nhưng LV và XFS /data còn 30G, dùng 97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
         "nextChecks": "Xác nhận mapping LV/mount, type XFS, layout LVM/thin/snapshot/encryption nếu có và bản phục hồi trước change.",
         "resolution": "Sau phê duyệt, mở đúng LV rồi grow filesystem bằng công cụ phù hợp; không format lại volume.",
         "verification": "lvs và df cho dung lượng dự kiến, mount đúng và dữ liệu/app đọc ghi được sau change.",
@@ -5993,7 +5993,7 @@
           "output": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
           "context": "guest",
           "purpose": "Đọc cây disk/partition/LV của guest.",
-          "meaning": "vdb và vdb1 là80G, LV vgdata-lvdata còn30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
+          "meaning": "vdb và vdb1 là 80G, LV vgdata-lvdata còn 30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Xác định dung lượng resize đã tới disk/partition hay chưa và LV nào đang mount /data."
@@ -6006,7 +6006,7 @@
           "output": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
           "context": "guest",
           "purpose": "Đọc cây disk/partition/LV của guest.",
-          "meaning": "vdb và vdb1 là80G, LV vgdata-lvdata còn30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
+          "meaning": "vdb và vdb1 là 80G, LV vgdata-lvdata còn 30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Xác định dung lượng resize đã tới disk/partition hay chưa và LV nào đang mount /data."
@@ -6017,7 +6017,7 @@
           "output": "VG      #PV #LV #SN Attr   VSize   VFree\nvgdata    1   1   0 wz--n- 79.99g 49.99g",
           "context": "guest",
           "purpose": "Đọc dung lượng và free extents của volume group.",
-          "meaning": "vgdata còn49.99g free trong79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
+          "meaning": "vgdata còn 49.99g free trong 79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Cần biết VG còn chỗ cấp cho LV hay không trước đề xuất lvextend."
@@ -6028,7 +6028,7 @@
           "command": "lvs -o lv_name,vg_name,lv_size,lv_path",
           "output": "LV     VG     LSize  Path\nlvdata vgdata 30.00g /dev/vgdata/lvdata",
           "purpose": "Đọc tên, path và kích thước LV.",
-          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện30G. Phải đối chiếu với mount /data trước change.",
+          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện 30G. Phải đối chiếu với mount /data trước change.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Tránh mở nhầm LV khi có nhiều volume hoặc mapping phức tạp."
@@ -6039,7 +6039,7 @@
           "command": "df -hT /data",
           "output": "Filesystem                Type Size Used Avail Use% Mounted on\n/dev/mapper/vgdata-lvdata xfs   30G  29G  1.0G  97% /data",
           "purpose": "Đọc loại filesystem và dung lượng của /data.",
-          "meaning": "/data là XFS30G dùng97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
+          "meaning": "/data là XFS 30G dùng 97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
           "commandId": "df-hT",
           "aliases": [],
           "why": "Công cụ mở filesystem phải phù hợp XFS và lớp LV bên dưới."
@@ -6104,10 +6104,10 @@
       "hints": [
         "Dung lượng disk, chỗ trống trong VG và dung lượng filesystem là các lớp khác nhau.",
         "So lsblk/vgs với lvs và df -hT /data để biết chỗ đang dừng ở đâu.",
-        "VG còn khoảng50G nhưng LV/filesystem30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
+        "VG còn khoảng 50G nhưng LV/filesystem 30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Disk/partition80G, VG còn49.99g free nhưng LV và XFS /data còn30G, dùng97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
+        "expectedDiagnosis": "Disk/partition 80G, VG còn 49.99g free nhưng LV và XFS /data còn 30G, dùng 97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
         "nextChecks": "Xác nhận mapping LV/mount, type XFS, layout LVM/thin/snapshot/encryption nếu có và bản phục hồi trước change.",
         "resolution": "Sau phê duyệt, mở đúng LV rồi grow filesystem bằng công cụ phù hợp; không format lại volume.",
         "verification": "lvs và df cho dung lượng dự kiến, mount đúng và dữ liệu/app đọc ghi được sau change.",
@@ -6147,7 +6147,7 @@
           "output": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
           "context": "guest",
           "purpose": "Đọc cây disk/partition/LV của guest.",
-          "meaning": "vdb và vdb1 là80G, LV vgdata-lvdata còn30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
+          "meaning": "vdb và vdb1 là 80G, LV vgdata-lvdata còn 30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Xác định dung lượng resize đã tới disk/partition hay chưa và LV nào đang mount /data."
@@ -6158,7 +6158,7 @@
           "output": "VG      #PV #LV #SN Attr   VSize   VFree\nvgdata    1   1   0 wz--n- 79.99g 49.99g",
           "context": "guest",
           "purpose": "Đọc dung lượng và free extents của volume group.",
-          "meaning": "vgdata còn49.99g free trong79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
+          "meaning": "vgdata còn 49.99g free trong 79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Cần biết VG còn chỗ cấp cho LV hay không trước đề xuất lvextend."
@@ -6169,7 +6169,7 @@
           "command": "lvs -o lv_name,vg_name,lv_size,lv_path",
           "output": "LV     VG     LSize  Path\nlvdata vgdata 30.00g /dev/vgdata/lvdata",
           "purpose": "Đọc tên, path và kích thước LV.",
-          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện30G. Phải đối chiếu với mount /data trước change.",
+          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện 30G. Phải đối chiếu với mount /data trước change.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Tránh mở nhầm LV khi có nhiều volume hoặc mapping phức tạp."
@@ -6180,7 +6180,7 @@
           "command": "df -hT /data",
           "output": "Filesystem                Type Size Used Avail Use% Mounted on\n/dev/mapper/vgdata-lvdata xfs   30G  29G  1.0G  97% /data",
           "purpose": "Đọc loại filesystem và dung lượng của /data.",
-          "meaning": "/data là XFS30G dùng97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
+          "meaning": "/data là XFS 30G dùng 97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
           "commandId": "df-hT",
           "aliases": [],
           "why": "Công cụ mở filesystem phải phù hợp XFS và lớp LV bên dưới."
@@ -6193,7 +6193,7 @@
           "output": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
           "context": "guest",
           "purpose": "Đọc cây disk/partition/LV của guest.",
-          "meaning": "vdb và vdb1 là80G, LV vgdata-lvdata còn30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
+          "meaning": "vdb và vdb1 là 80G, LV vgdata-lvdata còn 30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Xác định dung lượng resize đã tới disk/partition hay chưa và LV nào đang mount /data."
@@ -6204,7 +6204,7 @@
           "output": "VG      #PV #LV #SN Attr   VSize   VFree\nvgdata    1   1   0 wz--n- 79.99g 49.99g",
           "context": "guest",
           "purpose": "Đọc dung lượng và free extents của volume group.",
-          "meaning": "vgdata còn49.99g free trong79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
+          "meaning": "vgdata còn 49.99g free trong 79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Cần biết VG còn chỗ cấp cho LV hay không trước đề xuất lvextend."
@@ -6215,7 +6215,7 @@
           "command": "lvs -o lv_name,vg_name,lv_size,lv_path",
           "output": "LV     VG     LSize  Path\nlvdata vgdata 30.00g /dev/vgdata/lvdata",
           "purpose": "Đọc tên, path và kích thước LV.",
-          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện30G. Phải đối chiếu với mount /data trước change.",
+          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện 30G. Phải đối chiếu với mount /data trước change.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Tránh mở nhầm LV khi có nhiều volume hoặc mapping phức tạp."
@@ -6226,7 +6226,7 @@
           "command": "df -hT /data",
           "output": "Filesystem                Type Size Used Avail Use% Mounted on\n/dev/mapper/vgdata-lvdata xfs   30G  29G  1.0G  97% /data",
           "purpose": "Đọc loại filesystem và dung lượng của /data.",
-          "meaning": "/data là XFS30G dùng97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
+          "meaning": "/data là XFS 30G dùng 97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
           "commandId": "df-hT",
           "aliases": [],
           "why": "Công cụ mở filesystem phải phù hợp XFS và lớp LV bên dưới."
@@ -6312,22 +6312,22 @@
           "source": "src/guided/commands.ts (id df-hT)"
         }
       ],
-      "prompt": "VG còn49.99g nhưng LV/FS30G gần đầy: chỗ trống đang ở đâu?",
+      "prompt": "VG còn 49.99g nhưng LV/FS 30G gần đầy: chỗ trống đang ở đâu?",
       "options": [
         {
           "id": "supported",
           "label": "VG còn extents, LV/filesystem chưa dùng phần đó.",
-          "feedback": "vgs có VFree còn lvs/df vẫn30G."
+          "feedback": "vgs có VFree còn lvs/df vẫn 30G."
         },
         {
           "id": "over",
-          "label": "vdb80G nghĩa là filesystem đã có80G.",
+          "label": "vdb 80G nghĩa là filesystem đã có 80G.",
           "feedback": "Disk là lớp dưới, không đồng kích thước LV và filesystem."
         },
         {
           "id": "ignore",
-          "label": "Filesystem97% chứng minh VG không còn extents.",
-          "feedback": "df đo bên trong filesystem; vgs riêng đang có free49.99g."
+          "label": "Filesystem 97% chứng minh VG không còn extents.",
+          "feedback": "df đo bên trong filesystem; vgs riêng đang có free 49.99g."
         }
       ],
       "correctIds": [
@@ -6337,10 +6337,10 @@
       "hints": [
         "Dung lượng disk, chỗ trống trong VG và dung lượng filesystem là các lớp khác nhau.",
         "So lsblk/vgs với lvs và df -hT /data để biết chỗ đang dừng ở đâu.",
-        "VG còn khoảng50G nhưng LV/filesystem30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
+        "VG còn khoảng 50G nhưng LV/filesystem 30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Disk/partition80G, VG còn49.99g free nhưng LV và XFS /data còn30G, dùng97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
+        "expectedDiagnosis": "Disk/partition 80G, VG còn 49.99g free nhưng LV và XFS /data còn 30G, dùng 97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
         "nextChecks": "Xác nhận mapping LV/mount, type XFS, layout LVM/thin/snapshot/encryption nếu có và bản phục hồi trước change.",
         "resolution": "Sau phê duyệt, mở đúng LV rồi grow filesystem bằng công cụ phù hợp; không format lại volume.",
         "verification": "lvs và df cho dung lượng dự kiến, mount đúng và dữ liệu/app đọc ghi được sau change.",
@@ -6380,7 +6380,7 @@
           "output": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
           "context": "guest",
           "purpose": "Đọc cây disk/partition/LV của guest.",
-          "meaning": "vdb và vdb1 là80G, LV vgdata-lvdata còn30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
+          "meaning": "vdb và vdb1 là 80G, LV vgdata-lvdata còn 30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Xác định dung lượng resize đã tới disk/partition hay chưa và LV nào đang mount /data."
@@ -6391,7 +6391,7 @@
           "output": "VG      #PV #LV #SN Attr   VSize   VFree\nvgdata    1   1   0 wz--n- 79.99g 49.99g",
           "context": "guest",
           "purpose": "Đọc dung lượng và free extents của volume group.",
-          "meaning": "vgdata còn49.99g free trong79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
+          "meaning": "vgdata còn 49.99g free trong 79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Cần biết VG còn chỗ cấp cho LV hay không trước đề xuất lvextend."
@@ -6402,7 +6402,7 @@
           "command": "lvs -o lv_name,vg_name,lv_size,lv_path",
           "output": "LV     VG     LSize  Path\nlvdata vgdata 30.00g /dev/vgdata/lvdata",
           "purpose": "Đọc tên, path và kích thước LV.",
-          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện30G. Phải đối chiếu với mount /data trước change.",
+          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện 30G. Phải đối chiếu với mount /data trước change.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Tránh mở nhầm LV khi có nhiều volume hoặc mapping phức tạp."
@@ -6415,7 +6415,7 @@
           "output": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
           "context": "guest",
           "purpose": "Đọc cây disk/partition/LV của guest.",
-          "meaning": "vdb và vdb1 là80G, LV vgdata-lvdata còn30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
+          "meaning": "vdb và vdb1 là 80G, LV vgdata-lvdata còn 30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Xác định dung lượng resize đã tới disk/partition hay chưa và LV nào đang mount /data."
@@ -6426,7 +6426,7 @@
           "output": "VG      #PV #LV #SN Attr   VSize   VFree\nvgdata    1   1   0 wz--n- 79.99g 49.99g",
           "context": "guest",
           "purpose": "Đọc dung lượng và free extents của volume group.",
-          "meaning": "vgdata còn49.99g free trong79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
+          "meaning": "vgdata còn 49.99g free trong 79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Cần biết VG còn chỗ cấp cho LV hay không trước đề xuất lvextend."
@@ -6437,7 +6437,7 @@
           "command": "lvs -o lv_name,vg_name,lv_size,lv_path",
           "output": "LV     VG     LSize  Path\nlvdata vgdata 30.00g /dev/vgdata/lvdata",
           "purpose": "Đọc tên, path và kích thước LV.",
-          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện30G. Phải đối chiếu với mount /data trước change.",
+          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện 30G. Phải đối chiếu với mount /data trước change.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Tránh mở nhầm LV khi có nhiều volume hoặc mapping phức tạp."
@@ -6448,7 +6448,7 @@
           "command": "df -hT /data",
           "output": "Filesystem                Type Size Used Avail Use% Mounted on\n/dev/mapper/vgdata-lvdata xfs   30G  29G  1.0G  97% /data",
           "purpose": "Đọc loại filesystem và dung lượng của /data.",
-          "meaning": "/data là XFS30G dùng97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
+          "meaning": "/data là XFS 30G dùng 97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
           "commandId": "df-hT",
           "aliases": [],
           "why": "Công cụ mở filesystem phải phù hợp XFS và lớp LV bên dưới."
@@ -6514,17 +6514,17 @@
       "options": [
         {
           "id": "p2",
-          "label": "VG vgdata còn khoảng50G free.",
-          "feedback": "VFree49.99g là free extents ở VG."
+          "label": "VG vgdata còn khoảng 50G free.",
+          "feedback": "VFree 49.99g là free extents ở VG."
         },
         {
           "id": "over",
-          "label": "Chỉ cần disk80G là /data đã80G.",
-          "feedback": "Chưa thể bỏ qua LV30G và filesystem30G."
+          "label": "Chỉ cần disk 80G là /data đã 80G.",
+          "feedback": "Chưa thể bỏ qua LV 30G và filesystem 30G."
         },
         {
           "id": "p1",
-          "label": "vdb/vdb1 là80G, LV đang30G.",
+          "label": "vdb/vdb1 là 80G, LV đang 30G.",
           "feedback": "Đúng các lớp trong cây block device."
         }
       ],
@@ -6536,10 +6536,10 @@
       "hints": [
         "Dung lượng disk, chỗ trống trong VG và dung lượng filesystem là các lớp khác nhau.",
         "So lsblk/vgs với lvs và df -hT /data để biết chỗ đang dừng ở đâu.",
-        "VG còn khoảng50G nhưng LV/filesystem30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
+        "VG còn khoảng 50G nhưng LV/filesystem 30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Disk/partition80G, VG còn49.99g free nhưng LV và XFS /data còn30G, dùng97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
+        "expectedDiagnosis": "Disk/partition 80G, VG còn 49.99g free nhưng LV và XFS /data còn 30G, dùng 97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
         "nextChecks": "Xác nhận mapping LV/mount, type XFS, layout LVM/thin/snapshot/encryption nếu có và bản phục hồi trước change.",
         "resolution": "Sau phê duyệt, mở đúng LV rồi grow filesystem bằng công cụ phù hợp; không format lại volume.",
         "verification": "lvs và df cho dung lượng dự kiến, mount đúng và dữ liệu/app đọc ghi được sau change.",
@@ -6577,7 +6577,7 @@
           "output": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
           "context": "guest",
           "purpose": "Đọc cây disk/partition/LV của guest.",
-          "meaning": "vdb và vdb1 là80G, LV vgdata-lvdata còn30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
+          "meaning": "vdb và vdb1 là 80G, LV vgdata-lvdata còn 30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Xác định dung lượng resize đã tới disk/partition hay chưa và LV nào đang mount /data."
@@ -6588,7 +6588,7 @@
           "output": "VG      #PV #LV #SN Attr   VSize   VFree\nvgdata    1   1   0 wz--n- 79.99g 49.99g",
           "context": "guest",
           "purpose": "Đọc dung lượng và free extents của volume group.",
-          "meaning": "vgdata còn49.99g free trong79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
+          "meaning": "vgdata còn 49.99g free trong 79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Cần biết VG còn chỗ cấp cho LV hay không trước đề xuất lvextend."
@@ -6599,7 +6599,7 @@
           "command": "lvs -o lv_name,vg_name,lv_size,lv_path",
           "output": "LV     VG     LSize  Path\nlvdata vgdata 30.00g /dev/vgdata/lvdata",
           "purpose": "Đọc tên, path và kích thước LV.",
-          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện30G. Phải đối chiếu với mount /data trước change.",
+          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện 30G. Phải đối chiếu với mount /data trước change.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Tránh mở nhầm LV khi có nhiều volume hoặc mapping phức tạp."
@@ -6610,7 +6610,7 @@
           "command": "df -hT /data",
           "output": "Filesystem                Type Size Used Avail Use% Mounted on\n/dev/mapper/vgdata-lvdata xfs   30G  29G  1.0G  97% /data",
           "purpose": "Đọc loại filesystem và dung lượng của /data.",
-          "meaning": "/data là XFS30G dùng97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
+          "meaning": "/data là XFS 30G dùng 97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
           "commandId": "df-hT",
           "aliases": [],
           "why": "Công cụ mở filesystem phải phù hợp XFS và lớp LV bên dưới."
@@ -6622,7 +6622,7 @@
         {
           "id": "close",
           "label": "Đóng ticket vì vgs đã có free extents.",
-          "feedback": "Ứng dụng vẫn chỉ có không gian trong filesystem30G gần đầy."
+          "feedback": "Ứng dụng vẫn chỉ có không gian trong filesystem 30G gần đầy."
         },
         {
           "id": "safe",
@@ -6642,10 +6642,10 @@
       "hints": [
         "Dung lượng disk, chỗ trống trong VG và dung lượng filesystem là các lớp khác nhau.",
         "So lsblk/vgs với lvs và df -hT /data để biết chỗ đang dừng ở đâu.",
-        "VG còn khoảng50G nhưng LV/filesystem30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
+        "VG còn khoảng 50G nhưng LV/filesystem 30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Disk/partition80G, VG còn49.99g free nhưng LV và XFS /data còn30G, dùng97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
+        "expectedDiagnosis": "Disk/partition 80G, VG còn 49.99g free nhưng LV và XFS /data còn 30G, dùng 97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
         "nextChecks": "Xác nhận mapping LV/mount, type XFS, layout LVM/thin/snapshot/encryption nếu có và bản phục hồi trước change.",
         "resolution": "Sau phê duyệt, mở đúng LV rồi grow filesystem bằng công cụ phù hợp; không format lại volume.",
         "verification": "lvs và df cho dung lượng dự kiến, mount đúng và dữ liệu/app đọc ghi được sau change.",
@@ -6681,7 +6681,7 @@
           "output": "NAME                MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS\nvdb                 252:16   0  80G  0 disk\n└─vdb1              252:17   0  80G  0 part\n  └─vgdata-lvdata   253:0    0  30G  0 lvm  /data",
           "context": "guest",
           "purpose": "Đọc cây disk/partition/LV của guest.",
-          "meaning": "vdb và vdb1 là80G, LV vgdata-lvdata còn30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
+          "meaning": "vdb và vdb1 là 80G, LV vgdata-lvdata còn 30G. Kích thước thiết bị chưa xác nhận dung lượng filesystem.",
           "commandId": "lsblk",
           "aliases": [],
           "why": "Xác định dung lượng resize đã tới disk/partition hay chưa và LV nào đang mount /data."
@@ -6692,7 +6692,7 @@
           "output": "VG      #PV #LV #SN Attr   VSize   VFree\nvgdata    1   1   0 wz--n- 79.99g 49.99g",
           "context": "guest",
           "purpose": "Đọc dung lượng và free extents của volume group.",
-          "meaning": "vgdata còn49.99g free trong79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
+          "meaning": "vgdata còn 49.99g free trong 79.99g. VG free chưa trở thành filesystem free cho ứng dụng.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Cần biết VG còn chỗ cấp cho LV hay không trước đề xuất lvextend."
@@ -6703,7 +6703,7 @@
           "command": "lvs -o lv_name,vg_name,lv_size,lv_path",
           "output": "LV     VG     LSize  Path\nlvdata vgdata 30.00g /dev/vgdata/lvdata",
           "purpose": "Đọc tên, path và kích thước LV.",
-          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện30G. Phải đối chiếu với mount /data trước change.",
+          "meaning": "LV mục tiêu /dev/vgdata/lvdata hiện 30G. Phải đối chiếu với mount /data trước change.",
           "commandId": "lvm-report",
           "aliases": [],
           "why": "Tránh mở nhầm LV khi có nhiều volume hoặc mapping phức tạp."
@@ -6714,7 +6714,7 @@
           "command": "df -hT /data",
           "output": "Filesystem                Type Size Used Avail Use% Mounted on\n/dev/mapper/vgdata-lvdata xfs   30G  29G  1.0G  97% /data",
           "purpose": "Đọc loại filesystem và dung lượng của /data.",
-          "meaning": "/data là XFS30G dùng97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
+          "meaning": "/data là XFS 30G dùng 97%. Cần tăng LV đúng mục tiêu trước khi filesystem sử dụng phần được cấp thêm.",
           "commandId": "df-hT",
           "aliases": [],
           "why": "Công cụ mở filesystem phải phù hợp XFS và lớp LV bên dưới."
@@ -6748,10 +6748,10 @@
       "hints": [
         "Dung lượng disk, chỗ trống trong VG và dung lượng filesystem là các lớp khác nhau.",
         "So lsblk/vgs với lvs và df -hT /data để biết chỗ đang dừng ở đâu.",
-        "VG còn khoảng50G nhưng LV/filesystem30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
+        "VG còn khoảng 50G nhưng LV/filesystem 30G; cần xác nhận backup/mapping và quyền rồi mới mở LV cùng XFS, không format."
       ],
       "finalContext": {
-        "expectedDiagnosis": "Disk/partition80G, VG còn49.99g free nhưng LV và XFS /data còn30G, dùng97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
+        "expectedDiagnosis": "Disk/partition 80G, VG còn 49.99g free nhưng LV và XFS /data còn 30G, dùng 97%. Dung lượng chưa được cấp hết từ VG lên lớp dữ liệu.",
         "nextChecks": "Xác nhận mapping LV/mount, type XFS, layout LVM/thin/snapshot/encryption nếu có và bản phục hồi trước change.",
         "resolution": "Sau phê duyệt, mở đúng LV rồi grow filesystem bằng công cụ phù hợp; không format lại volume.",
         "verification": "lvs và df cho dung lượng dự kiến, mount đúng và dữ liệu/app đọc ghi được sau change.",

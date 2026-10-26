@@ -6,7 +6,7 @@
   "explanation": "Các kết quả thuộc ICMP trên path đã thử; chưa xác định cấu hình cuối cùng phải thay ở đâu.",
   "commandId": "ping",
   "optionFeedback": {
-    "p1": "Thông báo Frag needed và mtu1400 cho biết đường không mang gói đó như hiện tại.",
+    "p1": "Thông báo Frag needed và mtu 1400 cho biết đường không mang gói đó như hiện tại.",
     "p2": "Đúng hai lượt thành công của phép nhỏ hơn.",
     "over": "Payload không bằng MTU, và chưa xác định lớp interface cần sửa."
   }

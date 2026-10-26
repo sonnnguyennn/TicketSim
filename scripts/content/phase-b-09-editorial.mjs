@@ -325,7 +325,7 @@ export const editorialEdits = {
     'questions.evidence.prompt': 'Chọn hai quan sát từ cron và hash hiện tại.',
     'questions.evidence.explanation': 'Lịch và hash chưa đủ để quy ý định độc hại hay quyền hợp lệ.',
     'questions.evidence.options.p1': ['Root cron chạy agent mỗi năm phút.', '*/5 ở cột phút biểu thị lịch đó.'],
-    'questions.evidence.options.p2': ['Binary có hash SHA256 được ghi nhận.', 'Cần so với baseline, đường dẫn và version tin cậy.'],
+    'questions.evidence.options.p2': ['Binary có hash SHA-256 được ghi nhận.', 'Cần so với baseline, đường dẫn và version tin cậy.'],
     'questions.evidence.options.over': ['Hash khác chứng minh chỉ cần xóa file.', 'Chưa xác định nguồn thay đổi hoặc phạm vi incident response.'],
     'questions.decision.prompt': 'Làm gì trước khi xóa job hoặc binary lạ?',
     'questions.decision.explanation': 'Giữ scheduler, binary và timeline để security xác định containment đúng quyền.',

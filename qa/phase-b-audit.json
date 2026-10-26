@@ -22,10 +22,10 @@
   "sourceTickets": 112,
   "guided": 112,
   "commands": 122,
-  "fixtureChanges": 102,
+  "fixtureChanges": 103,
   "choiceCues": {
     "singleChoiceQuestions": 448,
-    "correctStrictlyLongest": 176,
+    "correctStrictlyLongest": 177,
     "correctPositions": {
       "1": 160,
       "2": 130,
@@ -50,7 +50,7 @@
       },
       "14": {
         "questions": 32,
-        "correctStrictlyLongest": 11
+        "correctStrictlyLongest": 12
       },
       "01": {
         "questions": 32,
@@ -1308,7 +1308,7 @@
       "topic": "Website/HTTP",
       "level": 1,
       "status": "Đã rà soát và sửa",
-      "technical": "Thu hẹp source root mismatch thành giả thuyết cần runtime-vhost proof.",
+      "technical": "Thu hẹp source root mismatch thành giả thuyết cần bằng chứng về vhost đang phục vụ.",
       "editorial": "Riêng URL/Host/release, nhãn ngắn cân đối.",
       "references": [
         "https://nginx.org/en/docs/"
@@ -1401,7 +1401,7 @@
       "topic": "Quản lý VPS",
       "level": 1,
       "status": "Đã rà soát và sửa",
-      "technical": "Cảnhbáoghiđè+thiếubackup; restoretest khác tồn tạiartifact.",
+      "technical": "Cảnhbáoghiđè+thiếubackup; restore test khác tồn tạiartifact.",
       "editorial": "Viết rõ yêu cầu vàinformed approval thay warningchung.",
       "references": [
         "https://libvirt.org/manpages/virsh.html"
@@ -1620,7 +1620,7 @@
       "topic": "Bảo mật/abuse",
       "level": 3,
       "status": "Đã rà soát và sửa",
-      "technical": "Phân biệt Accepted với failed; last không xác thực actor. Thay fingerprint rút gọn bằng dạng SHA256 hợp lệ 43 ký tự.",
+      "technical": "Phân biệt Accepted với failed; last không xác thực actor. Thay fingerprint rút gọn bằng dạng SHA-256 hợp lệ 43 ký tự.",
       "editorial": "Viết rõ uncertain authorization và bảo toàn chứng cứ, không quy danh tính từ IP.",
       "references": [
         "https://www.openssh.com/manual.html",
@@ -1713,7 +1713,7 @@
       "topic": "Docker (bổ sung)",
       "level": 3,
       "status": "Đã rà soát và sửa",
-      "technical": "Sửa Compose ps cần--all để show DB Exited; OOM snapshot không chứng minh host RAM sole cause; chuẩn hóa free header.",
+      "technical": "Sửa Compose ps cần --all để show DB Exited; OOM snapshot không chứng minh host RAM sole cause; chuẩn hóa free header.",
       "editorial": "Tách API db dependency, không cho API Up=resolved.",
       "references": [
         "https://docs.docker.com/reference/cli/docker/compose/ps/",
@@ -1945,7 +1945,7 @@
       "level": 2,
       "status": "Đã rà soát và sửa",
       "technical": "Expired khác deleted; request khác applied hold; pending restore không bảo đảm dữ liệu.",
-      "editorial": "Câu hỏi theo deadline và authority, không generic warning.",
+      "editorial": "Ticket lịch sử tại 22/10; không suy trạng thái xóa sau 25/10 từ lịch dự kiến.",
       "references": []
     },
     {

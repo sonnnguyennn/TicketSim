@@ -8,6 +8,6 @@
   "optionFeedback": {
     "p1": "Đúng cột wa ở hai mẫu sau dòng đầu.",
     "p2": "Các cột riêng đọc/ghi của iostat cho số đo này.",
-    "over": "Không có SMART/hosterror hoặc kiểm tra vật lý trong hai output."
+    "over": "Không có SMART/host error hoặc kiểm tra vật lý trong hai output."
   }
 }

@@ -73,4 +73,14 @@ describe('D2 command knowledge', () => {
       }
     }
   })
+
+  it('distinguishes iostat boot averages from interval samples', () => {
+    const card = commandLibrary.find(item => item.id === 'iostat')!
+    expect(card.knowledge!.verification).toBe('PENDING')
+    expect(card.knowledge!.options.find(option => option.name === '-y')?.purpose).toContain('Bỏ báo cáo đầu')
+    expect(card.knowledge!.examples[0].command).toBe('iostat -xz 1 5')
+    expect(card.pitfalls).toContain('Báo cáo đầu là từ boot')
+    expect(card.knowledge!.examples[1].command).toBe('iostat -yxz 1 3')
+    expect(card.knowledge!.examples[1].interpretation).toContain('mẫu interval')
+  })
 })

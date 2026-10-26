@@ -1,9 +1,9 @@
 {
-  "expected_diagnosis": "Dịch vụ hết hạn 20/10, xóa lịch 25/10, hold false; backup 19/10 chưa xác minh restore.",
-  "recommended_next_checks": "Xác minh owner, renewal, retention job, policy và khả năng backup trước deadline.",
-  "resolution_guidance": "Chuyển billing/lifecycle on-call xin ngoại lệ hold có audit; chỉ hứa thời hạn đã được duyệt và áp.",
-  "verification": "Kiểm tra hold/renewal, deadline mới, data/backup status và khách xác nhận phương án.",
-  "escalate_when": "Cần policy owner hoặc quyết định khẩn trước deletion.",
+  "expected_diagnosis": "Tại 22/10/2026 10:00 UTC: dịch vụ hết hạn 20/10, deletion job dự kiến 25/10, hold=false; backup 19/10 chưa thử restore. Không biết job đã chạy hay dữ liệu còn sau 25/10.",
+  "recommended_next_checks": "Xác minh owner, policy, trạng thái deletion job tại lúc xử lý, hold hiện tại và khả năng phục hồi từ backup.",
+  "resolution_guidance": "Chuyển billing/lifecycle on-call xin quyết định hold có audit nếu còn áp dụng được; không hứa gia hạn hay phục hồi khi chưa xác nhận trạng thái job và dữ liệu.",
+  "verification": "Kiểm tra job đã chạy chưa, hold/renewal và deadline mới nếu được duyệt; kiểm tra dữ liệu/backup rồi báo khách kết quả xác minh.",
+  "escalate_when": "Cần policy owner quyết định khẩn về hold hoặc đánh giá khôi phục sau deadline.",
   "production_warning": "Không tự hủy job xóa hoặc hứa giữ dữ liệu vô hạn; backup chưa thử không bảo đảm restore.",
   "scoring_rubric": {
     "symptom_identification": 2,
@@ -12,5 +12,5 @@
     "safe_resolution": 2,
     "verification_or_escalation": 1
   },
-  "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: Billing showed expiry on 20 October and panel retention scheduled deletion for 25 October 2026.\nNext Action: Urgently request a policy-approved retention decision and advise the authorized owner to preserve needed data.\nVerification: Confirm renewal or exception is recorded and the required data remains available.\nStatus: Urgent billing/retention escalation recommended."
+  "referenceNoteEn": "Issue: Service data faces a retention deadline.\nFindings: At receipt on 22 October 2026 10:00 UTC, billing showed expiry on 20 October, a deletion job scheduled for 25 October and no active hold. Neither the schedule nor the backup inventory proves current data availability.\nNext Action: Verify the owner and current deletion-job state, then ask Billing/Lifecycle for an audited hold if the data still qualifies; do not promise retention or restore.\nVerification: Confirm the approved hold or extension was applied, check the new deadline and test data or backup availability separately.\nStatus: Urgent billing/retention escalation recommended."
 }

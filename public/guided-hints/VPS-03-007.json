@@ -2,6 +2,6 @@
   "hints": [
     "Too many open files có thể nói về file descriptor, gồm cả socket, không chỉ file trên ổ đĩa.",
     "So Max open files của đúng PID với số entry trong /proc/PID/fd và thời điểm lỗi.",
-    "1008 gần giới hạn1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
+    "1008 gần giới hạn 1024 nhưng một lần đếm chưa chứng minh leak. Cần trend dưới tải và phân loại socket/file trước chọn sửa app hay tăng limit."
   ]
 }

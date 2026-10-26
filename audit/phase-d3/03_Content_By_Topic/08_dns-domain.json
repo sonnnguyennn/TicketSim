@@ -3331,7 +3331,7 @@
         "resolution": "Nếu authority thống nhất, giữ dịch vụ cũ và theo dõi cache theo TTL; nếu NS bất nhất, chuyển owner sửa đúng zone.",
         "verification": "Các NS thống nhất, resolver khách hội tụ và domain phục vụ đúng site mới.",
         "escalation": "Chuyển DNS provider hoặc owner nếu NS bất nhất, hoặc cache vẫn khác sau khoảng thời gian phù hợp.",
-        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Allow the TTL and client caches to expire; investigate only if the stale response persists.\nVerification: Confirm affected recursive and client resolvers converge on the authoritative answer.\nStatus: Cache convergence pending."
+        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Query every authoritative nameserver first. If they agree on the new IP, keep the old endpoint available while affected recursive caches expire.\nVerification: Confirm all authoritative answers agree, then verify affected recursive and client resolvers converge.\nStatus: Cache convergence pending."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:359",
@@ -3491,7 +3491,7 @@
         "resolution": "Nếu authority thống nhất, giữ dịch vụ cũ và theo dõi cache theo TTL; nếu NS bất nhất, chuyển owner sửa đúng zone.",
         "verification": "Các NS thống nhất, resolver khách hội tụ và domain phục vụ đúng site mới.",
         "escalation": "Chuyển DNS provider hoặc owner nếu NS bất nhất, hoặc cache vẫn khác sau khoảng thời gian phù hợp.",
-        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Allow the TTL and client caches to expire; investigate only if the stale response persists.\nVerification: Confirm affected recursive and client resolvers converge on the authoritative answer.\nStatus: Cache convergence pending."
+        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Query every authoritative nameserver first. If they agree on the new IP, keep the old endpoint available while affected recursive caches expire.\nVerification: Confirm all authoritative answers agree, then verify affected recursive and client resolvers converge.\nStatus: Cache convergence pending."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:359",
@@ -3655,7 +3655,7 @@
         "resolution": "Nếu authority thống nhất, giữ dịch vụ cũ và theo dõi cache theo TTL; nếu NS bất nhất, chuyển owner sửa đúng zone.",
         "verification": "Các NS thống nhất, resolver khách hội tụ và domain phục vụ đúng site mới.",
         "escalation": "Chuyển DNS provider hoặc owner nếu NS bất nhất, hoặc cache vẫn khác sau khoảng thời gian phù hợp.",
-        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Allow the TTL and client caches to expire; investigate only if the stale response persists.\nVerification: Confirm affected recursive and client resolvers converge on the authoritative answer.\nStatus: Cache convergence pending."
+        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Query every authoritative nameserver first. If they agree on the new IP, keep the old endpoint available while affected recursive caches expire.\nVerification: Confirm all authoritative answers agree, then verify affected recursive and client resolvers converge.\nStatus: Cache convergence pending."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:359",
@@ -3819,7 +3819,7 @@
         "resolution": "Nếu authority thống nhất, giữ dịch vụ cũ và theo dõi cache theo TTL; nếu NS bất nhất, chuyển owner sửa đúng zone.",
         "verification": "Các NS thống nhất, resolver khách hội tụ và domain phục vụ đúng site mới.",
         "escalation": "Chuyển DNS provider hoặc owner nếu NS bất nhất, hoặc cache vẫn khác sau khoảng thời gian phù hợp.",
-        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Allow the TTL and client caches to expire; investigate only if the stale response persists.\nVerification: Confirm affected recursive and client resolvers converge on the authoritative answer.\nStatus: Cache convergence pending."
+        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Query every authoritative nameserver first. If they agree on the new IP, keep the old endpoint available while affected recursive caches expire.\nVerification: Confirm all authoritative answers agree, then verify affected recursive and client resolvers converge.\nStatus: Cache convergence pending."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:359",
@@ -3912,7 +3912,7 @@
         "resolution": "Nếu authority thống nhất, giữ dịch vụ cũ và theo dõi cache theo TTL; nếu NS bất nhất, chuyển owner sửa đúng zone.",
         "verification": "Các NS thống nhất, resolver khách hội tụ và domain phục vụ đúng site mới.",
         "escalation": "Chuyển DNS provider hoặc owner nếu NS bất nhất, hoặc cache vẫn khác sau khoảng thời gian phù hợp.",
-        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Allow the TTL and client caches to expire; investigate only if the stale response persists.\nVerification: Confirm affected recursive and client resolvers converge on the authoritative answer.\nStatus: Cache convergence pending."
+        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Query every authoritative nameserver first. If they agree on the new IP, keep the old endpoint available while affected recursive caches expire.\nVerification: Confirm all authoritative answers agree, then verify affected recursive and client resolvers converge.\nStatus: Cache convergence pending."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:359",
@@ -4007,7 +4007,7 @@
         "resolution": "Nếu authority thống nhất, giữ dịch vụ cũ và theo dõi cache theo TTL; nếu NS bất nhất, chuyển owner sửa đúng zone.",
         "verification": "Các NS thống nhất, resolver khách hội tụ và domain phục vụ đúng site mới.",
         "escalation": "Chuyển DNS provider hoặc owner nếu NS bất nhất, hoặc cache vẫn khác sau khoảng thời gian phù hợp.",
-        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Allow the TTL and client caches to expire; investigate only if the stale response persists.\nVerification: Confirm affected recursive and client resolvers converge on the authoritative answer.\nStatus: Cache convergence pending."
+        "referenceNoteEn": "Issue: Recursive DNS still returns an older A record.\nFindings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.\nNext Action: Query every authoritative nameserver first. If they agree on the new IP, keep the old endpoint available while affected recursive caches expire.\nVerification: Confirm all authoritative answers agree, then verify affected recursive and client resolvers converge.\nStatus: Cache convergence pending."
       },
       "source": {
         "question": "scripts/content/phase-b-06-10.mjs:359",
@@ -5871,7 +5871,7 @@
         "case": "scripts/content/phase-b-06-10.mjs:381",
         "gradingBase": "scripts/guided-content.mjs:829",
         "overrides": [
-          "scripts/guided-content.mjs:1345"
+          "scripts/guided-content.mjs:1348"
         ]
       },
       "classification": [

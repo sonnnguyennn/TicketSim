@@ -2,7 +2,7 @@
   "correctIds": [
     "supported"
   ],
-  "explanation": "Cần retention, nguồn tăng và lượng archived có thể dọn; tổng diskusage không phải giấy phép xóa toàn bộ log.",
+  "explanation": "Cần retention, nguồn tăng và lượng archived có thể dọn; tổng disk usage không phải giấy phép xóa toàn bộ log.",
   "commandId": "df-h",
   "optionFeedback": {
     "over": "Các log có yêu cầu điều tra/retention, không được đánh giá ở đây.",

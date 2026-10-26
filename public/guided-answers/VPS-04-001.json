@@ -1,5 +1,5 @@
 {
-  "expected_diagnosis": "CPU user cao trong mẫu top và python3 PID2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
+  "expected_diagnosis": "CPU user cao trong mẫu top và python3 PID 2601 nổi bật ở ps. Chưa xác định đó là script dự kiến hay vì sao tải cao.",
   "recommended_next_checks": "Xác nhận owner, command/job schedule, số CPU và trend cùng độ trễ; phân biệt %CPU của ps theo lifetime với mẫu top.",
   "resolution_guidance": "Cùng owner chọn tối ưu, giới hạn hoặc dời lịch theo nhu cầu đã xác minh và phê duyệt; không kill mù.",
   "verification": "Trong lần chạy workload tương đương, độ trễ khách đạt mục tiêu và CPU/tải phù hợp baseline.",

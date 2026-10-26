@@ -2,7 +2,7 @@
   "correctIds": [
     "direct"
   ],
-  "explanation": "Mặc định compose ps chỉ hiện running; cần--all khi tìm dependency đã thoát.",
+  "explanation": "Mặc định compose ps chỉ hiện running; cần --all khi tìm dependency đã thoát.",
   "commandId": "docker-compose-ps",
   "optionFeedback": {
     "direct": "Bao gồm container dừng như db.",

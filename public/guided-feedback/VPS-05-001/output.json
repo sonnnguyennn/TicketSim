@@ -5,8 +5,8 @@
   "explanation": "Đã hết block space có thể dùng trong mẫu; inode phải đọc riêng để không nhầm tài nguyên.",
   "commandId": "df-h",
   "optionFeedback": {
-    "inode": "df -h không đo inode; df -i bổ sung còn42%.",
+    "inode": "df -h không đo inode; df -i bổ sung còn 42%.",
     "ram": "df đọc filesystem chứ không đọc bộ nhớ.",
-    "full": "Đúng các cột Avail0 và Use%100 của df."
+    "full": "Đúng các cột Avail 0 và Use%100 của df."
   }
 }
