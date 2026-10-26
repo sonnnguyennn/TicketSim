@@ -45,6 +45,8 @@ Tiến độ lưu ở `localStorage` phiên bản 5 và có thể xuất/nhập 
 
 ## QA và giới hạn hiện tại
 
+Phase D3-C2 đã rà ở mức agent cả 620 câu hỏi, 122 command cards và 112 English notes; có 70 câu, 1 card và 11 note đổi so với baseline D3-C1. Các findings, before/after và kết quả kiểm thử nằm trong [audit D3-C2](audit/phase-d3-c2/01_Executive_Summary.md). Đây chưa phải SME sign-off: 31 command vẫn PENDING, mọi card LAB_PENDING và 20 support tasks SOP_PENDING.
+
 Phase D2 giữ nguyên 112 Guided, 122 Command IDs và progress v5. Audit D2 kiểm tra knowledge schema, ID mapping, support task boundary và safety; unit/browser/build đạt. Metadata hiệu lực hiện có 71 thẻ đã đối chiếu nguồn chính thức ở mức cú pháp, 31 thẻ còn chờ đối chiếu nguồn, 20 thẻ support cần SOP; `getent-passwd` được cập nhật sau mốc QA D2. Không có thẻ nào được kiểm chứng trong lab; output ví dụ là trích đoạn biên soạn. Xem [QA D2](Phase_D2_Command_Knowledge_QA.md) để đọc scope lịch sử của từng nhãn và [ledger](Phase_D2_Command_Review_Ledger.csv) cho trạng thái hiện tại.
 
 Phase B đã rà soát và biên soạn lại nội dung của cả 112 Guided; 122 thẻ Command Library được kiểm tra, trong đó 60 thẻ có sửa đổi. Audit theo ID, báo cáo trùng lặp và 101 thay đổi fixture chỉ dành cho Guided nằm trong [QA Phase B](Phase_B_Content_QA.md). QA này do agent thực hiện; chưa có vòng kiểm duyệt độc lập của chuyên gia con người.

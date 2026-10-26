@@ -1,0 +1,1009 @@
+"ticket_id","before_note","after_note","checked_fields","review_decision","review_reason","evidence","source_location","sme_status"
+"VPS-01-001","Issue: SSH connection refused.
+Findings: The guest reported an inactive sshd service and no TCP/22 listener.
+Next Action: Review the sshd journal and stop reason. Start the service only after authorization.
+Verification: Confirm sshd is active, TCP/22 listens, and an authorized client can log in.
+Status: Pending authorized remediation and verification.","Issue: SSH connection refused.
+Findings: The guest reported an inactive sshd service and no TCP/22 listener.
+Next Action: Review the sshd journal and stop reason. Start the service only after authorization.
+Verification: Confirm sshd is active, TCP/22 listens, and an authorized client can log in.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Active: inactive (dead) | P2: State Recv-Q Send-Q Local Address:Port Peer Address:Port Process","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-01-002","Issue: SSH login rejected for the requested username.
+Findings: The client reached SSH authentication, but the guest NSS lookup returned no entry for admin.
+Next Action: Confirm the intended username and identity source; use an authorized account. Do not create or reset one without approval.
+Verification: Retry with the approved username and confirm login from the client.
+Status: Pending authorized remediation and verification.","Issue: SSH login rejected for the requested username.
+Findings: The client reached SSH authentication, but the guest NSS lookup returned no entry for admin.
+Next Action: Confirm the intended username and identity source; use an authorized account. Do not create or reset one without approval.
+Verification: Retry with the approved username and confirm login from the client.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: debug1: Authentications that can continue: publickey,password admin@192.0.2.25: Permission denied (publickey,password). | P2: ","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-02-001","Issue: Guest cannot reach outside its subnet.
+Findings: The guest had 10.10.20.25/24 but the route table lacked a default route.
+Next Action: Confirm the assigned gateway and restore the approved NetworkManager profile through console access.
+Verification: Check the default route and an external TCP connection.
+Status: Pending authorized remediation and verification.","Issue: Guest cannot reach outside its subnet.
+Findings: The guest had 10.10.20.25/24 but the route table lacked a default route.
+Next Action: Confirm the assigned gateway and restore the approved NetworkManager profile through console access.
+Verification: Check the default route and an external TCP connection.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: 2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 inet 10.10.20.25/24 brd 10.10.20.255 scope global enp0s3 | P2: 10.10.20.0/24 dev enp0s3","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-03-001","Issue: Application site unavailable because Nginx is stopped.
+Findings: systemctl showed Nginx inactive and no process listened on TCP/80.
+Next Action: Review the stop reason and configuration before an authorized start.
+Verification: Confirm the service, local HTTP response and external access.
+Status: Pending authorized remediation and verification.","Issue: Application site unavailable because Nginx is stopped.
+Findings: systemctl showed Nginx inactive and no process listened on TCP/80.
+Next Action: Review the stop reason and configuration before an authorized start.
+Verification: Confirm the service, local HTTP response and external access.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Active: inactive (dead) | P2: State Recv-Q Send-Q Local Address:Port Peer Address:Port Process","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-05-001","Issue: Root filesystem is full.
+Findings: df reported 100% usage for /; du showed approximately 13 GiB under /var/log. The source and retention requirements still need review.
+Next Action: Identify log ownership and retention, then use approved rotation, cleanup or expansion after backup.
+Verification: Confirm free space and successful application writes.
+Status: Pending authorized remediation and verification.","Issue: Root filesystem is full.
+Findings: df reported 100% usage for /; du showed approximately 13 GiB under /var/log. The source and retention requirements still need review.
+Next Action: Identify log ownership and retention, then use approved rotation, cleanup or expansion after backup.
+Verification: Confirm free space and successful application writes.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Filesystem Size Used Avail Use% Mounted on /dev/vda1 20G 20G 0 100% / | P2: 13G /var/log 1.0G /var/lib 14G /var","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-05-002","Issue: File creation blocked by inode exhaustion.
+Findings: Block usage was 45%, but the filesystem had used 100% of its inodes.
+Next Action: Locate the directory generating small files and agree on safe archival or removal.
+Verification: Verify free inodes and a successful file creation.
+Status: Pending authorized remediation and verification.","Issue: File creation blocked by inode exhaustion.
+Findings: Block usage was 45%, but the filesystem had used 100% of its inodes.
+Next Action: Locate the directory generating small files and agree on safe archival or removal.
+Verification: Verify free inodes and a successful file creation.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Filesystem Size Used Avail Use% Mounted on /dev/vda1 20G 9.0G 11G 45% / | P2: Filesystem Inodes IUsed IFree IUse% Mounted on /dev/vda1 1048576 1048576 0 100% /","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-07-001","Issue: Website unavailable because Nginx is inactive.
+Findings: Nginx was inactive and no process listened on TCP/80.
+Next Action: Check the stop reason and configuration, then start under authorization.
+Verification: Confirm local and external HTTP responses.
+Status: Pending authorized remediation and verification.","Issue: Website unavailable because Nginx is inactive.
+Findings: Nginx was inactive and no process listened on TCP/80.
+Next Action: Check the stop reason and configuration, then start under authorization.
+Verification: Confirm local and external HTTP responses.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Active: inactive (dead) | P2: State Recv-Q Send-Q Local Address:Port Peer Address:Port Process LISTEN 0 128 0.0.0.0:22 0.0.0.0:* users:((""sshd"",pid=730,fd=3))","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-08-002","Issue: Lookup uses a misspelled hostname.
+Findings: ww.example.com returned NXDOMAIN while www.example.com resolved to the service address.
+Next Action: Correct the requested hostname or ask the domain owner whether an alias is desired.
+Verification: Resolve the intended FQDN and load the page.
+Status: Pending authorized remediation and verification.","Issue: Lookup uses a misspelled hostname.
+Findings: ww.example.com returned NXDOMAIN while www.example.com resolved to the service address.
+Next Action: Correct the requested hostname or ask the domain owner whether an alias is desired.
+Verification: Resolve the intended FQDN and load the page.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: ;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 10421 | P2: ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 10422 ;; ANSWER SECTION: www.example.com. 300 IN A 198.51.100.20","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-01-003","Issue: SSH private key rejected on the client.
+Findings: The client reported mode 0644 on the private key, and ls confirmed it was readable by group and others.
+Next Action: On the authorized client, restrict the key file to mode 0600 and retry without sharing the key.
+Verification: Confirm the key is accepted and the authorized SSH session succeeds.
+Status: Pending authorized remediation and verification.","Issue: SSH private key rejected on the client.
+Findings: The client reported mode 0644 on the private key, and ls confirmed it was readable by group and others.
+Next Action: On the authorized client, restrict the key file to mode 0600 and retry without sharing the key.
+Verification: Confirm the key is accepted and the authorized SSH session succeeds.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ @ WARNING: UNPROTECTED PRIVATE KEY FILE! @ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Permissions 0644 for '/home/lab/.ssh/lab_key' are too open. This private key will b","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-03-003","Issue: Nginx fails configuration validation.
+Findings: Nginx was failed and its syntax test reported an unexpected brace at nginx.conf line 45.
+Next Action: Correct the configuration with review, run nginx -t, then reload or start under change approval.
+Verification: Confirm syntax validation and the expected HTTP response.
+Status: Pending authorized remediation and verification.","Issue: Nginx fails configuration validation.
+Findings: Nginx was failed and its syntax test reported an unexpected brace at nginx.conf line 45.
+Next Action: Correct the configuration with review, run nginx -t, then reload or start under change approval.
+Verification: Confirm syntax validation and the expected HTTP response.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Active: failed | P2: nginx: [emerg] unexpected ""}"" in /etc/nginx/nginx.conf:45 nginx: configuration file /etc/nginx/nginx.conf test failed","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-05-004","Issue: Data volume remounted read-only after I/O errors.
+Findings: The /data mount showed ro and the kernel reported a buffer I/O error on vdb.
+Next Action: Stop further writes and escalate storage integrity assessment and controlled offline repair.
+Verification: Verify volume health, mount mode and application data after recovery.
+Status: Storage escalation recommended; unresolved.","Issue: Data volume remounted read-only after I/O errors.
+Findings: The /data mount showed ro and the kernel reported a buffer I/O error on vdb.
+Next Action: Stop further writes and escalate storage integrity assessment and controlled offline repair.
+Verification: Verify volume health, mount mode and application data after recovery.
+Status: Storage escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: /dev/vdb1 ro,relatime | P2: [8921.410235] Buffer I/O error on dev vdb, logical block 49152, async page read","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-08-003","Issue: Delegation still points to old nameservers.
+Findings: The NS query returned old-dns names while the edited zone was on new-dns.
+Next Action: Verify registrar authority and plan a controlled delegation update; avoid conflicting active zones.
+Verification: Confirm parent delegation and authoritative responses agree.
+Status: Pending authorized remediation and verification.","Issue: Delegation still points to old nameservers.
+Findings: The NS query returned old-dns names while the edited zone was on new-dns.
+Next Action: Verify registrar authority and plan a controlled delegation update; avoid conflicting active zones.
+Verification: Confirm parent delegation and authoritative responses agree.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40318 ;; ANSWER SECTION: example.test. 300 IN NS ns1.old-dns.example. example.test. 300 IN NS ns2.old-dns.example. | P2: ns1.new-dns.example","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-01-004","Issue: SSH traffic blocked at the guest firewall.
+Findings: sshd was active, but the inspected firewalld output did not list SSH access. Confirm the active zone before treating this as the effective rule.
+Next Action: With approval, inspect the zone bound to the interface and add the required SSH allowance under the documented firewall policy.
+Verification: Test TCP/22 and login externally, then verify the rule persists.
+Status: Pending authorized remediation and verification.","Issue: SSH traffic blocked at the guest firewall.
+Findings: sshd was active, but the inspected firewalld output did not list SSH access. Confirm the active zone before treating this as the effective rule.
+Next Action: With approval, inspect the zone bound to the interface and add the required SSH allowance under the documented firewall policy.
+Verification: Test TCP/22 and login externally, then verify the rule persists.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: active | P2: public target: default icmp-block-inversion: no interfaces: sources: services: cockpit dhcpv6-client ports: protocols: forward: no masquerade: no forward-ports: source-ports: icmp-blocks: rich rules:","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-01-005","Issue: SSH host key changed after a rebuild.
+Findings: The client rejected the saved host key, and panel history showed a recent OS reinstall.
+Next Action: Validate the new host key fingerprint through a trusted console or owner channel before updating known_hosts.
+Verification: Confirm the received fingerprint matches the trusted value and an authorized login works.
+Status: Pending authorized remediation and verification.","Issue: SSH host key changed after a rebuild.
+Findings: The client rejected the saved host key, and panel history showed a recent OS reinstall.
+Next Action: Validate the new host key fingerprint through a trusted console or owner channel before updating known_hosts.
+Verification: Confirm the received fingerprint matches the trusted value and an authorized login works.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Host key verification failed | P2: OS reinstalled 15 minutes ago","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-01-006","Issue: Source IP listed in the SSH ban.
+Findings: The sshd jail listed 198.51.100.14 as banned, and the Fail2ban log recorded a ban for that address.
+Next Action: Verify the customer source IP and account activity; follow the approved unban process if appropriate.
+Verification: Confirm authorized access is restored and investigate the failed attempts.
+Status: Pending authorized remediation and verification.","Issue: Source IP listed in the SSH ban.
+Findings: The sshd jail listed 198.51.100.14 as banned, and the Fail2ban log recorded a ban for that address.
+Next Action: Verify the customer source IP and account activity; follow the approved unban process if appropriate.
+Verification: Confirm authorized access is restored and investigate the failed attempts.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Banned IP list: 198.51.100.14 | P2: Oct 22 10:03:11 vps fail2ban-server[731]: [sshd] Ban 198.51.100.14","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-01-007","Issue: SSH is listening on a nondefault port.
+Findings: The guest listener and sshd configuration both showed TCP/2222 rather than TCP/22.
+Next Action: Confirm the intended port and permitted network path; tell the customer to use the approved SSH port.
+Verification: Complete an authorized login over the intended port from a permitted source.
+Status: Pending authorized remediation and verification.","Issue: SSH is listening on a nondefault port.
+Findings: The guest listener and sshd configuration both showed TCP/2222 rather than TCP/22.
+Next Action: Confirm the intended port and permitted network path; tell the customer to use the approved SSH port.
+Verification: Complete an authorized login over the intended port from a permitted source.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: State Recv-Q Send-Q Local Address:Port Peer Address:Port Process LISTEN 0 128 0.0.0.0:2222 0.0.0.0:* | P2: Port 2222","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-02-002","Issue: Hostname lookup fails while IP traffic works.
+Findings: ICMP to 1.1.1.1 succeeded, but the DNS query timed out against the configured resolver.
+Next Action: Inspect resolver reachability and the approved DNS profile before changing settings.
+Verification: Resolve the hostname through the configured resolver and complete a domain request.
+Status: Pending authorized remediation and verification.","Issue: Hostname lookup fails while IP traffic works.
+Findings: ICMP to 1.1.1.1 succeeded, but the DNS query timed out against the configured resolver.
+Next Action: Inspect resolver reachability and the approved DNS profile before changing settings.
+Verification: Resolve the hostname through the configured resolver and complete a domain request.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: --- 1.1.1.1 ping statistics --- 2 packets transmitted, 2 received, 0% packet loss, time 1001ms rtt min/avg/max/mdev = 12.000/12.500/13.000/0.500 ms | P2: ;; communications error to 192.0.2.53#53: timed out ;; no servers could be reached","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-02-003","Issue: Guest interface has no IPv4 address.
+Findings: The Ethernet device existed, but NetworkManager showed it disconnected and no IPv4 address appeared.
+Next Action: Confirm the intended NIC and connection profile. Reconnect only with console access and approval.
+Verification: Verify IPv4, the route, and an external TCP test.
+Status: Pending authorized remediation and verification.","Issue: Guest interface has no IPv4 address.
+Findings: The Ethernet device existed, but NetworkManager showed it disconnected and no IPv4 address appeared.
+Next Action: Confirm the intended NIC and connection profile. Reconnect only with console access and approval.
+Verification: Verify IPv4, the route, and an external TCP test.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: lo UNKNOWN 127.0.0.1/8 ::1/128 enp0s3 UP | P2: DEVICE TYPE STATE CONNECTION enp0s3 ethernet disconnected --","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-02-004","Issue: HTTPS listener is not exposed by the inspected firewall zone.
+Findings: A process listened on TCP/443, while the displayed firewalld rules did not include HTTPS.
+Next Action: Identify the active zone for the relevant interface and, if approved, allow the required service.
+Verification: Test HTTPS from an external client.
+Status: Pending authorized remediation and verification.","Issue: HTTPS listener is not exposed by the inspected firewall zone.
+Findings: A process listened on TCP/443, while the displayed firewalld rules did not include HTTPS.
+Next Action: Identify the active zone for the relevant interface and, if approved, allow the required service.
+Verification: Test HTTPS from an external client.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: State Recv-Q Send-Q Local Address:Port Peer Address:Port Process LISTEN 0 511 0.0.0.0:443 0.0.0.0:* | P2: public target: default icmp-block-inversion: no interfaces: sources: services: ssh ports: protocols: forward: no masquerade: no forward-port","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-02-005","Issue: Target interface has IPv6 but no IPv4.
+Findings: The interface displayed an IPv6 address and no IPv4 inet line.
+Next Action: Compare the approved IPv4 allocation with the guest profile and restore it using validated settings.
+Verification: Confirm IPv4, a default route, and client TCP/22 connectivity.
+Status: Pending authorized remediation and verification.","Issue: Target interface has IPv6 but no IPv4.
+Findings: The interface displayed an IPv6 address and no IPv4 inet line.
+Next Action: Compare the approved IPv4 allocation with the guest profile and restore it using validated settings.
+Verification: Confirm IPv4, a default route, and client TCP/22 connectivity.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: 2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 inet6 2001:db8:100::25/64 scope global valid_lft forever preferred_lft forever | P2: 2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-02-007","Issue: SSH reachability differs by source network.
+Findings: The panel probes reached TCP/22 from Tokyo but timed out from two ISPs; the effective sshd port was 22.
+Next Action: Collect affected source IPs, path measurements and guest/provider filtering evidence for network escalation.
+Verification: Repeat the same TCP test from the previously affected ISPs.
+Status: Network escalation recommended; unresolved.","Issue: SSH reachability differs by source network.
+Findings: The panel probes reached TCP/22 from Tokyo but timed out from two ISPs; the effective sshd port was 22.
+Next Action: Collect affected source IPs, path measurements and guest/provider filtering evidence for network escalation.
+Verification: Repeat the same TCP test from the previously affected ISPs.
+Status: Network escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Tokyo TCP/22 success; ISP-A timeout; ISP-B timeout | P2: port 22 gatewayports no","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-03-002","Issue: Web application cannot write uploads.
+Findings: The upload directory was owned by root while the application ran as webapp; the shown mode did not grant webapp write access.
+Next Action: Have the owner approve a narrowly scoped ownership or ACL correction.
+Verification: Write a test file as the application and confirm least-privilege permissions.
+Status: Pending authorized remediation and verification.","Issue: Web application cannot write uploads.
+Findings: The upload directory was owned by root while the application ran as webapp; the shown mode did not grant webapp write access.
+Next Action: Have the owner approve a narrowly scoped ownership or ACL correction.
+Verification: Write a test file as the application and confirm least-privilege permissions.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: drwxr-xr-x 2 root root 4096 Oct 22 09:00 /srv/app/uploads | P2: uid=1001(webapp) gid=1001(webapp) groups=1001(webapp)","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-03-004","Issue: SELinux denied the web write operation.
+Findings: SELinux was enforcing and an AVC record denied httpd write access to uploads.
+Next Action: Verify the intended path and context, then apply an approved context or policy fix without disabling enforcement.
+Verification: Repeat the write in enforcing mode and check for related AVC denials.
+Status: Pending authorized remediation and verification.","Issue: SELinux denied the web write operation.
+Findings: SELinux was enforcing and an AVC record denied httpd write access to uploads.
+Next Action: Verify the intended path and context, then apply an approved context or policy fix without disabling enforcement.
+Verification: Repeat the write in enforcing mode and check for related AVC denials.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Enforcing | P2: type=AVC msg=audit(1792663200.123:411): avc: denied { write } for pid=1412 comm=""httpd"" name=""uploads"" scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:default_t:s0 tclass=dir permissive=0","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-03-005","Issue: Application startup blocked by its database dependency.
+Findings: The application unit reported a dependency failure and MariaDB was failed.
+Next Action: Investigate and recover the database first, then retry application startup under approval.
+Verification: Confirm database health, active application state and endpoint response.
+Status: Pending authorized remediation and verification.","Issue: Application startup blocked by its database dependency.
+Findings: The application unit reported a dependency failure and MariaDB was failed.
+Next Action: Investigate and recover the database first, then retry application startup under approval.
+Verification: Confirm database health, active application state and endpoint response.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: ○ myapp.service - myapp.service Loaded: loaded (/etc/systemd/system/myapp.service; enabled) Active: inactive (dead) Oct 22 08:00:04 vps systemd[1]: Dependency failed for myapp.service. | P2: Active: failed","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-03-006","Issue: Application repeatedly exits after startup.
+Findings: The unit was auto-restarting and its journal reported a missing Python requests module.
+Next Action: Restore the dependency in the correct environment or roll back the release with the owner.
+Verification: Confirm the process remains active and passes its health check.
+Status: Pending authorized remediation and verification.","Issue: Application repeatedly exits after startup.
+Findings: The unit was auto-restarting and its journal reported a missing Python requests module.
+Next Action: Restore the dependency in the correct environment or roll back the release with the owner.
+Verification: Confirm the process remains active and passes its health check.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Active: activating (auto-restart) (Result: exit-code) | P2: ModuleNotFoundError: No module named 'requests'","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-04-001","Issue: High CPU use during customer slowness.
+Findings: A python3 process used about 97% CPU in the observed sample.
+Next Action: Identify the job and coordinate optimization or rescheduling with its owner; avoid killing it blindly.
+Verification: Measure user-facing latency and CPU after the approved change.
+Status: Pending authorized remediation and verification.","Issue: High CPU use during customer slowness.
+Findings: A python3 process used about 97% CPU in the observed sample.
+Next Action: Identify the job and coordinate optimization or rescheduling with its owner; avoid killing it blindly.
+Verification: Measure user-facing latency and CPU after the approved change.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: top - 08:00:00 up 1 day, 2:00, 1 user, load average: 1.20, 0.80, 0.50 Tasks: 96 total, 1 running, 95 sleeping, 0 stopped, 0 zombie %Cpu(s): 98.5 us, 1.0 sy, 0.0 ni, 0.5 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st MiB Mem : 2048.0 total, 800.0 free, 900.0 ","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-04-002","Issue: Memory pressure with active swapping.
+Findings: Only 40 MiB of RAM was available, swap was nearly full, and vmstat showed swap in/out activity.
+Next Action: Identify the memory-heavy workload and agree on tuning or capacity with the owner.
+Verification: Confirm swap activity falls and the application stays stable.
+Status: Pending authorized remediation and verification.","Issue: Memory pressure with active swapping.
+Findings: Only 40 MiB of RAM was available, swap was nearly full, and vmstat showed swap in/out activity.
+Next Action: Identify the memory-heavy workload and agree on tuning or capacity with the owner.
+Verification: Confirm swap activity falls and the application stays stable.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: total used free shared buff/cache available Mem: 1.0Gi 944Mi 20Mi 2Mi 60Mi 40Mi Swap: 512Mi 490Mi 22Mi | P2: procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu----- r b swpd free buff cache si so bi bo in cs us sy id wa s","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-04-003","Issue: Application process was killed by OOM.
+Findings: The kernel logged an OOM kill of java and the application unit recorded an oom-kill result.
+Next Action: Review heap sizing, process count and available capacity with the application owner.
+Verification: Run the comparable workload without another OOM kill.
+Status: Pending authorized remediation and verification.","Issue: Application process was killed by OOM.
+Findings: The kernel logged an OOM kill of java and the application unit recorded an oom-kill result.
+Next Action: Review heap sizing, process count and available capacity with the application owner.
+Verification: Run the comparable workload without another OOM kill.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Out of memory: Killed process 2525 (java) | P2: Result: oom-kill","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-04-004","Issue: Elevated disk I/O wait.
+Findings: vmstat showed 76% I/O wait and iostat showed high device utilization and await in the sample.
+Next Action: Correlate I/O-heavy tasks with storage health and application latency before changing capacity.
+Verification: Confirm device latency and the affected application return to baseline.
+Status: Investigation pending.","Issue: Elevated disk I/O wait.
+Findings: vmstat showed 76% I/O wait and iostat showed high device utilization and await in the sample.
+Next Action: Correlate I/O-heavy tasks with storage health and application latency before changing capacity.
+Verification: Confirm device latency and the affected application return to baseline.
+Status: Investigation pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu----- r b swpd free buff cache si so bi bo in cs us sy id wa st 1 2 0 512000 20000 300000 0 0 50 50 100 200 5 4 71 20 0 1 8 0 512000 20000 300000 0 0 2000 5000 200 300 5 4","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-04-005","Issue: Container workload may be CPU throttled.
+Findings: The cgroup throttling counter was elevated and Docker reported near-100% CPU for api; a time-window comparison is still needed.
+Next Action: Compare counter deltas with cpu.max, then tune the workload or approved quota if warranted.
+Verification: Confirm throttling rate and request latency improve.
+Status: Investigation pending.","Issue: Container workload may be CPU throttled.
+Findings: The cgroup throttling counter was elevated and Docker reported near-100% CPU for api; a time-window comparison is still needed.
+Next Action: Compare counter deltas with cpu.max, then tune the workload or approved quota if warranted.
+Verification: Confirm throttling rate and request latency improve.
+Status: Investigation pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: usage_usec 139800000 user_usec 130000000 system_usec 9800000 nr_periods 1400 nr_throttled 760 throttled_usec 45000000 | P2: CONTAINER ID NAME CPU % MEM USAGE / LIMIT MEM % NET I/O BLOCK I/O PIDS abc123def456 api 99.8% 220MiB / 512MiB 42.97% 12MB ","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-05-003","Issue: Persistent journals occupy substantial disk space.
+Findings: journalctl reported 8.0 GiB in active and archived journals while root usage was 94%.
+Next Action: Review retention and backup requirements before an approved journal vacuum or limit change.
+Verification: Confirm reclaimed space and continued normal log collection.
+Status: Pending authorized remediation and verification.","Issue: Persistent journals occupy substantial disk space.
+Findings: journalctl reported 8.0 GiB in active and archived journals while root usage was 94%.
+Next Action: Review retention and backup requirements before an approved journal vacuum or limit change.
+Verification: Confirm reclaimed space and continued normal log collection.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Archived and active journals take up 8.0G in the file system. | P2: Filesystem Size Used Avail Use% Mounted on /dev/vda1 20G 19G 1.2G 94% /","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-05-005","Issue: Virtual disk grew but filesystem capacity did not.
+Findings: lsblk showed a 40 GiB disk with a 20 GiB partition, and df still showed a 20 GiB root filesystem.
+Next Action: Confirm layout, filesystem type, backup and approval before growing the partition and filesystem.
+Verification: Verify expected size with lsblk and df and check filesystem health.
+Status: Pending authorized remediation and verification.","Issue: Virtual disk grew but filesystem capacity did not.
+Findings: lsblk showed a 40 GiB disk with a 20 GiB partition, and df still showed a 20 GiB root filesystem.
+Next Action: Confirm layout, filesystem type, backup and approval before growing the partition and filesystem.
+Verification: Verify expected size with lsblk and df and check filesystem health.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS vda 252:0 0 40G 0 disk └─vda1 252:1 0 20G 0 part / | P2: Filesystem Size Used Avail Use% Mounted on /dev/vda1 20G 12G 8.0G 60% /","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-05-006","Issue: Deleted log remains open.
+Findings: df remained at 95%, and lsof showed PID 2300 holding a deleted app.log of about 5 GiB.
+Next Action: Confirm the filesystem and owner, then coordinate an authorized graceful log reopen or service restart.
+Verification: Check that the deleted handle closes and free space increases.
+Status: Pending authorized remediation and verification.","Issue: Deleted log remains open.
+Findings: df remained at 95%, and lsof showed PID 2300 holding a deleted app.log of about 5 GiB.
+Next Action: Confirm the filesystem and owner, then coordinate an authorized graceful log reopen or service restart.
+Verification: Check that the deleted handle closes and free space increases.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Filesystem Size Used Avail Use% Mounted on /dev/vda1 20G 19G 1.0G 95% / | P2: COMMAND PID USER FD TYPE DEVICE SIZE/OFF NLINK NODE NAME java 2300 app 12w REG 252,1 5368709120 0 511 /var/log/app.log (deleted)","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-05-007","Issue: Filesystem error during boot.
+Findings: The kernel reported an EXT4 error on vda1 and the associated fsck unit failed.
+Next Action: Preserve data and escalate offline repair or recovery; do not run fsck on the mounted filesystem.
+Verification: Confirm a clean mount and validate affected application data.
+Status: Storage escalation recommended; unresolved.","Issue: Filesystem error during boot.
+Findings: The kernel reported an EXT4 error on vda1 and the associated fsck unit failed.
+Next Action: Preserve data and escalate offline repair or recovery; do not run fsck on the mounted filesystem.
+Verification: Confirm a clean mount and validate affected application data.
+Status: Storage escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: EXT4-fs error on /dev/vda1 | P2: UNIT LOAD ACTIVE SUB DESCRIPTION ● systemd-fsck@dev-vda1.service loaded failed failed File System Check on /dev/vda1 1 loaded units listed.","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-07-002","Issue: Site returns HTTP 403.
+Findings: Local HEAD returned 403 and the Nginx error log said directory indexing was forbidden for /srv/site/.
+Next Action: Have the site owner provide an index page or approved route; do not enable directory listing as a shortcut.
+Verification: Load the expected page without exposing directory contents.
+Status: Pending authorized remediation and verification.","Issue: Site returns HTTP 403.
+Findings: Local HEAD returned 403 and the Nginx error log said directory indexing was forbidden for /srv/site/.
+Next Action: Have the site owner provide an index page or approved route; do not enable directory listing as a shortcut.
+Verification: Load the expected page without exposing directory contents.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: HTTP/1.1 403 Forbidden | P2: directory index of /srv/site/ is forbidden","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-07-004","Issue: Reverse proxy returns HTTP 502.
+Findings: Nginx was running, but its error log showed a refused connection to upstream 127.0.0.1:3000. The upstream service or target may be unavailable.
+Next Action: Investigate backend state and the configured upstream address before an approved fix.
+Verification: Confirm backend health and public HTTP access.
+Status: Pending authorized remediation and verification.","Issue: Reverse proxy returns HTTP 502.
+Findings: Nginx was running, but its error log showed a refused connection to upstream 127.0.0.1:3000. The upstream service or target may be unavailable.
+Next Action: Investigate backend state and the configured upstream address before an approved fix.
+Verification: Confirm backend health and public HTTP access.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: active | P2: connect() failed (111: Connection refused) while connecting to upstream: 127.0.0.1:3000","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-07-006","Issue: Site returns HTTP 503 after deployment.
+Findings: Local HTTP returned 503 while the application unit was auto-restarting.
+Next Action: Inspect deployment errors and arrange an approved fix or rollback.
+Verification: Confirm the app health check and public endpoint remain stable.
+Status: Pending authorized remediation and verification.","Issue: Site returns HTTP 503 after deployment.
+Findings: Local HTTP returned 503 while the application unit was auto-restarting.
+Next Action: Inspect deployment errors and arrange an approved fix or rollback.
+Verification: Confirm the app health check and public endpoint remain stable.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: HTTP/1.1 503 Service Unavailable | P2: Active: activating (auto-restart)","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-07-007","Issue: TLS SNI selects the wrong site certificate.
+Findings: The requested shop hostname received an api.example.com certificate and no shop server_name appeared in the shown Nginx configuration.
+Next Action: Review the vhost mapping and deploy a matching valid certificate under change control.
+Verification: Test the requested SNI hostname against the intended endpoint and chain.
+Status: Pending authorized remediation and verification.","Issue: TLS SNI selects the wrong site certificate.
+Findings: The requested shop hostname received a certificate with CN api.example.com, and the shown Nginx configuration had no shop server_name; SAN coverage is still unknown.
+Next Action: Check SAN, chain and the active vhost mapping first; deploy a matching certificate only if the mismatch is confirmed and approved.
+Verification: Test the requested SNI hostname against the intended endpoint and chain.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: subject=CN=api.example.com | P2: # configuration file /etc/nginx/nginx.conf: events {} http { include /etc/nginx/conf.d/*.conf; } # configuration file /etc/nginx/conf.d/api.conf: server { listen 443 ssl default_server; server_name api.example.com","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-08-001","Issue: DNS A record points to the previous address.
+Findings: The sampled A response returned 203.0.113.10, while the assigned service IP was 198.51.100.20. Authoritative DNS ownership must be confirmed before changing records.
+Next Action: Confirm authoritative zone ownership and obtain approval before changing the A record.
+Verification: Compare authoritative answers with the approved address and test the site.
+Status: Pending authorized remediation and verification.","Issue: DNS A record points to the previous address.
+Findings: The sampled A response returned 203.0.113.10, while the assigned service IP was 198.51.100.20. Authoritative DNS ownership must be confirmed before changing records.
+Next Action: Confirm authoritative zone ownership and obtain approval before changing the A record.
+Verification: Compare authoritative answers with the approved address and test the site.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: 203.0.113.10 | P2: 198.51.100.20","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-08-004","Issue: DNS query times out while direct HTTP works.
+Findings: The direct IP request returned HTTP 200, but the DNS query could not reach a resolver.
+Next Action: Inspect resolver reachability and repair the approved resolver or network profile.
+Verification: Resolve the name and complete an application request by hostname.
+Status: Pending authorized remediation and verification.","Issue: DNS query times out while direct HTTP works.
+Findings: The direct IP request returned HTTP 200, but the DNS query could not reach a resolver.
+Next Action: Inspect resolver reachability and repair the approved resolver or network profile.
+Verification: Resolve the name and complete an application request by hostname.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: HTTP/1.1 200 OK | P2: ;; connection timed out; no servers could be reached","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-08-005","Issue: Recursive DNS still returns an older A record.
+Findings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.
+Next Action: Allow the TTL and client caches to expire; investigate only if the stale response persists.
+Verification: Confirm affected recursive and client resolvers converge on the authoritative answer.
+Status: Cache convergence pending.","Issue: Recursive DNS still returns an older A record.
+Findings: The authoritative query returned 198.51.100.20, while the sampled recursive resolver returned 203.0.113.10 with TTL 120.
+Next Action: Query every authoritative nameserver first. If they agree on the new IP, keep the old endpoint available while affected recursive caches expire.
+Verification: Confirm all authoritative answers agree, then verify affected recursive and client resolvers converge.
+Status: Cache convergence pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: shop.example.com. 300 IN A 198.51.100.20 | P2: shop.example.com. 120 IN A 203.0.113.10","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-08-007","Issue: Reverse DNS record is absent.
+Findings: The PTR query returned NXDOMAIN and the panel showed reverse DNS unset.
+Next Action: Request a PTR from the IP owner or provider, then check forward confirmation where required.
+Verification: Resolve the IP to the agreed hostname and retest mail delivery.
+Status: Pending authorized remediation and verification.","Issue: Reverse DNS record is absent.
+Findings: The PTR query returned NXDOMAIN and the panel showed reverse DNS unset.
+Next Action: Request a PTR from the IP owner or provider, then check forward confirmation where required.
+Verification: Resolve the IP to the agreed hostname and retest mail delivery.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: ;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 51231 | P2: Not set","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-01-008","Issue: SSH sessions drop while the guest is under load.
+Findings: The kernel log showed an OOM kill and only 64 MiB of available memory; a direct causal link to each SSH drop remains unverified.
+Next Action: Review the memory-heavy job and coordinate limits or capacity changes with its owner.
+Verification: Observe the same workload without new OOM events or SSH disconnections.
+Status: Pending investigation and verification.","Issue: SSH sessions drop while the guest is under load.
+Findings: The kernel log showed an OOM kill and only 64 MiB of available memory; a direct causal link to each SSH drop remains unverified.
+Next Action: Review the memory-heavy job and coordinate limits or capacity changes with its owner.
+Verification: Observe the same workload without new OOM events or SSH disconnections.
+Status: Pending investigation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Out of memory: Killed process 2481 (python3) | P2: total used free shared buff/cache available Mem: 1.0Gi 900Mi 24Mi 2Mi 100Mi 64Mi Swap: 0B 0B 0B","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-02-006","Issue: Packet loss toward the VPS.
+Findings: Both ping and mtr reported 25% loss to the destination from the tested source. The faulty segment is not yet identified.
+Next Action: Record source, destination, timestamps and path evidence, then refer the case to the network owner.
+Verification: Repeat end-to-end tests from the affected source after remediation.
+Status: Network escalation recommended; unresolved.","Issue: Packet loss toward the VPS.
+Findings: Both ping and mtr reported 25% loss to the destination from the tested source. The faulty segment is not yet identified.
+Next Action: Record source, destination, timestamps and path evidence, then refer the case to the network owner.
+Verification: Repeat end-to-end tests from the affected source after remediation.
+Status: Network escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: HOST: client Loss% Snt Last Avg Best Wrst StDev 1.|-- 192.0.2.1 0.0% 20 2.1 2.0 1.2 3.4 0.4 2.|-- 203.0.113.20 25.0% 20 191.0 190.0 182.0 205.0 6.1 | P2: --- 203.0.113.20 ping statistics --- 20 packets transmitted, 15 received, 25% packet loss, t","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-02-008","Issue: Large packets fail along the tested path.
+Findings: A DF probe at 1472 bytes failed while a smaller 1200-byte probe succeeded; PMTUD or MTU behavior remains a hypothesis.
+Next Action: Ask the network owner to assess path MTU and MSS before any scoped change.
+Verification: Verify that large transfers complete over the affected VPN path.
+Status: Network investigation pending.","Issue: Large packets fail along the tested path.
+Findings: A DF probe at 1472 bytes failed while a smaller 1200-byte probe succeeded; PMTUD or MTU behavior remains a hypothesis.
+Next Action: Ask the network owner to assess path MTU and MSS before any scoped change.
+Verification: Verify that large transfers complete over the affected VPN path.
+Status: Network investigation pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: PING 198.51.100.20 (198.51.100.20) 1472(1500) bytes of data. From 10.8.0.1 icmp_seq=1 Frag needed and DF set (mtu = 1400) | P2: PING 198.51.100.20 (198.51.100.20) 1200(1228) bytes of data. 1208 bytes from 198.51.100.20: icmp_seq=1 ttl=52 time=31.","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-03-007","Issue: Application reached an open-file limit.
+Findings: The application logged Errno 24 and the inspected process limit was 1024 files.
+Next Action: Investigate descriptor usage and possible leaks before approving a limit change.
+Verification: Exercise representative load without new open-file errors.
+Status: Pending authorized remediation and verification.","Issue: Application reached an open-file limit.
+Findings: The application logged Errno 24 and the inspected process limit was 1024 files.
+Next Action: Investigate descriptor usage and possible leaks before approving a limit change.
+Verification: Exercise representative load without new open-file errors.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: OSError: [Errno 24] Too many open files | P2: Limit Soft Limit Hard Limit Units Max open files 1024 1024 files","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-03-008","Issue: Root filesystem is read-only after an error.
+Findings: The root mount was read-only and the kernel journal recorded an EXT4 error.
+Next Action: Avoid a blind read-write remount; escalate controlled storage repair or offline recovery.
+Verification: After authorized repair, confirm filesystem health and safe writes.
+Status: Storage escalation recommended; unresolved.","Issue: Root filesystem is read-only after an error.
+Findings: The root mount was read-only and the kernel journal recorded an EXT4 error.
+Next Action: Avoid a blind read-write remount; escalate controlled storage repair or offline recovery.
+Verification: After authorized repair, confirm filesystem health and safe writes.
+Status: Storage escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: ro,relatime | P2: Oct 22 07:14:02 vps kernel: EXT4-fs error (device vda1): ext4_find_entry: inode #2","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-04-006","Issue: Application memory rises over time.
+Findings: The process RSS sample was high and the kernel later killed myapp; a leak is plausible but not proven.
+Next Action: Escalate application profiling and consider only approved temporary mitigation.
+Verification: Track memory over representative uptime without further OOM events.
+Status: Application investigation pending.","Issue: Application memory rises over time.
+Findings: The process RSS sample was high and the kernel later killed myapp; a leak is plausible but not proven.
+Next Action: Escalate application profiling and consider only approved temporary mitigation.
+Verification: Track memory over representative uptime without further OOM events.
+Status: Application investigation pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: PID RSS ELAPSED COMMAND 1200 850000 09:00:00 myapp | P2: Out of memory: Killed process 1200 (myapp)","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-04-007","Issue: Guest shows high CPU steal time.
+Findings: The guest reported 50% steal time and panel metrics flagged contention on node-4.
+Next Action: Refer host placement and capacity evidence to the node team.
+Verification: Confirm steal time and customer latency normalize.
+Status: Node escalation recommended; unresolved.","Issue: Guest shows high CPU steal time.
+Findings: The guest reported 50% steal time and panel metrics flagged contention on node-4.
+Next Action: Refer host placement and capacity evidence to the node team.
+Verification: Confirm steal time and customer latency normalize.
+Status: Node escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: %Cpu(s): 5 us, 4 sy, 41 id, 50 st | P2: CPU contention alert on node-4","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-04-008","Issue: Intermittent slowness during backup window.
+Findings: The backup-agent log overlapped the incident window and iostat showed elevated await during the backup.
+Next Action: Coordinate schedule or throttling with the backup owner; preserve backup coverage.
+Verification: Measure performance through a later backup window and confirm it meets the agreed target.
+Status: Backup coordination pending.","Issue: Intermittent slowness during backup window.
+Findings: The backup-agent log overlapped the incident window and iostat showed elevated await during the backup.
+Next Action: Coordinate schedule or throttling with the backup owner; preserve backup coverage.
+Verification: Measure performance through a later backup window and confirm it meets the agreed target.
+Status: Backup coordination pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Oct 22 02:00:00 vps backup-agent[901]: backup started Oct 22 02:20:00 vps backup-agent[901]: backup finished | P2: avg-cpu: %user %nice %system %iowait %steal %idle 8.00 0.00 4.00 5.00 0.00 83.00 Device r/s rkB/s rrqm/s %rrqm r_await rareq-sz w/s","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-05-008","Issue: LVM group has capacity not yet assigned to the data filesystem.
+Findings: The data disk was 80 GiB, the logical volume was 30 GiB, and the volume group reported 50 GiB free.
+Next Action: With backup and approval, follow the filesystem-specific LV and filesystem growth procedure.
+Verification: Verify the intended LV and filesystem capacity.
+Status: Pending authorized remediation and verification.","Issue: LVM group has capacity not yet assigned to the data filesystem.
+Findings: The data disk was 80 GiB, the logical volume was 30 GiB, and the volume group reported 50 GiB free.
+Next Action: With backup and approval, follow the filesystem-specific LV and filesystem growth procedure.
+Verification: Verify the intended LV and filesystem capacity.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS vdb 252:16 0 80G 0 disk └─vdb1 252:17 0 80G 0 part └─vgdata-lvdata 253:0 0 30G 0 lvm /data | P2: VG #PV #LV #SN Attr VSize VFree vgdata 1 1 0 wz--n- 79.99g 49.99g","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-07-003","Issue: Requested URL returns HTTP 404.
+Findings: The local request returned 404 and the active configuration pointed at /var/www/html rather than the deployed /srv/myapp/public.
+Next Action: Review the intended vhost root or rewrite with the owner, test the config and reload if approved.
+Verification: Fetch the expected URL and content.
+Status: Pending authorized remediation and verification.","Issue: Requested URL returns HTTP 404.
+Findings: The local request returned 404 and the active configuration pointed at /var/www/html rather than the deployed /srv/myapp/public.
+Next Action: Review the intended vhost root or rewrite with the owner, test the config and reload if approved.
+Verification: Fetch the expected URL and content.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: HTTP/1.1 404 Not Found | P2: server { listen 80; server_name example.com; root /var/www/html; }","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-07-005","Issue: Presented TLS certificate has expired.
+Findings: The endpoint certificate ended on 1 September 2026, before the observed UTC date of 22 October 2026.
+Next Action: Renew and deploy a valid certificate through the approved owner or ACME workflow.
+Verification: Verify chain, hostname and the certificate served by the intended endpoint.
+Status: Pending authorized remediation and verification.","Issue: Presented TLS certificate has expired.
+Findings: The endpoint certificate ended on 1 September 2026, before the observed UTC date of 22 October 2026.
+Next Action: Renew and deploy a valid certificate through the approved owner or ACME workflow.
+Verification: Verify chain, hostname and the certificate served by the intended endpoint.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: notBefore=Jun 3 00:00:00 2026 GMT notAfter=Sep 1 00:00:00 2026 GMT | P2: Thu Oct 22 07:00:00 UTC 2026","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-07-008","Issue: Intermittent HTTP 504 from upstream.
+Findings: Nginx logged an upstream response timeout, and the local backend health request took 31.4 seconds.
+Next Action: Investigate backend latency and resource causes before changing proxy timeouts.
+Verification: Confirm acceptable latency and no 504 under representative load.
+Status: Pending authorized remediation and verification.","Issue: Intermittent HTTP 504 from upstream.
+Findings: Nginx logged an upstream response timeout, and the local backend health request took 31.4 seconds.
+Next Action: Investigate backend latency and resource causes before changing proxy timeouts.
+Verification: Confirm acceptable latency and no 504 under representative load.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: upstream timed out while reading response header from upstream | P2: 31.400000","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-08-006","Issue: AAAA record targets unassigned IPv6.
+Findings: The A record matched the service, but AAAA pointed to 2001:db8:bad::20 and panel showed no assigned IPv6.
+Next Action: Have the domain owner correct or remove the broken AAAA record after approval.
+Verification: Verify IPv6 clients reach a working endpoint or no broken AAAA is returned.
+Status: Pending authorized remediation and verification.","Issue: AAAA record targets unassigned IPv6.
+Findings: The A record matched the service, but AAAA pointed to 2001:db8:bad::20 and panel showed no assigned IPv6.
+Next Action: Have the domain owner correct or remove the broken AAAA record after approval.
+Verification: Verify IPv6 clients reach a working endpoint or no broken AAAA is returned.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: 198.51.100.20 | P2: 2001:db8:bad::20","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-08-008","Issue: DNSSEC validation failure suspected.
+Findings: A validating resolver returned SERVFAIL; repeating the query with checking disabled returned NOERROR. The broken link is not yet identified.
+Next Action: Have the authoritative zone and DS owner inspect signing and delegation; do not disable validation as a fix.
+Verification: Confirm valid answers from validating resolvers.
+Status: DNS escalation recommended; unresolved.","Issue: DNSSEC validation failure suspected.
+Findings: A validating resolver returned SERVFAIL; repeating the query with checking disabled returned NOERROR. The broken link is not yet identified.
+Next Action: Have the authoritative zone and DS owner inspect signing and delegation; do not disable validation as a fix.
+Verification: Confirm valid answers from validating resolvers.
+Status: DNS escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: ;; ->>HEADER<<- opcode: QUERY, status: SERVFAIL, id: 19819 | P2: ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19820 ;; flags: qr rd ra cd; QUERY: 1, ANSWER: 1 ;; ANSWER SECTION: signed.example.test. 300 IN A 198.51.100.20","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-06-001","Issue: VPS is powered off.
+Findings: Panel state was Powered Off and the event log recorded a user-requested shutdown at 12:30.
+Next Action: Confirm ownership, intent and permission before starting the VM.
+Verification: Check Running state, console boot and service connectivity.
+Status: Pending authorized remediation and verification.","Issue: VPS is powered off.
+Findings: Panel state was Powered Off and the event log recorded a user-requested shutdown at 12:30.
+Next Action: Confirm ownership, intent and permission before starting the VM.
+Verification: Check Running state, console boot and service connectivity.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Powered Off | P2: User requested shutdown 12:30","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-06-002","Issue: Customer asks whether a reboot will fix slowness.
+Findings: The VM was running and a database backup process was using the CPU in the observed sample.
+Next Action: Explain the workload finding, assess its schedule and request a maintenance window only if a reboot is justified.
+Verification: Confirm application performance after the agreed intervention.
+Status: Customer decision pending.","Issue: Customer asks whether a reboot will fix slowness.
+Findings: The VM was running and a database backup process was using the CPU in the observed sample.
+Next Action: Explain the workload finding, assess its schedule and request a maintenance window only if a reboot is justified.
+Verification: Confirm application performance after the agreed intervention.
+Status: Customer decision pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Running | P2: top - 02:11:02 up 4 days, 2:14, 1 user, load average: 2.89, 2.11, 1.40 %Cpu(s): 96.2 us, 2.0 sy, 1.8 id PID USER %CPU COMMAND 2418 mysql 94.7 mariabackup","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-06-003","Issue: Root credential is unavailable.
+Findings: The VM console was accessible and the recorded template was CentOS Stream 9; ownership still needs confirmation.
+Next Action: Use the approved offline credential recovery process after identity checks, then rotate temporary access.
+Verification: Have the authorized customer confirm login works.
+Status: Authorization and recovery pending.","Issue: Root credential is unavailable.
+Findings: The VM console was accessible and the recorded template was CentOS Stream 9; ownership still needs confirmation.
+Next Action: Use the approved offline credential recovery process after identity checks, then rotate temporary access.
+Verification: Have the authorized customer confirm login works.
+Status: Authorization and recovery pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Accessible | P2: CentOS Stream 9","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-06-004","Issue: Customer requested OS reinstall.
+Findings: The panel warned that the main disk would be overwritten and showed no recent backup.
+Next Action: Obtain informed approval and a backup or data-loss decision before any reinstall.
+Verification: After an authorized reinstall, check OS, access, network and expected data state.
+Status: Customer approval pending; no reinstall performed.","Issue: Customer requested OS reinstall.
+Findings: The panel warned that the main disk would be overwritten and showed no recent backup.
+Next Action: Obtain informed approval and a backup or data-loss decision before any reinstall.
+Verification: After an authorized reinstall, check OS, access, network and expected data state.
+Status: Customer approval pending; no reinstall performed.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: All contents of main disk will be overwritten | P2: No recent backup found","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-06-005","Issue: VM entered emergency mode on boot.
+Findings: Console reported a failed /data mount and fstab referenced UUID deadbeef.
+Next Action: Confirm the actual volume UUID and preserve the original settings before an approved fstab correction.
+Verification: Boot normally, mount /data and restore SSH access.
+Status: Pending authorized remediation and verification.","Issue: VM entered emergency mode on boot.
+Findings: Console reported a failed /data mount and fstab referenced UUID deadbeef.
+Next Action: Confirm the actual volume UUID and preserve the original settings before an approved fstab correction.
+Verification: Boot normally, mount /data and restore SSH access.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Failed to mount /data; emergency mode | P2: UUID=deadbeef /data ext4 defaults 0 2","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-06-006","Issue: VM repeatedly boots into rescue media.
+Findings: The rescue ISO remained mounted and optical media preceded disk in boot order.
+Next Action: Confirm recovery is complete, then remove rescue media or change boot order with permission.
+Verification: Boot the installed OS and verify services.
+Status: Pending authorized remediation and verification.","Issue: VM repeatedly boots into rescue media.
+Findings: The rescue ISO remained mounted and optical media preceded disk in boot order.
+Next Action: Confirm recovery is complete, then remove rescue media or change boot order with permission.
+Verification: Boot the installed OS and verify services.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Rescue ISO mounted | P2: Optical before disk","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-06-007","Issue: Panel console displays a black screen.
+Findings: The VM was marked Running, but the console gateway returned a WebSocket handshake 502; guest health was not established.
+Next Action: Escalate the panel or console gateway path before considering a guest reboot.
+Verification: Open a console session and independently verify VM health.
+Status: Panel escalation recommended; guest state unverified.","Issue: Panel console displays a black screen.
+Findings: The VM was marked Running, but the console gateway returned a WebSocket handshake 502; guest health was not established.
+Next Action: Escalate the panel or console gateway path before considering a guest reboot.
+Verification: Open a console session and independently verify VM health.
+Status: Panel escalation recommended; guest state unverified.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Running | P2: Websocket handshake failed (502)","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-06-008","Issue: VM remains in Stopping state.
+Findings: Lifecycle stayed Stopping for 20 minutes after an ACPI shutdown request with no guest response.
+Next Action: Ask the virtualization team to assess a controlled shutdown and obtain approval before force-off.
+Verification: Confirm a clean state transition and data integrity.
+Status: Virtualization escalation recommended; unresolved.","Issue: VM remains in Stopping state.
+Findings: Lifecycle stayed Stopping for 20 minutes after an ACPI shutdown request with no guest response.
+Next Action: Ask the virtualization team to assess a controlled shutdown and obtain approval before force-off.
+Verification: Confirm a clean state transition and data integrity.
+Status: Virtualization escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Stopping 20m | P2: ACPI shutdown sent; no guest response","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-10-001","Issue: VM is shut off at the hypervisor.
+Findings: Both panel status and virsh reported the VM stopped.
+Next Action: Confirm ownership, maintenance intent and host health before an approved start.
+Verification: Confirm guest boot and service access.
+Status: Pending authorized remediation and verification.","Issue: VM is shut off at the hypervisor.
+Findings: Both panel status and virsh reported the VM stopped.
+Next Action: Confirm ownership, maintenance intent and host health before an approved start.
+Verification: Confirm guest boot and service access.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Stopped | P2: shut off","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-10-002","Issue: Expected virtual NIC is missing.
+Findings: The guest showed only loopback and panel inventory listed no attached virtual NIC.
+Next Action: Refer NIC attachment and bridge assignment to the virtualization team; avoid guest-only route changes.
+Verification: Confirm the NIC, assigned IP, route and end-to-end connectivity.
+Status: Virtualization escalation recommended; unresolved.","Issue: Expected virtual NIC is missing.
+Findings: The guest showed only loopback and panel inventory listed no attached virtual NIC.
+Next Action: Refer NIC attachment and bridge assignment to the virtualization team; avoid guest-only route changes.
+Verification: Confirm the NIC, assigned IP, route and end-to-end connectivity.
+Status: Virtualization escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: lo UNKNOWN 00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> | P2: no virtual NIC attached","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-10-003","Issue: VM NIC attached to the wrong bridge.
+Findings: virsh showed vnet4 on br-storage while panel expectation was br-public.
+Next Action: Have network and virtualization owners correct the attachment under change control.
+Verification: Confirm gateway reachability and intended network isolation.
+Status: Virtualization escalation recommended; unresolved.","Issue: VM NIC attached to the wrong bridge.
+Findings: virsh showed vnet4 on br-storage while panel expectation was br-public.
+Next Action: Have network and virtualization owners correct the attachment under change control.
+Verification: Confirm gateway reachability and intended network isolation.
+Status: Virtualization escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Interface Type Source Model MAC ------------------------------------------------------- vnet4 bridge br-storage virtio 52:54:00:ab:10:02 | P2: br-public","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-10-004","Issue: Host CPU contention likely.
+Findings: The guest sample showed 60% steal time and panel host metrics reported saturation.
+Next Action: Ask the node team to assess placement and capacity before changing guest settings.
+Verification: Confirm steal time and application latency return to baseline.
+Status: Node escalation recommended; unresolved.","Issue: Host CPU contention likely.
+Findings: The guest sample showed 60% steal time and panel host metrics reported contention; the affected node workload still needs investigation.
+Next Action: Ask the node team to assess placement and capacity before changing guest settings.
+Verification: Confirm steal time and application latency return to baseline.
+Status: Node escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: top - 09:05:00 up 3 days, 2 users, load average: 4.80, 4.21, 3.90 Tasks: 118 total, 1 running, 117 sleeping, 0 stopped, 0 zombie %Cpu(s): 5.0 us, 3.0 sy, 0.0 ni, 30.0 id, 2.0 wa, 0.0 hi, 0.0 si, 60.0 st MiB Mem : 4096.0 total, 740.0 free, 2100.0 ","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-10-005","Issue: Expected data disk is detached from the VM.
+Findings: The guest listed only vda and virsh showed only the OS disk attachment; this does not prove data was deleted.
+Next Action: Escalate safe reattachment and verify disk identity before mounting or repair.
+Verification: Confirm the correct volume, filesystem, mount and data.
+Status: Storage and virtualization escalation recommended; unresolved.","Issue: Expected data disk is detached from the VM.
+Findings: The guest listed only vda and virsh showed only the OS disk attachment; this does not prove data was deleted.
+Next Action: Escalate safe reattachment and verify disk identity before mounting or repair.
+Verification: Confirm the correct volume, filesystem, mount and data.
+Status: Storage and virtualization escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS vda 252:0 0 25G 0 disk | P2: Target Source ------------------------------------------------ vda /var/lib/libvirt/images/os.qcow2","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-10-006","Issue: Data appears older after a snapshot restore.
+Findings: Panel activity recorded a restore at 10:14 and one database file had an older modification time; the full data gap remains unverified.
+Next Action: Preserve the current state and plan recovery with the customer and backup team.
+Verification: Agree on the restore point and verify recovered data if available.
+Status: Recovery planning pending.","Issue: Data appears older after a snapshot restore.
+Findings: Panel activity recorded a restore at 10:14 and one database file had an older modification time; the full data gap remains unverified.
+Next Action: Preserve the current state and plan recovery with the customer and backup team.
+Verification: Agree on the restore point and verify recovered data if available.
+Status: Recovery planning pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Snapshot restore completed 10:14 | P2: File: /srv/app/data.db Size: 16384 Blocks: 32 IO Block: 4096 regular file Modify: 2026-10-18 00:00:00.000000000 +0000","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-10-007","Issue: Network interruption overlapped live migration.
+Findings: Panel migration ran from 08:00:00 to 08:00:36, overlapping monitor packet loss from 08:00:04 to 08:00:35.
+Next Action: Send both timelines to the virtualization network team for path investigation.
+Verification: Check a planned migration against the agreed interruption target.
+Status: Virtualization escalation recommended; unresolved.","Issue: Network interruption overlapped live migration.
+Findings: Panel migration ran from 08:00:00 to 08:00:36, overlapping monitor packet loss from 08:00:04 to 08:00:35.
+Next Action: Send both timelines to the virtualization network team for path investigation.
+Verification: Check a planned migration against the agreed interruption target.
+Status: Virtualization escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Start 08:00:00, finish 08:00:36 | P2: packet loss 08:00:04-08:00:35","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-10-008","Issue: Guest clock is significantly behind.
+Findings: timedatectl showed no synchronization and inactive NTP; guest UTC time was about a day behind the stated host time.
+Next Action: Validate the trusted time source and restore approved guest time synchronization.
+Verification: Confirm synchronized clock and successful TLS validation.
+Status: Pending authorized remediation and verification.","Issue: Guest time synchronization is unconfirmed.
+Findings: timedatectl showed no synchronization and inactive NTP. The guest printed a UTC time, but no trusted simultaneous host timestamp was captured to quantify drift.
+Next Action: Validate the trusted time source and restore approved guest time synchronization.
+Verification: Confirm synchronized clock and successful TLS validation.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: Local time: Wed 2026-10-21 01:00:00 UTC Universal time: Wed 2026-10-21 01:00:00 UTC System clock synchronized: no NTP service: inactive | P2: Wed Oct 21 01:00:00 UTC 2026","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-09-001","Issue: Repeated failed SSH logins.
+Findings: The sshd journal recorded failed passwords for an invalid admin user, while the inspected login history showed only known sessions.
+Next Action: Review source patterns and apply approved rate limits, access controls and monitoring.
+Verification: Confirm no unauthorized sessions and that protective controls remain effective.
+Status: Security monitoring pending.","Issue: Repeated failed SSH logins.
+Findings: The sshd journal recorded failed passwords for an invalid admin user, while the inspected login history showed only known sessions.
+Next Action: Review source patterns and apply approved rate limits, access controls and monitoring.
+Verification: Confirm no unauthorized sessions and that protective controls remain effective.
+Status: Security monitoring pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Oct 22 08:22:09 vps sshd[1240]: Failed password for invalid user admin from 198.51.100.55 port 51002 ssh2 | P2: ops pts/0 198.51.100.12 Thu Oct 22 08:14 still logged in ops pts/1 198.51.100.12 Wed Oct 21 16:02 - 16:30","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-09-002","Issue: Office IP is blocked by Fail2ban.
+Findings: The sshd jail and Fail2ban journal both listed 198.51.100.60 as banned.
+Next Action: Verify office IP ownership and failed-login cause, then follow approved unblock policy.
+Verification: Confirm legitimate login works without weakening abuse controls.
+Status: Pending authorized remediation and verification.","Issue: Office IP is blocked by Fail2ban.
+Findings: The sshd jail and Fail2ban journal both listed 198.51.100.60 as banned.
+Next Action: Verify office IP ownership and failed-login cause, then follow approved unblock policy.
+Verification: Confirm legitimate login works without weakening abuse controls.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Banned IP list: 198.51.100.60 | P2: 2026-10-22 09:12:30,411 fail2ban.actions [902]: NOTICE [sshd] Ban 198.51.100.60","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-09-003","Issue: SELinux blocks web-to-backend connection.
+Findings: SELinux was enforcing and an AVC event denied httpd name_connect to backend port 9000.
+Next Action: Validate the intended connection and apply only a justified policy boolean or rule.
+Verification: Confirm backend access with SELinux still enforcing.
+Status: Pending authorized remediation and verification.","Issue: SELinux blocks web-to-backend connection.
+Findings: SELinux was enforcing and an AVC event denied httpd name_connect to backend port 9000.
+Next Action: Validate the intended connection and apply only a justified policy boolean or rule.
+Verification: Confirm backend access with SELinux still enforcing.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Enforcing | P2: type=AVC msg=audit(1792670400.101:112): avc: denied { name_connect } for pid=901 comm=""httpd"" dest=9000 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-09-004","Issue: Unrecognized privileged account.
+Findings: NSS returned supportadmin and the sudoers drop-in granted broad privileges; authorization and provenance are unknown.
+Next Action: Preserve evidence and escalate through incident response before altering the account or grant.
+Verification: Resolve account provenance and revalidate authorized access.
+Status: Security escalation recommended; compromise unconfirmed.","Issue: Unrecognized privileged account.
+Findings: NSS returned supportadmin and the sudoers drop-in granted broad privileges; authorization and provenance are unknown.
+Next Action: Preserve evidence and escalate through incident response before altering the account or grant.
+Verification: Resolve account provenance and revalidate authorized access.
+Status: Security escalation recommended; compromise unconfirmed.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: supportadmin:x:1002:1002::/home/supportadmin:/bin/bash | P2: /etc/sudoers.d/supportadmin:supportadmin ALL=(ALL) ALL","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-09-005","Issue: Outbound SMTP abuse report.
+Findings: The panel showed an SMTP spike and a python process held a connection to TCP/25; the sample does not prove message content or malicious intent.
+Next Action: Preserve logs, coordinate containment with Abuse/Security and verify the process owner.
+Verification: Confirm unwanted traffic has stopped and the abuse case receives an authorized disposition.
+Status: Abuse escalation recommended; unresolved.","Issue: Outbound SMTP abuse report.
+Findings: The panel showed an SMTP spike and a python process held a connection to TCP/25; the sample does not prove message content or malicious intent.
+Next Action: Preserve logs, coordinate containment with Abuse/Security and verify the process owner.
+Verification: Confirm unwanted traffic has stopped and the abuse case receives an authorized disposition.
+Status: Abuse escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Outbound SMTP spike from 198.51.100.20 | P2: Netid State Recv-Q Send-Q Local Address:Port Peer Address:Port Process tcp ESTAB 0 0 198.51.100.20:45000 203.0.113.25:25 users:((""python3"",pid=1802,fd=9))","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-09-006","Issue: Provider DDoS mitigation affects the service.
+Findings: The panel recorded mitigation and an upstream null route for the destination IP.
+Next Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.
+Verification: Confirm mitigation is cleared and allowed traffic reaches the service.
+Status: Network escalation recommended; unresolved.","Issue: Provider DDoS mitigation affects the service.
+Findings: The panel recorded mitigation and an upstream null route for the destination IP.
+Next Action: Coordinate status and permitted restoration with the network/DDoS team; do not bypass policy.
+Verification: Confirm the approved mitigation state and that allowed traffic reaches the service.
+Status: Network escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: Triggered 14:05; target 198.51.100.20 | P2: Null-route active 14:06","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-09-007","Issue: Unknown successful root SSH login.
+Findings: The sshd journal recorded Accepted publickey for root from 203.0.113.77 in the UTC incident window, and last showed a matching session.
+Next Action: Escalate as a security incident, preserve logs, identify the key and owner, then rotate access under the incident plan.
+Verification: Account for all sessions, check persistence and revalidate access controls.
+Status: Security escalation recommended; unresolved.","Issue: Unknown successful root SSH login.
+Findings: The sshd journal recorded Accepted publickey for root from 203.0.113.77 in the UTC incident window, and last showed a matching session.
+Next Action: Escalate as a security incident, preserve logs, identify the key and owner, then rotate access under the incident plan.
+Verification: Account for all sessions, check persistence and revalidate access controls.
+Status: Security escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk | P2: root pts/0 203.0.113.77 Thu Oct 22 09:14 still logged in","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-09-008","Issue: Unknown root cron job and changed script hash.
+Findings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.
+Next Action: Preserve the task and script for forensic review; coordinate containment with the security team.
+Verification: After authorized recovery, verify task removal and host integrity.
+Status: Security escalation recommended; unresolved.","Issue: Unknown root cron job and changed script hash.
+Findings: Root crontab ran agent-update every five minutes, and its hash differed from the expected baseline. Maliciousness is not established.
+Next Action: Preserve the task and script for forensic review; coordinate containment with the security team.
+Verification: After the authorized disposition, verify the task and script state and assess host integrity.
+Status: Security escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: */5 * * * * /usr/local/bin/agent-update | P2: 6f4a7f06e1241c56084354206463b687cbe92ab26d9d7c9c7e5ed12c2a67a901 /usr/local/bin/agent-update","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-13-001","Issue: API container exited.
+Findings: docker ps -a showed api exited with code 1 and its log reported a missing appconfig module.
+Next Action: Have the application owner correct the image or deployment; avoid a blind restart loop.
+Verification: Confirm the container stays healthy and its endpoint responds.
+Status: Pending authorized remediation and verification.","Issue: API container exited.
+Findings: docker ps -a showed api exited with code 1 and its log reported a missing appconfig module.
+Next Action: Have the application owner correct the image or deployment; avoid a blind restart loop.
+Verification: Confirm the container stays healthy and its endpoint responds.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES a4c21d02f881 api:v2.0 ""python app.py"" 5 minutes ago Exited (1) 2 minutes ago api | P2: ModuleNotFoundError: No module named 'appconfig'","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-13-002","Issue: Container application is unreachable through the VPS IP.
+Findings: The container exposes TCP/8080, but Docker reported no published host port; PortBindings was empty. Container reachability does not establish external access.
+Next Action: Confirm whether access should use a reverse proxy or an approved host-port mapping. Do not expose the application publicly without owner approval.
+Verification: Test the intended HTTP endpoint from an external client and verify that no unintended port is exposed.
+Status: Pending owner confirmation and external-access verification.","Issue: Container application is unreachable through the VPS IP.
+Findings: The container exposes TCP/8080, but Docker reported no published host port; PortBindings was empty. Container reachability does not establish external access.
+Next Action: Confirm whether access should use a reverse proxy or an approved host-port mapping. Do not expose the application publicly without owner approval.
+Verification: Test the intended HTTP endpoint from an external client and verify that no unintended port is exposed.
+Status: Pending owner confirmation and external-access verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: web 8080/tcp | P2: ","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-13-003","Issue: Published service is bound to host loopback.
+Findings: Docker mapped port 8080 only to 127.0.0.1, and a local request succeeded.
+Next Action: Use an approved reverse proxy or deliberate bind change after checking exposure policy.
+Verification: Confirm access only through the intended public endpoint.
+Status: Pending authorized remediation and verification.","Issue: Published service is bound to host loopback.
+Findings: Docker mapped port 8080 only to 127.0.0.1, and a local request succeeded.
+Next Action: Use an approved reverse proxy or deliberate bind change after checking exposure policy.
+Verification: Confirm access only through the intended public endpoint.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: 8080/tcp -> 127.0.0.1:8080 | P2: HTTP/1.1 200 OK Content-Type: text/html","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-13-004","Issue: Container was OOM-killed.
+Findings: Docker inspect showed OOMKilled=true and memory use was near the 512 MiB limit.
+Next Action: Profile the workload and agree on tuning or a limit increase with the owner.
+Verification: Observe normal peak traffic without another OOM kill.
+Status: Pending authorized remediation and verification.","Issue: Container was OOM-killed.
+Findings: Docker inspect showed OOMKilled=true and memory use was near the 512 MiB limit.
+Next Action: Profile the workload and agree on tuning or a limit increase with the owner.
+Verification: Observe normal peak traffic without another OOM kill.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: true | P2: CONTAINER ID NAME CPU % MEM USAGE / LIMIT MEM % a4c21d02f881 api 44.2% 498MiB / 512MiB 97.27%","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-13-005","Issue: DNS lookup fails inside the container.
+Findings: getent in api returned no host entry while the guest resolved the same name.
+Next Action: Inspect Docker resolver, network and upstream DNS before a scoped configuration change.
+Verification: Resolve the approved domain inside the container and verify app behavior.
+Status: Pending authorized remediation and verification.","Issue: DNS lookup fails inside the container.
+Findings: getent in api returned no host entry while the guest resolved the same name.
+Next Action: Inspect Docker resolver, network and upstream DNS before a scoped configuration change.
+Verification: Resolve the approved domain inside the container and verify app behavior.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: | P2: 93.184.215.14 example.com","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-13-006","Issue: Container bridge forwarding is disabled.
+Findings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.
+Next Action: Restore only the approved forwarding and NAT configuration in a controlled environment.
+Verification: Confirm the container reaches the intended external TCP service.
+Status: Pending authorized remediation and verification.","Issue: Container bridge forwarding is disabled.
+Findings: The container had a default route via its bridge, but host net.ipv4.ip_forward was 0.
+Next Action: Have the host owner inspect forwarding, NAT and filter rules, then apply only the approved change with rollback.
+Verification: Confirm the container reaches the intended external TCP service.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: default via 172.17.0.1 dev eth0 | P2: net.ipv4.ip_forward = 0","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-13-007","Issue: Compose database dependency is unavailable.
+Findings: Compose showed api up but db exited, and the DB log reported it could not allocate memory.
+Next Action: Resolve database memory allocation or capacity before restarting dependent services.
+Verification: Confirm both database and application health checks.
+Status: Pending authorized remediation and verification.","Issue: Compose database dependency is unavailable.
+Findings: Compose showed api up but db exited, and the DB log reported it could not allocate memory.
+Next Action: Resolve database memory allocation or capacity before restarting dependent services.
+Verification: Confirm both database and application health checks.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: NAME IMAGE COMMAND SERVICE CREATED STATUS PORTS api api:v2.0 ""python app.py"" api 5 minutes ago Up 2 minutes db mariadb:11 ""docker-entrypoint.sh"" db 5 minutes ago Exited (1) 2 minutes ago | P2: InnoDB: Cannot allocate memory","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-13-008","Issue: New container image rejects an old config option.
+Findings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.
+Next Action: With approval, roll back to a validated image or migrate the configuration.
+Verification: Run health and functional checks after the selected fix.
+Status: Pending authorized remediation and verification.","Issue: New container image rejects an old config option.
+Findings: The app log reported unknown legacyMode and deployment history showed a change from v1.8 to v2.0.
+Next Action: Check data and schema compatibility before any rollback; have the owner approve a tested config fix or compatible recovery plan.
+Verification: Run health and functional checks after the selected fix.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: Error: unknown config option legacyMode | P2: image tag changed from v1.8 to v2.0","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-11-001","Issue: Backup target quota exceeded.
+Findings: The backup task failed and its log reported target quota exceeded.
+Next Action: Have the backup owner review quota, retention and approved expansion or cleanup; do not delete artifacts blindly.
+Verification: Complete a new backup and verify artifact integrity.
+Status: Backup coverage at risk; remediation pending.","Issue: Backup target quota exceeded.
+Findings: The backup task failed and its log reported target quota exceeded.
+Next Action: Have the backup owner review quota, retention and approved expansion or cleanup; do not delete artifacts blindly.
+Verification: Complete a new backup and verify artifact integrity.
+Status: Backup coverage at risk; remediation pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: failed | P2: target quota exceeded","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-11-002","Issue: Requested restore point is unavailable.
+Findings: The latest completed point shown was 20 October 00:00 UTC, earlier than the requested 22 October 08:00 UTC.
+Next Action: Explain the available point and likely data gap before obtaining restore approval.
+Verification: Confirm the customer accepts the chosen point and validates restored data.
+Status: Customer decision pending; no restore performed.","Issue: Requested restore point is unavailable.
+Findings: The latest completed point shown was 20 October 00:00 UTC, earlier than the requested 22 October 08:00 UTC.
+Next Action: Explain the available point and likely data gap before obtaining restore approval.
+Verification: Confirm the customer accepts the chosen point and validates restored data.
+Status: Customer decision pending; no restore performed.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Last completed: 2026-10-20 00:00 UTC | P2: 2026-10-22 08:00 UTC","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-11-003","Issue: Backup archive fails integrity checks.
+Findings: tar reported unexpected EOF and the archive hash differed from the stored checksum.
+Next Action: Preserve originals and locate another validated backup before any restore.
+Verification: Test extraction in an isolated location and verify required data.
+Status: Recovery source unverified.","Issue: Backup archive fails integrity checks.
+Findings: tar reported unexpected EOF and the archive hash differed from the stored checksum.
+Next Action: Preserve originals and locate another validated backup before any restore.
+Verification: Test extraction in an isolated location and verify required data.
+Status: Recovery source unverified.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: tar: Unexpected EOF in archive tar: Error is not recoverable: exiting now | P2: a7849b8bc8a766542a3c06e50ef645ef882126df720bd2661f8d6b8c825aa129 /backup/app.tar","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-11-004","Issue: Snapshot failed because datastore is full.
+Findings: The snapshot task reported no space on the datastore and panel utilization was 99.9%.
+Next Action: Escalate datastore capacity management; do not delete snapshots without retention and dependency review.
+Verification: Complete a snapshot and confirm safe datastore headroom.
+Status: Storage escalation recommended; unresolved.","Issue: Snapshot failed because datastore is full.
+Findings: The snapshot task reported no space on the datastore and panel utilization was 99.9%.
+Next Action: Escalate datastore capacity management; do not delete snapshots without retention and dependency review.
+Verification: Complete a snapshot and confirm safe datastore headroom.
+Status: Storage escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: failed: no space left on datastore | P2: 99.9% used","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-11-005","Issue: Restore omitted a separate data disk.
+Findings: The job included only vda, and the restored guest had no vdb.
+Next Action: Identify the correct data-disk backup and plan a separate restore without overwriting the current OS disk.
+Verification: Verify disk identity, mount and recovered data.
+Status: Pending authorized remediation and verification.","Issue: Restore omitted a separate data disk.
+Findings: The job included only vda, and the restored guest had no vdb.
+Next Action: Identify the correct data-disk backup and plan a separate restore without overwriting the current OS disk.
+Verification: Verify disk identity, mount and recovered data.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Included disks: vda only | P2: NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS vda 252:0 0 30G 0 disk └─vda1 252:1 0 30G 0 part /","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-11-006","Issue: Restored point may miss later transactions.
+Findings: The backup used was created on 20 October, about two days before the stated incident time.
+Next Action: Assess point-in-time database recovery and communicate the possible data gap to the owner.
+Verification: Reconcile orders to the agreed recovery point and run consistency checks.
+Status: Recovery point agreement pending.","Issue: Restored point may miss later transactions.
+Findings: The backup used was created on 20 October, about two days before the stated incident time.
+Next Action: Assess point-in-time database recovery and communicate the possible data gap to the owner.
+Verification: Reconcile orders to the agreed recovery point and run consistency checks.
+Status: Recovery point agreement pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Created 2026-10-20 00:00 UTC | P2: 2026-10-22 12:00 UTC","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-11-007","Issue: Backup agent authentication failed after key rotation.
+Findings: The agent log reported a rejected key; the panel showed recent rotation. Guided evidence further shows the agent reference lagged the rotated key ID.
+Next Action: Have the authorized backup owner reconcile credential references in the secret store; never paste a private key into the ticket.
+Verification: Complete a new backup and validate artifact integrity or a restore test.
+Status: Backup coverage at risk; credential update pending.","Issue: Backup agent authentication failed after key rotation.
+Findings: The agent log reported a rejected key; the panel showed recent rotation. Guided evidence further shows the agent reference lagged the rotated key ID.
+Next Action: Have the authorized backup owner reconcile credential references in the secret store; never paste a private key into the ticket.
+Verification: Complete a new backup and validate artifact integrity or a restore test.
+Status: Backup coverage at risk; credential update pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Oct 22 01:35:11 vm-117 backup-agent[2140]: Authentication failed: key rejected | P2: key rotated recently","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-11-008","Issue: Restored VM duplicates the live IPv4 address.
+Findings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.
+Next Action: Keep the clone isolated and assign a nonconflicting address before network connection.
+Verification: Confirm no address conflict and reachability through the intended endpoint.
+Status: Pending authorized remediation and verification.","Issue: Restored VM duplicates the live IPv4 address.
+Findings: Panel NIC records showed the restored and production VMs both assigned 198.51.100.20.
+Next Action: Ask the virtualization team to isolate the currently connected clone, then plan a nonconflicting test address with the owner.
+Verification: Confirm no address conflict and reachability through the intended endpoint.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: 198.51.100.20 | P2: 198.51.100.20","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-12-001","Issue: Provisioning cannot allocate IPv4.
+Findings: The task failed and IPAM showed no free address in pool sg-02.
+Next Action: Escalate pool allocation, then retry through an idempotent approved workflow.
+Verification: Confirm one VPS receives the intended IP and customer login works.
+Status: IPAM escalation recommended; unresolved.","Issue: Provisioning cannot allocate IPv4.
+Findings: The task failed and IPAM showed no free address in pool sg-02.
+Next Action: Escalate pool allocation, then retry through an idempotent approved workflow.
+Verification: Confirm one VPS receives the intended IP and customer login works.
+Status: IPAM escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: failed | P2: No free IPv4 in pool sg-02","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-12-002","Issue: Panel state appears stale.
+Findings: Panel reported Stopped with a 50-minute-old sync, while virsh reported running.
+Next Action: Use the approved backend reconciliation flow rather than starting a potentially running VM.
+Verification: Confirm panel and hypervisor agree on state.
+Status: Panel reconciliation pending.","Issue: Panel state appears stale.
+Findings: Panel reported Stopped with a 50-minute-old sync, while virsh reported running.
+Next Action: Use the approved backend reconciliation flow rather than starting a potentially running VM.
+Verification: Confirm panel and hypervisor agree on state.
+Status: Panel reconciliation pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Stopped (last sync 50min ago) | P2: running","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-12-003","Issue: Provisioned OS differs from the order.
+Findings: The order specified AlmaLinux 9, but /etc/os-release showed Ubuntu 24.04.
+Next Action: Discuss data impact and obtain customer authorization for replacement or rebuild.
+Verification: Verify the delivered OS matches the order and service functions.
+Status: Customer decision pending.","Issue: Provisioned OS differs from the order.
+Findings: The order specified AlmaLinux 9, but /etc/os-release showed Ubuntu 24.04.
+Next Action: Discuss data impact and obtain customer authorization for replacement or rebuild.
+Verification: Verify the delivered OS matches the order and service functions.
+Status: Customer decision pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: AlmaLinux 9 | P2: ID=ubuntu VERSION_ID=""24.04""","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-12-004","Issue: Guest-visible CPU count differs from plan.
+Findings: The panel showed a four-vCPU plan while nproc returned two; affinity or guest limits still need checking.
+Next Action: Compare host allocation and guest CPU configuration before an authorized resource update or reboot.
+Verification: Verify the approved CPU count is visible to the workload.
+Status: Pending authorized remediation and verification.","Issue: Guest-visible CPU count differs from plan.
+Findings: The panel showed a four-vCPU plan while nproc returned two; affinity or guest limits still need checking.
+Next Action: Compare host allocation and guest CPU configuration before an authorized resource update or reboot.
+Verification: Verify the approved CPU count is visible to the workload.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: 4 vCPU | P2: 2","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-12-005","Issue: Reinstall task waits on another job.
+Findings: The reinstall task was locked while a snapshot job remained active.
+Next Action: Ask operations to reconcile the task queue and lock; do not force-unlock or reinstall blindly.
+Verification: After explicit authorization, confirm one reinstall and the expected OS.
+Status: Operations escalation recommended; reinstall pending.","Issue: Reinstall task waits on another job.
+Findings: The reinstall task was locked while a snapshot job remained active.
+Next Action: Ask operations to reconcile the task queue and lock; do not force-unlock or reinstall blindly.
+Verification: After explicit authorization, confirm one reinstall and the expected OS.
+Status: Operations escalation recommended; reinstall pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: reinstall waiting lock | P2: snapshot job currently running","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-12-006","Issue: Guest IPv4 differs from ordered allocation.
+Findings: The order showed 198.51.100.20, while the guest displayed 203.0.113.40/24.
+Next Action: Verify address ownership and correct provisioning through the approved workflow.
+Verification: Confirm panel, guest address, route and client connection agree.
+Status: Pending authorized remediation and verification.","Issue: Guest IPv4 differs from ordered allocation.
+Findings: The order showed 198.51.100.20, while the guest displayed 203.0.113.40/24.
+Next Action: Verify address ownership and correct provisioning through the approved workflow.
+Verification: Confirm panel, guest address, route and client connection agree.
+Status: Pending authorized remediation and verification.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: 198.51.100.20 | P2: 2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000 inet 203.0.113.40/24 brd 203.0.113.255 scope global ens3 valid_lft forever preferred_lft forever","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-12-007","Issue: API mutation denied by token scope.
+Findings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.
+Next Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.
+Verification: Retry the approved API action and confirm its effect.
+Status: Authorization pending.","Issue: API mutation denied by token scope.
+Findings: The API returned 403 and audit data showed a read:vm token scope. Other policy checks may still apply.
+Next Action: Verify owner intent and grant only the required authorized scope; do not default to an admin token.
+Verification: Check the endpoint permission under the approved scope; perform a real reboot only at an owner-approved time.
+Status: Authorization pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: HTTP 403 Forbidden | P2: token scope: read:vm","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-12-008","Issue: One order appears to have provisioned twice.
+Findings: The panel task history recorded two completions for order-771 and inventory showed vm-771a and vm-771b.
+Next Action: Escalate identity and billing reconciliation before deleting or exposing either VM.
+Verification: Confirm one correct managed service and invoice mapping.
+Status: Operations escalation recommended; unresolved.","Issue: One order appears to have provisioned twice.
+Findings: The panel task history recorded two completions for order-771 and inventory showed vm-771a and vm-771b.
+Next Action: Escalate identity and billing reconciliation before deleting or exposing either VM.
+Verification: Confirm one correct managed service and invoice mapping.
+Status: Operations escalation recommended; unresolved.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: provision order-771 completed twice | P2: vm-771a and vm-771b","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-14-001","Issue: Service suspended for overdue payment.
+Findings: Billing showed suspension tied to overdue invoice INV-2026-101.
+Next Action: Refer the customer to the approved payment and unsuspension workflow; do not bypass billing policy.
+Verification: Confirm billing authorizes Active status and service access returns.
+Status: Billing action pending.","Issue: Service suspended for overdue payment.
+Findings: Billing showed suspension tied to overdue invoice INV-2026-101.
+Next Action: Refer the customer to the approved payment and unsuspension workflow; do not bypass billing policy.
+Verification: Confirm billing authorizes Active status and service access returns.
+Status: Billing action pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Suspended: invoice overdue | P2: INV-2026-101 overdue","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-14-002","Issue: Paid invoice has not advanced provisioning.
+Findings: Billing marked the invoice Paid, while provisioning remained Waiting on payment event.
+Next Action: Escalate event reconciliation and resume the task idempotently through the authorized flow.
+Verification: Confirm one provisioning run and consistent order status.
+Status: Billing/operations reconciliation pending.","Issue: Paid invoice has not advanced provisioning.
+Findings: Billing marked the invoice Paid, while provisioning remained Waiting on payment event.
+Next Action: Escalate event reconciliation and resume the task idempotently through the authorized flow.
+Verification: Confirm one provisioning run and consistent order status.
+Status: Billing/operations reconciliation pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Paid | P2: Waiting on payment event","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-14-003","Issue: Customer requested end-of-term cancellation.
+Findings: The service was active until 15 November 2026 and the displayed policy supported end-of-term cancellation.
+Next Action: Verify requester identity, record the approved date and explain the backup deadline.
+Verification: Confirm the scheduled date without immediate deletion.
+Status: Customer authorization pending.","Issue: Customer requested end-of-term cancellation.
+Findings: The service was active until 15 November 2026 and the displayed policy supported end-of-term cancellation.
+Next Action: Verify requester identity, record the approved date and explain the backup deadline.
+Verification: Confirm the scheduled date without immediate deletion.
+Status: Customer authorization pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Active until 2026-11-15 | P2: end-of-term cancellation supported","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-14-004","Issue: Customer asks about refund eligibility.
+Findings: The purchase date was 15 October 2026, but the displayed policy required review and did not grant automatic approval.
+Next Action: Refer the request and relevant dates to Billing; do not promise a refund.
+Verification: Record Billing’s authorized written decision.
+Status: Billing decision pending.","Issue: Customer asks about refund eligibility.
+Findings: The purchase date was 15 October 2026, but the displayed policy required review and did not grant automatic approval.
+Next Action: Refer the request and relevant dates to Billing; do not promise a refund.
+Verification: Record Billing’s authorized written decision.
+Status: Billing decision pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: 2026-10-15 | P2: Eligibility requires review; no automatic approval","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-14-005","Issue: Paid IPv4 add-on has no assigned address yet.
+Findings: Billing listed the add-on as active while panel allocation remained pending manual review.
+Next Action: Escalate assignment to IPAM and operations, then configure only through the approved process.
+Verification: Confirm the second IP in panel and guest with correct routing.
+Status: IPAM/operations review pending.","Issue: Paid IPv4 add-on has no assigned address yet.
+Findings: Billing listed the add-on as active while panel allocation remained pending manual review.
+Next Action: Escalate assignment to IPAM and operations, then configure only through the approved process.
+Verification: Confirm the second IP in panel and guest with correct routing.
+Status: IPAM/operations review pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Additional IPv4 active | P2: pending manual review","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-14-006","Issue: Service data faces a retention deadline.
+Findings: Billing showed expiry on 20 October and panel retention scheduled deletion for 25 October 2026.
+Next Action: Urgently request a policy-approved retention decision and advise the authorized owner to preserve needed data.
+Verification: Confirm renewal or exception is recorded and the required data remains available.
+Status: Urgent billing/retention escalation recommended.","Issue: Service data faces a retention deadline.
+Findings: At receipt on 22 October 2026 10:00 UTC, billing showed expiry on 20 October, a deletion job scheduled for 25 October and no active hold. Neither the schedule nor the backup inventory proves current data availability.
+Next Action: Verify the owner and current deletion-job state, then ask Billing/Lifecycle for an audited hold if the data still qualifies; do not promise retention or restore.
+Verification: Confirm the approved hold or extension was applied, check the new deadline and test data or backup availability separately.
+Status: Urgent billing/retention escalation recommended.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVISED","Đã sửa mức kết luận, hành động hoặc mốc xác minh cho khớp fixture và Guided case.","P1: 2026-10-20 | P2: Scheduled deletion 2026-10-25","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-14-007","Issue: Invoice may contain a duplicate product line.
+Findings: The invoice listed VPS-100 twice while service inventory showed one VPS-100.
+Next Action: Refer invoice correction or credit review to Billing; do not manually alter accounting records.
+Verification: Confirm a corrected invoice and customer acknowledgement.
+Status: Billing review pending.","Issue: Invoice may contain a duplicate product line.
+Findings: The invoice listed VPS-100 twice while service inventory showed one VPS-100.
+Next Action: Refer invoice correction or credit review to Billing; do not manually alter accounting records.
+Verification: Confirm a corrected invoice and customer acknowledgement.
+Status: Billing review pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: VPS-100; VPS-100 duplicate | P2: VPS-100 exists once","scripts/guided-reference-notes.mjs","SME_PENDING"
+"VPS-14-008","Issue: Abuse suspension appeal awaits a decision.
+Findings: Billing tied the suspension to case AB-2026-14 and Security showed an open investigation.
+Next Action: Route the appeal to Abuse/Security; do not unsuspend the service without authorized disposition.
+Verification: Record the case decision and update service state accordingly.
+Status: Abuse/Security decision pending.","Issue: Abuse suspension appeal awaits a decision.
+Findings: Billing tied the suspension to case AB-2026-14 and Security showed an open investigation.
+Next Action: Route the appeal to Abuse/Security; do not unsuspend the service without authorized disposition.
+Verification: Record the case decision and update service state accordingly.
+Status: Abuse/Security decision pending.","Issue; Findings; Next Action; Verification; Status; evidence scope; authorization; natural English","AGENT_REVIEWED_NO_CHANGE","Năm trường đủ rõ, không tuyên bố thao tác chưa làm hoặc root cause ngoài bằng chứng.","P1: Suspended: abuse case AB-2026-14 | P2: Investigation open","scripts/guided-reference-notes.mjs","SME_PENDING"

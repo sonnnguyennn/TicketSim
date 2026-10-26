@@ -1,0 +1,14 @@
+# Before and after — selected changes
+
+| Case | Before | After | Why |
+|---|---|---|---|
+| VPS-14-006 | Expired 20/10; scheduled deletion 25/10; no reception time; answer could imply a hold remained possible when opened later. | Historical reception is 22/10/2026 10:00 UTC. A schedule is not completed deletion; after deadline check deletion job, hold and backup state with owner before any promise. | Keeps the lifecycle decision valid at the stated incident time and avoids a false recovery guarantee. |
+| VPS-04-008 and VPS-09-007 | Incident window UTC, but Guided journal display timezone unspecified. | Guided-only `journalctl` includes `--utc` with dated window; original ticket fixture command/output stays intact. | Timestamp shown to the learner matches the incident window used by the question. |
+| VPS-01-008/check | The question could imply `journalctl -k -b -n 30` necessarily covered the nightly job time. | Asks for kernel OOM events in this boot; feedback notes the tail may miss the job window. | Limits the conclusion to what a 30-line tail can establish. |
+| VPS-04-006/output | Prompt asked what was *not* demonstrated while the keyed answer was the supported interpretation; another option could also answer literally. | Asks which interpretation best fits the evidence; key and incorrect-option explanation remain explicit. | Removes an alternative defensible reading without rekeying. |
+| VPS-02-008/G1 | Tracepath sample displayed only local `pmtu 1500` beside the same-path DF probe's `mtu = 1400`, and omitted normal `reached`/`Resume` markers. | Guided sample reports `pmtu 1400`, `reached`, `Resume: pmtu 1400`; interpretation says UDP/ICMP alignment does not prove HTTPS/TCP cause. | Makes the authored fixture internally coherent; VPN lab replay remains pending. |
+| VPS-04-004/output | Joined `wa76%` and `khoảng180ms`. | Spaced quantities and clearer I/O wait wording. | Stops typography from hiding the metric and avoids claiming disk failure from iowait alone. |
+| `iostat` card | `iostat -xz 1 5` explained first report since boot, but no interval-only form. | Adds `-y` and `iostat -yxz 1 3` example, with interval interpretation. | Teaches a practical comparison while retaining the boot-average caveat. |
+| VPS-10-008 English note | Clock drift implied without a trusted simultaneous host timestamp. | Says the guest/host comparison remains to be made. | Keeps the note within the available evidence. |
+
+The exact before/after prompt, options, feedback and notes for each record are in the question and English-note CSV ledgers. Original P1/P2 fixture output and all grading keys remain unchanged.

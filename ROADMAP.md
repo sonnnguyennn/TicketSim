@@ -21,6 +21,7 @@ Phase A đưa Guided thành luồng học mặc định: Kho ticket → Học ti
 | Phase C/C2 — Independent content audit | Hoàn thành ở mức reasoned review | 112 ticket, 122 command, 620 câu hỏi và fixture được rà; source/lab/SOP là các mức xác minh riêng. |
 | Phase D1 — Correctness remediation | Hoàn thành ở mức source và regression | 19 findings được sửa theo [QA D1](Phase_D1_Correctness_QA.md); 23 ticket vẫn chờ SOP. |
 | Phase D2 — Command Knowledge System | Đã triển khai, verification còn chờ | 122 thẻ: 102 shell và 20 support task; flags/examples có cấu trúc, UX hai lớp, ledger và regression. Metadata hiện có 71 source-verified về cú pháp, 31 pending, 20 SOP-required, 0 lab-verified. Xem [QA D2](Phase_D2_Command_Knowledge_QA.md) cho mốc lịch sử và [ledger](Phase_D2_Command_Review_Ledger.csv) cho trạng thái hiện tại. |
+| Phase D3-C2 — Full content editorial | Agent review hoàn tất; SME/lab/SOP còn chờ | Rà 620 câu, sửa 70; rà 122 command, sửa 1; rà 112 English notes, sửa 11. Không đổi answer key/ID; browser 50/50. A02 distractor quality còn cần SME độc lập. Xem [audit D3-C2](audit/phase-d3-c2/01_Executive_Summary.md). |
 
 ## Độ phủ hiện tại
 
