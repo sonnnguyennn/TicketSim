@@ -1,6 +1,7 @@
 import type { CommandDoc } from './types'
 import { commandRevisions } from './commandRevisions'
 import { additionalCommands } from './moreCommands'
+import { shellKnowledge } from './commandKnowledge'
 
 const examples: Record<string, [string, string, string, string[]]> = {
   'systemctl-status': ['Active: inactive (dead)', 'Khi SSH bị từ chối ở bước TCP.', 'journalctl -u sshd -n 50 --no-pager', ['VPS-01-001']],
@@ -61,4 +62,7 @@ export const commandLibrary: CommandDoc[] = [
   doc('getenforce', 'Security', 'getenforce', 'Xem SELinux mode.', 'Enforcing cho biết policy đang áp dụng.', 'Không dùng setenforce 0 làm cách sửa lâu dài.', 'Không có flag trong ví dụ.', 'guest', 'read', 'user'),
   doc('docker-ps', 'Docker', 'docker ps -a', 'Xem container đang chạy và đã dừng.', 'STATUS hỗ trợ phân biệt container stopped/restarting.', 'Quyền Docker tương đương quyền mạnh trên host; chỉ dùng khi được cấp.', '-a gồm container đã dừng.', 'guest', 'privileged_read', 'sudo'),
   ...additionalCommands,
-].map(card => ({ ...card, ...commandRevisions[card.id] }))
+].map(card => {
+  const revised = { ...card, ...commandRevisions[card.id] }
+  return revised.context === 'panel' ? revised : { ...revised, knowledge: shellKnowledge(revised) }
+})

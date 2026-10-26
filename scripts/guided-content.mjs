@@ -1389,3 +1389,9 @@ d1Option('VPS-05-006', 'evidence', 'p2').label = 'Java PID 2300 giữ app.log đ
 d1Option('VPS-05-006', 'decision', 'unsafe').label = 'Dùng kill -9 với PID 2300 ngay.'
 deletedLog.answerOverrides.expected_diagnosis = 'PID 2300 còn mở app.log đã unlink, khoảng 5 GiB; đây là ứng viên giải thích block chưa được trả. Cần so đúng filesystem và thời gian.'
 
+// D2: G1 is a second read of the same 2026-10-22 incident. Pin the query
+// window and display to UTC so the sample remains interpretable on any guest.
+const rootLoginDetail = d1['VPS-09-007'].extras.find(probe => probe.command.startsWith('journalctl -u sshd --since "2026-10-22 00:00:00"'))
+rootLoginDetail.command = 'journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC" --utc --no-pager'
+rootLoginDetail.purpose = 'Đọc fingerprint và timestamp của SSH Accepted trong cửa sổ incident theo UTC.'
+

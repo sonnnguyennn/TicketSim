@@ -2020,7 +2020,7 @@ Tham khảo: https://www.openssh.com/manual.html, https://www.freedesktop.org/so
 
 Đồng bộ fingerprint cùng sự kiện ở cửa sổ log cố định.
 
-Command trước: `journalctl -u sshd --since "2026-10-22 00:00:00" --no-pager`; sau: `journalctl -u sshd --since "2026-10-22 00:00:00" --no-pager`.
+Command trước: `journalctl -u sshd --since "2026-10-22 00:00:00" --no-pager`; sau: `journalctl -u sshd --since "2026-10-22 09:00:00 UTC" --until "2026-10-22 09:30:00 UTC" --utc --no-pager`.
 
 Trước:
 

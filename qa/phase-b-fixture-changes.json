@@ -1188,7 +1188,7 @@
     "ticketId": "VPS-09-007",
     "probeId": "G1",
     "beforeCommand": "journalctl -u sshd --since \"2026-10-22 00:00:00\" --no-pager",
-    "command": "journalctl -u sshd --since \"2026-10-22 00:00:00\" --no-pager",
+    "command": "journalctl -u sshd --since \"2026-10-22 09:00:00 UTC\" --until \"2026-10-22 09:30:00 UTC\" --utc --no-pager",
     "before": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:AbCdEf123456",
     "after": "Oct 22 09:14:20 vps sshd[3104]: Accepted publickey for root from 203.0.113.77 port 51144 ssh2: ED25519 SHA256:uXzRs1YoPvjS/9wVRD4Zf1uTj3PseKqFLu6q0HD1mOk",
     "reason": "Đồng bộ fingerprint cùng sự kiện ở cửa sổ log cố định.",
