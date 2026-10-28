@@ -11,6 +11,18 @@ const initialProbes = (item: GuidedCase) => item.probes.filter(probe => !probe.r
 const next = (page: Page) => page.locator('.guided-footer').getByRole('button', { name: 'Tiếp tục', exact: true })
 const stored = (page: Page) => page.evaluate(key => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY) as Promise<Progress>
 
+test('Real Lab is separate, unavailable, and leaves Guided progress intact', async ({ page }) => {
+  await page.goto('/')
+  const before = await page.evaluate(key => localStorage.getItem(key), STORAGE_KEY)
+  await page.getByTitle('Real Lab', { exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Real Lab', exact: true })).toBeVisible()
+  await expect(page.getByRole('status')).toContainText('Chưa sẵn sàng')
+  await expect(page.getByRole('button', { name: /Start Lab/i })).toHaveCount(0)
+  await page.getByTitle('Kho ticket', { exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Kho ticket' })).toBeVisible()
+  expect(await page.evaluate(key => localStorage.getItem(key), STORAGE_KEY)).toBe(before)
+})
+
 async function openTicket(page: Page, id: string) {
   await page.getByRole('textbox', { name: 'Tìm ticket', exact: true }).fill(id)
   await page.locator(`[data-ticket-id="${id}"]`).click()

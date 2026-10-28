@@ -5,6 +5,7 @@ import guidedPublic from './data/guided-public.json'
 import { answerUrl, customerSummary, DEFAULT_RUBRIC, emptyDraft, emptyProgress, filterTickets, hintUrl, isAnswer, isInvestigation, matchProbeForKind, scoreChecks, SCORE_KEYS, SCORE_LABELS } from './lib'
 import { clearProgress, loadProgress, migrateProgress, saveProgress } from './storage'
 import { GuidedWorkspace } from './guided/GuidedWorkspace'
+import { RealLabPage } from './real-lab/RealLabPage'
 import { CommandLibrary, CommandQuickLookup } from './guided/CommandLibrary'
 import { ReviewWorkspace } from './guided/ReviewWorkspace'
 import { ExamWorkspace } from './ExamWorkspace'
@@ -41,7 +42,7 @@ function App() {
   const [progress, setProgress] = useState<Progress>(() => loadProgress())
   const supportLevel = progress.supportLevel ?? 'normal'
   const [selectedId, setSelectedId] = useState(() => { try { const remembered = localStorage.getItem('ticketsim-last-ticket'); return tickets.some(item => item.id === remembered) ? remembered! : tickets[0].id } catch { return tickets[0].id } })
-  const [view, setView] = useState<'workspace' | 'practice' | 'guided' | 'stateful' | 'exam' | 'objective' | 'library' | 'review' | 'history' | 'advanced-history' | 'settings'>('workspace')
+  const [view, setView] = useState<'workspace' | 'practice' | 'guided' | 'stateful' | 'exam' | 'objective' | 'library' | 'review' | 'history' | 'advanced-history' | 'settings' | 'real-lab'>('workspace')
   const [libraryFocus, setLibraryFocus] = useState<string | undefined>()
   const [libraryOrigin, setLibraryOrigin] = useState<'guided' | 'exam' | 'stateful' | 'workspace' | 'practice'>('workspace')
   const [topic, setTopic] = useState('all')
@@ -228,6 +229,7 @@ function App() {
       <nav aria-label="Điều hướng chính" className="main-nav">
         <button title="Kho ticket" className={view === 'workspace' ? 'nav-item active' : 'nav-item'} onClick={() => setView('workspace')}><Server size={18} /> Kho ticket <span>{tickets.length}</span></button>
         <button title="Thư viện lệnh" className={view === 'library' ? 'nav-item active' : 'nav-item'} onClick={() => { if (view !== 'library') setLibraryOrigin(view === 'guided' || view === 'exam' || view === 'stateful' || view === 'practice' ? view : 'workspace'); setLibraryFocus(undefined); setView('library') }}><BookOpen size={18} /> Thư viện lệnh</button>
+        <button title="Real Lab" className={view === 'real-lab' ? 'nav-item active' : 'nav-item'} onClick={() => setView('real-lab')}><Server size={18} /> Real Lab</button>
         <button title="Lịch sử" className={view === 'history' ? 'nav-item active' : 'nav-item'} onClick={() => setView('history')}><History size={18} /> Lịch sử</button>
         <button title="Cài đặt" className={view === 'settings' ? 'nav-item active' : 'nav-item'} onClick={() => setView('settings')}><Settings2 size={18} /> Cài đặt</button>
       </nav>
@@ -236,9 +238,10 @@ function App() {
     </aside>
 
     <div className="main-area">
-      <header className="topbar"><div className="breadcrumb">{view === 'workspace' ? 'Kho ticket' : view === 'guided' ? 'Học ticket' : view === 'practice' ? 'Luyện tự do' : view === 'stateful' ? 'Stateful Simulator' : view === 'objective' ? 'Objective Exam' : view === 'exam' ? 'Exam tự luyện' : view === 'library' ? 'Thư viện lệnh' : view === 'review' ? 'Ôn lỗi' : view === 'history' || view === 'advanced-history' ? 'Lịch sử làm bài' : 'Cài đặt'}</div><div className="topbar-right"><span className="live-dot" /> Chạy local</div></header>
+      <header className="topbar"><div className="breadcrumb">{view === 'workspace' ? 'Kho ticket' : view === 'guided' ? 'Học ticket' : view === 'practice' ? 'Luyện tự do' : view === 'stateful' ? 'Stateful Simulator' : view === 'objective' ? 'Objective Exam' : view === 'exam' ? 'Exam tự luyện' : view === 'library' ? 'Thư viện lệnh' : view === 'real-lab' ? 'Real Lab' : view === 'review' ? 'Ôn lỗi' : view === 'history' || view === 'advanced-history' ? 'Lịch sử làm bài' : 'Cài đặt'}</div><div className="topbar-right"><span className="live-dot" /> Chạy local</div></header>
       <main>
         {saveError && <div className="notice error storage-error" role="alert">Không thể lưu tiến độ. Kiểm tra dung lượng lưu trữ của trình duyệt.</div>}
+        {view === 'real-lab' && <RealLabPage />}
         {(view === 'guided' || view === 'library' && libraryOrigin === 'guided') && guidedCase && <div hidden={view !== 'guided'}><GuidedWorkspace key={ticket.id} ticket={ticket} guidedCase={guidedCase} progress={progress} setProgress={setProgress} onBack={() => setView('workspace')} onOpenLibrary={id => { setLibraryOrigin('guided'); setLibraryFocus(id); setView('library') }} /></div>}
         {view === 'stateful' && guidedCase?.simulation && <StatefulWorkspace ticket={ticket} guidedCase={guidedCase} progress={progress} setProgress={setProgress} onBack={() => setView('workspace')} onOpenLibrary={id => { setLibraryOrigin('stateful'); setLibraryFocus(id); setView('library') }} onOpenExam={() => setView('objective')} />}
         {view === 'objective' && guidedCase?.objectiveExam && <ObjectiveExamWorkspace ticket={ticket} guidedCase={guidedCase} progress={progress} setProgress={setProgress} onBack={() => setView('workspace')} />}

@@ -12,7 +12,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "test": "vitest run",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "real-lab:agent": "node agent/server.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
