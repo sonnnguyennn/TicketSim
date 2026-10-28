@@ -20,6 +20,7 @@ describe('Real Lab Phase 0 contracts', () => {
     expect(validateJson(scenario)).toBe(true)
     expect(validateJson({ ...scenario, setupScript: 'rm -rf /' })).toBe(false)
     expect(validateJson({ ...scenario, schemaVersion: 2 })).toBe(false)
+    expect(validateJson({ ...scenario, title: '   ' })).toBe(false)
     expect(validateLabScenario(scenario).valid).toBe(true)
     expect(validateLabScenario({ ...scenario, schemaVersion: 2 }).valid).toBe(false)
     expect(validateLabScenario({ ...scenario, setupScript: 'rm -rf /' }).valid).toBe(false)
@@ -48,5 +49,13 @@ describe('Real Lab Phase 0 contracts', () => {
     const controller = new MockReadOnlyVmController('hyperv')
     await expect(controller.inspect({ id: 'lab1', controller: 'multipass', disposable: false })).rejects.toThrow('ownership')
     await expect(controller.inspect({ id: 'lab1', controller: 'hyperv', disposable: false })).resolves.toBeNull()
+  })
+  it('rejects inconsistent mock snapshots and does not expose mutable state', async () => {
+    const wrong = new MockReadOnlyVmController('hyperv', new Map([['vm-1', { identity: { id: 'vm-2', controller: 'hyperv', disposable: true }, powerState: 'running', observedAt: '2026-10-29T00:00:00Z' }]]))
+    await expect(wrong.inspect({ id: 'vm-1', controller: 'hyperv', disposable: true })).rejects.toThrow('identity mismatch')
+    const good = new MockReadOnlyVmController('hyperv', new Map([['vm-1', { identity: { id: 'vm-1', controller: 'hyperv', disposable: true }, powerState: 'running', observedAt: '2026-10-29T00:00:00Z' }]]))
+    const first = await good.inspect({ id: 'vm-1', controller: 'hyperv', disposable: true })
+    first!.powerState = 'off'
+    expect((await good.inspect({ id: 'vm-1', controller: 'hyperv', disposable: true }))?.powerState).toBe('running')
   })
 })

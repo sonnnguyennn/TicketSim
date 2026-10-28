@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest'
+import http from 'node:http'
 import { createAgentServer } from './server.mjs'
 
 let server
@@ -8,7 +9,7 @@ async function request(path, options = {}) {
   server = createAgentServer()
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
   const address = server.address()
-  return fetch(`http://127.0.0.1:${address.port}${path}`, { ...options, headers: { Host: '127.0.0.1:4174', ...options.headers } })
+  return fetch(`http://127.0.0.1:${address.port}${path}`, options)
 }
 
 describe('Phase 0 local agent boundary', () => {
@@ -25,6 +26,11 @@ describe('Phase 0 local agent boundary', () => {
     expect((await request('/api/v1/status', { headers: { Origin: 'https://attacker.example' } })).status).toBe(403)
   })
   it('rejects a foreign host header', async () => {
-    expect((await request('/api/v1/status', { headers: { Host: 'example.com' } })).status).toBe(403)
+    server = createAgentServer()
+    await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
+    const status = await new Promise((resolve, reject) => {
+      http.get({ hostname: '127.0.0.1', port: server.address().port, path: '/api/v1/status', headers: { Host: 'example.com' } }, response => { response.resume(); resolve(response.statusCode) }).on('error', reject)
+    })
+    expect(status).toBe(403)
   })
 })

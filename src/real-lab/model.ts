@@ -1,4 +1,4 @@
-/** Phase 0 contracts. No manifest in this module is executable. */
+/** Frontend contracts/prototype. The local agent owns all mock lifecycle decisions. */
 export const LAB_SCHEMA_VERSION = 1 as const
 
 export type LabPhase = 'idle' | 'preflight' | 'baseline_ready' | 'injecting' | 'ready' | 'running' | 'submitting' | 'graded' | 'restoring' | 'verified_clean' | 'failed_setup' | 'failed_grading' | 'recovery_required' | 'restore_failed'
