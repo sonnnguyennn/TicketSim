@@ -18,6 +18,10 @@ npm run test:browser
 
 Mở URL local do Vite hiển thị. Sau khi cài dependency, app không cần internet hay API key. `dist/` là bản build tĩnh, cần phục vụ qua HTTP local.
 
+## Real Lab — Phase 0
+
+Tab **Real Lab** hiện chỉ hiển thị trạng thái môi trường và kiểm tra Local Lab Agent theo chế độ chỉ đọc. Chưa có lab chạy thật, terminal SSH hoặc thao tác thay đổi VM. Xem [kiến trúc và điều kiện kích hoạt](docs/real-lab/ARCHITECTURE.md), [preflight Windows](docs/real-lab/VM_PREFLIGHT.md) và [QA Phase 0](docs/real-lab/PHASE_0_QA.md). Có thể chạy status agent bằng `npm run real-lab:agent`; agent luôn báo môi trường chưa sẵn sàng.
+
 ## Luồng học hiện tại — Phase A
 
 Mở Kho ticket, tìm hoặc lọc theo chủ đề/cấp độ/trạng thái, chọn ticket rồi bấm **Học ticket / Tiếp tục**. Bài học đi qua **Nhận diện → Kiểm tra → Đọc bằng chứng → Quyết định → Tổng kết**. Lịch sử chỉ hiển thị các lượt Guided đã hoàn thành; Cài đặt giữ xuất/nhập và đặt lại dữ liệu.
