@@ -31,9 +31,9 @@ export function RealLabPage() {
       <button type="button" onClick={checkAgent}>Kiểm tra agent (chỉ đọc)</button>
     </div>
     <div className="real-lab-grid">
-      <article><h2>Danh mục lab</h2><p>Chưa có scenario được phê duyệt để chạy trên Ubuntu VM. Ticket cũ không tự động chuyển thành lab.</p></article>
+      <article><h2>Danh mục lab</h2><p><strong>LAB-WEB-001 · Nginx unavailable</strong> đang được kiểm thử bằng mock. Chưa có scenario được phê duyệt để chạy trên Ubuntu VM; ticket cũ không tự động chuyển thành lab.</p></article>
       <article><h2>Điều kiện để bắt đầu</h2><ul><li>VM disposable được chỉ định rõ và một controller sở hữu.</li><li>Preflight, backup và khôi phục qua host đạt kiểm chứng.</li><li>Scenario setup, fault check và grading được kiểm thử riêng.</li></ul></article>
     </div>
-    <p className="real-lab-footnote">Phase 0 không có nút Start Lab hoặc terminal SSH thực.</p>
+    <p className="real-lab-footnote">Phase 1A chỉ có dry-run qua mock agent. Không có nút Start Real Lab hoặc terminal SSH thực.</p>
   </section>
 }

@@ -1,6 +1,6 @@
-# Real Lab Phase 0 — architecture decision record
+# Real Lab architecture decision record
 
-**Status:** foundation only, 2026-10-29. No executable lab is enabled.
+**Status:** Phase 1A mock engine, 2026-10-29. No executable real-VM lab is enabled.
 
 ## Repository boundary
 
@@ -32,3 +32,15 @@ The learner terminal will be a guest SSH session, never a PowerShell host endpoi
 - `lab1` is not disposable by default. No real Start Lab appears until a separate lab VM, backup, host-side recovery and fault/grade checks have been demonstrated.
 - A browser terminal is deferred. An external SSH client may be simpler for the first active pilot; either option must preserve independent host recovery.
 - Browser progress v5 remains untouched. Real runs require durable event sequence, timestamps, evidence and recovery state before any real action is allowed.
+
+## Phase 1A implementation decision
+
+`agent/server.mjs` remains loopback-only. It now supports one-time local pairing, a short-lived bearer session, strict Origin/Host checks and mock-only run routes. The server owns a single validated registry entry, `LAB-WEB-001`; the HTTP body can select its ID but cannot provide a VM ID, script, check ID or command. `MockVmController` supplies simulated VM observations; setup/fault actions, independent grader and recovery are separate injectable contracts (`agent/contracts.d.ts`) backed by in-memory mocks. No Hyper-V, Multipass, SSH or child-process implementation is loaded by the agent. The frontend shows the pilot as mock-only and has no Start Real Lab control.
+
+`agent/store.mjs` uses SQLite via Node's built-in `node:sqlite` (tested on Node 25.1.0). It stores runs, ordered events, request deduplication and one exclusive lease per VM reference. Schema versions 1 and 2 migrate using `PRAGMA user_version`; version 2 adds request deduplication. State/event updates and lease release are transactions. On agent restart, active leases become `unknown` and nonterminal runs become `recovery_required`; no simulated success is inferred from process restart. The default database resides under the user's local application data directory, outside the repository.
+
+The backend lifecycle is authoritative for mock runs: `preflight → baseline_ready → injecting → ready → running → submitting → graded → restoring → verified_clean → completed`, with `failed_setup`, `failed_grading`, `restore_failed` and `recovery_required` branches. The Phase 0 TypeScript lifecycle helper remains a frontend contract/prototype; it does not authorize host actions. A successful mock run proves only that orchestration and persistence logic execute against fake state.
+
+**Trade-off:** built-in SQLite avoids a native npm package, but Node 25.1.0 still labels `node:sqlite` experimental. The SPA remains compatible with its prior Node range; the local agent requires a runtime with `node:sqlite` and must be qualified on the chosen deployment version before Phase 1B. The registry/schema v1 is only a mock contract and must not be reinterpreted as a real action manifest. A separate reviewed schema/registry revision is required for live operations.
+
+See [DATABASE_API.md](DATABASE_API.md), [LAB_WEB_001_SPEC.md](LAB_WEB_001_SPEC.md) and [PHASE_1A_QA.md](PHASE_1A_QA.md).

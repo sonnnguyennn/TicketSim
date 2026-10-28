@@ -20,7 +20,7 @@ Mở URL local do Vite hiển thị. Sau khi cài dependency, app không cần i
 
 ## Real Lab — Phase 0
 
-Tab **Real Lab** hiện chỉ hiển thị trạng thái môi trường và kiểm tra Local Lab Agent theo chế độ chỉ đọc. Chưa có lab chạy thật, terminal SSH hoặc thao tác thay đổi VM. Xem [kiến trúc và điều kiện kích hoạt](docs/real-lab/ARCHITECTURE.md), [preflight Windows](docs/real-lab/VM_PREFLIGHT.md) và [QA Phase 0](docs/real-lab/PHASE_0_QA.md). Có thể chạy status agent bằng `npm run real-lab:agent`; agent luôn báo môi trường chưa sẵn sàng.
+Tab **Real Lab** hiện hiển thị trạng thái môi trường và pilot `LAB-WEB-001` ở chế độ mock-only. Chưa có lab chạy thật, terminal SSH hoặc thao tác thay đổi VM. Local agent (`npm run real-lab:agent`, Node 25.1.0 đã kiểm thử) có pairing và API chỉ dành cho dry-run; nó luôn báo môi trường VM thật chưa sẵn sàng. Xem [kiến trúc](docs/real-lab/ARCHITECTURE.md), [API và database](docs/real-lab/DATABASE_API.md), [preflight Windows](docs/real-lab/VM_PREFLIGHT.md) và [QA Phase 1A](docs/real-lab/PHASE_1A_QA.md).
 
 ## Luồng học hiện tại — Phase A
 
