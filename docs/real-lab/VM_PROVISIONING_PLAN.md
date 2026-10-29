@@ -1,5 +1,11 @@
 # Operator diagnostic and future provisioning plan
 
+## Current PM-selected path — manual ISO
+
+PM reviewed bb0bc05 and accepted Gate A; Gate B remains NOT AUTHORIZED. Use [VM_PROVISIONING_RUNBOOK.md](VM_PROVISIONING_RUNBOOK.md): verified official Ubuntu Server22.04.5 ISO → new Gen2 VM/new20GiB dynamic VHDX in Hyper-V Manager → VMConnect installation → unique identities/static management → OpenSSH/Nginx validation. Prepared VHDX is not a prerequisite for this path. Existing scripts below are preserved as optional advanced tooling, not the default entry point; no automatic ISO installer is added. All current approvals/blockers are in [GATE_B_AUTHORIZATION_CHECKLIST.md](GATE_B_AUTHORIZATION_CHECKLIST.md). No apply, installation, export/import/checkpoint/restore was performed.
+
+The next action is read-only evidence collection, not VM creation: sustained RAM headroom, full unique lab1 disk-chain sizes, approved independent backup/staging destination and IP reservation. Stop before mutation until separate creation/guest/baseline/backup/drill approvals are given. Earlier prepared-source requirements below apply only to that optional path.
+
 ## PM review closure
 
 Use the current unapproved proposal in [GATE_B_AUTHORIZATION_CHECKLIST.md](GATE_B_AUTHORIZATION_CHECKLIST.md). Switch IDs, exact lab1 NIC mapping and host binding are operator-VERIFIED. Official Ubuntu22.04.5 installer provenance/published hash are recorded there; actual local source VHDX/hash, final IP reservation and backup path remain UNKNOWN. Example paths/MACs are not operator-selected resources. Existing tooling requires a prepared VHDX; an ISO install/build requires separate approval and cannot be bypassed by supplying the ISO hash as SourceSha256. Keep apply disabled until all fields and resources are resolved and Product Owner approves an individual operation. Later sections preserve the earlier plan.

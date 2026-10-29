@@ -1,5 +1,7 @@
 # Phase 1B-1 Gate A privilege boundary
 
+Current operational choice after bb0bc05: manual ISO provisioning with Hyper-V Manager/VMConnect is preferred, under separate operator approvals in VM_PROVISIONING_RUNBOOK.md. It does not call the prepared-VHDX provision script and has no automated journal/lease by default; operator must keep the runbook's approvals/action/evidence record and quarantine discipline. Scripts and source-precondition discussion below remain the optional advanced path. No new elevation/agent/API capability is introduced; Gate B is still not authorized.
+
 ## Gate B readiness closure — actual source re-review
 
 Gate A is ACCEPTED at 2414d19, Gate B still NOT AUTHORIZED. Re-read Invoke-Operator.ps1, HyperV.Operator.psm1 and example config directly. New mapping evidence changes only the lab1 reference profile and example's topology verification flag. Disposable/IP approval flags remain false; real agent readiness remains false. Source-level evidence in current HyperV.Operator.psm1:

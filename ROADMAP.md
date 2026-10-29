@@ -65,3 +65,5 @@ PM review fixes: đã bổ sung hai switch ID từ bằng chứng operator eleva
 
 Gate A được PM ACCEPTED tại 2414d19. Bằng chứng mới đã xác minh đầy đủ NIC-to-switch và host binding; C/E là hai disk khác nhau. Gate B vẫn NO-GO: RAM3.63GiB<4GiB, backup chưa đủ, source VHDX/hash và IP reservation chưa có. Dùng checklist hiện tại; các đoạn trên là mốc lịch sử.
 
+PM refinement sau bb0bc05: ưu tiên cài thủ công từ ISO Ubuntu Server22.04.5 bằng Hyper-V Manager/VMConnect; prepared-VHDX chỉ còn tùy chọn. Gate B vẫn chưa được phép: cần RAM, storage/backup, ISO signature/hash cục bộ và IP reservation. Xem [runbook](docs/real-lab/VM_PROVISIONING_RUNBOOK.md) và [handoff](docs/real-lab/PHASE_1B1_HANDOFF.md); không yêu cầu build image VHDX riêng cho luồng thủ công.
+

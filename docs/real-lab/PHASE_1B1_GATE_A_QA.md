@@ -2,6 +2,8 @@
 
 ## PM review closure addendum
 
+Current operational refinement after bb0bc05: manual ISO/Hyper-V Manager/VMConnect is the preferred path; prepared-source tooling is optional. Use PHASE_1B1_HANDOFF.md and VM_PROVISIONING_RUNBOOK.md. Gate B remains NOT AUTHORIZED; historical source-VHDX blockers below do not apply as prerequisites for the new manual path.
+
 Latest readiness closure: PM accepted Gate A at 2414d19. lab1 NIC mapping and host binding are now VERIFIED; use the current GATE_B_AUTHORIZATION_CHECKLIST and NETWORK_DESIGN. Resource/image/IP/backup approval still blocks Gate B. Reports below preserve earlier evidence and test counts.
 
 The sections below retain the original 15158b8 QA, including 49/51 browser first-run and 2/2 targeted results. Current evidence, safety fixes and final validation are recorded in [PHASE_1B1_GATE_A_REVIEW_FIXES.md](PHASE_1B1_GATE_A_REVIEW_FIXES.md); use that addendum plus [GATE_B_AUTHORIZATION_CHECKLIST.md](GATE_B_AUTHORIZATION_CHECKLIST.md) for the current decision. Operator elevation now confirms both Internal switch IDs; exact NIC mapping is still pending. Gate B remains NO-GO.

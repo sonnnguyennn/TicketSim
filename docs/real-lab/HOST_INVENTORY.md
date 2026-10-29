@@ -1,5 +1,13 @@
 # Host inventory — Phase 1B-0
 
+## Current manual ISO plan refinement
+
+VERIFIED (new operator evidence): lab1 has fixed2GiB RAM, Dynamic Memory disabled; attached disk is a differencing AVHDX whose parent is another AVHDX; at least two Standard checkpoints. Keep the complete chain unchanged, including all parent/branch files. Active AVHDX FileSize is not the whole VM storage footprint. Read attached disks and each checkpoint's disks, follow ParentPath recursively, deduplicate canonical paths and sum FileSize once per unique file; record each Size/FileSize/ParentPath and free volume capacity. Missing parent/branch/read permission means total UNKNOWN. Never merge, consolidate, delete or resize lab1 disks/checkpoints.
+
+Latest operator host sample remains total15.77GiB/free3.63GiB RAM, C(Disk0)20.14GiB free, E(Disk1)70.35GiB free. C/E are distinct Windows disk devices, not proof of full backup failure-domain independence. Sustainable spare RAM, full chain footprint/growth and an approved independent destination remain unresolved. The preferred installation path is now manual verified-ISO provisioning; prepared VHDX is optional. See VM_PROVISIONING_RUNBOOK.md and the current Gate B checklist. Earlier prepared-image requirements below are historical/optional-path facts.
+
+Read-only operator supplements: `Get-VMSnapshot -VMName lab1 | Get-VMHardDiskDrive | Select-Object Path`; `Get-VMHardDiskDrive -VMName lab1 | Select-Object Path`; `Get-VHD -Path <observed path> | Select-Object Path,Size,FileSize,ParentPath`. Follow every returned parent until standalone base, checking all retained snapshot branches. Do not infer totals by multiplying virtual Size or summing duplicated shared parents. Sample `Get-CimInstance Win32_OperatingSystem | Select-Object FreePhysicalMemory` during ordinary workloads; do not change host/VM workload to force a pass.
+
 ## Current Gate B readiness closure — 2026-10-29
 
 VERIFIED (latest operator elevated evidence): lab1 `546953dc-48e4-4080-839d-27ad5552ac7d`, Running, is the only VM returned by Get-VM. eth0 MAC `525400563E97` → Default Switch (Internal, `c08cb7b8-9b3c-408e-8e30-5e16a3aeb444`); eth1 MAC `5254009B8693` → Lab-Static (Internal, `4277a35c-217f-4096-a1a9-a691975f150f`). Host Lab-Static MAC `00155D380100`; host `10.77.77.1/24`, guest `10.77.77.2/24`; successful SSH previously confirmed. NIC-to-switch and host binding are resolved. No switch recreation is needed. This does not authorize modifying lab1.

@@ -2,6 +2,8 @@
 
 **Status:** Phase 1B-0 profile and endpoint contract, 2026-10-29. No executable real-VM lab is enabled. The Phase 0 and 1A descriptions below are historical implementation records.
 
+Current provisioning decision: Gate A accepted; Gate B not authorized. PM prefers manual Hyper-V Manager/VMConnect installation from verified Ubuntu Server22.04.5 ISO into a new independent VHDX. Existing prepared-VHDX scripts are optional advanced tooling; no automated ISO installation or new mock layer is introduced. See VM_PROVISIONING_RUNBOOK.md and GATE_B_AUTHORIZATION_CHECKLIST.md. This operational choice does not enable real agent execution or weaken recovery gates.
+
 ## Repository boundary
 
 TicketSim is a Vite/React SPA. `src/App.tsx` owns navigation and loads 112 public tickets and 112 Guided cases. `src/guided/GuidedWorkspace.tsx` calls `classifyGuidedCommand` in `src/guided/engine.ts`; that function matches authored probes and never executes host commands. `src/storage.ts` owns browser progress v5, including import/export and migration. `scripts/prepare-data.mjs` and `scripts/prepare-guided.mjs` generate public JSON from authored source (`starter-data/`, `scripts/guided-content.mjs`, `scripts/content/`). `scripts/audit-content.mjs` freezes important content invariants. Current tests are Vitest and Playwright. These components remain separate from Real Lab.
