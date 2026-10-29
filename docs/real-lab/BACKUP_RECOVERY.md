@@ -1,5 +1,7 @@
 # Backup and recovery gate — Phase 1B-0
 
+Current readiness: NIC mapping is VERIFIED per HOST_INVENTORY. C and E are distinct disks (Disk0 SK hynix256GB, Disk1 Kingston500GB), but C free20.14GiB cannot satisfy backup30GiB; no other approved backup destination exists. E free70.35GiB is marginal for VM/checkpoint/drill70GiB before source/build staging. No recovery policy is reduced. Historical findings below remain records of earlier measurements; the current single proposal is GATE_B_AUTHORIZATION_CHECKLIST.md.
+
 ## PM review closure
 
 Backup baseline fingerprint must exactly match the reviewed config. Independent storage is checked by volume UniqueId, not only drive letter; backup may share neither VM nor drill volume. Current C is too small, E is the proposed VM/drill volume, and no suitable additional backup volume is observed. Host-side inventory and backup destination approval remain blockers. One checkpoint growth is budgeted; any additional checkpoint chain needs a new maximum-growth budget. Imported copy remains isolated/off, with identity recorded before rename. Root vmcx selection uses original VM ID so checkpoint vmcx files cannot be selected as the root configuration. Actual recovery behavior remains untested; each future operation and partial-failure response is listed in GATE_B_AUTHORIZATION_CHECKLIST.md.

@@ -63,3 +63,5 @@ Phase 1B-1 Gate A đã chuẩn bị tooling provisioning/checkpoint/export/resto
 
 PM review fixes: đã bổ sung hai switch ID từ bằng chứng operator elevated, siết an toàn đường dẫn/volume/journal và chạy lại browser độc lập. [Checklist Gate B](docs/real-lab/GATE_B_AUTHORIZATION_CHECKLIST.md) ghi riêng từng thao tác cần duyệt; NIC mapping, IP reservation, image/hash và backup volume còn thiếu.
 
+Gate A được PM ACCEPTED tại 2414d19. Bằng chứng mới đã xác minh đầy đủ NIC-to-switch và host binding; C/E là hai disk khác nhau. Gate B vẫn NO-GO: RAM3.63GiB<4GiB, backup chưa đủ, source VHDX/hash và IP reservation chưa có. Dùng checklist hiện tại; các đoạn trên là mốc lịch sử.
+

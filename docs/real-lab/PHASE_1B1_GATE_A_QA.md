@@ -2,6 +2,8 @@
 
 ## PM review closure addendum
 
+Latest readiness closure: PM accepted Gate A at 2414d19. lab1 NIC mapping and host binding are now VERIFIED; use the current GATE_B_AUTHORIZATION_CHECKLIST and NETWORK_DESIGN. Resource/image/IP/backup approval still blocks Gate B. Reports below preserve earlier evidence and test counts.
+
 The sections below retain the original 15158b8 QA, including 49/51 browser first-run and 2/2 targeted results. Current evidence, safety fixes and final validation are recorded in [PHASE_1B1_GATE_A_REVIEW_FIXES.md](PHASE_1B1_GATE_A_REVIEW_FIXES.md); use that addendum plus [GATE_B_AUTHORIZATION_CHECKLIST.md](GATE_B_AUTHORIZATION_CHECKLIST.md) for the current decision. Operator elevation now confirms both Internal switch IDs; exact NIC mapping is still pending. Gate B remains NO-GO.
 
 Scope: read-only validation, operator tooling and mocked tests. Gate B is not authorized. Reviewed commit 03910ee, agent server/auth/registry/profile/store/service and Real Lab documentation. Existing server-owned mock identity, protected lab1, no command API, unknown recovery quarantine and unavailable real Start control remain intact. No change to Guided, Objective Exam, original tickets, answers or v5 progress. Four pre-existing untracked user audit files are preserved.

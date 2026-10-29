@@ -7,13 +7,13 @@ const verify = (observation, profile = mockWebProfile) => verifyVmEndpoint(profi
 const altered = (patch = {}) => ({ ...mockWebObservation(), ...patch })
 
 describe('server-owned dual-NIC VM profile', () => {
-  it('records lab1 management endpoint but leaves controller, switch, host key and recovery unknown', () => {
+  it('records operator-verified lab1 management mapping while controller, host key and recovery stay unknown', () => {
     expect(validateVmProfile(lab1ReferenceProfile)).toBe(lab1ReferenceProfile)
     expect(lab1ReferenceProfile.network.management).toMatchObject({ interfaceName: 'eth1', ipv4Address: '10.77.77.2', prefixLength: 24, expectedMac: '52:54:00:9b:86:93', hostIpv4Address: '10.77.77.1' })
     expect(lab1ReferenceProfile.network.dynamic).toMatchObject({ interfaceName: 'eth0', addressPolicy: 'dynamic' })
     const observation = altered({
       vmRef: 'lab1', hypervVmId: lab1ReferenceProfile.vm.hypervVmId, controller: 'multipass', disposable: false,
-      management: { ...mockWebObservation().management, interfaceName: 'eth1', ipv4Address: '10.77.77.2', mac: '52:54:00:9b:86:93', switchId: null, switchType: 'unknown' },
+      management: { ...mockWebObservation().management, interfaceName: 'eth1', ipv4Address: '10.77.77.2', mac: '52:54:00:9b:86:93', switchId: '4277a35c-217f-4096-a1a9-a691975f150f', switchType: 'internal' },
       dynamic: { interfaceName: 'eth0', ipv4Address: '172.22.122.192' },
       addressInventoryComplete: false, addressOwners: null, sshHostKeyFingerprint: null,
     })
@@ -21,7 +21,8 @@ describe('server-owned dual-NIC VM profile', () => {
     expect(result.checks.managementIp).toBe('pass')
     expect(result.checks.managementMac).toBe('pass')
     expect(result.checks.lifecycleController).toBe('unknown')
-    expect(result.checks.switchMapping).toBe('unknown')
+    expect(lab1ReferenceProfile.network.management.switchName).toBe('Lab-Static')
+    expect(result.checks.switchMapping).toBe('pass')
     expect(result.checks.sshHostKey).toBe('unknown')
     expect(result.checks.ipUniqueness).toBe('unknown')
     expect(result.checks.disposableApproval).toBe('fail')

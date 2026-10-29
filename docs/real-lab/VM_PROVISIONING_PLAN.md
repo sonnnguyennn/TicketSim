@@ -2,7 +2,7 @@
 
 ## PM review closure
 
-Use the separately approved operation proposal in [GATE_B_AUTHORIZATION_CHECKLIST.md](GATE_B_AUTHORIZATION_CHECKLIST.md). Switch existence and IDs are now operator-verified; exact VM NIC and host binding are pending. Source image/hash, final IP reservation and actual backup path remain UNKNOWN. Example paths/MACs are not operator-selected resources. Keep apply disabled until these fields are resolved and Product Owner authorizes an individual operation. The current tooling and all isolated checks leave real host/guest state untouched.
+Use the current unapproved proposal in [GATE_B_AUTHORIZATION_CHECKLIST.md](GATE_B_AUTHORIZATION_CHECKLIST.md). Switch IDs, exact lab1 NIC mapping and host binding are operator-VERIFIED. Official Ubuntu22.04.5 installer provenance/published hash are recorded there; actual local source VHDX/hash, final IP reservation and backup path remain UNKNOWN. Example paths/MACs are not operator-selected resources. Existing tooling requires a prepared VHDX; an ISO install/build requires separate approval and cannot be bypassed by supplying the ISO hash as SourceSha256. Keep apply disabled until all fields and resources are resolved and Product Owner approves an individual operation. Later sections preserve the earlier plan.
 
 ## Phase 1B-1 tooling (Gate A)
 

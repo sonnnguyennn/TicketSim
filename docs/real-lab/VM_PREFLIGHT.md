@@ -1,5 +1,7 @@
 # Windows VM preflight — read-only
 
+Current Gate B readiness update: operator elevated evidence verifies both NIC mappings: eth0 `525400563E97` → Default Switch `c08cb7b8-9b3c-408e-8e30-5e16a3aeb444`; eth1 `5254009B8693` → Lab-Static `4277a35c-217f-4096-a1a9-a691975f150f`; both Internal. Host Lab-Static MAC `00155D380100` and `10.77.77.1/24` match the known guest `10.77.77.2/24` SSH path. Historical denials below refer only to Codex's non-elevated execution context. Mapping is resolved; IP reservation, source VHDX and capacity/recovery approval still block Gate B. See the current authorization checklist. The later dated diagnostic paragraphs below preserve their original historical findings.
+
 Run from a normal PowerShell session:
 
 ```powershell

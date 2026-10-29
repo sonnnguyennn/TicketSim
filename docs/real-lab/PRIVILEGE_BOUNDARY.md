@@ -1,5 +1,24 @@
 # Phase 1B-1 Gate A privilege boundary
 
+## Gate B readiness closure — actual source re-review
+
+Gate A is ACCEPTED at 2414d19, Gate B still NOT AUTHORIZED. Re-read Invoke-Operator.ps1, HyperV.Operator.psm1 and example config directly. New mapping evidence changes only the lab1 reference profile and example's topology verification flag. Disposable/IP approval flags remain false; real agent readiness remains false. Source-level evidence in current HyperV.Operator.psm1:
+
+| Control | Actual implementation evidence |
+|---|---|
+| Protected name/immutable lab1 ID | Lines3,31: fixed protected ID; only ticketsim-lab name permitted |
+| Approved sizing, paths and source | Lines34–43: fixed2GiB/max20GiB, canonical path/overlap checks, source SHA256 and attachment check; no approved local source exists yet |
+| No overwrite or ambiguous target | Lines52–56: existing VM/path/drill collision rejection, exact ID and Off state; line154 File.Copy(...,false); per-target attached disk root check before action |
+| Separate backup | Lines60–78: budget aggregation and backup exclusion by volume UniqueId; this does not alone establish physical/offline protection |
+| Persisted journal | Lines80–87: CreateNew/Append and Flush(true); created/imported ID journaled at159/196; ACLs remain operator responsibility |
+| Explicit approval and interrupted state | Line129 exact operation/request approval; lines130–137 persistent lease/request; lines200–202 awaiting-verification or failed-quarantined plus journal, no automatic release/cleanup |
+| New restore identity and isolation | Lines191–196: Compare-VM Copy/GenerateNewId, disconnect report NICs before Import-VM, reject original/protected ID, record new ID; no Start-VM call |
+| No arbitrary execution | Entry point reads operator JSON and calls fixed module operations; no expression evaluation, shell runner or browser/agent import. Existing HTTP API remains mock-only |
+
+These are inspected implementation paths, not successful real Hyper-V tests. No apply/real VM command ran. Existing syntax/synthetic/mocked tests support source review only; actual Gen2 boot, import compatibility and restore are still untested. Gate B proposal lists image preparation and subsequent VM/backup/drill operations separately. On interruption, reconcile actual state before any approved lease archival; retain original backup and journal. No cleanup of unrelated resources is provided.
+
+Relevant verification for this closure: `npx vitest run agent/vmProfile.test.mjs scripts/operator-safety.test.mjs` passed15/15 in2 files, including24 PowerShell harness assertions. This verifies the now-known management switch mapping while lab1 stays reference-only/unapproved for execution. No new mock layers/UI or policy lowering. Full unit/build/browser results from Gate A closure remain historical and were not rerun for this backend-data/documentation-only change.
+
 ## PM review safety fixes
 
 Code review found Windows ADS/device/alias path forms were insufficiently rejected; backup independence relied on drive letters; journal rewrites could truncate prior evidence; backup validation did not bind the exact baseline fingerprint; partial restore identity was recorded after rename. These are fixed: reject nonordinary paths and traversal/alias segments, group capacity by actual volume UniqueId and reject backup sharing VM/drill volume, use create-new then append-only JSON-lines journal with Flush(true), bind baseline fingerprint and record created/imported identity before later configuration/rename. Recheck capacity under lease. Provisioning explicitly disables Dynamic Memory. Restore selects the source VM's root vmcx by immutable ID, excluding checkpoint configuration files. Historical implementation descriptions below are supplemented by these changes.

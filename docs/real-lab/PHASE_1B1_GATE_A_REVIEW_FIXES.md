@@ -1,5 +1,7 @@
 # Gate A PM review closure — 2026-10-29
 
+Historical review-fixes record for 2414d19 (now Gate A ACCEPTED). For current VERIFIED NIC mapping and resources see HOST_INVENTORY and GATE_B_AUTHORIZATION_CHECKLIST. Earlier mapping UNKNOWN below is superseded. Gate B readiness closure evidence is recorded in PRIVILEGE_BOUNDARY and the current proposal; no VM mutation is authorized.
+
 Baseline reviewed: `15158b8` (PASS WITH CONDITIONS). Scope: evidence reconciliation, focused operator-script safety fixes, regression and Gate B proposal. **Gate B remains NO-GO.** No real Hyper-V mutation, apply entry point, guest command, VM disk/checkpoint/Netplan/switch/NAT/firewall change or Start Real Lab was executed/enabled. Apply-path testing uses only a mocked reset provider and temporary synthetic files.
 
 ## Evidence reconciliation

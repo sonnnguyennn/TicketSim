@@ -1,55 +1,35 @@
-# Gate B authorization proposal — NOT APPROVED
+# Gate B proposal — NOT AUTHORIZED / NO-GO
 
-Decision: **NO-GO** until all missing fields below are evidenced and each operation is individually approved. This document is a review package, not approval or an executable completed configuration. No apply mode ran during Gate A closure.
+PM accepted Gate A at `2414d19`. This is the current single approval package; previous QA remains historical. No VM mutation or real apply was performed.
 
-## Target and evidence checklist
+| Item | Status and exact proposal |
+|---|---|
+| VM | PROPOSED configuration A: ticketsim-lab, direct Hyper-V, Gen2, Ubuntu Server22.04, 2 vCPU, fixed2GiB, Dynamic Memory off, standalone max20GiB VHDX. New VM ID UNKNOWN until creation; lab1 protected. Lighter configuration B BLOCKED by absent workload evidence; do not lower policy |
+| Switches | VERIFIED: eth0 `525400563E97`→Default Switch Internal `c08cb7b8-9b3c-408e-8e30-5e16a3aeb444`; eth1 `5254009B8693`→Lab-Static Internal `4277a35c-217f-4096-a1a9-a691975f150f`; host Lab-Static MAC `00155D380100`. Reuse for new target is PROPOSED, subject to isolation/security approval |
+| Management | PROPOSED `10.77.77.3/24`, unallocated/unreserved. Existing host .1 and lab1 .2 VERIFIED. Compare static/DHCP records, VM NICs and neighbor evidence, then reserve IP and distinct MACs; failed ping is insufficient |
+| Official installer | VERIFIED published provenance: [Canonical Ubuntu22.04.5 Server ISO](https://releases.ubuntu.com/22.04.5/ubuntu-22.04.5-live-server-amd64.iso). Published SHA256 `9bc6028870aef3f74f4e16b900008179e78b130e6b0b9a140635434a46aa98b0` from [SHA256SUMS](https://releases.ubuntu.com/22.04.5/SHA256SUMS); manifest signature/local-file verification still pending |
+| Local source | PROPOSED ISO `E:\TicketSimImages\ubuntu-22.04.5-live-server-amd64.iso`; prepared VHDX `E:\TicketSimImages\ubuntu-22.04-prepared.vhdx`. Actual local files/hash UNKNOWN; directory currently absent. ISO hash is not the VHDX hash. Existing tool requires prepared VHDX and cannot install from ISO |
+| Paths | PROPOSED VM `E:\TicketSimVMs\ticketsim-lab`, drill `E:\TicketSimDrills\drill-001`, state `E:\TicketSimOperatorState`. No paths are operator-approved. Independent backup path UNKNOWN; example F drive is a placeholder, not observed hardware |
+| RAM/storage | BLOCKED: free3.63GiB<4GiB; E70.35GiB marginal for70GiB envelope before staging/other growth; C20.14GiB<30GiB backup. VERIFIED C=Disk0 SK hynix256GB, E=Disk1 Kingston500GB. Need actual VHD/AVHDX sizes, host workload RAM trends and approved independent destination |
 
-| Item | Proposed/observed value | Required before approval |
-|---|---|---|
-| Target | New `ticketsim-lab`, direct Hyper-V, Gen2, Ubuntu 22.04; actual ID null until creation | Complete VM/name/disk collision inventory; disposable authorization |
-| CPU/memory | 2 vCPU, fixed 2 GiB; Dynamic Memory disabled | Representative workload RAM samples >=4 GiB free, existing VM assigned/demand/min/max inventory; current 3.57 GiB sample fails |
-| Disk | Standalone VHDX maximum 20 GiB | Actual image size, current and maximum attached/parent-chain VHD/AVHDX inventory; growth budget |
-| Management switch | Operator-verified Lab-Static, Internal, `4277a35c-217f-4096-a1a9-a691975f150f` | Clean lab1 eth1 MAC-to-adapter/SwitchName/SwitchId plus host adapter binding and isolation policy |
-| Package-access switch | Operator-verified Default Switch, Internal, `c08cb7b8-9b3c-408e-8e30-5e16a3aeb444` | Clean eth0 mapping; confirm existing topology; no switch/NAT alteration |
-| Management address | Candidate `10.77.77.3/24` only | Select/reserve actual unused IP; compare static allocation records, DHCP scope/reservations, all VM NICs and neighbor evidence; no ping response is insufficient |
-| MACs | Example `020077770003` / `020077770103` only | Select distinct unused MACs; observe actual guest interface names after approved provisioning |
-| Image and SHA256 | **UNKNOWN**; prepared Ubuntu 22.04 bootable Gen2 standalone VHDX | Supply source/version/provenance, expected SHA256 from trusted source/build record, verified local hash, actual OS/Nginx/SSH versions |
-| Source path | Example `E:\TicketSimImages\ubuntu-22.04-prepared.vhdx` | Operator selects exact existing unattached verified image file |
-| VM path | Proposed `E:\TicketSimVMs\ticketsim-lab` | Operator approves exact absent destination and parent ACL/capacity |
-| Backup path | **UNKNOWN**; F example is not an observed drive | Select independent volume/destination, at least 30 GiB reserve; C ~20.13 GiB is insufficient; preserve backup integrity manifest offline/read-only |
-| Restore path | Proposed `E:\TicketSimDrills\drill-001` | Approve exact absent destination, separate restored VM identity/MAC/IP and isolated NICs |
-| Journal path | Proposed `E:\TicketSimOperatorState` | Operator-controlled ACLs, local volume, outside VM/backup/drill roots |
-| Resource envelope | Shared VM+one checkpoint+copy: 60 GiB max growth +10 GiB headroom; separate backup:20+10 GiB | Volume IDs/capacity, existing workloads and chain growth; E ~70.35 GiB is marginal; independent backup volume still missing |
+## Exact next operator action — read-only
 
-All proposed paths remain unapproved. Example config has real switch IDs but keeps disposable, switch-mapping and IP-allocation flags false. Do not set them true until their distinct evidence exists. More checkpoints, larger image or memory policy changes require a revised budget. Backup volume independence does not alone prove separate physical failure domain; record that too.
+Supply dated `Get-VM -Name lab1 | Select-Object Name,Id,MemoryAssigned,MemoryDemand,MemoryStartup,MemoryMinimum,MemoryMaximum,DynamicMemoryEnabled`, `Get-VMHardDiskDrive -VMName lab1`, `Get-VMSnapshot -VMName lab1`, and `Get-VHD -Path <each actual disk path>` recursively for ParentPath; record Size/FileSize/ParentPath. Sample host free RAM during normal workloads, identify backup media and available capacity, and supply IP reservation record. Do not stop/shrink existing VMs. Get-VM currently returns only lab1 (operator VERIFIED); repeat name/IP/MAC/path collision checks just before any approved operation.
 
-## Read-only preparation
+## Image preparation and initialization — separately approved, not run
 
-Use the exact queries in HOST_INVENTORY.md under an operator context with approved read permissions; do not elevate the local agent. Archive clean dated output and repeat free-memory/storage sampling under normal workload. Pin deployment to the separately qualified Node 24.22.2 or requalify a later supported patched LTS; installed Node 25.1.0 is unchanged.
+Choose the official ISO above; save ISO, SHA256SUMS and SHA256SUMS.gpg, authenticate the manifest with Canonical's Ubuntu signing-key procedure, then compare `Get-FileHash -Algorithm SHA256 -LiteralPath E:\TicketSimImages\ubuntu-22.04.5-live-server-amd64.iso` with its published entry. [Ubuntu verification guide](https://ubuntu.com/tutorials/how-to-verify-ubuntu). No ISO was downloaded or hash/signature verified locally in this closure.
 
-After reviewing and saving the fully populated config at an operator-selected absolute path (example `E:\Reviewed\ticketsim.json`), default planning is read-only:
+On a separately approved build environment, install from the verified ISO into a fresh <=20GiB standalone VHDX on a Gen2 UEFI VM with the Microsoft UEFI Certificate Authority secure-boot template. Microsoft lists [Ubuntu Hyper-V support](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/supported-ubuntu-virtual-machines-on-hyper-v). Actual boot/installation remains untested. Use console installation (not an assumed cloud-init login), install OpenSSH and pinned Nginx, deterministic page, record exact OS/package versions; avoid copying lab1 identity/keys. Shut down, detach, hash prepared VHDX and record build provenance. Stage the verified file at the proposed source path only after storage approval. Tool verifies that VHDX hash, never substitute the ISO checksum. Source build is an additional state-changing operation requiring its own approval; no approved builder/image exists yet.
+
+## First proposed target operation — BLOCKED pending fields above
+
+After an approved prepared image exists, fill reviewed config at operator-selected absolute path (example `E:\Reviewed\ticketsim.json`), including its actual hash, approved paths, IP reservation and disposable approval. First run the existing entry point without apply for a read-only plan. The following **WOULD CHANGE THE HOST** and is not authorized:
 
 ```powershell
-pwsh -NoProfile -File scripts/real-lab/Invoke-Operator.ps1 -ConfigPath E:\Reviewed\ticketsim.json -Operation provision -RequestId provision-0002
+pwsh -NoProfile -File scripts/real-lab/Invoke-Operator.ps1 -ConfigPath E:\Reviewed\ticketsim.json -Operation provision -RequestId provision-0003 -Apply -Approval 'APPROVE GATE B provision provision-0003'
 ```
 
-Each subsequent operation also requires its own fresh plan output and approval tied to actual VM ID, reviewed config/hash, request ID, expected result and failure response. Approval text is an operator attestation, not authentication of the Product Owner.
+Expected: copied disk without overwrite, new immutable VM ID journaled, target off, fixed RAM and intended NICs configured. Failure: retain quarantine, journal and partial artifacts; reconcile by actual VM ID/disk paths. No automatic cleanup or retry; exact rollback/deletion requires separate approval. Do not use lab1 or recreate a switch.
 
-## Individually approved host changes — proposals only
-
-The following commands **WOULD CHANGE THE HOST** if executed with apply authorization; none was executed. Paths and prerequisites are not yet complete. A provisioning approval does not approve later operations or live Nginx faults.
-
-| Operation | Future command suffix to the entry point above | Expected result | Failure/rollback response |
-|---|---|---|---|
-| Create VM | `-Operation provision -RequestId provision-0002 -Apply -Approval 'APPROVE GATE B provision provision-0002'` | Copy verified VHD without overwrite; new Gen2 VM off, 2 vCPU/fixed2GiB, intended NICs; journal actual ID | Retain quarantine/files; reconcile actual ID and partial resources. No automatic deletion or reuse. Cleanup requires exact separate approval |
-| Console/guest setup and first boot | Separate operator procedure approval, not provided by this entry point | Configure only new VM's MAC-bound static NIC, SSH keys and pinned Nginx/page; verify console, host SSH/HTTP | Stop progression; preserve management/console evidence; repair only new disposable target under approval. No lab1/switch/global network changes |
-| Fast baseline checkpoint | `-Operation checkpoint -RequestId baseline-0002 -Apply -Approval 'APPROVE GATE B checkpoint baseline-0002'` | Powered-off target gets reviewed baseline; record checkpoint ID | Quarantine, inspect snapshot inventory. Never delete/checkpoint unrelated VM |
-| Independent cold backup | `-Operation backup -RequestId backup-0002 -Apply -Approval 'APPROVE GATE B backup backup-0002'` | Export to new independent destination; all hashes, actual VM ID and exact baseline fingerprint recorded | Preserve original VM and backup; incomplete new export quarantined. New destination/retry requires review; never overwrite existing backup |
-| Isolated restore copy | `-Operation restore-copy -RequestId drill-0002 -Apply -Approval 'APPROVE GATE B restore-copy drill-0002'` | Import copy with generated distinct ID, NICs disconnected before import, off; journal copy identity | Retain quarantine; inspect import/compatibility state before any rename/start/connect; do not destroy source backup |
-| Optional fast reset demonstration | `-Operation reset -RequestId reset-0002 -Apply -Approval 'APPROVE GATE B reset reset-0002'` | Restore exact approved checkpoint on powered-off original disposable target | Quarantine if unknown/failure; checkpoint success does not replace independent drill |
-
-Use the full entry point and `-ConfigPath` for each row; replace the earlier `-Operation`/`-RequestId`, do not append duplicate arguments. The actual immutable VM ID obtained after provision must be written into the reviewed config before later operations. Target must be off for checkpoint/reset/export/import planning. Keep request journals; do not remove quarantine merely to continue the table. Reconcile exact current state and independently verify each result before separately approving lease archival and the next operation.
-
-## Restore-copy drill acceptance
-
-Before boot/reconnect of the copy, independently verify generated ID, automatic start disabled, distinct MACs and reserved distinct IP (use console/isolation to replace the copied static address). Keep original off. Host import/export must work without guest SSH. Under separate boot/network approval, verify console/boot, SSH pinned identity then authentication, host HTTP 200/exact page bytes and baseline fingerprint, Ubuntu and Nginx versions. Record elapsed seconds and all evidence. Unknown/failed checks retain quarantine. No Start Real Lab or live fault injection approval follows automatically from this checklist.
+Subsequent separate approvals: (1) first boot/console initialization of fresh identity, MAC-bound management IP, SSH host key/authentication and independent host HTTP checks; (2) cold baseline checkpoint with exact ID (fast reset only); (3) independent export to approved new backup path, hashes and baseline fingerprint; (4) import-as-copy drill with generated distinct ID and disconnected NICs before first boot, distinct MAC/IP before reconnect, timed console/SSH/HTTP/content/recovery verification without depending on guest SSH; (5) any reset demonstration, quarantine reconciliation/lease archival or cleanup. Each gets its own request ID, plan, expected result and failure quarantine. Preserve original backup. No approval for live fault injection or Start Real Lab follows from this proposal.
