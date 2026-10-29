@@ -1,6 +1,6 @@
 # Real Lab architecture decision record
 
-**Status:** Phase 1A mock engine, 2026-10-29. No executable real-VM lab is enabled.
+**Status:** Phase 1B-0 profile and endpoint contract, 2026-10-29. No executable real-VM lab is enabled. The Phase 0 and 1A descriptions below are historical implementation records.
 
 ## Repository boundary
 
@@ -8,9 +8,9 @@ TicketSim is a Vite/React SPA. `src/App.tsx` owns navigation and loads 112 publi
 
 ## Decision
 
-Real Lab gets its own `src/real-lab/` module and a separate local agent. Phase 0 adds a navigation destination, an honest unavailable landing page, versioned `LabScenario`/`LabRun` contracts, a lifecycle transition function, a read-only `VmController` interface and mock, and a read-only agent status endpoint. The example manifest in tests is **schema data only**. No manifest is registered for execution.
+Real Lab gets its own `src/real-lab/` module and a separate local agent. Phase 0 added a navigation destination, an honest unavailable landing page, versioned `LabScenario`/`LabRun` contracts, a lifecycle transition function, a read-only `VmController` interface and mock, and a read-only agent status endpoint. The example manifest in tests was **schema data only**.
 
-The local agent binds `127.0.0.1:4174`; it exposes only `GET /api/v1/status` and always reports `environmentReady: false`. The frontend does not store Real Lab runs in progress v5. Agent state and scoring will need durable server-side storage when actions exist. SQLite with an append-only event table and a per-VM exclusive lock is the proposed next-phase choice; no SQLite database exists yet. The frontend must treat server state as authoritative, and the agent must reconcile interrupted runs against host VM state before proceeding.
+The local agent binds `127.0.0.1:4174`. Phase 1A added authenticated mock-only run routes and SQLite run/event/lease state; the Phase 0 status-only endpoint is no longer the whole API. The frontend does not store Real Lab runs in progress v5. The frontend treats server state as authoritative; an interrupted run becomes `recovery_required` with a blocked VM lease. No real host reconciliation or mutation controller exists.
 
 ## Future control plane (not implemented)
 
@@ -44,3 +44,9 @@ The backend lifecycle is authoritative for mock runs: `preflight → baseline_re
 **Trade-off:** built-in SQLite avoids a native npm package, but Node 25.1.0 still labels `node:sqlite` experimental. The SPA remains compatible with its prior Node range; the local agent requires a runtime with `node:sqlite` and must be qualified on the chosen deployment version before Phase 1B. The registry/schema v1 is only a mock contract and must not be reinterpreted as a real action manifest. A separate reviewed schema/registry revision is required for live operations.
 
 See [DATABASE_API.md](DATABASE_API.md), [LAB_WEB_001_SPEC.md](LAB_WEB_001_SPEC.md) and [PHASE_1A_QA.md](PHASE_1A_QA.md).
+
+## Phase 1B-0 dual-NIC profile decision
+
+`agent/vm-profile.schema.json` and `agent/vmProfile.mjs` define a backend-owned profile and pure endpoint verifier. They separate immutable Hyper-V VM ID and lifecycle controller from the static management NIC (`eth1`, address, MAC, switch identity) and dynamic/default NIC (`eth0`). An observed dynamic address is context, never a stable SSH target. Connectivity, SSH host identity/authentication, disposable approval, scenario allowlist and independently verified recovery are distinct checks. Missing evidence is `unknown`; it cannot produce a ready result. No host collector supplies these observations in this phase. Only the synthetic mock profile is bound to the mock registry; `lab1` is a protected reference profile. The real-run verdict is always false.
+
+**VERIFIED (operator-supplied):** `lab1` has configured `eth1` at `10.77.77.2/24` and a successful Windows SSH login from `10.77.77.1`. **VERIFIED (this session):** the host has `10.77.77.1/24` on `vEthernet (Lab-Static)` and TCP port 22 at `10.77.77.2` responded. **UNKNOWN:** exact Hyper-V switch/NIC mapping, SSH host key identity, reboot persistence, lifecycle ownership and host-side restore. See [HOST_INVENTORY.md](HOST_INVENTORY.md), [NETWORK_DESIGN.md](NETWORK_DESIGN.md) and [PHASE_1B0_QA.md](PHASE_1B0_QA.md).

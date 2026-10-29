@@ -1,0 +1,7 @@
+# Backup and recovery gate — Phase 1B-0
+
+**UNKNOWN:** no independent backup of a dedicated disposable target, tested restore, baseline fingerprint or host-side recovery proof has been supplied. A Hyper-V checkpoint alone is not an independent backup. The successful `lab1` SSH login and VMConnect access are useful network/console evidence, not a recovery drill. `lab1` remains reference-only and must not be used for a restore experiment.
+
+For future `ticketsim-lab`, the operator must document the immutable VM ID, sole lifecycle controller, image and disk set, backup method/location and creation time, integrity evidence, baseline fingerprint, and dated restore drill on the disposable target. Verify the restored guest from the host and an independent client: VM identity/state, management path, SSH host key/authentication, expected Nginx page and HTTP status. The drill must demonstrate a host-owned recovery path when guest SSH is unavailable. Record resource headroom for backup plus VM and any retention/rollback limits.
+
+The backend profile carries `baselineId` and `recoveryProofId` only when independently established. A run cannot use an unknown or failed recovery verdict; after process interruption the durable lease remains blocked as `recovery_required`. Phase 1B-0 has no real restore implementation or permission to alter a VM. See [SECURITY.md](SECURITY.md) and [VM_PROVISIONING_PLAN.md](VM_PROVISIONING_PLAN.md).

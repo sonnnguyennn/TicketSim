@@ -1,6 +1,6 @@
 # Real Lab security boundary
 
-Phase 0 has no VM mutation path, guest shell, SSH credential or grading endpoint. `agent/server.mjs` serves one fixed status response from loopback and rejects foreign Host/Origin values. It has no child-process import or arbitrary command endpoint. This status is informational and is **not** proof that the agent, browser or host is secure. Local processes and browser extensions can still interact with loopback services.
+Historically, Phase 0 had no VM mutation path, guest shell, SSH credential or grading endpoint; the server served status only. Phase 1A added authenticated **mock-only** runs and grading. Phase 1B-0 adds a server-owned VM profile contract and pure endpoint checks, still without a host execution path. Local processes and browser extensions can interact with loopback services; neither status nor successful mock runs prove host safety.
 
 ## Required before enabling actions
 
@@ -20,3 +20,9 @@ The agent binds `127.0.0.1` and checks the actual listener port in `Host`, exact
 The request path exposes **mock runs only**. `POST /api/v1/mock-runs` accepts only a scenario ID; its target is bound in the server registry to `mock:web:001`. The manifest references fixed mock action IDs, and unknown IDs are rejected. Event metadata is restricted to `simulated`, check ID, outcome, score and fixed error code, so arbitrary notes or credentials cannot be persisted through that API. No child-process, SSH, PowerShell, Hyper-V or Multipass module is imported into the agent.
 
 These controls do not make localhost a universal trust boundary. Any local process can spoof an Origin header; pairing-code secrecy and OS account security matter. A browser extension with access to the permitted app origin may read an in-memory bearer token if a future UI stores one. The token is lost on agent restart and there is no real VM operation route, so this Phase 1A mechanism is **not approval for privileged VM control**. Before Phase 1B, re-review authentication, elevation separation, durable recovery authorization, logging/redaction, rate limits and WebSocket handshake protection in the actual runtime.
+
+## Phase 1B-0 protected reference VM
+
+The `lab1` profile records observed static management networking only. Its mode is `reference-only`, disposable approval is false, scenario allowlist empty and recovery evidence absent. `assertRealMutationAllowed` rejects `lab1` by immutable ID or name and rejects every other real mutation because real actions remain disabled. Neither an SSH login nor an open TCP port grants mutation authority. The mock registry accepts only `mock:web:001` bound to its synthetic profile; client requests cannot substitute the reference profile.
+
+Before future execution, a trusted collector must freshly bind the immutable VM ID, expected NIC MAC/interface and exact switch ID; confirm static address uniqueness; verify SSH host key and authentication; and independently verify backup, baseline and host recovery. Each signal is separate and unknown blocks execution. Preserve management and console access during fault design; never place Nginx faults on SSH, routing, firewall or the management NIC. See [NETWORK_DESIGN.md](NETWORK_DESIGN.md) and [BACKUP_RECOVERY.md](BACKUP_RECOVERY.md).

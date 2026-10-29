@@ -22,3 +22,7 @@ The live pilot must use a dedicated disposable Ubuntu 22.04 VM with Nginx packag
 ## Safety and scoring design
 
 The eventual live manifest must name reviewed preflight/setup/fault/grade/recovery IDs, exact target VM binding, maximum duration, resource limits and safety policy. It must prohibit arbitrary scripts and preserve a host-side path when SSH fails. Proposed score: functional HTTP 45, evidence/reasoning 20, independent verification 20, safe process 10, time 5. This is a design rubric, not implemented grading. Full credit depends on observed outcome and evidence, not a particular `systemctl` command. The current mock grader only checks fake HTTP/config/SSH booleans and produces a simulated score; it does not evaluate learner notes or prove a real repair.
+
+## Phase 1B-0 network and target binding
+
+The real pilot target is a **future** `ticketsim-lab`, never `lab1`. Its server-owned profile must bind a different immutable VM ID, direct Hyper-V controller, verified static management NIC/IP/MAC/switch, a separately observed dynamic/default NIC, and a unique address if it shares `10.77.77.0/24`. A fresh endpoint check must distinguish static configuration, TCP/22, SSH host key, authentication, disposable approval and recovery proof before any future run. `eth0` address changes do not select a different SSH endpoint. The current `LAB-WEB-001` registry entry binds only the synthetic mock profile and cannot target `lab1`; fault injection remains disabled.

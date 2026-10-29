@@ -3,6 +3,8 @@ import { LabError } from './errors.mjs'
 import { createScenarioRegistry } from './registry.mjs'
 import { MockWebActions } from './mockActions.mjs'
 import { MockVmController } from './mockVmController.mjs'
+import { mockWebProfile } from './vmProfiles.mjs'
+import { verifyVmEndpoint } from './vmProfile.mjs'
 
 const validKey = key => typeof key === 'string' && /^[A-Za-z0-9_-]{16,128}$/.test(key)
 
@@ -26,7 +28,8 @@ export class MockLabService {
         return this.store.getRun(existing.run_id)
       }
       const vm = await this.controller.inspect(entry.target)
-      if (!vm || vm.powerState !== 'running' || vm.simulated !== true) throw new LabError('MOCK_VM_PREFLIGHT_FAILED')
+      const endpoint = verifyVmEndpoint(mockWebProfile, vm, { scenarioId })
+      if (!vm || vm.simulated !== true || !endpoint.readyForMockRun) throw new LabError('MOCK_VM_PREFLIGHT_FAILED')
       if (!await this.actions.preflight(entry.target)) throw new LabError('MOCK_PREFLIGHT_FAILED')
       const created = this.store.createRun({ runId: randomUUID(), scenarioId, scenarioVersion: entry.manifest.revision, target: entry.target, requestKey, at: new Date().toISOString() })
       if (created.duplicate) return created.run

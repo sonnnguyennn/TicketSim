@@ -53,3 +53,9 @@ Quyết định phạm vi và hướng dẫn tác giả nội dung nằm trong [
 
 [QA Phase 4](Phase_4_QA.md) ghi kiểm thử mức hỗ trợ và Review Mistakes tại thời điểm 42/112 Guided; hiện tại 112/112 Guided.
 
+## Real Lab — Phase 1B-0
+
+Phase 0 (nền tảng) và Phase 1A (mock engine, SQLite, local pairing) đã hoàn thành. Phase 1B-0 cập nhật profile VM hai NIC, kiểm tra endpoint thuần và tài liệu dựa trên bằng chứng `lab1` mới; chỉ mock được chạy. `lab1` là VM tham chiếu, không được fault injection. Xem [QA Phase 1B-0](docs/real-lab/PHASE_1B0_QA.md), [host inventory](docs/real-lab/HOST_INVENTORY.md) và [network design](docs/real-lab/NETWORK_DESIGN.md).
+
+Phase 1B-1: **NO-GO / chờ PM review**. Cần xác minh switch/NIC mapping, duy nhất IP, quyền quản lý VM, VM riêng `ticketsim-lab`, backup độc lập, restore drill và ranh giới đặc quyền trước khi cân nhắc thực thi thật.
+

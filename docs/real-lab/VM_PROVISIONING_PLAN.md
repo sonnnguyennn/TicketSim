@@ -1,6 +1,6 @@
 # Operator diagnostic and future provisioning plan
 
-**Phase 1A is read-only.** This procedure gathers evidence; it does not authorize a VM change. Run `scripts/real-lab-preflight.ps1` with a normal user account first and save its JSON outside the repository with the date, operator and host name. Do not run the agent as Administrator.
+**Phase 1B-0 is read-only.** This procedure gathers evidence; it does not authorize a VM change. Run `scripts/real-lab-preflight.ps1` with a normal user account first and save its JSON outside the repository with the date, operator and host name. Do not run the agent as Administrator. Historical Phase 1A diagnostics remain below.
 
 ## Diagnose the current host without changing it
 
@@ -16,3 +16,9 @@
 Prefer a **new dedicated disposable VM managed directly by Hyper-V**, if host access and resources support it. The operator should first reserve CPU/RAM/storage and select a controlled virtual switch. Record VM ID, image version, Nginx baseline, management console and SSH paths, and a backup stored independently of checkpoints. Before any fault injection, perform a documented restore drill on that disposable VM, verify the baseline fingerprint plus HTTP and management access, and show that recovery works when guest SSH is unavailable. Then review the exact allowlisted setup/fault/grade/recovery procedures and privilege boundary. These are future operator actions requiring separate approval; none is implemented or performed in Phase 1A.
 
 **Phase 1B remains blocked** until controller ownership, dedicated VM, external backup, host-side restore and resource budget are independently verified and recorded. Do not repair, migrate or reconfigure `lab1` as a shortcut.
+
+## Revised Phase 1B-0 decision
+
+The later operator-supplied `lab1` evidence establishes a working static management endpoint (`eth1` `10.77.77.2/24`) and console access. It does not establish switch type/NIC mapping, persistent identity after replacement, ownership, backup or safe fault injection. The earlier Multipass `N/A`/timeout remains historical controller telemetry, not a verdict on this static SSH path. See [HOST_INVENTORY.md](HOST_INVENTORY.md) and [NETWORK_DESIGN.md](NETWORK_DESIGN.md).
+
+For `ticketsim-lab`, inspect existing switches and VM adapters before proposing a switch. Prefer direct Hyper-V lifecycle control and a separate immutable VM ID. Reuse the dual-NIC arrangement only after mapping and subnet checks; if sharing the static subnet, allocate a different address after verifying availability. Document independent backup and host-owned restore proof per [BACKUP_RECOVERY.md](BACKUP_RECOVERY.md). Phase 1B-1 remains **NO-GO** until those gates and a reviewed privilege/action boundary are met. No provisioning occurs in Phase 1B-0.

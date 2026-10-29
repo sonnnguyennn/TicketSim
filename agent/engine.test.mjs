@@ -26,6 +26,7 @@ describe('server-owned mock scenario registry', () => {
     expect(() => validateRegistryEntry({ ...webPilot, manifest: { ...webPilot.manifest, schemaVersion: 2 } })).toThrow('INVALID_MANIFEST')
     expect(() => validateRegistryEntry({ ...webPilot, manifest: { ...webPilot.manifest, setupActionId: 'unknown' } })).toThrow('UNKNOWN_ACTION_ID')
     expect(() => validateRegistryEntry({ ...webPilot, target: { ...webPilot.target, vmRef: 'lab1' } })).toThrow('INVALID_VM_BINDING')
+    expect(() => validateRegistryEntry({ ...webPilot, manifest: { ...webPilot.manifest, vmProfileId: 'lab1-reference-v1' } })).toThrow('INVALID_VM_PROFILE_BINDING')
     expect(() => validateRegistryEntry({ ...webPilot, manifest: { ...webPilot.manifest, rollbackActionId: '' } })).toThrow('INVALID_MANIFEST')
   })
 })
@@ -145,6 +146,9 @@ describe('SQLite mock lifecycle', () => {
     expect(reopened.getLease(run.vm_ref).lease_state).toBe('unknown')
     expect(reopened.getEvents(run.run_id).at(-1).event_type).toBe('interrupted')
     await expect(new MockLabService(reopened).start('LAB-WEB-001', key(17))).rejects.toThrow('VM_LEASE_HELD')
+    await expect(new MockLabService(reopened, { controller: new MockVmController(new Map()) }).start('LAB-WEB-001', key(18))).rejects.toThrow('MOCK_VM_PREFLIGHT_FAILED')
+    expect(reopened.getRun(run.run_id).phase).toBe('recovery_required')
+    expect(reopened.getLease(run.vm_ref).lease_state).toBe('unknown')
   })
 
   it('retains a completed run and ordered events across a restart', async () => {

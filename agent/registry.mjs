@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs'
 import Ajv from 'ajv'
 import { LabError } from './errors.mjs'
+import { mockWebProfile } from './vmProfiles.mjs'
+import { validateVmProfile } from './vmProfile.mjs'
 
 const schema = JSON.parse(readFileSync(new URL('../src/real-lab/manifest.schema.json', import.meta.url), 'utf8'))
 const validate = new Ajv({ allErrors: true }).compile(schema)
@@ -33,6 +35,8 @@ export const webPilot = Object.freeze({
 export function validateRegistryEntry(entry) {
   if (!entry || entry.mode !== 'mock-only' || !validate(entry.manifest)) throw new LabError('INVALID_MANIFEST', 400)
   const { manifest, target } = entry
+  validateVmProfile(mockWebProfile)
+  if (manifest.vmProfileId !== mockWebProfile.profileId) throw new LabError('INVALID_VM_PROFILE_BINDING', 400)
   if (!target || target.vmRef !== 'mock:web:001' || target.controller !== manifest.controller || target.disposable !== true) throw new LabError('INVALID_VM_BINDING', 400)
   if (!actionIds.preflight.has(entry.preflightCheckId) || !actionIds.recoveryCheck.has(entry.recoveryCheckId) || !actionIds.setup.has(manifest.setupActionId) || !actionIds.recovery.has(manifest.rollbackActionId) || !manifest.faultCheckIds.every(id => actionIds.fault.has(id)) || !manifest.gradeCheckIds.every(id => actionIds.grade.has(id))) throw new LabError('UNKNOWN_ACTION_ID', 400)
   return entry

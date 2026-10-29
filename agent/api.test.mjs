@@ -96,7 +96,7 @@ describe('local agent pairing and API boundary', () => {
   })
 
   it('has no production VM or arbitrary subprocess implementation in the agent', () => {
-    const files = ['server.mjs', 'service.mjs', 'registry.mjs', 'mockActions.mjs', 'mockVmController.mjs', 'store.mjs', 'auth.mjs']
+    const files = ['server.mjs', 'service.mjs', 'registry.mjs', 'mockActions.mjs', 'mockVmController.mjs', 'vmProfile.mjs', 'vmProfiles.mjs', 'store.mjs', 'auth.mjs']
     for (const file of files) {
       const source = readFileSync(new URL(file, import.meta.url), 'utf8')
       expect(source).not.toMatch(/(?:from|require\()\s*['"](?:node:)?child_process/)

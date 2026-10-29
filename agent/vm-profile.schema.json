@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ticketsim.local/schemas/vm-profile-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "profileId", "mode", "vm", "network", "authorization"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "profileId": { "type": "string", "minLength": 1 },
+    "mode": { "enum": ["reference-only", "mock-only"] },
+    "vm": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "vmRef", "hypervVmId", "controller", "generation"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "vmRef": { "type": "string", "minLength": 1 },
+        "hypervVmId": { "type": "string", "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$" },
+        "controller": { "enum": ["hyperv", "multipass", "unconfirmed"] },
+        "generation": { "const": 2 }
+      }
+    },
+    "network": {
+      "type": "object", "additionalProperties": false,
+      "required": ["management", "dynamic"],
+      "properties": {
+        "management": {
+          "type": "object", "additionalProperties": false,
+          "required": ["interfaceName", "ipv4Address", "prefixLength", "addressPolicy", "expectedMac", "hostIpv4Address", "switchId", "switchName", "switchType", "sshHostKeyFingerprint"],
+          "properties": {
+            "interfaceName": { "type": "string", "minLength": 1 },
+            "ipv4Address": { "type": "string", "minLength": 7 },
+            "prefixLength": { "type": "integer", "minimum": 1, "maximum": 32 },
+            "addressPolicy": { "const": "static-observed" },
+            "expectedMac": { "type": "string", "pattern": "^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$" },
+            "hostIpv4Address": { "type": ["string", "null"] },
+            "switchId": { "type": ["string", "null"] },
+            "switchName": { "type": ["string", "null"] },
+            "switchType": { "enum": ["internal", "external", "private", "unknown"] },
+            "sshHostKeyFingerprint": { "type": ["string", "null"] }
+          }
+        },
+        "dynamic": {
+          "type": "object", "additionalProperties": false,
+          "required": ["interfaceName", "addressPolicy", "lastObservedIpv4"],
+          "properties": {
+            "interfaceName": { "type": "string", "minLength": 1 },
+            "addressPolicy": { "const": "dynamic" },
+            "lastObservedIpv4": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "authorization": {
+      "type": "object", "additionalProperties": false,
+      "required": ["disposableApproved", "allowedScenarioIds", "baselineId", "recoveryProofId", "privilegePolicy"],
+      "properties": {
+        "disposableApproved": { "type": "boolean" },
+        "allowedScenarioIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "baselineId": { "type": ["string", "null"] },
+        "recoveryProofId": { "type": ["string", "null"] },
+        "privilegePolicy": { "enum": ["none", "mock-only"] }
+      }
+    }
+  }
+}

@@ -1,4 +1,7 @@
-param([string]$VmName = 'lab1')
+param(
+  [string]$VmName = 'lab1',
+  [string]$ManagementIp
+)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -14,6 +17,7 @@ $result = [ordered]@{
   windows = Observation 'unknown' $null
   powershell = Observation 'pass' $PSVersionTable.PSVersion.ToString()
   hostResources = [ordered]@{ memory = Observation 'unknown' $null; drives = Observation 'unknown' $null; switches = Observation 'unknown' $null }
+  hostNetwork = [ordered]@{ addresses = Observation 'unknown' $null; routes = Observation 'unknown' $null; adapters = Observation 'unknown' $null; managementTcp22 = Observation 'unknown' $null 'No endpoint supplied; TCP reachability alone does not prove SSH identity or authentication.' }
   hyperv = [ordered]@{ module = Observation 'unknown' $null; vm = Observation 'unknown' $null; switch = Observation 'unknown' $null; adapter = Observation 'unknown' $null; disks = Observation 'unknown' $null; checkpoints = Observation 'unknown' $null }
   multipass = [ordered]@{ executable = Observation 'unknown' $null; version = Observation 'unknown' $null; driver = Observation 'unknown' $null; list = Observation 'unknown' $null; instance = Observation 'unknown' $null }
   ownership = Observation 'unknown' 'undetermined'
@@ -27,6 +31,17 @@ try {
   $result.hostResources.memory = Observation 'pass' ([ordered]@{ totalVisibleKb = $os.TotalVisibleMemorySize; freePhysicalKb = $os.FreePhysicalMemory })
 } catch { $result.windows = Observation 'unknown' $null $_.Exception.Message }
 try { $result.hostResources.drives = Observation 'pass' @(Get-PSDrive -PSProvider FileSystem | Select-Object Name, Root, Free, Used) } catch { $result.hostResources.drives = Observation 'unknown' $null $_.Exception.Message }
+try { $result.hostNetwork.addresses = Observation 'pass' @(Get-NetIPAddress -AddressFamily IPv4 | Select-Object InterfaceAlias, IPAddress, PrefixLength) } catch { $result.hostNetwork.addresses = Observation 'unknown' $null $_.Exception.Message }
+try { $result.hostNetwork.routes = Observation 'pass' @(Get-NetRoute -AddressFamily IPv4 | Select-Object DestinationPrefix, NextHop, InterfaceAlias) } catch { $result.hostNetwork.routes = Observation 'unknown' $null $_.Exception.Message }
+try { $result.hostNetwork.adapters = Observation 'pass' @(Get-NetAdapter | Where-Object { $_.Name -like 'vEthernet*' } | Select-Object Name, Status, MacAddress, InterfaceDescription) } catch { $result.hostNetwork.adapters = Observation 'unknown' $null $_.Exception.Message }
+if ($ManagementIp) {
+  $parsedIp = $null
+  if (-not [System.Net.IPAddress]::TryParse($ManagementIp, [ref]$parsedIp) -or $parsedIp.AddressFamily -ne [System.Net.Sockets.AddressFamily]::InterNetwork) { throw 'ManagementIp must be an IPv4 address.' }
+  try {
+    $tcpOpen = Test-NetConnection -ComputerName $ManagementIp -Port 22 -InformationLevel Quiet -WarningAction SilentlyContinue
+    $result.hostNetwork.managementTcp22 = Observation $(if ($tcpOpen) { 'pass' } else { 'fail' }) ([ordered]@{ address = $ManagementIp; port = 22; reachable = [bool]$tcpOpen }) 'TCP only; SSH host key, authentication, and recovery remain separate.'
+  } catch { $result.hostNetwork.managementTcp22 = Observation 'unknown' $null $_.Exception.Message }
+}
 
 $module = Get-Module -ListAvailable -Name Hyper-V | Select-Object -First 1
 if ($null -eq $module) {
