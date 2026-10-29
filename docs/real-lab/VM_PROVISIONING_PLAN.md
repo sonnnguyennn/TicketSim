@@ -1,5 +1,9 @@
 # Operator diagnostic and future provisioning plan
 
+## PM review closure
+
+Use the separately approved operation proposal in [GATE_B_AUTHORIZATION_CHECKLIST.md](GATE_B_AUTHORIZATION_CHECKLIST.md). Switch existence and IDs are now operator-verified; exact VM NIC and host binding are pending. Source image/hash, final IP reservation and actual backup path remain UNKNOWN. Example paths/MACs are not operator-selected resources. Keep apply disabled until these fields are resolved and Product Owner authorizes an individual operation. The current tooling and all isolated checks leave real host/guest state untouched.
+
 ## Phase 1B-1 tooling (Gate A)
 
 Review `scripts/real-lab/operator.example.json`, copy it outside the repo and fill actual switch IDs, allocation proof, source hash and operator-controlled paths. False approval flags/placeholders intentionally fail. Source must be an unattached, standalone, bootable Ubuntu 22.04 Gen2-compatible VHDX, max 20 GiB, independently obtained/verified; the tool does not download or install an OS. Prepare its Ubuntu/Nginx baseline manually on a separately approved disposable build environment and record package versions/image provenance. Never copy a disk attached to lab1. New VM ID remains null before creation, then must be copied from the actual provisioning result into the reviewed config.

@@ -61,3 +61,5 @@ Phase 1B-1: **NO-GO / chờ PM review**. Cần xác minh switch/NIC mapping, duy
 
 Phase 1B-1 Gate A đã chuẩn bị tooling provisioning/checkpoint/export/restore-copy với dry-run mặc định, quarantine và kiểm thử giả lập. Xem [QA Gate A](docs/real-lab/PHASE_1B1_GATE_A_QA.md). Gate B **chưa được cho phép**; cần operator xác minh switch, tài nguyên và nguồn image rồi Product Owner duyệt trước khi tạo VM.
 
+PM review fixes: đã bổ sung hai switch ID từ bằng chứng operator elevated, siết an toàn đường dẫn/volume/journal và chạy lại browser độc lập. [Checklist Gate B](docs/real-lab/GATE_B_AUTHORIZATION_CHECKLIST.md) ghi riêng từng thao tác cần duyệt; NIC mapping, IP reservation, image/hash và backup volume còn thiếu.
+

@@ -1,5 +1,11 @@
 # Dual-NIC network design — Phase 1B-0
 
+## PM review closure update
+
+Operator elevated evidence confirms both Internal switches: Lab-Static `4277a35c-217f-4096-a1a9-a691975f150f`, Default Switch `c08cb7b8-9b3c-408e-8e30-5e16a3aeb444`. Example config now records these observed IDs while `SwitchMappingVerified` remains false. Intended new management NIC would reuse Lab-Static; intended package-access NIC would use Default Switch. Exact lab1 MAC-to-switch and host binding still require clean operator output, so this is a proposed target binding, not completed verification. Candidate `10.77.77.3` remains unallocated/unreserved; no MAC/IP selection is final until collision checks and allocation record exist.
+
+Keep static 2 GiB RAM for the first pilot; Dynamic Memory is deferred until representative workload and minimum/maximum/ballooning behavior are measured. Minimum/maximum settings are not used while Dynamic Memory is disabled. Lowering minimum RAM cannot satisfy a 2 GiB startup plus 2 GiB host reserve. Provisioning code now explicitly disables Dynamic Memory in future apply. No existing VM setting is changed. Disk budgets include base (20 GiB), one checkpoint/AVHDX growth (20 GiB), restore copy (20 GiB), plus 10 GiB headroom on shared VM/drill volume, and at least 30 GiB on an independent backup volume. More checkpoints or expanded disks require a fresh budget and review; transient free space alone is insufficient.
+
 ## Phase 1B-1 proposed target
 
 Propose `ticketsim-lab`: 2 vCPU, fixed 2 GiB startup RAM, standalone dynamically allocated VHDX with maximum 20 GiB. Budget maximum disk size, not just current file size; reserve 10 GiB overhead per destination and space for base disk, one checkpoint growth budget and drill when sharing a volume. Use independent backup volume (example F is a placeholder, not observed hardware). Current RAM headroom is below tooling threshold; host operator must make capacity available without this phase stopping any VM.

@@ -3,7 +3,8 @@ $ErrorActionPreference = 'Stop'
 $protectedId = '546953dc-48e4-4080-839d-27ad5552ac7d'
 
 function Assert-LabPath([string]$Path) {
-  if (-not [IO.Path]::IsPathFullyQualified($Path) -or $Path.StartsWith('\\') -or $Path -match '[*?]') { throw 'INVALID_PATH' }
+  # Only ordinary local drive paths. Reject ADS, device paths and Win32 alias segments.
+  if ($Path -notmatch '^[A-Za-z]:\\' -or $Path.Substring(2) -match '[:*?]' -or ($Path -split '\\' | Where-Object { $_ -match '[. ]$' -or $_ -match '^(?i:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.|$)' })) { throw 'INVALID_PATH' }
   $full = [IO.Path]::GetFullPath($Path)
   if ($full.TrimEnd('\') -eq [IO.Path]::GetPathRoot($full).TrimEnd('\')) { throw 'ROOT_PATH_FORBIDDEN' }
   $cursor = $full
@@ -60,13 +61,28 @@ function New-LabPlan($Config, $Inventory, [string]$Operation) {
 function Assert-LabCapacity($Config) {
   $os = Get-CimInstance Win32_OperatingSystem
   if ($os.FreePhysicalMemory * 1KB -lt ($Config.MemoryBytes + 2GB)) { throw 'INSUFFICIENT_RAM' }
+  $budgets = @{}
+  $volumes = @{}
   foreach ($root in @($Config.VmRoot,$Config.BackupRoot,$Config.DrillRoot)) {
     $volume = Get-Volume -FilePath (Split-Path -Parent $root) -ErrorAction Stop
-    $required = $Config.MaxDiskBytes + 10GB
-    if ($root -eq $Config.VmRoot) { $required += $Config.MaxDiskBytes } # one checkpoint growth budget
-    if ([IO.Path]::GetPathRoot($Config.DrillRoot) -eq [IO.Path]::GetPathRoot($Config.VmRoot) -and $root -ne $Config.BackupRoot) { $required = 3 * $Config.MaxDiskBytes + 10GB }
-    if ($volume.SizeRemaining -lt $required) { throw 'INSUFFICIENT_STORAGE' }
+    if (-not $volume.UniqueId -or $null -eq $volume.SizeRemaining) { throw 'VOLUME_UNKNOWN' }
+    $volumes[$root] = $volume
+    if (-not $budgets.ContainsKey($volume.UniqueId)) { $budgets[$volume.UniqueId] = 10GB }
+    $budgets[$volume.UniqueId] += $Config.MaxDiskBytes
+    if ($root -eq $Config.VmRoot) { $budgets[$volume.UniqueId] += $Config.MaxDiskBytes } # one checkpoint growth budget
   }
+  if ($volumes[$Config.BackupRoot].UniqueId -eq $volumes[$Config.VmRoot].UniqueId -or $volumes[$Config.BackupRoot].UniqueId -eq $volumes[$Config.DrillRoot].UniqueId) { throw 'BACKUP_VOLUME_NOT_INDEPENDENT' }
+  foreach ($volume in $volumes.Values) {
+    if ($volume.SizeRemaining -lt $budgets[$volume.UniqueId]) { throw 'INSUFFICIENT_STORAGE' }
+  }
+}
+
+function Write-LabJournal([string]$Path, $Record, [switch]$Initial) {
+  $Record.UpdatedAt = [DateTime]::UtcNow.ToString('o')
+  $bytes = [Text.Encoding]::UTF8.GetBytes(($Record | ConvertTo-Json -Depth 8 -Compress) + "`n")
+  $mode = if ($Initial) { [IO.FileMode]::CreateNew } else { [IO.FileMode]::Append }
+  $stream = [IO.FileStream]::new($Path,$mode,[IO.FileAccess]::Write,[IO.FileShare]::Read)
+  try { $stream.Write($bytes,0,$bytes.Length); $stream.Flush($true) } finally { $stream.Dispose() }
 }
 
 function Get-BackupFiles([string]$Root) {
@@ -80,7 +96,7 @@ function Assert-LabBackup($Config) {
   $manifestPath = Join-Path $Config.BackupRoot 'integrity.json'
   if (-not (Test-Path -LiteralPath $manifestPath)) { throw 'BACKUP_MISSING' }
   $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
-  if ($manifest.VmId -ne $Config.VmId -or -not $manifest.BaselineFingerprint) { throw 'BACKUP_IDENTITY_INVALID' }
+  if ($manifest.VmId -ne $Config.VmId -or $manifest.BaselineFingerprint -notmatch '^[a-fA-F0-9]{64}$' -or $manifest.BaselineFingerprint -ne $Config.BaselineFingerprint) { throw 'BACKUP_IDENTITY_INVALID' }
   $actual = @(Get-BackupFiles $Config.BackupRoot)
   if (-not $actual.Count -or $actual.Count -ne @($manifest.Files).Count) { throw 'BACKUP_INVALID' }
   foreach ($file in $actual) { if (@($manifest.Files | Where-Object { $_.Path -eq $file.Path -and $_.Hash -eq $file.Hash }).Count -ne 1) { throw 'BACKUP_HASH_MISMATCH' } }
@@ -117,11 +133,12 @@ function Invoke-LabOperator($Config, [string]$Operation, [string]$RequestId, [sw
   Assert-LabRequest $Config.StateRoot $RequestId
   $requestPath = Join-Path $Config.StateRoot "$RequestId.json"
   $null = New-Item -ItemType Directory -Path $lease -ErrorAction Stop
-  $record = [ordered]@{ RequestId=$RequestId; Operation=$Operation; VmId=$Config.VmId; Approval=$Approval; StartedAt=[DateTime]::UtcNow.ToString('o'); Status='quarantined'; Result=$null; Error=$null }
-  $record | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $requestPath
+  $record = [ordered]@{ RequestId=$RequestId; Operation=$Operation; VmId=$Config.VmId; Approval=$Approval; StartedAt=[DateTime]::UtcNow.ToString('o'); UpdatedAt=$null; Status='quarantined'; Result=$null; Error=$null }
+  Write-LabJournal $requestPath $record -Initial
   try {
     # Re-read under the lease to catch collisions since planning.
     $plan = New-LabPlan $Config (Get-LabInventory) $Operation
+    Assert-LabCapacity $Config
     if ($Operation -ne 'provision') {
       $attached = @(Get-VMHardDiskDrive -VM (Get-VM -Id $Config.VmId))
       if (-not $attached.Count) { throw 'DISK_BINDING_UNKNOWN' }
@@ -139,7 +156,9 @@ function Invoke-LabOperator($Config, [string]$Operation, [string]$RequestId, [sw
         if ($vhd.Size -gt $Config.MaxDiskBytes -or $vhd.ParentPath) { throw 'UNSAFE_SOURCE_DISK' }
         $vm = New-VM -Name 'ticketsim-lab' -Generation 2 -MemoryStartupBytes $Config.MemoryBytes -VHDPath $disk -Path $Config.VmRoot -SwitchName $plan.NatSwitch
         $record.Result = @{ VmId=$vm.Id.ToString() }
+        Write-LabJournal $requestPath $record
         Set-VMProcessor -VM $vm -Count 2
+        Set-VMMemory -VM $vm -DynamicMemoryEnabled $false
         Set-VM -VM $vm -AutomaticStartAction Nothing -AutomaticStopAction ShutDown
         Set-VMFirmware -VM $vm -EnableSecureBoot On -SecureBootTemplate MicrosoftUEFICertificateAuthority
         Get-VMNetworkAdapter -VM $vm | Set-VMNetworkAdapter -StaticMacAddress $Config.NatMac
@@ -166,20 +185,21 @@ function Invoke-LabOperator($Config, [string]$Operation, [string]$RequestId, [sw
       restore-copy {
         if (Test-Path -LiteralPath $Config.DrillRoot) { throw 'DRILL_DESTINATION_EXISTS' }
         $null = Assert-LabBackup $Config
-        $vmcx = @(Get-ChildItem -LiteralPath $Config.BackupRoot -Filter '*.vmcx' -Recurse -File)
+        $vmcx = @(Get-ChildItem -LiteralPath $Config.BackupRoot -Filter '*.vmcx' -Recurse -File | Where-Object { $_.BaseName -eq $Config.VmId -and $_.Directory.Name -eq 'Virtual Machines' })
         if ($vmcx.Count -ne 1) { throw 'AMBIGUOUS_BACKUP' }
         # Compatibility report permits disconnecting all NICs BEFORE import, avoiding conflicts.
         $report = Compare-VM -Path $vmcx[0].FullName -Copy -GenerateNewId -VirtualMachinePath $Config.DrillRoot -VhdDestinationPath $Config.DrillRoot
         $report.VM | Get-VMNetworkAdapter | Disconnect-VMNetworkAdapter
         $copy = Import-VM -CompatibilityReport $report
-        Rename-VM -VM $copy -NewName 'ticketsim-lab-recovery'
         if ($copy.Id.ToString() -eq $Config.VmId -or $copy.Id.ToString() -eq $protectedId) { throw 'RESTORE_IDENTITY_INVALID' }
         $record.Result = @{ VmId=$copy.Id.ToString(); Network='disconnected'; Verified=$false }
+        Write-LabJournal $requestPath $record
+        Rename-VM -VM $copy -NewName 'ticketsim-lab-recovery'
       }
     }
     $record.Status='awaiting-independent-verification'
   } catch { $record.Status='failed-quarantined'; $record.Error=$_.Exception.Message; throw }
-  finally { $record | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $requestPath }
+  finally { Write-LabJournal $requestPath $record }
   # Deliberately no lease deletion: operator review/verification required after every action.
   return $record
 }

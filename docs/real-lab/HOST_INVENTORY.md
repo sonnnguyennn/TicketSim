@@ -1,5 +1,15 @@
 # Host inventory — Phase 1B-0
 
+## Current PM review update — Gate A closure, 2026-10-29
+
+VERIFIED (new operator-supplied elevated output): `Default Switch`, ID `c08cb7b8-9b3c-408e-8e30-5e16a3aeb444`, Internal; `Lab-Static`, ID `4277a35c-217f-4096-a1a9-a691975f150f`, Internal. Operator observes two lab1 VM adapters and the host Lab-Static virtual adapter. This resolves switch existence/type/ID for that context. Historical Codex access denial still describes its own permission context; it does not invalidate elevated results.
+
+UNKNOWN: clean MAC-to-switch mapping for both lab1 adapters, exact host adapter binding, current VM allocations/names/disks and IP reservation. Do not infer mapping from adapter order. Match guest MAC `5254009B8693` to adapter, SwitchName and SwitchId, then identify eth0 separately. No new switch is proposed.
+
+VERIFIED (Codex read-only repeat): free RAM 3,745,908 KiB (~3.57 GiB), below 4 GiB threshold. C free 21,612,126,208 bytes (~20.13 GiB), E free 75,532,447,744 (~70.35 GiB). Get-Volume shows C, E and a small unlettered recovery volume; no separate backup drive was observed. C cannot meet 30 GiB backup reserve. E headroom is marginal for 70 GiB base/checkpoint/drill policy and is not a complete resource approval. Hyper-V VM resource query remains access denied in Codex; assigned/demand/startup/min/max memory and dynamic-memory settings of existing VMs are UNKNOWN. Do not stop, shrink or alter them.
+
+Operator should repeat the inventory below and add `Get-VM | Select-Object Name,Id,MemoryAssigned,MemoryDemand,MemoryStartup,MemoryMinimum,MemoryMaximum,DynamicMemoryEnabled`, plus dated RAM samples under representative workload. Query `Get-VMNetworkAdapter -VMName lab1 | Select-Object VMId,Name,MacAddress,SwitchName,SwitchId,IPAddresses`; correlate the exact MAC with host binding. Current proposal and separately approved actions are in [GATE_B_AUTHORIZATION_CHECKLIST.md](GATE_B_AUTHORIZATION_CHECKLIST.md). Later sections retain historical evidence.
+
 ## Phase 1B-1 Gate A repeat — 2026-10-29
 
 VERIFIED (this session): 6 CPU cores/12 logical processors, 16,538,236 KiB visible RAM, 4,116,940 KiB free at sample; C free 21,790,810,112 bytes, E free 75,532,550,144 bytes. Host vEthernet addresses remain `10.77.77.1/24` (Lab-Static) and `172.22.112.1/20` (Default Switch). Capacity is a transient sample, not provisioning approval. The proposed 2 GiB VM plus 2 GiB host reserve fails the current free-RAM gate by a small margin.

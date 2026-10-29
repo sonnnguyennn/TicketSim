@@ -32,15 +32,40 @@ try {
   @{VmId='wrong'; BaselineFingerprint='x'; Files=@()} | ConvertTo-Json | Set-Content (Join-Path $config.BackupRoot 'integrity.json')
   Expect-Reject 'invalid backup' { Assert-LabBackup $config } 'BACKUP_IDENTITY_INVALID'
   $module = Get-Module HyperV.Operator
+  $config.VmId='00000000-0000-4000-8000-000000000009'; $config.BaselineFingerprint=('a' * 64)
+  $payload=Join-Path $config.BackupRoot 'disk.bin'; Set-Content -LiteralPath $payload 'synthetic-backup'
+  $manifestPath=Join-Path $config.BackupRoot 'integrity.json'
+  $manifest=@{VmId=$config.VmId;BaselineFingerprint=$config.BaselineFingerprint;Files=@(@{Path='disk.bin';Hash=(Get-FileHash $payload).Hash})}
+  $manifest | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $manifestPath
+  $null=Assert-LabBackup $config; Write-Output 'PASS exact backup baseline and hash'
+  $manifest.BaselineFingerprint=('b' * 64); $manifest | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $manifestPath
+  Expect-Reject 'wrong backup baseline' { Assert-LabBackup $config } 'BACKUP_IDENTITY_INVALID'
+  $manifest.BaselineFingerprint=$config.BaselineFingerprint; $manifest | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $manifestPath
+  Set-Content -LiteralPath $payload 'changed'
+  Expect-Reject 'corrupted backup' { Assert-LabBackup $config } 'BACKUP_HASH_MISMATCH'
+  foreach ($unsafe in @('E:\safe\file.vhdx:stream','\\?\E:\safe\file.vhdx','E:\safe\..\other')) {
+    Expect-Reject "unsafe path $unsafe" { & $module { param($path) Assert-LabPath $path } $unsafe } 'INVALID_PATH'
+  }
+  $journal=Join-Path $temp 'append-journal.json'
+  & $module { param($path)
+    $record=[ordered]@{Status='started'; UpdatedAt=$null}
+    Write-LabJournal $path $record -Initial
+    $record.Status='failed-quarantined'; Write-LabJournal $path $record
+  } $journal
+  $rows=@(Get-Content -LiteralPath $journal | ForEach-Object { $_ | ConvertFrom-Json })
+  if ($rows.Count -ne 2 -or $rows[0].Status -ne 'started' -or $rows[1].Status -ne 'failed-quarantined') { throw 'JOURNAL_LOST_HISTORY' }
+  Write-Output 'PASS append-only journal preserves history'
   & $module {
     function script:Get-CimInstance { [pscustomobject]@{ FreePhysicalMemory=1 } }
   }
   Expect-Reject 'insufficient RAM' { Assert-LabCapacity $config } 'INSUFFICIENT_RAM'
   & $module {
     function script:Get-CimInstance { [pscustomobject]@{ FreePhysicalMemory=100000000 } }
-    function script:Get-Volume { [pscustomobject]@{ SizeRemaining=1 } }
+    function script:Get-Volume { param($FilePath) [pscustomobject]@{ UniqueId=$FilePath; SizeRemaining=1 } }
   }
   Expect-Reject 'insufficient storage' { Assert-LabCapacity $config } 'INSUFFICIENT_STORAGE'
+  & $module { function script:Get-Volume { [pscustomobject]@{ UniqueId='same-volume'; SizeRemaining=1000GB } } }
+  Expect-Reject 'aliased backup volume' { Assert-LabCapacity $config } 'BACKUP_VOLUME_NOT_INDEPENDENT'
   $state=Join-Path $temp 'state'; $null=New-Item -ItemType Directory -Path $state
   Set-Content (Join-Path $state 'request-0001.json') '{}'
   Expect-Reject 'duplicate lifecycle action' { Assert-LabRequest $state 'request-0001' } 'DUPLICATE_REQUEST'
