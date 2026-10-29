@@ -1,5 +1,28 @@
 # Host inventory — Phase 1B-0
 
+## Phase 1B-1 Gate A repeat — 2026-10-29
+
+VERIFIED (this session): 6 CPU cores/12 logical processors, 16,538,236 KiB visible RAM, 4,116,940 KiB free at sample; C free 21,790,810,112 bytes, E free 75,532,550,144 bytes. Host vEthernet addresses remain `10.77.77.1/24` (Lab-Static) and `172.22.112.1/20` (Default Switch). Capacity is a transient sample, not provisioning approval. The proposed 2 GiB VM plus 2 GiB host reserve fails the current free-RAM gate by a small margin.
+
+VERIFIED (this context): Hyper-V switch, VM and lab1 adapter queries again returned permission errors. Their empty pipeline output is **not** an empty inventory or a PASS. VERIFIED (operator-supplied): an elevated session successfully queried lab1. These are different permission contexts. UNKNOWN: complete switch list/IDs/types, exact adapter mapping, VHD paths/current and maximum sizes, other VM names, allocated IPs and independent backup capacity. Lab-Static host alias alone does not resolve the switch discrepancy.
+
+Operator read-only supplement (PowerShell with approved read permissions):
+
+```powershell
+$ErrorActionPreference = 'Stop'
+Get-VMSwitch | Select-Object Name,Id,SwitchType
+Get-VM | Select-Object Name,Id,State,Generation,Path
+Get-VMNetworkAdapter -All | Select-Object VMName,VMId,Name,SwitchName,SwitchId,MacAddress,IPAddresses
+Get-VM | Get-VMHardDiskDrive | ForEach-Object { Get-VHD -Path $_.Path } | Select-Object Path,Size,FileSize,ParentPath
+Get-NetAdapter -Name 'vEthernet (Lab-Static)' | Format-List *
+Get-NetIPAddress -AddressFamily IPv4
+Get-NetRoute -AddressFamily IPv4
+Get-NetNeighbor -AddressFamily IPv4
+Get-Volume | Select-Object DriveLetter,SizeRemaining,Size
+```
+
+Match lab1 eth1 MAC `5254009B8693` to its VM adapter and switch ID, and correlate host adapter binding. Neighbor/ICMP absence does not prove an IP unused; reconcile static allocations, DHCP leases/reservations and all VM adapters before reserving a new address. No switch recreation/repair is authorized.
+
 Evidence date: 2026-10-29. This is an inventory record, not authorization to operate a VM. `VERIFIED (operator-supplied)` means the PM supplied the result; `VERIFIED (this session)` means a read-only local query returned it. `INFERRED` and `UNKNOWN` do not satisfy readiness gates.
 
 | Item | Evidence | Status |

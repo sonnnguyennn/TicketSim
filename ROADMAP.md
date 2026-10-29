@@ -59,3 +59,5 @@ Phase 0 (nền tảng) và Phase 1A (mock engine, SQLite, local pairing) đã ho
 
 Phase 1B-1: **NO-GO / chờ PM review**. Cần xác minh switch/NIC mapping, duy nhất IP, quyền quản lý VM, VM riêng `ticketsim-lab`, backup độc lập, restore drill và ranh giới đặc quyền trước khi cân nhắc thực thi thật.
 
+Phase 1B-1 Gate A đã chuẩn bị tooling provisioning/checkpoint/export/restore-copy với dry-run mặc định, quarantine và kiểm thử giả lập. Xem [QA Gate A](docs/real-lab/PHASE_1B1_GATE_A_QA.md). Gate B **chưa được cho phép**; cần operator xác minh switch, tài nguyên và nguồn image rồi Product Owner duyệt trước khi tạo VM.
+

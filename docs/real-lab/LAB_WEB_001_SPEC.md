@@ -1,5 +1,11 @@
 # LAB-WEB-001 — Nginx unavailable (Ubuntu 22.04)
 
+## Phase 1B-1 baseline preparation
+
+Prepared read-only guest probe: `scripts/real-lab/verify-baseline.sh` (Ubuntu 22.04, installed package versions, SSH/Nginx active, test page SHA256, local HTTP). Run only on future approved target; it has not run on lab1. Record the exact installed nginx/openssh versions and source image SHA256 before approval; versions remain UNKNOWN until baseline exists. Use deterministic page bytes `TicketSim LAB-WEB-001 baseline v1` plus newline; pin its hash in baseline evidence. Operator must also use an independent host HTTP request to the actual reserved management IP and compare HTTP 200 and exact bytes, pin/verify SSH host key then authenticate, and validate independent recovery artifact. Local curl/service-active alone cannot pass.
+
+Future reviewed fault design: stop only the guest nginx service after all gates and lease acquisition; independently check expected HTTP failure while SSH remains available. Grade by guest config validity, correct Nginx version/service and independent HTTP content/status. Restore from exact reviewed baseline and repeat host probes. These are procedure designs only; no fault executor or live Start Lab control is added.
+
 **Status:** mock-only pilot specification. `agent/registry.mjs` contains a server-owned manifest using mock action IDs. No real setup or recovery script exists. Related learning seed: `VPS-03-001`; its CentOS Guided fixtures and answer key remain separate.
 
 ## Learner-visible ticket

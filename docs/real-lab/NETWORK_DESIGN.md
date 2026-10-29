@@ -1,5 +1,13 @@
 # Dual-NIC network design — Phase 1B-0
 
+## Phase 1B-1 proposed target
+
+Propose `ticketsim-lab`: 2 vCPU, fixed 2 GiB startup RAM, standalone dynamically allocated VHDX with maximum 20 GiB. Budget maximum disk size, not just current file size; reserve 10 GiB overhead per destination and space for base disk, one checkpoint growth budget and drill when sharing a volume. Use independent backup volume (example F is a placeholder, not observed hardware). Current RAM headroom is below tooling threshold; host operator must make capacity available without this phase stopping any VM.
+
+Candidate management IP `10.77.77.3/24` is **UNRESERVED/UNKNOWN**, not approved for use. Example locally administered MACs are proposals requiring collision checks. Existing internal switch reuse is preferred only after exact mapping is verified. Alternative separate subnet/switch remains an operator design decision; tools never change global host networking. NAT/default-side interface may rotate DHCP addresses; management remains static via MAC-bound Netplan, with no default route on that NIC. Actual guest interface names must be observed on the new VM, not copied blindly from lab1.
+
+After later authorized startup/restart, recheck immutable VM ID, NIC MAC/interface, switch ID, static IP/prefix, duplicate allocation, host route, host-key pin and SSH authentication separately. NIC replacement requires profile review; never silently accept a new MAC/key. Reboot persistence test is Gate B only. IP conflict or DHCP churn on management quarantines execution. NAT DHCP changes alone do not select a new SSH endpoint.
+
 ```text
 Windows SONNGUYEN
   vEthernet (Lab-Static), 10.77.77.1/24

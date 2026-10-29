@@ -1,5 +1,19 @@
 # Operator diagnostic and future provisioning plan
 
+## Phase 1B-1 tooling (Gate A)
+
+Review `scripts/real-lab/operator.example.json`, copy it outside the repo and fill actual switch IDs, allocation proof, source hash and operator-controlled paths. False approval flags/placeholders intentionally fail. Source must be an unattached, standalone, bootable Ubuntu 22.04 Gen2-compatible VHDX, max 20 GiB, independently obtained/verified; the tool does not download or install an OS. Prepare its Ubuntu/Nginx baseline manually on a separately approved disposable build environment and record package versions/image provenance. Never copy a disk attached to lab1. New VM ID remains null before creation, then must be copied from the actual provisioning result into the reviewed config.
+
+Read-only plan command after inventory access is available:
+
+```powershell
+pwsh -NoProfile -File scripts/real-lab/Invoke-Operator.ps1 -ConfigPath E:\Reviewed\ticketsim.json -Operation provision -RequestId provision-0001
+```
+
+Future apply adds `-Apply -Approval 'APPROVE GATE B provision provision-0001'` **only after PO approves Gate B**. It creates a VM and copied disk without overwriting, fixes MACs and Gen2 Ubuntu secure-boot template, sets automatic start to Nothing and leaves VM off. It never configures host switches or guest networking. Console installation/static network/SSH key setup, first boot and baseline checks are explicit operator steps under that later approval. The actual ID is recorded in request results; a partial failure leaves files/VM quarantined. No automatic rollback/delete is safe: inspect recorded identity/artifacts, then propose exact cleanup separately. Repeated request IDs and existing names/paths fail instead of re-creating resources.
+
+The tool reads Hyper-V inventory, source hash/VHD metadata and capacity in plan mode. It currently fails on this session's Hyper-V permissions. Gates are not bypassed by the example configuration. See PRIVILEGE_BOUNDARY.md for locks, authorization and residual qualification limits.
+
 **Phase 1B-0 is read-only.** This procedure gathers evidence; it does not authorize a VM change. Run `scripts/real-lab-preflight.ps1` with a normal user account first and save its JSON outside the repository with the date, operator and host name. Do not run the agent as Administrator. Historical Phase 1A diagnostics remain below.
 
 ## Diagnose the current host without changing it
