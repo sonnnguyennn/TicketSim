@@ -10,9 +10,9 @@ export function defaultDatabasePath() {
   return path.join(base, 'TicketSim', 'real-lab', 'runs.sqlite')
 }
 
-const allowedMetadata = Object.freeze({ simulated: value => value === true, checkId: value => typeof value === 'string' && /^mock-[a-z0-9-]+$/.test(value), outcome: value => ['pass', 'fail', 'unknown'].includes(value), errorCode: value => typeof value === 'string' && /^[A-Z0-9_]{1,80}$/.test(value), score: value => Number.isInteger(value) && value >= 0 && value <= 100 })
+const allowedMetadata = Object.freeze({ simulated: value => typeof value === 'boolean', checkId: value => typeof value === 'string' && /^(?:mock|real)-[a-z0-9-]+$/.test(value), operationId: value => typeof value === 'string' && /^real-[a-z0-9-]+$/.test(value), outcome: value => ['pass', 'fail', 'unknown'].includes(value), errorCode: value => typeof value === 'string' && /^[A-Z0-9_]{1,80}$/.test(value), score: value => Number.isInteger(value) && value >= 0 && value <= 100 })
 function metadataJson(metadata) {
-  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata) || metadata.simulated !== true || Object.entries(metadata).some(([key, value]) => !allowedMetadata[key]?.(value))) throw new LabError('INVALID_EVENT_METADATA', 400)
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata) || typeof metadata.simulated !== 'boolean' || Object.entries(metadata).some(([key, value]) => !allowedMetadata[key]?.(value))) throw new LabError('INVALID_EVENT_METADATA', 400)
   return JSON.stringify(metadata)
 }
 
@@ -33,7 +33,7 @@ export class LabStore {
   }
   #migrate() {
     const version = this.db.prepare('PRAGMA user_version').get().user_version
-    if (version > 2) throw new LabError('DATABASE_VERSION_UNSUPPORTED', 500)
+    if (version > 3) throw new LabError('DATABASE_VERSION_UNSUPPORTED', 500)
     if (version < 1) this.#tx(() => {
       this.db.exec(`
         CREATE TABLE lab_runs (
@@ -64,6 +64,9 @@ export class LabStore {
         PRAGMA user_version = 2;
       `)
     })
+    if (this.db.prepare('PRAGMA user_version').get().user_version < 3) this.#tx(() => {
+      this.db.exec("ALTER TABLE lab_runs ADD COLUMN mode TEXT NOT NULL DEFAULT 'mock'; ALTER TABLE lab_runs ADD COLUMN evidence_note TEXT; PRAGMA user_version = 3;")
+    })
   }
   markInterruptedOnStartup() {
     this.#tx(() => {
@@ -73,7 +76,7 @@ export class LabStore {
         const run = this.getRun(lease.run_id)
         if (run && run.phase !== 'completed' && run.phase !== 'restore_failed' && run.phase !== 'recovery_required') {
           const at = new Date().toISOString()
-          this.#setPhase(run, 'recovery_required', 'interrupted', at, { simulated: true, errorCode: 'AGENT_RESTART' }, 'unknown', 'AGENT_RESTART')
+          this.#setPhase(run, 'recovery_required', 'interrupted', at, { simulated: run.mode === 'mock', errorCode: 'AGENT_RESTART' }, 'unknown', 'AGENT_RESTART')
         }
       }
     })
@@ -83,7 +86,8 @@ export class LabStore {
   getEvents(runId) { return this.db.prepare('SELECT * FROM lab_events WHERE run_id = ? ORDER BY sequence ASC').all(runId).map(row => ({ ...row, metadata: JSON.parse(row.metadata_json) })) }
   getLease(vmRef) { return this.db.prepare('SELECT * FROM vm_leases WHERE vm_ref = ?').get(vmRef) ?? null }
   getRequest(key) { return this.db.prepare('SELECT * FROM request_dedup WHERE request_key = ?').get(key) ?? null }
-  createRun({ runId, scenarioId, scenarioVersion, target, requestKey, at }) {
+  createRun({ runId, scenarioId, scenarioVersion, target, requestKey, at, mode = 'mock' }) {
+    if (!['mock', 'real'].includes(mode)) throw new LabError('INVALID_RUN_MODE', 400)
     return this.#tx(() => {
       const prior = this.getRequest(requestKey)
       if (prior) {
@@ -91,15 +95,15 @@ export class LabStore {
         return { run: this.getRun(prior.run_id), duplicate: true }
       }
       if (this.getLease(target.vmRef)) throw new LabError('VM_LEASE_HELD')
-      this.db.prepare(`INSERT INTO lab_runs (run_id, scenario_id, scenario_version, vm_ref, controller, phase, recovery_status, created_at, updated_at, event_sequence)
-        VALUES (?, ?, ?, ?, ?, 'preflight', 'not_started', ?, ?, 1)`).run(runId, scenarioId, scenarioVersion, target.vmRef, target.controller, at, at)
+      this.db.prepare(`INSERT INTO lab_runs (run_id, scenario_id, scenario_version, vm_ref, controller, phase, recovery_status, created_at, updated_at, event_sequence, mode)
+        VALUES (?, ?, ?, ?, ?, 'preflight', 'not_started', ?, ?, 1, ?)`).run(runId, scenarioId, scenarioVersion, target.vmRef, target.controller, at, at, mode)
       this.db.prepare("INSERT INTO vm_leases (vm_ref, run_id, lease_state, acquired_at) VALUES (?, ?, 'active', ?)").run(target.vmRef, runId, at)
-      this.db.prepare("INSERT INTO lab_events (run_id, sequence, event_type, occurred_at, metadata_json) VALUES (?, 1, 'created', ?, ?)").run(runId, at, metadataJson({ simulated: true }))
+      this.db.prepare("INSERT INTO lab_events (run_id, sequence, event_type, occurred_at, metadata_json) VALUES (?, 1, 'created', ?, ?)").run(runId, at, metadataJson({ simulated: mode === 'mock' }))
       this.db.prepare('INSERT INTO request_dedup (request_key, operation, run_id, created_at) VALUES (?, ?, ?, ?)').run(requestKey, `start:${scenarioId}`, runId, at)
       return { run: this.getRun(runId), duplicate: false }
     })
   }
-  reserveSubmission(runId, key, at) {
+  reserveSubmission(runId, key, at, evidenceNote = null) {
     return this.#tx(() => {
       const prior = this.getRequest(key)
       if (prior) {
@@ -109,7 +113,9 @@ export class LabStore {
       const run = this.getRun(runId)
       if (!run) throw new LabError('UNKNOWN_RUN', 404)
       if (run.phase !== 'running') throw new LabError('RUN_NOT_SUBMITTABLE')
+      if (evidenceNote !== null && (run.mode !== 'real' || typeof evidenceNote !== 'string' || evidenceNote.length > 1000)) throw new LabError('INVALID_EVIDENCE_NOTE', 400)
       this.db.prepare('INSERT INTO request_dedup (request_key, operation, run_id, created_at) VALUES (?, ?, ?, ?)').run(key, 'submit', runId, at)
+      if (run.mode === 'real') this.db.prepare('UPDATE lab_runs SET evidence_note=? WHERE run_id=?').run(evidenceNote, runId)
       return { duplicate: false, run }
     })
   }
@@ -154,7 +160,7 @@ export class LabStore {
       const lease = this.getLease(run.vm_ref)
       if (!lease || lease.run_id !== runId || lease.lease_state !== 'active') throw new LabError('LEASE_NOT_ACTIVE')
       const at = new Date().toISOString()
-      const finished = this.#setPhase(run, 'completed', 'completed', at, { simulated: true }, 'verified')
+      const finished = this.#setPhase(run, 'completed', 'completed', at, { simulated: run.mode === 'mock' }, 'verified')
       this.db.prepare('DELETE FROM vm_leases WHERE vm_ref = ? AND run_id = ?').run(run.vm_ref, runId)
       return finished
     })

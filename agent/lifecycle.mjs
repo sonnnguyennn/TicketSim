@@ -5,7 +5,7 @@ const next = Object.freeze({
   baseline_ready: ['injecting', 'recovery_required'],
   injecting: ['ready', 'failed_setup', 'recovery_required'],
   ready: ['running', 'recovery_required'],
-  running: ['submitting', 'recovery_required'],
+  running: ['submitting', 'failed_grading', 'recovery_required'],
   submitting: ['graded', 'failed_grading', 'recovery_required'],
   graded: ['restoring', 'recovery_required'],
   failed_setup: ['restoring', 'recovery_required'],

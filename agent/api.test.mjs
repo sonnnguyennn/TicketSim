@@ -117,4 +117,21 @@ describe('local agent pairing and API boundary', () => {
     })
     expect(bytes).not.toContain('101 Switching Protocols')
   })
+  it('keeps live mutations behind bearer, exact body and origin checks', async () => {
+    store = new LabStore(':memory:')
+    const calls = []
+    const liveService = { store, registry: { list: () => [] }, start: async () => { calls.push('start'); return { phase: 'running' } }, submit: async () => { calls.push('submit'); return { phase: 'completed' } } }
+    const auth = new PairingManager({ pairingCode: 'test-pairing-code-123456789' })
+    server = createAgentServer({ liveService, auth })
+    await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
+    base = `http://127.0.0.1:${server.address().port}`
+    expect((await request('/api/v1/live-runs', { method:'POST', body:{scenarioId:'LAB-WEB-001'}, requestKey:'real_request_0001' })).status).toBe(401)
+    const token=await pair()
+    expect((await request('/api/v1/live-runs', { method:'POST', body:{scenarioId:'LAB-WEB-001',command:'systemctl stop nginx'}, token, requestKey:'real_request_0002' })).status).toBe(400)
+    expect((await request('/api/v1/live-runs', { method:'POST', body:{scenarioId:'LAB-WEB-001'}, token, requestKey:'real_request_0003', requestOrigin:'https://evil.example' })).status).toBe(403)
+    expect((await request('/api/v1/live-runs', { method:'POST', body:{scenarioId:'LAB-WEB-001'}, token, requestKey:'real_request_0004' })).status).toBe(201)
+    expect(calls).toEqual(['start'])
+    expect((await request('/api/v1/live-runs/00000000-0000-4000-8000-000000000001/submit', { method:'POST', body:{verificationNote:'x',script:'anything'}, token, requestKey:'real_request_0005' })).status).toBe(400)
+    expect(calls).toEqual(['start'])
+  })
 })

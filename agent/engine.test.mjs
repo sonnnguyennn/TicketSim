@@ -166,17 +166,17 @@ describe('SQLite mock lifecycle', () => {
     expect(reopened.getLease(run.vm_ref)).toBeNull()
   })
 
-  it('migrates a v1 database to v2 and rejects a future schema', () => {
+  it('migrates a v1 database to v3 and rejects a future schema', () => {
     const filename = disk(); const db = new DatabaseSync(filename)
     db.exec(`CREATE TABLE lab_runs (run_id TEXT PRIMARY KEY, scenario_id TEXT NOT NULL, scenario_version INTEGER NOT NULL, vm_ref TEXT NOT NULL, controller TEXT NOT NULL, phase TEXT NOT NULL, recovery_status TEXT NOT NULL, created_at TEXT NOT NULL, started_at TEXT, completed_at TEXT, updated_at TEXT NOT NULL, event_sequence INTEGER NOT NULL, error_code TEXT, grade_status TEXT);
       CREATE TABLE lab_events (run_id TEXT NOT NULL REFERENCES lab_runs(run_id), sequence INTEGER NOT NULL, event_type TEXT NOT NULL, occurred_at TEXT NOT NULL, metadata_json TEXT NOT NULL, PRIMARY KEY(run_id, sequence));
       CREATE TABLE vm_leases (vm_ref TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES lab_runs(run_id), lease_state TEXT NOT NULL, acquired_at TEXT NOT NULL); PRAGMA user_version = 1;`)
     db.close()
     const migrated = new LabStore(filename); stores.push(migrated)
-    expect(migrated.db.prepare('PRAGMA user_version').get().user_version).toBe(2)
+    expect(migrated.db.prepare('PRAGMA user_version').get().user_version).toBe(3)
     expect(migrated.db.prepare("SELECT name FROM sqlite_master WHERE name = 'request_dedup'").get().name).toBe('request_dedup')
     migrated.close()
-    const future = new DatabaseSync(filename); future.exec('PRAGMA user_version = 3'); future.close()
+    const future = new DatabaseSync(filename); future.exec('PRAGMA user_version = 4'); future.close()
     expect(() => new LabStore(filename)).toThrow('DATABASE_VERSION_UNSUPPORTED')
   })
 

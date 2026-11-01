@@ -1,5 +1,11 @@
 # Real Lab security boundary
 
+## Staged B5 / LAB-WEB-001 boundary — 2026-10-30
+
+The first real path is disabled without a validated B5 proof and a separate operator approval file. The local HTTP agent remains non-administrator. It has only a dedicated guest SSH key constrained by an `authorized_keys` forced-command dispatcher and exact sudoers commands. The privileged operator server runs separately, requires a 32+ character token over loopback, ignores browser command/VM text, and executes only fixed host inspect, one-run approval claim or exact-checkpoint reset. It journals a reset attempt before calling Hyper-V; process interruption or failure cannot retry it automatically. The app's durable lease stays blocked on unknown/failure. The operator must protect approval, token, SSH key and SQLite journal with OS ACLs. No service has been activated and no live operation has run.
+
+The prior mock-only description below is historical.
+
 Historically, Phase 0 had no VM mutation path, guest shell, SSH credential or grading endpoint; the server served status only. Phase 1A added authenticated **mock-only** runs and grading. Phase 1B-0 adds a server-owned VM profile contract and pure endpoint checks, still without a host execution path. Local processes and browser extensions can interact with loopback services; neither status nor successful mock runs prove host safety.
 
 ## Required before enabling actions

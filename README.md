@@ -18,9 +18,9 @@ npm run test:browser
 
 Mở URL local do Vite hiển thị. Sau khi cài dependency, app không cần internet hay API key. `dist/` là bản build tĩnh, cần phục vụ qua HTTP local.
 
-## Real Lab — Phase 0
+## Real Lab — staged first pilot
 
-Tab **Real Lab** hiện hiển thị trạng thái môi trường và pilot `LAB-WEB-001` ở chế độ mock-only. Chưa có lab chạy thật, terminal SSH hoặc thao tác thay đổi VM. Local agent (`npm run real-lab:agent`, Node 25.1.0 đã kiểm thử) có pairing và API chỉ dành cho dry-run; nó luôn báo môi trường VM thật chưa sẵn sàng. Xem [kiến trúc](docs/real-lab/ARCHITECTURE.md), [API và database](docs/real-lab/DATABASE_API.md), [preflight Windows](docs/real-lab/VM_PREFLIGHT.md) và [QA Phase 1A](docs/real-lab/PHASE_1A_QA.md).
+Tab **Real Lab** now contains the staged `LAB-WEB-001` live workflow: pairing, status, external SSH instructions, submit/check, result, recovery and run history. It remains disabled until an actual B5 checkpoint/reset proof and separate first-trial approval are supplied. The ordinary local agent stays non-administrator; a separate operator process owns fixed host inspect/reset actions. No real fault has run. See [B5 and first-lab operator procedure](docs/real-lab/B5_LAB_WEB_001_OPERATOR.md), [architecture](docs/real-lab/ARCHITECTURE.md), and [API](docs/real-lab/DATABASE_API.md). Guided's terminal remains authored-fixture only.
 
 ## Luồng học hiện tại — Phase A
 

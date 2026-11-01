@@ -3,6 +3,7 @@ import Ajv from 'ajv'
 import { LabError } from './errors.mjs'
 import { mockWebProfile } from './vmProfiles.mjs'
 import { validateVmProfile } from './vmProfile.mjs'
+import { LIVE_TARGET } from './livePolicy.mjs'
 
 const schema = JSON.parse(readFileSync(new URL('../src/real-lab/manifest.schema.json', import.meta.url), 'utf8'))
 const validate = new Ajv({ allErrors: true }).compile(schema)
@@ -52,5 +53,26 @@ export function createScenarioRegistry(entries = [webPilot]) {
   return Object.freeze({
     get(id) { const entry = scenarios.get(id); if (!entry) throw new LabError('UNKNOWN_SCENARIO', 404); return entry },
     list() { return [...scenarios.values()].map(({ manifest }) => ({ id: manifest.id, title: manifest.title, revision: manifest.revision, mode: 'mock-only', availableForRealVm: false })) },
+  })
+}
+
+export const realWebPilot = Object.freeze({
+  mode: 'approval-gated',
+  target: Object.freeze({ vmRef: LIVE_TARGET.vmRef, controller: 'hyperv', disposable: true }),
+  preflightCheckId: 'real-web-preflight-v1', recoveryCheckId: 'real-web-baseline-v1',
+  manifest: Object.freeze({
+    schemaVersion: 1, id: 'LAB-WEB-001', revision: 2, title: 'Nginx service unavailable',
+    relatedTicketIds: ['VPS-03-001'], guestOS: 'ubuntu-22.04', vmProfileId: 'ticketsim-lab-original-b5-v1',
+    controller: 'hyperv', setupActionId: 'real-web-stop-nginx-v1', faultCheckIds: ['real-web-fault-v1'],
+    gradeCheckIds: ['real-ssh-config-v1','real-nginx-config-v1','real-nginx-service-v1','real-http-status-v1','real-http-content-v1','real-ssh-authentication-v1','real-ssh-host-key-v1','real-config-hash-v1','real-netplan-hash-v1','real-cloud-init-hash-v1','real-ssh-config-hash-v1','real-firewall-hash-v1','real-management-route-v1'],
+    rollbackActionId: 'real-web-fast-reset-v1', safety: { disposableOnly: true, hostRecoveryRequired: true, maxMinutes: 25 },
+  }),
+})
+
+export function createLiveScenarioRegistry(entry = realWebPilot) {
+  if (entry.mode !== 'approval-gated' || !validate(entry.manifest) || entry.target.vmRef !== LIVE_TARGET.vmRef || entry.target.controller !== 'hyperv' || entry.target.disposable !== true || entry.manifest.vmProfileId !== 'ticketsim-lab-original-b5-v1' || entry.manifest.setupActionId !== 'real-web-stop-nginx-v1' || entry.manifest.rollbackActionId !== 'real-web-fast-reset-v1' || entry.preflightCheckId !== 'real-web-preflight-v1' || entry.recoveryCheckId !== 'real-web-baseline-v1' || entry.manifest.faultCheckIds.join(',') !== 'real-web-fault-v1' || entry.manifest.gradeCheckIds.join(',') !== realWebPilot.manifest.gradeCheckIds.join(',')) throw new LabError('INVALID_LIVE_MANIFEST', 400)
+  return Object.freeze({
+    get(id) { if (id !== entry.manifest.id) throw new LabError('UNKNOWN_SCENARIO', 404); return entry },
+    list() { return [{ id: entry.manifest.id, title: entry.manifest.title, revision: entry.manifest.revision, mode: entry.mode, availableForRealVm: true }] },
   })
 }

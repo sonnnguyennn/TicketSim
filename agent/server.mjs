@@ -5,6 +5,12 @@ import { PairingManager } from './auth.mjs'
 import { LabError } from './errors.mjs'
 import { LabStore } from './store.mjs'
 import { MockLabService } from './service.mjs'
+import { LiveLabService } from './liveService.mjs'
+import { LiveOperations } from './liveOperations.mjs'
+import { OperatorBridge } from './operatorBridge.mjs'
+import { assertLiveApproval } from './livePolicy.mjs'
+import { assertNonAdmin } from './privilege.mjs'
+import { readFileSync } from 'node:fs'
 
 const HOST = '127.0.0.1'
 const PORT = 4174
@@ -23,9 +29,10 @@ async function readJson(request) {
   try { return JSON.parse(Buffer.concat(chunks).toString('utf8')) } catch { throw new LabError('INVALID_JSON', 400) }
 }
 
-export function createAgentServer({ service = null, serviceRef = null, auth = new PairingManager() } = {}) {
+export function createAgentServer({ service = null, serviceRef = null, liveService = null, liveServiceRef = null, auth = new PairingManager() } = {}) {
   const server = http.createServer(async (request, response) => {
     const activeService = serviceRef ? serviceRef.current : service
+    const activeLiveService = liveServiceRef ? liveServiceRef.current : liveService
     response.setHeader('Cache-Control', 'no-store')
     response.setHeader('Content-Type', 'application/json; charset=utf-8')
     response.setHeader('X-Content-Type-Options', 'nosniff')
@@ -48,10 +55,10 @@ export function createAgentServer({ service = null, serviceRef = null, auth = ne
       const url = new URL(request.url, `http://${HOST}:${PORT}`)
       if (url.search || url.hash) throw new LabError('NOT_FOUND', 404)
       if (request.method === 'GET' && url.pathname === '/api/v1/status') {
-        send(response, 200, { schemaVersion: 1, phase: 'foundation_only', environmentReady: false, vmVerified: false, actionsEnabled: false, mockEngineAvailable: !!activeService }); return
+        send(response, 200, { schemaVersion: 1, phase: activeLiveService ? 'live_approval_configured' : 'foundation_only', environmentReady: false, vmVerified: false, actionsEnabled: !!activeLiveService, mockEngineAvailable: !!activeService }); return
       }
       if (request.method === 'GET' && url.pathname === '/api/v1/scenarios') {
-        send(response, 200, { scenarios: activeService?.registry.list() ?? [] }); return
+        send(response, 200, { scenarios: [...activeService?.registry.list() ?? [], ...activeLiveService?.registry.list() ?? []] }); return
       }
       if (request.method === 'POST' && url.pathname === '/api/v1/pair') {
         if (!origin) throw new LabError('ORIGIN_REQUIRED', 403)
@@ -63,6 +70,38 @@ export function createAgentServer({ service = null, serviceRef = null, auth = ne
         auth.authorize(request.headers.authorization)
         if (!activeService) throw new LabError('MOCK_ENGINE_UNAVAILABLE', 503)
         send(response, 200, { simulated: true, runs: activeService.store.listRuns() }); return
+      }
+      if (url.pathname === '/api/v1/live-runs' && request.method === 'GET') {
+        auth.authorize(request.headers.authorization)
+        if (!activeLiveService) throw new LabError('LIVE_ENGINE_UNAVAILABLE', 503)
+        send(response, 200, { simulated: false, runs: activeLiveService.store.listRuns().filter(run => run.mode === 'real') }); return
+      }
+      if (url.pathname === '/api/v1/live-runs' && request.method === 'POST') {
+        if (!origin) throw new LabError('ORIGIN_REQUIRED', 403)
+        auth.authorize(request.headers.authorization)
+        if (!activeLiveService) throw new LabError('LIVE_ENGINE_UNAVAILABLE', 503)
+        const body = await readJson(request)
+        if (!exactObject(body, ['scenarioId']) || body.scenarioId !== 'LAB-WEB-001') throw new LabError('INVALID_BODY', 400)
+        const run = await activeLiveService.start(body.scenarioId, request.headers['idempotency-key'])
+        send(response, 201, { simulated: false, run }); return
+      }
+      const liveSubmitMatch = /^\/api\/v1\/live-runs\/([0-9a-f-]{36})\/submit$/.exec(url.pathname)
+      if (liveSubmitMatch && request.method === 'POST') {
+        if (!origin) throw new LabError('ORIGIN_REQUIRED', 403)
+        auth.authorize(request.headers.authorization)
+        if (!activeLiveService) throw new LabError('LIVE_ENGINE_UNAVAILABLE', 503)
+        const body = await readJson(request)
+        if (!exactObject(body, ['verificationNote']) || typeof body.verificationNote !== 'string' || body.verificationNote.length > 1000) throw new LabError('INVALID_BODY', 400)
+        const run = await activeLiveService.submit(liveSubmitMatch[1], request.headers['idempotency-key'], body.verificationNote)
+        send(response, 200, { simulated: false, run }); return
+      }
+      const liveRunMatch = /^\/api\/v1\/live-runs\/([0-9a-f-]{36})$/.exec(url.pathname)
+      if (liveRunMatch && request.method === 'GET') {
+        auth.authorize(request.headers.authorization)
+        if (!activeLiveService) throw new LabError('LIVE_ENGINE_UNAVAILABLE', 503)
+        const run = activeLiveService.store.getRun(liveRunMatch[1])
+        if (!run || run.mode !== 'real') throw new LabError('UNKNOWN_RUN', 404)
+        send(response, 200, { simulated: false, run, events: activeLiveService.store.getEvents(liveRunMatch[1]) }); return
       }
       if (url.pathname === '/api/v1/mock-runs' && request.method === 'POST') {
         if (!origin) throw new LabError('ORIGIN_REQUIRED', 403)
@@ -102,14 +141,24 @@ export function createAgentServer({ service = null, serviceRef = null, auth = ne
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+  assertNonAdmin()
   const auth = new PairingManager()
   const serviceRef = { current: null }
-  const server = createAgentServer({ serviceRef, auth })
+  const liveServiceRef = { current: null }
+  const server = createAgentServer({ serviceRef, liveServiceRef, auth })
+  const watchdog = setInterval(() => { liveServiceRef.current?.expireOverdue().catch(() => { /* Lease remains blocked on interruption. */ }) }, 30_000)
+  watchdog.unref()
+  server.on('close', () => clearInterval(watchdog))
   server.listen(PORT, HOST, () => {
     try {
       const store = new LabStore()
       store.markInterruptedOnStartup()
       serviceRef.current = new MockLabService(store)
+      if (process.env.TICKETSIM_LIVE_APPROVAL && process.env.TICKETSIM_OPERATOR_TOKEN && process.env.TICKETSIM_AGENT_SSH_KEY && process.env.TICKETSIM_AGENT_KNOWN_HOSTS) {
+        const approval = assertLiveApproval(JSON.parse(readFileSync(process.env.TICKETSIM_LIVE_APPROVAL, 'utf8')))
+        const operations = new LiveOperations({ hostBridge: new OperatorBridge({ token: process.env.TICKETSIM_OPERATOR_TOKEN }), sshKeyPath: process.env.TICKETSIM_AGENT_SSH_KEY, knownHostsPath: process.env.TICKETSIM_AGENT_KNOWN_HOSTS })
+        liveServiceRef.current = new LiveLabService(store, operations, approval)
+      }
       process.stdout.write(`Real Lab mock agent listening on http://${HOST}:${PORT}\nPairing code (valid 5 minutes): ${auth.pairingCode}\n`)
     } catch (error) {
       process.stderr.write(`Real Lab agent failed to initialize: ${error instanceof Error ? error.message : 'unknown error'}\n`)

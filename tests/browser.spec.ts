@@ -17,7 +17,7 @@ test('Real Lab is separate, unavailable, and leaves Guided progress intact', asy
   await page.getByTitle('Real Lab', { exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Real Lab', exact: true })).toBeVisible()
   await expect(page.getByRole('status')).toContainText('Chưa sẵn sàng')
-  await expect(page.getByText('LAB-WEB-001', { exact: false })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'LAB-WEB-001' })).toBeVisible()
   await expect(page.getByRole('button', { name: /Start Lab/i })).toHaveCount(0)
   await page.getByTitle('Kho ticket', { exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Kho ticket' })).toBeVisible()

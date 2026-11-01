@@ -1,5 +1,13 @@
 # Phase 1A mock database and local API
 
+## B5 live extension — staged
+
+SQLite schema v3 adds `mode` (`mock` or `real`) and bounded `evidence_note` to run rows. Existing v1/v2 runs migrate in place with mode `mock`; Guided progress is separate and unchanged. Real events set `simulated:false`; the event log records fixed check/operation IDs and pass/fail/unknown, never SSH output or secrets. Agent restart marks an active real run `recovery_required` and keeps its VM lease unknown. Only verified reset completion releases the lease.
+
+When and only when a validated B5 proof and distinct trial approval are configured, authenticated `/api/v1/live-runs` GET/POST, `/api/v1/live-runs/<uuid>` GET, and `/api/v1/live-runs/<uuid>/submit` POST become available. Start accepts exactly `{ "scenarioId": "LAB-WEB-001" }`; submit accepts exactly `{ "verificationNote": "..." }` (up to 1000 characters). Both writes require the existing bearer, permitted Origin, JSON and idempotency key. Neither accepts VM IDs, scripts, SSH commands, action IDs or checkpoint IDs. The separate operator server at `127.0.0.1:4175` accepts only its own token and fixed inspect/reset operation IDs. See [operator procedure](B5_LAB_WEB_001_OPERATOR.md).
+
+The Phase 1A mock-only description below is retained as historical documentation.
+
 ## Runtime and storage
 
 Run `npm run real-lab:agent` with Node 25.1.0 (the version used for QA). The agent binds `127.0.0.1:4174` and uses Node's experimental built-in `node:sqlite`. Its default database is `%LOCALAPPDATA%\TicketSim\real-lab\runs.sqlite` on Windows, or `~/.local/share/TicketSim/real-lab/runs.sqlite` elsewhere. Do not put the database in `src/data`, `public`, `dist` or Git. The tests use `:memory:` and temporary databases.

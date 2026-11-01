@@ -1,6 +1,12 @@
 # Real Lab architecture decision record
 
-**Status:** Phase 1B-0 profile and endpoint contract, 2026-10-29. No executable real-VM lab is enabled. The Phase 0 and 1A descriptions below are historical implementation records.
+## B5 / first live pilot implementation update — 2026-10-30
+
+The repository now has a staged real `LAB-WEB-001` path. `agent/liveService.mjs` uses the existing SQLite run/event/lease lifecycle, and `agent/liveOperations.mjs` uses only fixed SSH operation IDs plus independent Windows HTTP. A separate `operator/server.mjs` process accepts only authenticated host inspect and exact-checkpoint reset. It binds the immutable original, recovery and protected VM IDs in `scripts/real-lab/Invoke-LabHost.ps1` and journals one reset attempt per approval/run. The ordinary agent is never elevated and cannot send PowerShell or arbitrary SSH text. A forced-command guest key maps IDs in `scripts/real-lab/agent-command.sh`; the learner uses a different `lab` SSH account. The frontend shows live controls only after an operator approval file is configured. A real start still fails closed until B5 evidence and the distinct first-trial permit validate. No checkpoint, VM reset or Nginx fault has been executed in this implementation turn. See [B5 procedure](B5_LAB_WEB_001_OPERATOR.md).
+
+Older Phase 0–1B descriptions below are historical and describe the pre-B5 implementation.
+
+**Historical status (2026-10-29):** Phase 1B-0 profile and endpoint contract. The Phase 0 and 1A descriptions below are historical implementation records.
 
 Current provisioning decision: Gate A accepted; Gate B not authorized. PM prefers manual Hyper-V Manager/VMConnect installation from verified Ubuntu Server22.04.5 ISO into a new independent VHDX. Existing prepared-VHDX scripts are optional advanced tooling; no automated ISO installation or new mock layer is introduced. See VM_PROVISIONING_RUNBOOK.md and GATE_B_AUTHORIZATION_CHECKLIST.md. This operational choice does not enable real agent execution or weaken recovery gates.
 

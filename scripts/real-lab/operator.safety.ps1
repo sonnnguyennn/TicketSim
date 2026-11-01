@@ -7,6 +7,8 @@ try {
   $source = Join-Path $temp 'source.vhdx'; Set-Content -LiteralPath $source -Value 'synthetic-not-a-vhd'
   $config = Get-Content (Join-Path $PSScriptRoot 'operator.example.json') -Raw | ConvertFrom-Json
   $config.DisposableApproved=$true; $config.SourceVhd=$source; $config.SourceSha256=(Get-FileHash $source).Hash
+  # Keep synthetic provisioning checks independent of the actual disposable VM path.
+  $config.VmRoot=Join-Path $temp 'synthetic-vm-root'; $config.DrillRoot=Join-Path $temp 'synthetic-drill-root'; $config.StateRoot=Join-Path $temp 'synthetic-state-root'
   $config.SwitchMappingVerified=$true; $config.IpAllocationVerified=$true
   $inventory = [pscustomobject]@{ Vms=@(); Vhds=@(); Adapters=@(); Switches=@([pscustomobject]@{ Id=$config.ManagementSwitchId; SwitchType='Internal'; Name='fake-management' },[pscustomobject]@{ Id=$config.NatSwitchId; SwitchType='Internal'; Name='fake-nat' }) }
   function Expect-Reject($Name, $Action, $Code) {
@@ -55,6 +57,7 @@ try {
   $rows=@(Get-Content -LiteralPath $journal | ForEach-Object { $_ | ConvertFrom-Json })
   if ($rows.Count -ne 2 -or $rows[0].Status -ne 'started' -or $rows[1].Status -ne 'failed-quarantined') { throw 'JOURNAL_LOST_HISTORY' }
   Write-Output 'PASS append-only journal preserves history'
+  $config.BackupRoot='F:\TicketSimBackups\baseline-001'
   & $module {
     function script:Get-CimInstance { [pscustomobject]@{ FreePhysicalMemory=1 } }
   }

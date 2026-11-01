@@ -1,0 +1,14 @@
+{
+  "scenarioId": "LAB-WEB-001",
+  "vmId": "2b9c2170-9a23-4d08-b82e-29929afa4c10",
+  "checkpointId": "REPLACE_WITH_ACTUAL_B5_CHECKPOINT_GUID",
+  "b5Status": "UNKNOWN",
+  "firstTrialApproved": false,
+  "resetApproved": false,
+  "approvalId": "REPLACE_WITH_REVIEWED_REQUEST_ID",
+  "baselineHashes": {
+    "sshConfig": "REPLACE_WITH_B5_SHA256",
+    "firewall": "REPLACE_WITH_B5_SHA256"
+  },
+  "b5Evidence": null
+}

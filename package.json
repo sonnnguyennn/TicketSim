@@ -13,7 +13,8 @@
     "build": "tsc -b && vite build",
     "test": "vitest run",
     "test:browser": "playwright test",
-    "real-lab:agent": "node agent/server.mjs"
+    "real-lab:agent": "node agent/server.mjs",
+    "real-lab:operator": "node operator/server.mjs"
   },
   "dependencies": {
     "ajv": "^8.20.0",
