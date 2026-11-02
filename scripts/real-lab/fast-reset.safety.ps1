@@ -36,6 +36,19 @@ try {
   Expect-Reject 'start RAM minimum' { Get-FastResetPlan start '00000000-0000-4000-8000-000000000002' } 'INSUFFICIENT_RAM'
   & $module { $script:resources.FreeRamBytes=4GB;$script:resources.EFreeBytes=14GB }
   Expect-Reject 'storage minimum' { Get-FastResetPlan reset '00000000-0000-4000-8000-000000000002' } 'INSUFFICIENT_STORAGE'
+  & $module {
+    $script:snapshots[0] | Add-Member -NotePropertyName VMId -NotePropertyValue $script:TargetId
+    function script:Get-VMHardDiskDrive { [pscustomobject]@{Path=$script:fakeDiskPath} }
+    $found=Get-FastResetCreatedCheckpoint ([pscustomobject]@{State='Off'})
+    if ($found.Id.ToString() -ne '00000000-0000-4000-8000-000000000002') { throw 'WRONG_SNAPSHOT' }
+  }
+  Write-Output 'PASS snapshot identity from inventory without passthru'
+  & $module { $script:snapshots[0].VMId=$script:ProtectedId }
+  Expect-Reject 'snapshot wrong VM' { & $module { Get-FastResetCreatedCheckpoint ([pscustomobject]@{State='Off'}) } } 'CHECKPOINT_POSTCHECK_FAILED'
+  & $module { $script:snapshots[0].VMId=$script:TargetId;$script:fakeDiskParent='E:\wrong.vhdx' }
+  Expect-Reject 'snapshot wrong parent' { & $module { Get-FastResetCreatedCheckpoint ([pscustomobject]@{State='Off'}) } } 'CHECKPOINT_CHAIN_POSTCHECK_FAILED'
+  & $module { $script:fakeDiskParent=$script:DiskPath }
+  Expect-Reject 'snapshot running target' { & $module { Get-FastResetCreatedCheckpoint ([pscustomobject]@{State='Running'}) } } 'CHECKPOINT_POSTCHECK_FAILED'
   & $module { $script:resources.EFreeBytes=50GB;Remove-Item Function:Assert-FastResetBackup; $script:BackupRoot=$args[0] } $temp
   Expect-Reject 'missing cold backup' { Assert-FastResetBackup } 'BACKUP_MISSING'
   $file=Join-Path $temp 'ticketsim-lab\Virtual Hard Disks\ubuntu.vhdx';$null=New-Item -ItemType Directory -Path (Split-Path -Parent $file) -Force;Set-Content -LiteralPath $file -Value 'synthetic'

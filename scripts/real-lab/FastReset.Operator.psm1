@@ -92,6 +92,17 @@ function Get-FastResetPlan([string]$Action, [string]$CheckpointId) {
   }
 }
 
+function Get-FastResetCreatedCheckpoint($Vm) {
+  # Do not infer snapshot identity from Checkpoint-VM's pipeline output.
+  $matches = @(Get-VMSnapshot -VM $Vm -ErrorAction Stop)
+  if ($matches.Count -ne 1 -or $matches[0].VMId -ne $script:TargetId -or $matches[0].Name -ne $script:BaselineName -or $Vm.State -ne 'Off') { throw 'CHECKPOINT_POSTCHECK_FAILED' }
+  $drives = @(Get-VMHardDiskDrive -VM $Vm -ErrorAction Stop)
+  if ($drives.Count -ne 1 -or $drives[0].Path -notlike 'E:\TicketSimVMs\ticketsim-lab\*.avhdx') { throw 'CHECKPOINT_CHAIN_POSTCHECK_FAILED' }
+  $disk = Get-VHD -Path $drives[0].Path -ErrorAction Stop
+  if ($disk.ParentPath -ine $script:DiskPath) { throw 'CHECKPOINT_CHAIN_POSTCHECK_FAILED' }
+  return $matches[0]
+}
+
 function Invoke-FastResetOperator([string]$Action, [string]$RequestId, [string]$CheckpointId, [string]$StateRoot, [switch]$Apply, [string]$Approval) {
   if ($RequestId -notmatch '^[a-zA-Z0-9-]{8,64}$') { throw 'INVALID_REQUEST_ID' }
   if ($StateRoot -ine 'E:\TicketSimOperatorState\b5') { throw 'INVALID_STATE_ROOT' }
@@ -113,9 +124,8 @@ function Invoke-FastResetOperator([string]$Action, [string]$RequestId, [string]$
     $vm = Get-VM -Id $script:TargetId -ErrorAction Stop
     switch ($Action) {
       checkpoint {
-        $created = Checkpoint-VM -VM $vm -SnapshotName $script:BaselineName -Passthru -ErrorAction Stop
-        $matches = @(Get-VMSnapshot -VM $vm -ErrorAction Stop)
-        if ($matches.Count -ne 1 -or $matches[0].Id -ne $created.Id) { throw 'CHECKPOINT_POSTCHECK_FAILED' }
+        $null = Checkpoint-VM -VM $vm -SnapshotName $script:BaselineName -ErrorAction Stop
+        $created = Get-FastResetCreatedCheckpoint (Get-VM -Id $script:TargetId -ErrorAction Stop)
         $record.Result = @{ CheckpointId=$created.Id.ToString(); CheckpointType=$created.SnapshotType.ToString(); CreatedAt=$created.CreationTime.ToUniversalTime().ToString('o') }
       }
       start { Start-VM -VM $vm -ErrorAction Stop; if ((Get-VM -Id $script:TargetId).State -ne 'Running') { throw 'START_POSTCHECK_FAILED' }; $record.Result=@{State='Running'} }
