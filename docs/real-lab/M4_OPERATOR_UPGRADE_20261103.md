@@ -1,5 +1,13 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
+## 2026-11-04: boot precheck expected an uninventoried module hash
+
+The approved boot helper stopped at `QUALIFIED_BOOT_DEPENDENCY_HASH_CHANGED`, before retired admission, reservation or Start-VM. Source inspection found an implementation error: original `Prepare-PilotRuntime.ps1` inventories Node and PowerShell but never inventories `scripts/real-lab/FastReset.Operator.psm1`. Comparing its actual hash to that missing property incorrectly reported a changed dependency. The generic output alone does not prove any installed file was changed.
+
+The corrected helper still requires Node/PowerShell hashes from original preparation **before** executing either. It then verifies the protected retired release's full inventory/pinned manifest through the existing read-only admission check. Only the legacy module whose preparation entry is absent may use the exact single `scripts/real-lab/FastReset.Operator.psm1` entry in that verified protected release manifest as its comparison anchor. Installed bytes must match; an existing preparation hash mismatch never falls back, and missing/duplicate/malformed manifest entries fail closed. No preparation, installed file, immutable release or expected hash is rewritten. `BootIntegrity.psm1` reports distinct missing/invalid expected hash versus actual mismatch and names the dependency.
+
+The same already-approved boot command below remains the next Operator action after source verification; no VM-changing call or single-use reservation was reached in the reported failure. Existing reservation and retired-state guards remain mandatory. Native tests in both Windows PowerShell 5.1 and PowerShell 7 cover the real hashing of synthetic files, changed-byte rejection, no fallback on preparation mismatch and invalid/missing/duplicate entries; they do not boot a VM. Actual boot/SSH/HTTP qualification remains pending.
+
 ## Latest actual blocker: original VM is Off
 
 Update: the Operator diagnostic at `2026-11-03T16:42:36.666Z` confirms active resume `retired`, release `4badc683-0432-4776-90d5-9b206d6e4d27`, same gate owner, last event `legacy_state_rechecked`, `stateClear=true`, one preserved completed real run and exact failure `TRIAL_ORIGINAL_MISMATCH`. The user separately approved **one original boot** after backup/gate/lease/resource checks, with no retry or automatic reset. This approval does not permit any fault/reset/checkpoint action or mutation of other VMs.

@@ -18,8 +18,11 @@ Import-Module (Join-Path $PSScriptRoot 'UpgradeProcess.psm1') -Force
 $record=Get-M4InstallationRecord
 if($record.phase -ne 'retired' -or $record.ownerId -ne '6c54ee60-4c6e-4183-9d38-0362be18b3c4' -or $record.releaseRoot -ine "$install\releases\4badc683-0432-4776-90d5-9b206d6e4d27" -or $record.operatorPrincipal -ine $identity.Name){throw 'APPROVED_RETIRED_RECORD_MISMATCH'}
 $preparation=Get-Content "$state\operator\preparation.json" -Raw|ConvertFrom-Json
-foreach($name in @('node.exe','powershell\pwsh.exe','scripts\real-lab\FastReset.Operator.psm1')){
-  if((Get-FileHash -LiteralPath (Join-Path $install $name) -Algorithm SHA256).Hash -ne $preparation.CodeHashes.$name){throw 'QUALIFIED_BOOT_DEPENDENCY_HASH_CHANGED'}
+# Verify the executable before using it to validate the immutable release.
+Import-Module (Join-Path $PSScriptRoot 'BootIntegrity.psm1') -Force
+$emptyManifest=[pscustomobject]@{files=@()}
+foreach($name in @('node.exe','powershell\pwsh.exe')){
+  $null=Assert-BootDependencyIntegrity -RelativePath $name -InstallRoot $install -Preparation $preparation -VerifiedReleaseManifest $emptyManifest
 }
 foreach($name in @('NODE_OPTIONS','NODE_PATH')){[Environment]::SetEnvironmentVariable($name,$null,'Process')}
 function Assert-RetiredBootAdmission {
@@ -29,6 +32,11 @@ function Assert-RetiredBootAdmission {
   if($admission.eligible -ne $true -or $admission.purpose -ne 'approved-boot-precheck' -or $admission.ownerId -ne $record.ownerId -or $admission.releaseRoot -ine $record.releaseRoot){throw 'BOOT_ADMISSION_BINDING_MISMATCH'}
 }
 Assert-RetiredBootAdmission
+# Admission verified every release file against its protected pinned digest.
+# The legacy preparation has no FastReset module entry; compare its installed
+# bytes with that verified release rather than inventing a preparation hash.
+$verifiedManifest=Get-Content (Join-Path $record.releaseRoot 'release-manifest.json') -Raw|ConvertFrom-Json
+$null=Assert-BootDependencyIntegrity -RelativePath 'scripts\real-lab\FastReset.Operator.psm1' -InstallRoot $install -Preparation $preparation -VerifiedReleaseManifest $verifiedManifest
 if(Test-Path -LiteralPath 'E:\TicketSimOperatorState\b5\exclusive-lease'){throw 'B5_LEASE_HELD'}
 if(@(Get-CimInstance Win32_Process|Where-Object {$_.ExecutablePath -in @("$install\node.exe","$($record.releaseRoot)\node.exe")}).Count){throw 'UNEXPECTED_RUNTIME_PRESENT_NO_BOOT'}
 # The qualified planner hashes all four backups and checks original identity,
