@@ -134,7 +134,7 @@ export class RunControlJournal {
     })
   }
   recordMaintenance(ownerId,stage){
-    requireCheck(['legacy_state_clear','quiescing_legacy','legacy_quiesced','legacy_state_rechecked','installation_verifying','installation_verified','maintenance_failed'].includes(stage),'INVALID_MAINTENANCE_STAGE')
+    requireCheck(['maintenance_resume_reviewed','legacy_state_clear','quiescing_legacy','legacy_quiesced','legacy_state_rechecked','installation_verifying','installation_verified','maintenance_failed'].includes(stage),'INVALID_MAINTENANCE_STAGE')
     return this.#tx(()=>{
       requireCheck(this.db.prepare("SELECT 1 FROM control_gate WHERE vm_id=? AND kind='maintenance' AND owner_id=?").get(LIVE_TARGET.vmId,ownerId),'MAINTENANCE_OWNER_MISMATCH')
       this.#event(stage,ownerId)

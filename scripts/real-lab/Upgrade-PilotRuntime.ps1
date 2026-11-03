@@ -1,15 +1,19 @@
-param([switch]$Apply)
+param([switch]$Apply,[switch]$ResumeLocked)
 $ErrorActionPreference='Stop'
 $install='C:\Program Files\TicketSimPilot'
 $state='C:\ProgramData\TicketSimPilot'
 $repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 if(-not $Apply){
-  [pscustomobject]@{Apply=$false;Changes='Stage immutable Operator release; verify actual completed M3; retain maintenance gate; stop exact recorded pilot processes; launch separate Operator consent page; restart original learner runtime terminal-only; verify TLS/identities/history before release. No guest setup, fault, reset, checkpoint or backup mutation.';Install=$install;State=$state}|ConvertTo-Json
+  [pscustomobject]@{Apply=$false;ResumeLocked=[bool]$ResumeLocked;Changes='Stage immutable Operator release; verify actual completed M3; retain maintenance gate; stop exact recorded pilot processes; launch separate Operator consent page; restart original learner runtime terminal-only; verify TLS/identities/history before release. No guest setup, fault, reset, checkpoint or backup mutation.';Install=$install;State=$state}|ConvertTo-Json
   return
 }
 $identity=[Security.Principal.WindowsIdentity]::GetCurrent()
 if(-not ([Security.Principal.WindowsPrincipal]$identity).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)){throw 'OPERATOR_ELEVATION_REQUIRED'}
-if(Test-Path "$state\operator\m4-upgrade.json"){throw 'UPGRADE_RECORD_EXISTS_DO_NOT_RETRY'}
+if($ResumeLocked){
+  if((Test-Path "$state\operator\m4-resume.json") -or (Test-Path "$state\operator\m4-previous-m1.json") -or (Test-Path "$state\operator\m4-previous-processes.json")){throw 'RECOVERY_ALREADY_ADVANCED_DO_NOT_RETRY'}
+  $original=Get-Content "$state\operator\m4-upgrade.json" -Raw|ConvertFrom-Json
+  if($original.phase -ne 'locked'){throw 'ONLY_REVIEWED_LOCKED_RECOVERY_ALLOWED'}
+}elseif(Test-Path "$state\operator\m4-upgrade.json"){throw 'UPGRADE_RECORD_EXISTS_DO_NOT_RETRY'}
 if(Test-Path 'E:\TicketSimOperatorState\b5\exclusive-lease'){throw 'B5_LEASE_HELD'}
 foreach($name in @('NODE_OPTIONS','NODE_PATH')){[Environment]::SetEnvironmentVariable($name,$null,'Process')}
 $preparation=Get-Content "$state\operator\preparation.json" -Raw|ConvertFrom-Json
@@ -22,7 +26,7 @@ foreach($path in @($install,$repo)){
   if((Get-Item -LiteralPath $path).Attributes -band [IO.FileAttributes]::ReparsePoint){throw 'RUNTIME_ROOT_REDIRECTED'}
 }
 $payloadBytes=0
-foreach($path in @("$repo\agent","$repo\operator","$repo\scripts\real-lab","$repo\src\real-lab","$install\powershell","$install\node_modules")){
+foreach($path in @("$repo\agent","$repo\operator","$repo\scripts\real-lab","$repo\src\real-lab","$install\node_modules")){
   $payloadBytes+=(Get-ChildItem -LiteralPath $path -Recurse -Force -File|Measure-Object -Property Length -Sum).Sum
 }
 $payloadBytes+=(Get-Item -LiteralPath "$install\node.exe").Length
@@ -38,7 +42,7 @@ foreach($name in @('agent','operator','scripts\real-lab','src\real-lab')){
   & robocopy.exe $source (Join-Path $release $name) /E /COPY:DAT /DCOPY:DAT /XF *.test.mjs *.safety.ps1 /NFL /NDL /NJH /NJS /NP | Out-Null
   if($LASTEXITCODE -ge 8){throw 'OPERATOR_RELEASE_COPY_FAILED'}
 }
-foreach($name in @('powershell','node_modules')){
+foreach($name in @('node_modules')){
   $source=Join-Path $install $name
   if((Get-Item -LiteralPath $source).Attributes -band [IO.FileAttributes]::ReparsePoint){throw 'PROTECTED_DEPENDENCY_ROOT_LINK_FORBIDDEN'}
   if(@(Get-ChildItem -LiteralPath $source -Recurse -Force | Where-Object {$_.Attributes -band [IO.FileAttributes]::ReparsePoint}).Count){throw 'PROTECTED_DEPENDENCY_LINK_FORBIDDEN'}
@@ -51,8 +55,8 @@ if(@(Get-ChildItem -LiteralPath $release -Recurse -Force|Where-Object {$_.Attrib
 $files=@(Get-ChildItem -LiteralPath $release -Recurse -Force -File|Sort-Object FullName|ForEach-Object{[pscustomobject]@{path=$_.FullName.Substring($release.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}})
 [IO.File]::WriteAllText("$release\release-manifest.json",([pscustomobject]@{schemaVersion=1;files=$files}|ConvertTo-Json -Depth 5),(New-Object Text.UTF8Encoding($false)))
 $digest=(Get-FileHash -LiteralPath "$release\release-manifest.json" -Algorithm SHA256).Hash.ToLowerInvariant()
-$env:TICKETSIM_PWSH="$release\powershell\pwsh.exe"
-$env:PSModulePath="$release\powershell\Modules;$env:WINDIR\System32\WindowsPowerShell\v1.0\Modules;$env:ProgramFiles\WindowsPowerShell\Modules"
+$env:TICKETSIM_PWSH="$install\powershell\pwsh.exe"
+$env:PSModulePath="$install\powershell\Modules;$env:WINDIR\System32\WindowsPowerShell\v1.0\Modules;$env:ProgramFiles\WindowsPowerShell\Modules"
 function Invoke-UpgradeStage([string]$Stage,[string]$Digest=''){
   $arguments=@("$release\operator\upgrade.mjs",$Stage)
   if($Digest){$arguments+=$Digest}
@@ -60,7 +64,8 @@ function Invoke-UpgradeStage([string]$Stage,[string]$Digest=''){
   if($LASTEXITCODE -ne 0){throw 'UPGRADE_STAGE_FAILED_GATE_RETAINED_DO_NOT_RETRY'}
   $output|ConvertFrom-Json
 }
-$null=Invoke-UpgradeStage 'begin' $digest
+$beginStage=if($ResumeLocked){'resume-locked'}else{'begin'}
+$null=Invoke-UpgradeStage $beginStage $digest
 Import-Module "$release\scripts\real-lab\UpgradeProcess.psm1" -Force
 $record=Get-Content "$state\operator\m4-previous-processes.json" -Raw|ConvertFrom-Json
 $m1=Get-Content "$state\operator\m4-previous-m1.json" -Raw|ConvertFrom-Json
@@ -79,10 +84,15 @@ foreach($item in @(@{Role='Agent';Id=$m1.AgentNodePid},@{Role='Launcher';Id=$rec
 foreach($process in $targets){
   $current=Get-CimInstance Win32_Process -Filter "ProcessId=$($process.ProcessId)" -ErrorAction Stop
   if(-not $current){continue}
-  $handleProcess=[Diagnostics.Process]::GetProcessById($process.ProcessId)
+  try{$handleProcess=[Diagnostics.Process]::GetProcessById($process.ProcessId)}
+  catch [ArgumentException]{
+    if(-not (Get-CimInstance Win32_Process -Filter "ProcessId=$($process.ProcessId)" -ErrorAction Stop)){continue}
+    throw
+  }
   try{
     $null=$handleProcess.Handle
     $current=Get-CimInstance Win32_Process -Filter "ProcessId=$($process.ProcessId)" -ErrorAction Stop
+    if(-not $current -and $handleProcess.HasExited){continue}
     if(-not $current -or $current.CreationDate -ne $process.CreationDate -or $current.ExecutablePath -ne $process.ExecutablePath -or $current.CommandLine -ne $process.CommandLine){throw 'PROCESS_ID_REUSED_GATE_RETAINED'}
     # Stop through the captured process object/handle, not a later PID lookup.
     Microsoft.PowerShell.Management\Stop-Process -InputObject $handleProcess -Confirm:$false -ErrorAction Stop

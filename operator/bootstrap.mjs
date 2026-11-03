@@ -4,14 +4,16 @@ import { fileURLToPath } from 'node:url'
 import { execFileSync } from 'node:child_process'
 import { randomBytes } from 'node:crypto'
 import { verifyRelease,assertOperatorToken } from './bootstrapPolicy.mjs'
+import { readActiveUpgrade } from './upgradeRecovery.mjs'
+import { QUALIFIED_PWSH,withQualifiedPowerShell } from './qualifiedRuntime.mjs'
 
 const state='C:/ProgramData/TicketSimPilot'
 const root=resolve(fileURLToPath(new URL('..',import.meta.url)))
 if(process.platform!=='win32'||!/^C:\\Program Files\\TicketSimPilot\\releases\\[0-9a-f-]{36}$/i.test(root)||realpathSync(process.execPath).toLowerCase()!==resolve(root,'node.exe').toLowerCase())throw new Error('PROTECTED_OPERATOR_BOOTSTRAP_REQUIRED')
-const record=JSON.parse(readFileSync(`${state}/operator/m4-upgrade.json`,'utf8'))
+const {record}=readActiveUpgrade(state)
 if(resolve(record.releaseRoot)!==root||!['retired','installed'].includes(record.phase))throw new Error('PROTECTED_OPERATOR_BOOTSTRAP_REQUIRED')
 verifyRelease(root,record.manifestSha256)
-const identity=assertOperatorToken(JSON.parse(execFileSync(resolve(root,'powershell/pwsh.exe'),['-NoProfile','-NonInteractive','-File',resolve(root,'scripts/real-lab/Get-OperatorToken.ps1')],{encoding:'utf8',windowsHide:true,timeout:15_000})),record.operatorPrincipal)
+const identity=assertOperatorToken(JSON.parse(await withQualifiedPowerShell(()=>execFileSync(QUALIFIED_PWSH,['-NoProfile','-NonInteractive','-File',resolve(root,'scripts/real-lab/Get-OperatorToken.ps1')],{encoding:'utf8',windowsHide:true,timeout:15_000}))),record.operatorPrincipal)
 const { RunControlJournal }=await import('./runControl.mjs')
 const { OperatorApprovalControl }=await import('./approvalControl.mjs')
 const { createOperatorControlServer }=await import('./controlServer.mjs')

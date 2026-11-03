@@ -4,7 +4,11 @@
 
 ### Web-first live pilot pickup — 2026-11-03
 
-Actual upgrade incident: user ran `Upgrade-PilotRuntime.ps1 -Apply`; it failed with generic `UPGRADE_STAGE_FAILED`, and a subsequent attempt was blocked by the existing-upgrade guard. Do not rerun/clear the record/gate or patch the immutable staged release. Root cause is pending Operator-only read-only evidence. Source helper `Inspect-UpgradeFailure.ps1` safely reports stage/events, metadata BOM/readability and independent M3 status. The Codex process cannot read protected Operator state directly. M4 migration is not qualified yet; the prior source validation entries below are not actual upgrade PASS.
+Actual upgrade incident: user ran `Upgrade-PilotRuntime.ps1 -Apply`; it failed with generic `UPGRADE_STAGE_FAILED`, and a subsequent attempt was blocked by the existing-upgrade guard. Do not rerun/clear the original record/gate or patch the immutable failed release. Subsequent read-only evidence identified empty JSON output from the cloned host-inspection transport; the original M3 inspector still passes. The reviewed source fix and separate locked-stage resume are described next. M4 migration is not qualified yet; the source validation entries below are not actual upgrade PASS.
+
+Latest diagnostic evidence: original M3/host remain PASS; failed clone host-inspect returns empty stdout and invalid JSON after 121069ms, with no reported timeout kill or BOM. Failure is before metadata archives/process retirement. Source fix uses original qualified Node/report/PowerShell paths; guarded `Resume-LockedUpgrade.ps1` stages a new release, retains the original maintenance owner, and writes a separate hash-linked resume record without changing the failed release or original record. Actual resume still pending; see the current incident/recovery section in `docs/real-lab/M4_OPERATOR_UPGRADE_20261103.md`.
+
+Latest source verification: 183/183 unit/content tests and build PASS. New resume code is not deployed by tests; all three new scenario packs remain unavailable and no new VM-changing operation is authorized.
 
 M4/Scenario Pack implementation has started in source. See `docs/real-lab/M4_PACKAGING_PLAN_20261103.md` for ordered steps and status. New immutable 02/03/07 blueprints remain planned/unavailable; a read-only maintenance diagnostic preserves completed approvals/history and blocks unresolved work. No new guest dispatcher, executable pack, per-run web approval, service installer or live trial is enabled by this slice. Existing deployed Trial runtime is unchanged.
 

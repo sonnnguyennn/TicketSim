@@ -50,6 +50,8 @@ Latest source validation: 174/174 unit/content tests PASS with two workers; buil
 
 After actual runtime migration, continue the fixed-bundle guest bootstrap qualification and LAB-02 adapter. A new guest deployment/fault/reset still requires a concrete separately approved scope; this runtime installer has none of those operations.
 
+Actual incident update: first Apply stopped locked, before retirement; the cloned host inspector returned empty stdout/invalid JSON, while the original installed inspector still reports M3/host PASS. Source now uses the original hash-verified Node/report/PowerShell transport, and `Resume-LockedUpgrade.ps1` stages a new release while retaining the same gate and preserving the old failed record/release. A separate resume record pins the old record byte hash. See the upgrade procedure for the exact reviewed recovery. No actual resume has run yet; migration remains unqualified pending Operator output.
+
 ## Ordered implementation
 
 1. **Freeze installation contract.** Inventory the tested Node/PowerShell distributions, protected code hashes, account/certificate/state ownership and existing host manifest. Pin distributable versions, checksums and licenses before bundling. Package the app separately from this host's existing VM/checkpoint/backup; do not clone/import/provision a VM or create a checkpoint implicitly.

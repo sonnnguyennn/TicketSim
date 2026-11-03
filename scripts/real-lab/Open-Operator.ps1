@@ -2,7 +2,8 @@ $ErrorActionPreference='Stop'
 $state='C:\ProgramData\TicketSimPilot'
 $identity=[Security.Principal.WindowsIdentity]::GetCurrent()
 if(-not ([Security.Principal.WindowsPrincipal]$identity).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)){throw 'OPERATOR_ELEVATION_REQUIRED'}
-$record=Get-Content "$state\operator\m4-upgrade.json" -Raw|ConvertFrom-Json
+Import-Module (Join-Path $PSScriptRoot 'UpgradeProcess.psm1') -Force
+$record=Get-M4InstallationRecord
 $release=[IO.Path]::GetFullPath($record.releaseRoot)
 if($record.phase -ne 'installed' -or $record.operatorPrincipal -ine $identity.Name -or $release -notmatch '^C:\\Program Files\\TicketSimPilot\\releases\\[0-9a-f-]{36}$'){throw 'VERIFIED_OPERATOR_INSTALLATION_REQUIRED'}
 if((Get-FileHash -LiteralPath "$release\release-manifest.json" -Algorithm SHA256).Hash.ToLowerInvariant() -cne $record.manifestSha256){throw 'RELEASE_MANIFEST_CHANGED'}
@@ -14,8 +15,8 @@ foreach($name in @('node.exe','scripts/real-lab/Verify-OperatorRelease.mjs','ope
 foreach($name in @('NODE_OPTIONS','NODE_PATH')){[Environment]::SetEnvironmentVariable($name,$null,'Process')}
 $null=& "$release\node.exe" "$release\scripts\real-lab\Verify-OperatorRelease.mjs" $record.manifestSha256
 if($LASTEXITCODE -ne 0){throw 'RELEASE_INTEGRITY_NOT_VERIFIED'}
-$env:TICKETSIM_PWSH="$release\powershell\pwsh.exe"
-$env:PSModulePath="$release\powershell\Modules;$env:WINDIR\System32\WindowsPowerShell\v1.0\Modules;$env:ProgramFiles\WindowsPowerShell\Modules"
+$env:TICKETSIM_PWSH='C:\Program Files\TicketSimPilot\powershell\pwsh.exe'
+$env:PSModulePath="C:\Program Files\TicketSimPilot\powershell\Modules;$env:WINDIR\System32\WindowsPowerShell\v1.0\Modules;$env:ProgramFiles\WindowsPowerShell\Modules"
 $runtime=if(Test-Path "$state\operator\control-runtime.json"){Get-Content "$state\operator\control-runtime.json" -Raw|ConvertFrom-Json}else{$null}
 $process=if($runtime){Get-CimInstance Win32_Process -Filter "ProcessId=$($runtime.pid)"}else{$null}
 if(-not $process){
@@ -30,7 +31,7 @@ if(-not $process){
   if(-not $runtime -or $runtime.pid -ne $child.Id){throw 'OPERATOR_START_RESULT_UNKNOWN'}
   $process=Get-CimInstance Win32_Process -Filter "ProcessId=$($runtime.pid)"
 }
-if(-not $process -or $process.ExecutablePath -ine "$release\node.exe" -or $runtime.releaseRoot -ine $release -or [math]::Abs((([datetime]$process.CreationDate).ToUniversalTime()-([datetime]$runtime.startedAt).ToUniversalTime()).TotalSeconds) -gt 10){throw 'OPERATOR_PROCESS_IDENTITY_MISMATCH'}
+if(-not $process -or $process.ExecutablePath -ine "$release\node.exe" -or $runtime.releaseRoot -ine $release -or [math]::Abs((([datetime]$process.CreationDate).ToUniversalTime()-([datetime]$runtime.startedAt).ToUniversalTime()).TotalSeconds) -gt 60){throw 'OPERATOR_PROCESS_IDENTITY_MISMATCH'}
 $owner=Invoke-CimMethod -InputObject $process -MethodName GetOwnerSid
 if($owner.ReturnValue -ne 0 -or $owner.Sid -ne $identity.User.Value -or $runtime.sid -ne $identity.User.Value){throw 'OPERATOR_PROCESS_OWNER_MISMATCH'}
 [Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12

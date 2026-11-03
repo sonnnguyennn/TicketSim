@@ -1,6 +1,26 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
-Actual pickup: the Operator ran Apply and received `UPGRADE_STAGE_FAILED`; a second Apply was rejected by `UPGRADE_RECORD_EXISTS_DO_NOT_RETRY`. Actual migration is **not PASS**. Preserve the staged release, upgrade record and any maintenance gate; do not retry, edit its manifest or clear records. The initial generic error hides its cause. The read-only source diagnostic `Inspect-UpgradeFailure.ps1` reports evidence-file encoding/readability, retained stage/gates/events and an independent M3/host recheck without changing them or returning pairing/bridge secrets. Root cause and a reviewed recovery path require that actual output first.
+## Diagnosed incident and explicit locked-stage recovery
+
+Actual read-only evidence narrowed the failure to the staged host-inspection transport: on 2026-11-03 the cloned release returned empty stdout, `SyntaxError` on JSON parse, elapsed 121069ms, no BOM/warning text and no reported timeout kill. This is **not proof of a timeout** or a VM/backup failure. The underlying reason the cloned PowerShell returned no JSON is not established. The original protected `Inspect-WebTrial.ps1` path independently continues to report actual M3 PASS and correct host state.
+
+Failed immutable release: `c80f2e36-3e09-4df0-896a-71cabf1283d8`, manifest `c9e5b9728973ab6b3e89504380139d5b8e3fab7c0f90a5f17936f4af7a549043`. Gate owner `6c54ee60-4c6e-4183-9d38-0362be18b3c4`. Original record is locked; journal has only maintenance_acquired/maintenance_failed, no old metadata archives, no active work and no runtime retirement. Preserve these artifacts unchanged.
+
+The corrected source uses a hash-verified worker at the **original qualified Node executable, original report script and original PowerShell/module paths** for M3/host inspection. It does not import the old inspector into the staged Node process. The worker's 180-second outer budget does not change the existing inner host action/reset policy. Role/readiness probes use the qualified original PowerShell too. New releases no longer copy another PowerShell distribution. This is an explicit compatibility bridge for this existing installation, not qualification of the failed clone or a standalone installer for another host.
+
+After source tests/build pass, the reviewed recovery command is:
+
+```powershell
+& 'E:\Document\TicketSim\scripts\real-lab\Resume-LockedUpgrade.ps1' -Apply
+```
+
+This is a separate guarded branch, not rerunning the old Apply or editing its release. Default without Apply remains dry-run. It stages a new release, verifies the old release and exact pre-retirement evidence, retains the **same gate owner without release/reacquisition**, and creates a separate `m4-resume.json` using exclusive creation. That record pins the original record's raw-byte hash and original release/digest. Bootstrap/open/readiness select this resume record only if that chain remains valid; the original `m4-upgrade.json` is never rewritten. Resume refuses advanced phases, archives, extra journal events, foreign gates, unresolved work or any prior resume. Subsequent runtime steps perform fresh M3/identity/process checks before retiring anything. No guest setup, fault/reset or checkpoint/backup mutation is introduced. If resume fails, keep the gate/evidence and do not run it again.
+
+Source now retains the first structured failure stage/code/signal in Operator-private state and prints sanitized classification without child stderr, JSON contents or credentials. Diagnostic `-StagedHost` always targets the **original failed clone**, even after a new resume becomes active; it is not a health check of the corrected compatibility bridge.
+
+The following incident notes describe the preceding diagnostic checkpoints, not instructions to repeat the original Apply:
+
+Historical pickup: the Operator ran Apply and received `UPGRADE_STAGE_FAILED`; a second Apply was rejected by `UPGRADE_RECORD_EXISTS_DO_NOT_RETRY`. Actual migration is **not PASS**. The original generic error hid its cause; subsequent read-only evidence and the recovery design are recorded above. Do not edit the old release/manifest or clear records.
 
 Run the diagnostic in the existing elevated Operator window:
 
@@ -12,7 +32,7 @@ This replaces separate manual stage/report queries. It does not alter the immuta
 
 This source implementation upgrades runtime orchestration only. It never installs guest software, injects a fault, resets a VM, creates a checkpoint or changes a backup. The three new packs remain unavailable. M3's completed run, consumed permit, original approval/actions and first-trial guards remain intact. Actual upgrade qualification is pending Operator execution; unit/browser tests are not evidence that the protected installation has already changed.
 
-## Concrete workflow
+## First-time workflow (historical for this incident; use reviewed resume above)
 
 Close any learner terminal and old lab tabs. In elevated Windows PowerShell, from the existing checkout:
 
@@ -31,7 +51,7 @@ It prompts for the Windows `TicketSimAgent` credential through the already-quali
 ## Behavior and evidence
 
 1. Verify the actual elevated Operator against the original preparation, old protected code hashes and unchanged dependency lock. Check running-host RAM >=1GiB, E >=15GiB and C enough for the payload plus a 12GiB floor and margin. Resources are observations, not reservations.
-2. Stage a new immutable release under `C:\Program Files\TicketSimPilot\releases\<UUID>`. Copy source production modules; reuse the existing protected Node/PowerShell/dependency distribution. Preserve the original installed files and reject redirected roots/links. Hash every staged file, including hidden files, and pin the manifest digest in protected Operator state. No runtime code is copied over running processes.
+2. Stage a new immutable release under `C:\Program Files\TicketSimPilot\releases\<UUID>`. Copy source production modules, protected Node and dependencies; use the existing qualified PowerShell in place. Preserve the original installed files and reject redirected roots/links. Hash every staged file, including hidden files, and pin the manifest digest in protected Operator state. No runtime code is copied over running processes.
 3. Create the new `control_*` tables, acquire a durable maintenance gate, independently re-verify the exact M3 run `76213ef3-ef9b-4bd2-9cb6-6c508dc2a92c` and current host/backup/resource invariants. Preserve previous M1/process metadata in separate files. A first-trial record already exists and remains consumed; the old web pilot cannot start a second real run. This migration is intentionally specific to that qualified consumed pilot, not a general updater for arbitrary releases.
 4. Validate all three recorded actors before stopping any: exact PID, original executable/argument vector, SID and creation time. Exclude console hosts. Capture each process handle and recheck at use; stop only that actor, and verify process/port quiescence. A mismatch or uncertain stop retains the gate. Old admission writers cannot participate in the new gate, so retirement plus the consumed-first-trial guard is required before relying on exclusion.
 5. Restart the original unchanged learner runtime explicitly in TerminalOnly through its qualified launcher. This preserves the same HTTPS origin and progress while preventing a new fault/reset permit. Launch the new separate Operator server from its protected release, on `https://127.0.0.1:4176/`. Bootstrap requires a fresh actual elevated token, exact Operator identity/SID and actual read-only Hyper-V access. It verifies the complete release inventory before importing the control plane.
@@ -53,7 +73,8 @@ Use the installed release's `scripts\real-lab\Open-Operator.ps1` under the actua
 Example, after successful installation only:
 
 ```powershell
-$release = (Get-Content 'C:\ProgramData\TicketSimPilot\operator\m4-upgrade.json' -Raw | ConvertFrom-Json).releaseRoot
+$recordFile = if (Test-Path 'C:\ProgramData\TicketSimPilot\operator\m4-resume.json') { 'C:\ProgramData\TicketSimPilot\operator\m4-resume.json' } else { 'C:\ProgramData\TicketSimPilot\operator\m4-upgrade.json' }
+$release = (Get-Content $recordFile -Raw | ConvertFrom-Json).releaseRoot
 & (Join-Path $release 'scripts\real-lab\Open-Operator.ps1')
 ```
 
@@ -62,3 +83,5 @@ The original learner runtime still uses its existing launcher. Automatic service
 ## Validation scope
 
 Source tests cover complete inventory hashing, changes/extra/missing/hidden files, path escapes/case aliases/junctions, actual-token result validation, stale/mismatched readiness, source-entry refusal, native Windows argument parsing and installer dry-run with mutation functions blocked. HTTPS tests cover protected re-pair and reject weak recovery capabilities. These tests do not kill an actual process or install on the real host. Actual acceptance still needs the elevated run, final readiness evidence and a browser check that M3 history remains and all new packs are unavailable.
+
+Current source regression for the transport/resume fix: 183/183 unit/content tests PASS with two workers; build PASS. Tests reject advanced/cross-owner/dirty recovery, preserve the original record hash, retain the same gate owner, select the original Node/report/PowerShell worker and block loading on integrity failure. Dry-run of `Resume-LockedUpgrade.ps1` performs no machine mutation. Actual resume remains pending.

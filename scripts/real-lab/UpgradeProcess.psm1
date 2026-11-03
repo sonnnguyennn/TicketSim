@@ -1,3 +1,9 @@
+function Get-M4InstallationRecord {
+  $state='C:\ProgramData\TicketSimPilot\operator'
+  $filename=if(Test-Path "$state\m4-resume.json"){"$state\m4-resume.json"}else{"$state\m4-upgrade.json"}
+  Get-Content -LiteralPath $filename -Raw | ConvertFrom-Json
+}
+
 function ConvertFrom-WindowsCommandLine {
   param([Parameter(Mandatory)][string]$CommandLine)
   if(-not ('TicketSim.NativeArgs' -as [type])){
@@ -29,6 +35,7 @@ function Assert-UpgradeProcessIdentity {
   }
   if($Process.ProcessId -ne $expectedPid -or $OwnerSid -ne $sid -or $Process.ExecutablePath -ine $expected[0] -or $Arguments.Count -ne $expected.Count){throw 'UPGRADE_PROCESS_IDENTITY_MISMATCH'}
   for($i=0;$i -lt $expected.Count;$i++){if($Arguments[$i] -ine $expected[$i]){throw 'UPGRADE_PROCESS_ARGUMENT_MISMATCH'}}
-  if([math]::Abs((([datetime]$Process.CreationDate).ToUniversalTime()-$expectedTime.ToUniversalTime()).TotalSeconds) -gt 10){throw 'UPGRADE_PROCESS_CREATION_MISMATCH'}
+  # Runtime.startedAt is emitted at readiness, after the bounded identity probe.
+  if([math]::Abs((([datetime]$Process.CreationDate).ToUniversalTime()-$expectedTime.ToUniversalTime()).TotalSeconds) -gt 30){throw 'UPGRADE_PROCESS_CREATION_MISMATCH'}
 }
-Export-ModuleMember -Function ConvertFrom-WindowsCommandLine,Assert-UpgradeProcessIdentity
+Export-ModuleMember -Function Get-M4InstallationRecord,ConvertFrom-WindowsCommandLine,Assert-UpgradeProcessIdentity
