@@ -37,8 +37,11 @@ $continueDry=& (Join-Path $PSScriptRoot 'Continue-RetiredUpgrade.ps1')|ConvertFr
 if($continueDry.Apply -ne $false){throw 'Retired continuation dry-run failed'}
 $bootDry=& (Join-Path $PSScriptRoot 'Start-ApprovedRetiredOriginal.ps1')|ConvertFrom-Json
 if($bootDry.Apply -ne $false -or $bootDry.VmId -ne '2b9c2170-9a23-4d08-b82e-29929afa4c10'){throw 'Approved boot dry-run failed'}
+$repairDry=& (Join-Path $PSScriptRoot 'Restore-ApprovedGuestFirewallBaseline.ps1')|ConvertFrom-Json
+if($repairDry.Apply -ne $false -or $repairDry.GuestCommand -ne 'systemctl is-active --quiet firewalld && sudo systemctl stop firewalld'){throw 'Firewall repair dry-run failed'}
+Assert-Rejected {& (Join-Path $PSScriptRoot 'Restore-ApprovedGuestFirewallBaseline.ps1') -Apply -Consent 'wrong'}
 Write-Output 'PASS dry-run performs no process or filesystem mutation'
-foreach($name in @('Upgrade-PilotRuntime.ps1','Resume-LockedUpgrade.ps1','Continue-RetiredUpgrade.ps1','Start-ApprovedRetiredOriginal.ps1','BootIntegrity.psm1','PilotShell.psm1','Open-Operator.ps1','Get-OperatorToken.ps1','UpgradeProcess.psm1','Verify-M4Runtime.ps1')){
+foreach($name in @('Upgrade-PilotRuntime.ps1','Resume-LockedUpgrade.ps1','Continue-RetiredUpgrade.ps1','Start-ApprovedRetiredOriginal.ps1','Restore-ApprovedGuestFirewallBaseline.ps1','BootIntegrity.psm1','PilotShell.psm1','Open-Operator.ps1','Get-OperatorToken.ps1','UpgradeProcess.psm1','Verify-M4Runtime.ps1')){
   $tokens=$null;$errors=$null;$null=[Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot $name),[ref]$tokens,[ref]$errors)
   if($errors.Count){throw "Parse failure in $name"}
 }

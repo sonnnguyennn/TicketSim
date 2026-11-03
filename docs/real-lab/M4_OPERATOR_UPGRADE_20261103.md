@@ -1,5 +1,9 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
+## Latest pickup: one temporary firewall stop approved, not yet executed
+
+The user approved exactly one guest `systemctl stop firewalld` on original. Use the guarded `Restore-ApprovedGuestFirewallBaseline.ps1` command in the [incident report](M4_COLD_BOOT_INCIDENT_20261104.md), with local learner SSH/sudo authentication. It reserves once, preserves the failed boot bytes, independently verifies all baseline checks and writes separate repair evidence without releasing maintenance. Source continuation accepts that evidence only with correct digest/scope and fresh independent guest/host verification. Do not run the old boot helper or manually change the failed record. No repair or runtime startup has been performed by source tests; permanent reboot/reset stability remains unqualified.
+
 ## Current blocker: approved boot consumed, HTTP timeout and firewall drift
 
 Latest diagnostic closes the guest uncertainty: learner-authenticated read-only output confirms firewalld active/enabled, Nginx listening on IPv4/IPv6 port 80, public active zone and runtime/permanent policy allowing only ssh/dhcpv6-client. A separately scoped one-time stop-firewalld proposal is pending user approval; no guest repair has run. It is explicitly temporary and cannot establish cold-boot persistence. See the incident report's received diagnostic and proposal before any older command below.

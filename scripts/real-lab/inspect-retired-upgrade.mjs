@@ -5,6 +5,8 @@ import { inspectMaintenanceState } from '../../agent/runtimeMaintenance.mjs'
 import { DatabaseSync } from 'node:sqlite'
 import { existsSync,readFileSync } from 'node:fs'
 import { safeUpgradeFailure } from '../../operator/upgradeDiagnostics.mjs'
+import { assertBootContinuationEvidence,FIREWALL_REPAIR } from '../../operator/bootRecovery.mjs'
+import { verifyApprovedBoot } from './verify-approved-boot.mjs'
 
 const root='C:/ProgramData/TicketSimPilot'
 let stage='read_upgrade_record'
@@ -22,14 +24,21 @@ try{
   assertRetiredContinuation({record,gates:db.prepare('SELECT * FROM control_gate').all(),events:db.prepare('SELECT kind,reference_id FROM control_events ORDER BY sequence').all(),stateClear:state.stateClear,
     continuationExists:existsSync(`${root}/operator/m4-retired-continuation.json`),grants:db.prepare('SELECT COUNT(*) n FROM control_grants').get().n,attempts:db.prepare('SELECT COUNT(*) n FROM control_attempts').get().n})
   if(!preboot){
+    let repairUsed=false
     const bootFile=`${root}/operator/m4-original-boot-20261103-001.json`
     if(existsSync(bootFile)){
-      const boot=JSON.parse(readFileSync(bootFile,'utf8'))
-      if(boot.status!=='verified'||boot.ownerId!==record.ownerId||boot.vmId!=='2b9c2170-9a23-4d08-b82e-29929afa4c10'||boot.checkpointId!=='e6d04330-142c-4397-8e0d-ddf5a9e69090')throw new Error('BOOT_NOT_INDEPENDENTLY_VERIFIED')
+      const repairFile=`${root}/operator/${FIREWALL_REPAIR}.json`
+      const repair=existsSync(repairFile)?JSON.parse(readFileSync(repairFile,'utf8')):null
+      ;({repairUsed}=assertBootContinuationEvidence({bootBytes:readFileSync(bootFile),repair,ownerId:record.ownerId}))
     }
     stage='read_actual_m3_host'
-    const report=await readQualifiedTrialReport()
-    if(report.livePass!==true||report.runId!=='76213ef3-ef9b-4bd2-9cb6-6c508dc2a92c'||report.b5LeaseExists)throw new Error('M3_NOT_VERIFIED')
+    if(repairUsed){
+      stage='fresh_repaired_baseline'
+      if(!(await verifyApprovedBoot()).verified)throw new Error('CURRENT_REPAIRED_BASELINE_NOT_PASS')
+    }else{
+      const report=await readQualifiedTrialReport()
+      if(report.livePass!==true||report.runId!=='76213ef3-ef9b-4bd2-9cb6-6c508dc2a92c'||report.b5LeaseExists)throw new Error('M3_NOT_VERIFIED')
+    }
   }
   // Preboot checks admission/state only. It never substitutes for the full
   // Running host + actual report gate required by ordinary continuation.

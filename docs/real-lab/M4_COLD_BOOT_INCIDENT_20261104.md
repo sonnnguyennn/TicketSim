@@ -1,5 +1,21 @@
 # M4 approved original boot — guest firewall drift, 2026-11-04
 
+## Current approved repair pickup
+
+The user has separately approved exactly one `sudo systemctl stop firewalld` on original, with no disable/permanent-policy/hash change, no reset/retry and separate verified evidence. This supersedes the pending-approval wording in the historical diagnostic notes below. No repair has been executed by Codex. The reviewed Operator command is:
+
+```powershell
+& 'E:\Document\TicketSim\scripts\real-lab\Restore-ApprovedGuestFirewallBaseline.ps1' -Apply -Consent 'APPROVE M4 original stop firewalld once 20261104'
+```
+
+Run in elevated PowerShell. Without Apply the helper is dry-run; wrong consent is rejected before protected-state access. It verifies exact retired owner/release/principal, original Node/PowerShell hashes, immutable release inventory, gate/no pending work/no continuation, failed boot binding, fresh actual M3/host/backup/resource invariants and pinned SSH known-host fingerprint. It durably creates Operator-private `m4-firewall-runtime-restore-20261104-001.json` before one fixed learner SSH dispatch. The only remote command is `systemctl is-active --quiet firewalld && sudo systemctl stop firewalld`; local SSH/sudo prompts receive credentials directly, never in chat or an application log. Existing reservation blocks duplicates, including after cancellation or an ambiguous SSH result.
+
+After a zero SSH exit it rechecks maintenance state and runs the existing independent full baseline verifier, including exact HTTP bytes and original firewall hash. Failure keeps the repair record quarantined, original failed boot bytes unchanged and maintenance held; there is no reset/restart/second stop fallback. Success stores the full read-only verification in the separate repair record with the original boot's raw-byte SHA256 and Operator attribution. The helper does not rewrite the boot record, update expected hashes, start pilot services or release the gate.
+
+`operator/bootRecovery.mjs` recognizes only this exact verified repair scope, matching failed boot digest/owner/target/checkpoint, successful SSH exit, coherent timestamps and every required preflight check PASS. Source continuation then independently re-runs current guest/host baseline checks; a stale verified record cannot by itself permit startup. Partial/failed/cross-owner/cross-target/drifted records and unknown checks block. Actual repair, reconciliation and installation readiness remain unqualified until Operator output. Even a successful temporary repair does not qualify cold-boot/post-reset persistence, which remains an M4 acceptance blocker.
+
+Source verification: 189/189 unit/content tests and build PASS. Native Windows PowerShell 5.1 process-policy/dry-run/consent/AST harness also PASS. These checks execute no guest mutation, boot/reset, actual process stop or protected-state installation.
+
 ## Actual outcome
 
 User separately approved exactly one original boot. The corrected guarded helper passed dependency integrity and both retired-admission checks, reserved the single-use operation, called Start-VM and confirmed Running. It then failed with `BOOT_HTTP_READINESS_TIMEOUT_DO_NOT_RESET` after its 90-second HTTP readiness window. Per the helper's source order, it retained `m4-original-boot-20261103-001.json` as failed-quarantined; protected contents have not been independently read back by Codex. No second boot, reset, fault, guest service change or gate release was executed.
