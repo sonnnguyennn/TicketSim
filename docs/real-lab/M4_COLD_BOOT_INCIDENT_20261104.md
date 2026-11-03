@@ -1,5 +1,11 @@
 # M4 approved original boot — guest firewall drift, 2026-11-04
 
+## Latest wrapper fix before any reconciliation work
+
+The Operator invoked `Confirm-RepairedBaseline.ps1 -Record`; it stopped assigning the installation object to `$record`. PowerShell variable names are case-insensitive, so `$record` resolved to typed switch parameter `$Record` and conversion failed. No verifier process, reconciliation evidence write, guest mutation or gate release was reached. Source renames the object to `$upgradeRecord` and its references; the same verification-only command is still the next action after source checks.
+
+The native regression now executes the script's actual parameter declaration together with its actual installation-record assignment under `-Record`, using a synthetic read-only record getter and omitting protected/elevated operations. It passes on PowerShell 7 and Windows PowerShell 5.1; the previous implementation fails this path. A read-only AST scan found no remaining switch-parameter assignment collisions across the real-lab scripts. Existing dry-run/AST checks alone had not exercised this typed binding. Both failed guest-operation records remain unchanged; protected full reconciliation is still pending.
+
 ## Latest actual pickup: repair consumed, Operator verification transport corrected
 
 The Operator executed the approved one-time firewall repair. SSH returned normally and the verifier reported original M3 `livePass=true`, all host/checkpoint/backup/resource checks PASS and HTTP status/content PASS, but service-key `sshAuthentication=unknown` and all dependent guest probes unknown. The helper therefore retained the repair as failed-quarantined at `ssh_returned`. Do not rerun the mutation. Both original failed records must remain byte-identical.

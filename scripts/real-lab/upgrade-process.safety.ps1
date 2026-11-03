@@ -48,4 +48,16 @@ foreach($name in @('Upgrade-PilotRuntime.ps1','Resume-LockedUpgrade.ps1','Contin
   if($errors.Count){throw "Parse failure in $name"}
 }
 Write-Output 'PASS PowerShell installer syntax'
+# Execute the real parameter declaration and record-fetch assignment together,
+# without the elevation/protected-state parts. PowerShell's typed parameter
+# names are case-insensitive, so -Record must not collide with a record object.
+$tokens=$null;$parseErrors=$null
+$confirmAst=[Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot 'Confirm-RepairedBaseline.ps1'),[ref]$tokens,[ref]$parseErrors)
+$assignments=@($confirmAst.FindAll({param($node) $node -is [Management.Automation.Language.AssignmentStatementAst] -and $node.Right.Extent.Text -eq 'Get-M4InstallationRecord'},$true))
+if($assignments.Count -ne 1){throw 'Expected one installation-record assignment'}
+$assignment=$assignments[0];$variableName=$assignment.Left.VariablePath.UserPath
+$testText=$confirmAst.ParamBlock.Extent.Text+"`nfunction Get-M4InstallationRecord { [pscustomobject]@{phase='retired';ownerId='synthetic'} }`n"+$assignment.Extent.Text+"`nGet-Variable -Name '$variableName' -ValueOnly"
+$actualRecord=& ([scriptblock]::Create($testText)) -Record
+if($actualRecord.phase -ne 'retired' -or $actualRecord.ownerId -ne 'synthetic'){throw 'Record switch path failed'}
+Write-Output 'PASS Record switch and actual installation-record assignment coexist'
 Write-Output 'No actual process, VM, state or backup operation was performed.'
