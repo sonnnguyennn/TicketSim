@@ -12,11 +12,20 @@ if(Test-Path "$state\agent\runs.sqlite"){
   if(-not $leases.clear -or @($leases.runs|Where-Object {$_.phase -ne 'completed'}).Count){throw 'ACTIVE_OR_QUARANTINED_RUN: do not stop or refresh'}
 }
 $all=@(Get-CimInstance Win32_Process)
-$candidates=@($all|Where-Object {$_.ProcessId -in @($record.OperatorPid,$record.AgentLauncherPid) -or $_.ParentProcessId -eq $record.AgentLauncherPid})
+Import-Module (Join-Path $PSScriptRoot 'PilotProcess.psm1') -Force
+$candidates=@(Select-PilotProcessTargets -Record $record -Inventory $all -InstallRoot $install)
 foreach($process in $candidates){
   if($process.ProcessId -eq $PID){throw 'REFUSE_TO_STOP_CURRENT_OPERATOR'}
   if($process.ExecutablePath -notin @("$install\node.exe","$install\powershell\pwsh.exe")){throw 'PROCESS_IDENTITY_MISMATCH'}
   if($process.CommandLine -notmatch 'agent[\\/]pilot\.mjs|operator[\\/]server\.mjs|Start-PilotRuntime\.ps1'){throw 'PROCESS_COMMAND_MISMATCH'}
 }
-foreach($process in ($candidates|Sort-Object ParentProcessId -Descending)){Stop-Process -Id $process.ProcessId -ErrorAction Stop}
+foreach($process in ($candidates|Sort-Object ParentProcessId -Descending)){
+  # Killing the Node child normally lets its PowerShell launcher exit by itself.
+  # That expected exit is not a failure; never act on a reused PID.
+  $current=Get-CimInstance Win32_Process -Filter "ProcessId=$($process.ProcessId)" -ErrorAction Stop
+  if(-not $current){continue}
+  if($current.CreationDate -ne $process.CreationDate -or $current.ExecutablePath -ne $process.ExecutablePath -or $current.CommandLine -ne $process.CommandLine){throw 'PROCESS_ID_REUSED: refresh inventory before any further stop'}
+  try{Stop-Process -Id $process.ProcessId -ErrorAction Stop}
+  catch{if(Get-Process -Id $process.ProcessId -ErrorAction SilentlyContinue){throw}}
+}
 Write-Output 'Stopped only the recorded terminal-only pilot processes. No VM action, database edit, journal edit or lease release.'

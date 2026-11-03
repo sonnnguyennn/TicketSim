@@ -53,6 +53,8 @@ If an older pilot was already launched, **do not copy code over running processe
 
 The helper checks its recorded mode/PIDs/executable paths and actual SQLite lease/run state. It is not a reset or a reconciliation tool. Do not manually clear rows, journals or leases to make refresh work. If startup failed before a process record or database exists, report that exact boundary instead of broad-killing Node processes.
 
+Actual M2→M3 transition exposed a stop-helper defect: Windows `conhost.exe` was included solely because its parent was the Agent launcher. The helper correctly failed identity validation before stopping anything. Selection now uses `PilotProcess.psm1` to target the recorded Operator/launcher and their managed Node Agent only, leaving console hosts to Windows. It still rejects unexpected executables/commands and revalidates PID identity before each stop. An already-exited launcher is tolerated after its Node child exits. A synthetic PowerShell regression covers console-host exclusion, expected exits and mismatched/reused executable rejection without stopping any real process.
+
 Evidence paths (outside Git):
 
 - `C:\ProgramData\TicketSimPilot\operator\preparation.json`: principal SID, protected code hashes; no token/password.
@@ -107,7 +109,7 @@ Required actual sequence remains: one claim → stop Nginx only → verify HTTP 
 
 ## Verification record and limits
 
-- `npm test -- --run`: PASS, 141/141 after M3 admission/report/start-expiry coverage (no actual permit is armed by tests).
+- `npm test -- --run`: PASS, 142/142 after M3 admission/report/start-expiry and process-selection coverage (no actual permit is armed by tests).
 - `npm run build`: PASS; terminal assets lazy-loaded; existing main-bundle warning remains.
 - Isolated HTTPS/WSS → SSH PTY browser test: PASS, including refresh/reconnect, website check, note autosave and async submit. A repeated three-run check passed after fixing offscreen terminal presentation. This harness uses generated SSH keys and loopback fake guest state, not original VM evidence.
 - Full browser regression: PASS, 52/52, including the isolated browser pilot with an active run terminal revoked on submit. All 51 previous paths still pass.
