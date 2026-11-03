@@ -109,7 +109,7 @@ Required actual sequence remains: one claim → stop Nginx only → verify HTTP 
 
 ## Verification record and limits
 
-- `npm test -- --run`: PASS, 142/142 after M3 admission/report/start-expiry and process-selection coverage (no actual permit is armed by tests).
+- `npm test -- --run --maxWorkers=2`: PASS, 142/142 after M3 admission/report/start-expiry and process-selection coverage (no actual permit is armed by tests). The default parallel run passed 141 tests but timed out the existing PowerShell safety harness at Vitest's five-second test limit; the bounded-worker rerun passed every assertion without changing the harness or its limits.
 - `npm run build`: PASS; terminal assets lazy-loaded; existing main-bundle warning remains.
 - Isolated HTTPS/WSS → SSH PTY browser test: PASS, including refresh/reconnect, website check, note autosave and async submit. A repeated three-run check passed after fixing offscreen terminal presentation. This harness uses generated SSH keys and loopback fake guest state, not original VM evidence.
 - Full browser regression: PASS, 52/52, including the isolated browser pilot with an active run terminal revoked on submit. All 51 previous paths still pass.
