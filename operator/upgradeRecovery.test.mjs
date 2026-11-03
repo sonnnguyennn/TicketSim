@@ -3,7 +3,7 @@ import { mkdtempSync,mkdirSync,writeFileSync,readFileSync,rmSync } from 'node:fs
 import { tmpdir } from 'node:os'
 import { join,resolve,sep } from 'node:path'
 import { randomUUID } from 'node:crypto'
-import { assertLockedRecovery,readActiveUpgrade,evidenceHash } from './upgradeRecovery.mjs'
+import { assertLockedRecovery,assertRetiredContinuation,readActiveUpgrade,evidenceHash } from './upgradeRecovery.mjs'
 import { RunControlJournal } from './runControl.mjs'
 import { withQualifiedPowerShell,readQualifiedTrialReport,QUALIFIED_PWSH } from './qualifiedRuntime.mjs'
 import { LIVE_TARGET } from '../agent/livePolicy.mjs'
@@ -65,4 +65,11 @@ it('does not load any host inspection code if the qualified runtime integrity ch
   let loaded=false
   await expect(readQualifiedTrialReport({verify:()=>{throw new Error('QUALIFIED_RUNTIME_HASH_CHANGED')},run:()=>{loaded=true}})).rejects.toThrow('QUALIFIED_RUNTIME_HASH_CHANGED')
   expect(loaded).toBe(false)
+})
+
+it('continues only a verified retired run before any continuation/start attempt or unresolved work',()=>{
+  const record={...original(),phase:'retired'}
+  const input={record,gates:[{vm_id:LIVE_TARGET.vmId,kind:'maintenance',owner_id:record.ownerId}],events:[{kind:'legacy_state_rechecked',reference_id:record.ownerId}],stateClear:true,continuationExists:false,grants:0,attempts:0}
+  expect(assertRetiredContinuation(input)).toBe(true)
+  for(const patch of [{record:{...record,phase:'retiring'}},{record:{...record,phase:'installed'}},{continuationExists:true},{stateClear:false},{grants:1},{attempts:1},{gates:[]},{events:[{kind:'maintenance_failed',reference_id:record.ownerId}]}])expect(()=>assertRetiredContinuation({...input,...patch})).toThrow()
 })

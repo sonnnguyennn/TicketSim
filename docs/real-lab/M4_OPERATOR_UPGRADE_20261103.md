@@ -1,5 +1,23 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
+## Current pickup: resume retired, credential module failed
+
+Operator output from the actual `Resume-LockedUpgrade.ps1 -Apply` shows process retirement, a successful fresh elevated Operator probe at `2026-11-03T04:48:02.9323799Z`, then `Get-Credential` / `CouldNotAutoloadMatchingModule` in the original launcher. Source order places the failure after the resume record became `retired`, before Agent credential probing or new services started. Protected state still needs to confirm this precise phase; the continuation refuses anything else. The original failed release/record and same maintenance owner remain preserved.
+
+The launcher was called in Windows PowerShell 5.1 after its module path had been set to PowerShell 7 modules. A native cold-shell test reproduces the incompatible Security module failure. `PilotShell.psm1` keeps caller modules aligned to its own host and invokes the unchanged, hash-verified original launcher in the qualified protected PowerShell 7 process. It restores the caller environment when the child exits, including failure. Tests load `Get-Credential` metadata only; they never request a password.
+
+The current reviewed command, in the elevated Operator window, is:
+
+```powershell
+& 'E:\Document\TicketSim\scripts\real-lab\Continue-RetiredUpgrade.ps1' -Apply
+```
+
+This is not another staging or retirement attempt. Without Apply it is dry-run. Apply checks the hash-linked active record, full immutable release manifest, original launcher hashes, exact owned gate and last `legacy_state_rechecked` event, no grants/attempts/unresolved work, actual original M3 PASS, and absence of runtime actors/listeners. It exclusively creates Operator-private `m4-retired-continuation.json` before starting anything. It starts the original learner TerminalOnly through PowerShell 7, starts the existing staged Operator, and invokes the existing immutable completion verifier. Completion still requires fresh actual M1, TLS, principals, process identity and M3/host checks before gate release. No release is patched or copied, and no process stop, fault/reset, guest setup or checkpoint/backup operation is supplied by this helper.
+
+Enter the Windows TicketSimAgent password only in the local prompt. If any step fails, retain its marker, records, gate and logs; do not repeat this command, Resume, Apply, Stop or Refresh. The marker records the failed stage and blocks a duplicate start. Do not paste pairing links, tokens or passwords. Successful source tests are not actual installation qualification: current regression is 185/185 unit/content tests PASS, including real Windows PowerShell 5.1/7 compatibility and dry-run/AST guards, plus build PASS. Actual continuation and final browser acceptance remain pending.
+
+The following locked-stage procedure is historical for this host; it was already executed and must not be repeated.
+
 ## Diagnosed incident and explicit locked-stage recovery
 
 Actual read-only evidence narrowed the failure to the staged host-inspection transport: on 2026-11-03 the cloned release returned empty stdout, `SyntaxError` on JSON parse, elapsed 121069ms, no BOM/warning text and no reported timeout kill. This is **not proof of a timeout** or a VM/backup failure. The underlying reason the cloned PowerShell returned no JSON is not established. The original protected `Inspect-WebTrial.ps1` path independently continues to report actual M3 PASS and correct host state.

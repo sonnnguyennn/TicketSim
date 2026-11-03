@@ -21,3 +21,11 @@ export function assertLockedRecovery({original,gates,events,archiveExists,stateC
   check(archiveExists.m1===false&&archiveExists.processes===false&&stateClear===true&&grants===0&&attempts===0,'UPGRADE_RECOVERY_STATE_NOT_CLEAR')
   return true
 }
+
+export function assertRetiredContinuation({record,gates,events,stateClear,continuationExists,grants,attempts}){
+  check(record?.phase==='retired'&&continuationExists===false,'RETIRED_CONTINUATION_NOT_ELIGIBLE')
+  check(gates.length===1&&gates[0].vm_id===LIVE_TARGET.vmId&&gates[0].kind==='maintenance'&&gates[0].owner_id===record.ownerId,'UPGRADE_GATE_OWNER_MISMATCH')
+  check(events.length>0&&events[events.length-1].kind==='legacy_state_rechecked'&&events[events.length-1].reference_id===record.ownerId,'RETIRED_CONTINUATION_REQUIRES_REVIEW')
+  check(stateClear===true&&grants===0&&attempts===0,'UPGRADE_RECOVERY_STATE_NOT_CLEAR')
+  return true
+}

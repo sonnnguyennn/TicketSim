@@ -32,8 +32,10 @@ $dry=& (Join-Path $PSScriptRoot 'Upgrade-PilotRuntime.ps1')|ConvertFrom-Json
 if($dry.Apply -ne $false){throw 'Dry-run failed'}
 $resumeDry=& (Join-Path $PSScriptRoot 'Resume-LockedUpgrade.ps1')|ConvertFrom-Json
 if($resumeDry.Apply -ne $false -or $resumeDry.ResumeLocked -ne $true){throw 'Resume dry-run failed'}
+$continueDry=& (Join-Path $PSScriptRoot 'Continue-RetiredUpgrade.ps1')|ConvertFrom-Json
+if($continueDry.Apply -ne $false){throw 'Retired continuation dry-run failed'}
 Write-Output 'PASS dry-run performs no process or filesystem mutation'
-foreach($name in @('Upgrade-PilotRuntime.ps1','Resume-LockedUpgrade.ps1','Open-Operator.ps1','Get-OperatorToken.ps1','UpgradeProcess.psm1','Verify-M4Runtime.ps1')){
+foreach($name in @('Upgrade-PilotRuntime.ps1','Resume-LockedUpgrade.ps1','Continue-RetiredUpgrade.ps1','PilotShell.psm1','Open-Operator.ps1','Get-OperatorToken.ps1','UpgradeProcess.psm1','Verify-M4Runtime.ps1')){
   $tokens=$null;$errors=$null;$null=[Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot $name),[ref]$tokens,[ref]$errors)
   if($errors.Count){throw "Parse failure in $name"}
 }

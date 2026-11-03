@@ -7,6 +7,8 @@ if(-not $Apply){
   [pscustomobject]@{Apply=$false;ResumeLocked=[bool]$ResumeLocked;Changes='Stage immutable Operator release; verify actual completed M3; retain maintenance gate; stop exact recorded pilot processes; launch separate Operator consent page; restart original learner runtime terminal-only; verify TLS/identities/history before release. No guest setup, fault, reset, checkpoint or backup mutation.';Install=$install;State=$state}|ConvertTo-Json
   return
 }
+Import-Module (Join-Path $PSScriptRoot 'PilotShell.psm1') -Force
+Set-PilotCallerModulePath
 $identity=[Security.Principal.WindowsIdentity]::GetCurrent()
 if(-not ([Security.Principal.WindowsPrincipal]$identity).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)){throw 'OPERATOR_ELEVATION_REQUIRED'}
 if($ResumeLocked){
@@ -56,7 +58,6 @@ $files=@(Get-ChildItem -LiteralPath $release -Recurse -Force -File|Sort-Object F
 [IO.File]::WriteAllText("$release\release-manifest.json",([pscustomobject]@{schemaVersion=1;files=$files}|ConvertTo-Json -Depth 5),(New-Object Text.UTF8Encoding($false)))
 $digest=(Get-FileHash -LiteralPath "$release\release-manifest.json" -Algorithm SHA256).Hash.ToLowerInvariant()
 $env:TICKETSIM_PWSH="$install\powershell\pwsh.exe"
-$env:PSModulePath="$install\powershell\Modules;$env:WINDIR\System32\WindowsPowerShell\v1.0\Modules;$env:ProgramFiles\WindowsPowerShell\Modules"
 function Invoke-UpgradeStage([string]$Stage,[string]$Digest=''){
   $arguments=@("$release\operator\upgrade.mjs",$Stage)
   if($Digest){$arguments+=$Digest}
@@ -105,8 +106,7 @@ foreach($port in @(4174,4175,4176)){
 $null=Invoke-UpgradeStage 'retired'
 # Reuse the already-qualified learner runtime unchanged; Start in TerminalOnly
 # cannot arm another M3 permit. Credential is entered locally, never in chat.
-& "$install\scripts\real-lab\Start-PilotRuntime.ps1" -Mode TerminalOnly
-if(-not $?){throw 'LEARNER_RESTART_FAILED_GATE_RETAINED'}
+Invoke-PilotPowerShell -Script "$install\scripts\real-lab\Start-PilotRuntime.ps1" -ScriptArguments @('-Mode','TerminalOnly') -Interactive
 $control=Start-Process -FilePath "$release\node.exe" -WorkingDirectory $release -ArgumentList @("`"$release\operator\bootstrap.mjs`"") -WindowStyle Hidden -PassThru -RedirectStandardOutput "$state\operator\control.stdout.log" -RedirectStandardError "$state\operator\control.stderr.log"
 [Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12
 $response=$null;$deadline=[datetime]::UtcNow.AddSeconds(60)
@@ -125,5 +125,5 @@ $owner=Invoke-CimMethod -InputObject $process -MethodName GetOwnerSid
 if($owner.ReturnValue -ne 0 -or $owner.Sid -ne $identity.User.Value -or $runtime.sid -ne $identity.User.Value){throw 'OPERATOR_CONTROL_OWNER_MISMATCH'}
 [pscustomobject]@{TlsVerified=$true;AgentTerminalOnly=$true;OperatorControlVerified=$true;ControlPid=$control.Id;ControlSid=$owner.Sid;CheckedAt=[datetime]::UtcNow.ToString('o')}|ConvertTo-Json|Set-Content "$state\operator\m4-readiness.json"
 $result=Invoke-UpgradeStage 'complete'
-& "$release\scripts\real-lab\Open-Operator.ps1"
+Invoke-PilotPowerShell -Script "$release\scripts\real-lab\Open-Operator.ps1"
 Write-Output 'Upgrade completed: protected Operator consent page and terminal-only learner runtime. M3 history/permit preserved; zero new VM operations and zero qualified new scenarios.'
