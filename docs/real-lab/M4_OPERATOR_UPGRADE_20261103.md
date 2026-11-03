@@ -1,5 +1,15 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
+## Current pickup: baseline verified, continue runtime migration
+
+Actual Operator output now confirms separate verification recorded, all required current baseline checks PASS, historical M3 PASS, both failed records unchanged and maintenance gate retained. The extra fault-only `nginxStopped`/`httpUnavailable` checks correctly fail in a healthy baseline. The next already-authorized command in elevated PowerShell is:
+
+```powershell
+& 'E:\Document\TicketSim\scripts\real-lab\Continue-RetiredUpgrade.ps1' -Apply
+```
+
+This helper still refuses an existing continuation attempt or any present runtime actor/listener; verifies immutable release, same gate and digest-linked reconciliation plus a fresh full baseline; then starts TerminalOnly learner and separate zero-qualified-pack Operator control. Enter the Windows TicketSimAgent password locally, not learner SSH password and never in chat. No VM-changing operation is performed. On failure retain state and report, without repeating Apply/Resume/Stop/Refresh or any guest mutation. Actual migration/browser acceptance and cold-boot/post-reset stability remain pending; the baseline verification is not M4 completion.
+
 ## Current action: verify repaired baseline without repeating the mutation
 
 The approved firewalld stop ran once and HTTP exact content recovered. The Operator verifier then failed its service-key probes; independent probes using the original Operator key pass all guest checks. Source corrects the verifier's key context without changing Agent key ACLs. Run only the verification-only `Confirm-RepairedBaseline.ps1 -Record` described in the [incident report's latest pickup](M4_COLD_BOOT_INCIDENT_20261104.md). It creates separate digest-linked verification after full current PASS, retaining both failed boot/repair files and maintenance gate. Do not repeat boot or repair. Unknown mutation outcomes cannot be reconciled through this branch. Runtime continuation waits for actual full verification; cold-boot/reset persistence remains unqualified.

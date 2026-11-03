@@ -1,5 +1,11 @@
 # M4 approved original boot — guest firewall drift, 2026-11-04
 
+## Actual separate verification recorded — PASS
+
+The Operator ran the corrected `Confirm-RepairedBaseline.ps1 -Record` and supplied `recorded=true`, `readOnlyProbes=true`, `failedRecordsUnchanged=true`, `maintenanceGateRetained=true`. Verification is `verified=true`, historical M3 `livePass=true`, exact run `76213ef3-ef9b-4bd2-9cb6-6c508dc2a92c`, original `2b9c2170-9a23-4d08-b82e-29929afa4c10`, checkpoint `e6d04330-142c-4397-8e0d-ddf5a9e69090`. All required preflight checks passed: host/target/protected/recovery/checkpoint, B5 proof, backup/resources, service-key SSH authentication and pinned host key, configs/service/page/network/firewall hashes, route and HTTP exact content. `nginxStopped=fail` and `httpUnavailable=fail` are correct for the healthy state: they are extra fault-only conditions, not required preflight failures.
+
+The separate digest-linked verification record exists; failed boot and repair bytes remain preserved, and no guest mutation was repeated. This establishes current repaired baseline readiness, not cold-boot/post-reset persistence. Do not repeat Record, boot, repair or reset. Runtime migration is still not installed/qualified; the next already-authorized step is guarded `Continue-RetiredUpgrade.ps1 -Apply`, which rechecks evidence/current guest baseline, starts only the terminal-only learner plus separate Operator page, and releases maintenance only after actual role/process/TLS/readiness checks. Its local Windows TicketSimAgent password prompt is distinct from learner SSH/sudo authentication.
+
 ## Latest wrapper fix before any reconciliation work
 
 The Operator invoked `Confirm-RepairedBaseline.ps1 -Record`; it stopped assigning the installation object to `$record`. PowerShell variable names are case-insensitive, so `$record` resolved to typed switch parameter `$Record` and conversion failed. No verifier process, reconciliation evidence write, guest mutation or gate release was reached. Source renames the object to `$upgradeRecord` and its references; the same verification-only command is still the next action after source checks.
