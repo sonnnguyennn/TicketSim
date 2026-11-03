@@ -1,5 +1,11 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
+## Current blocker: approved boot consumed, HTTP timeout and firewall drift
+
+Latest diagnostic closes the guest uncertainty: learner-authenticated read-only output confirms firewalld active/enabled, Nginx listening on IPv4/IPv6 port 80, public active zone and runtime/permanent policy allowing only ssh/dhcpv6-client. A separately scoped one-time stop-firewalld proposal is pending user approval; no guest repair has run. It is explicitly temporary and cannot establish cold-boot persistence. See the incident report's received diagnostic and proposal before any older command below.
+
+The user ran the corrected boot helper: it called Start-VM once, confirmed Running, then failed `BOOT_HTTP_READINESS_TIMEOUT_DO_NOT_RESET`. Independent fixed-target read-only probes confirm SSH/identity/host key, network route, Nginx/config/page hashes PASS, but the guest firewalld rules permit SSH only and the normalized firewall hash differs from baseline. See [actual cold-boot incident](M4_COLD_BOOT_INCIDENT_20261104.md) for exact observations, limits and next steps. The original is Running; do not boot/reset it again. Keep the failed boot record and maintenance gate. Current continuation correctly refuses that failed record. Learner-authenticated read-only firewalld/persistent-policy/listener inspection is requested before presenting an exact separately approved repair. No repair or baseline-hash change is authorized by the consumed boot approval. Prior commands below are historical until this incident is reconciled; do not rerun them.
+
 ## 2026-11-04: boot precheck expected an uninventoried module hash
 
 The approved boot helper stopped at `QUALIFIED_BOOT_DEPENDENCY_HASH_CHANGED`, before retired admission, reservation or Start-VM. Source inspection found an implementation error: original `Prepare-PilotRuntime.ps1` inventories Node and PowerShell but never inventories `scripts/real-lab/FastReset.Operator.psm1`. Comparing its actual hash to that missing property incorrectly reported a changed dependency. The generic output alone does not prove any installed file was changed.
