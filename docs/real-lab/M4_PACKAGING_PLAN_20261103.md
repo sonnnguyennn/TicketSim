@@ -4,6 +4,26 @@ Prerequisite achieved: [actual M3 PASS](M3_ACTUAL_PASS_20261103.md). Product tar
 
 PM's HyperV_TicketLab proposal is analyzed in [integration review](HYPERV_TICKETLAB_INTEGRATION_REVIEW_20261103.md). Recommended scheduling: shared M4 lifecycle/approval foundations → qualify post-B5 guest bootstrap → port 02/03/07 sequentially → complete packaging. This recommendation is not approval for new live mutations or a replacement of the consumed M3 permit.
 
+## Execution plan and pickup
+
+User approved this scheduling and implementation start on 2026-11-03. Source development proceeds without deploying over the running qualified Trial installation. Actual guest deployment/fault/reset still requires fresh, concrete scope approval; M3 is consumed.
+
+| Step | Deliverable and acceptance | State |
+|---|---|---|
+| M4.1a | Closed Scenario Pack blueprint contract for 02/03/07, neutral catalog, immutable target/action/endpoint/check bindings; new packs cannot execute | Implemented in source; not connected to a live API |
+| M4.1b | Read-only maintenance inspection preserves completed consumed history and blocks unresolved runs, leases, work, claims and reset evidence | Implemented in source; inspection is not authorization or an exclusive maintenance lock |
+| M4.1c | New per-run protected approval journal, authenticated Operator flow, atomic maintenance/admission exclusion and safe upgrade of the consumed-pilot installation | Next; current first-trial safeguards remain intact |
+| M4.2 | Qualify protected fixed-bundle guest bootstrap after B5 reset; decide credential lifetime and verify partial-deploy recovery | Blocked for live execution until a concrete deployment proposal is approved; source design can proceed |
+| M4.3 | Port 02, then 03, then 07 through prepare/healthy/inject/fault/grade/shared reset; tests and actual evidence per scenario | Not started; blueprints are not executable implementations |
+| M4.4 | Sequential cross-scenario cleanup qualification, preserving original M3 history | Not started; actual runs need new approvals |
+| M4.5 | Pinned distributions, services/shortcut, browser diagnostics/operator controls, progress migration, upgrade/repair/uninstall and package acceptance | Not started; builds on the preceding lifecycle contract |
+
+First source slice: `agent/scenarioPacks.mjs`, `agent/runtimeMaintenance.mjs` and `scripts/real-lab/inspect-m4-readiness.mjs`, with adversarial/SQLite tests. `npm run real-lab:readiness` prints a source-only report; unreadable/missing/incompatible protected state fails closed. It does not request credentials, create state, arm approval, stop/start services, SSH, reset or edit a journal. Run under the existing Operator when protected database access is needed; this diagnostic alone never permits a refresh.
+
+The maintenance report uses read-only snapshots of both databases, but they are not an atomic cross-process lock. The future maintenance executor must stop admission, acquire exclusive ownership and recheck; do not wire a stale `stateClear` into a Stop/Prepare action. Completed history is eligible only with verified recovery, finalization and exactly one passing reset record. Failed/unknown records require inspection, never automatic cleanup.
+
+Verification for this slice: `npm test -- --run --maxWorkers=2` PASS 149/149; `npm run build` PASS (existing chunk-size warning). Read-only readiness smoke test under Codex's ordinary principal correctly reports protected state unverified and all three packs unavailable. No protected runtime refresh or database migration was performed. No frontend behavior changed, so the existing browser suite was not rerun for this slice.
+
 ## Ordered implementation
 
 1. **Freeze installation contract.** Inventory the tested Node/PowerShell distributions, protected code hashes, account/certificate/state ownership and existing host manifest. Pin distributable versions, checksums and licenses before bundling. Package the app separately from this host's existing VM/checkpoint/backup; do not clone/import/provision a VM or create a checkpoint implicitly.

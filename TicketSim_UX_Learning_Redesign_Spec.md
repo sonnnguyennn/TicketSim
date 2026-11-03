@@ -4,6 +4,8 @@
 
 ### Web-first live pilot pickup — 2026-11-03
 
+M4/Scenario Pack implementation has started in source. See `docs/real-lab/M4_PACKAGING_PLAN_20261103.md` for ordered steps and status. New immutable 02/03/07 blueprints remain planned/unavailable; a read-only maintenance diagnostic preserves completed approvals/history and blocks unresolved work. No new guest dispatcher, executable pack, per-run web approval, service installer or live trial is enabled by this slice. Existing deployed Trial runtime is unchanged.
+
 Actual update: M3 is PASS on the actual original, run `76213ef3-ef9b-4bd2-9cb6-6c508dc2a92c`. Operator-supplied protected report confirms grade/baseline PASS, terminal revoked before grade, exactly one successful reset, finalization and clear lease/work state. See `docs/real-lab/M3_ACTUAL_PASS_20261103.md` and `M4_PACKAGING_PLAN_20261103.md`. The one-trial permit is consumed; do not reuse it or clear its records. The current Trial runtime must not be stopped/refreshed with terminal-only helpers. Default launcher mode remains terminal-only for future unapproved activation.
 
 PM supersedes sequential full-product packaging with M1 secure runtime → M2 browser SSH lab → M3 one actual trial → M4 packaging. M1/M2/M3 have actual evidence; M4 is next. See `docs/real-lab/WEB_FIRST_MVP_20261103.md` for code and boundaries. The separate Real Lab module has HTTPS/WSS guest PTY, session renewal, refresh/resume, fixed HTTP check, notes and async operations. B5 remains qualified. Guided's terminal remains fixture-only and all 112 tickets/progress are preserved. The historical pickup entries below describe earlier checkpoints.
