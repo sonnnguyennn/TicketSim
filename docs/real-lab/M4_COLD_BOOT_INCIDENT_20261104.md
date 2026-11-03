@@ -1,5 +1,9 @@
 # M4 approved original boot — guest firewall drift, 2026-11-04
 
+## Incident reconciled for current runtime startup
+
+Separate full baseline verification was recorded without altering failed boot/repair bytes. After the JSON-boundary change, actual Continue Inspect passed; subsequent Continue Apply completed protected runtime startup/readiness and installed-stage completion. Browser screenshots and independent HTTPS probes agree. See [actual M4.1c result](M4_1C_RUNTIME_ACTUAL_PASS_20261104.md). The earlier JSON failure's exact raw boundary contents were never captured; do not retroactively claim a BOM or timeout root cause. No guest repair was repeated. This closes current runtime-startup recovery, not the remaining cold-boot/post-reset firewall-persistence defect; keep all incident evidence and treat earlier apply/repair instructions below as history.
+
 ## Current blocker: fresh continuation probe JSON parse
 
 After actual separate verification PASS, the Operator ran Continue Apply. It stopped with `SyntaxError` at `fresh_repaired_baseline`, `continuationExists=false`, `noStart=true`. Evidence bindings had passed; no marker, runtime start or guest mutation was reached. This output does not identify which JSON boundary failed and must not be labeled a new guest failure, timeout or BOM incident without evidence.

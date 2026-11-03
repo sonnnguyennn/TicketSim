@@ -1,5 +1,9 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
+## Actual migration complete — 2026-11-04
+
+The Operator's Continue Apply completed; actual screenshots show authenticated Operator catalog with unavailable LAB-02 and learner TerminalOnly full preflight PASS. Independent trusted HTTPS checks confirm learner actions disabled/terminal enabled and Operator 200. See [actual M4.1c result](M4_1C_RUNTIME_ACTUAL_PASS_20261104.md). The successful guarded complete path verified principals/processes/TLS/M3 before installed-state persistence and maintenance release. Do not rerun the installation/resume/confirmation/repair commands below. They are retained as incident history, not a general updater. M4.2 guest bootstrap and reboot/reset stability are next; zero new packs are qualified and no new VM-changing operation is authorized.
+
 ## Latest next action is Inspect, not Apply
 
 The actual Continue attempt stopped with a fresh-baseline SyntaxError before creating a continuation marker or starting services. Source now identifies individual JSON boundaries with sanitized metadata and captures the fixed qualified host-inspect output directly, retaining the original inspect-only arguments/timeout. Current command is `Continue-RetiredUpgrade.ps1 -Inspect`; it checks the same evidence/baseline/actor conditions but returns before any write/start. Obtain that output before another Apply. No raw stdout/secret or malformed JSON is accepted, and the previous actual baseline PASS is preserved. See the newest incident entry for exact limits.
