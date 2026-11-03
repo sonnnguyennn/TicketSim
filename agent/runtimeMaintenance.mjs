@@ -4,7 +4,7 @@ import { DatabaseSync } from 'node:sqlite'
 // Inspection only: no authorization to stop, refresh, edit leases or replay work.
 // A future maintenance executor must also quiesce admission and recheck under
 // exclusive ownership; this point-in-time snapshot cannot remove that race.
-export function inspectMaintenanceState({agentPath,operatorPath,b5LeasePath}){
+export function inspectMaintenanceState({agentPath,operatorPath,b5LeasePath,ownedMaintenanceId=null}){
   if(![agentPath,operatorPath,b5LeasePath].every(path=>typeof path==='string'&&path.length))throw new Error('MAINTENANCE_PATHS_REQUIRED')
   if(!existsSync(agentPath)||!existsSync(operatorPath))throw new Error('MAINTENANCE_DATABASE_MISSING')
   let agent,operator
@@ -28,6 +28,15 @@ export function inspectMaintenanceState({agentPath,operatorPath,b5LeasePath}){
     if(actions.some(action=>action.status!=='pass'||!claims.some(claim=>claim.approval_id===action.approval_id&&claim.run_id===action.run_id)))blockers.push('OPERATOR_ACTION_UNRESOLVED')
     if(runs.some(run=>!claims.some(claim=>claim.run_id===run.run_id&&claim.finalized_at)))blockers.push('REAL_RUN_NOT_FINALIZED')
     if(claims.some(claim=>actions.filter(action=>action.approval_id===claim.approval_id&&action.run_id===claim.run_id&&action.operation_id==='real-host-reset-v1'&&action.status==='pass').length!==1))blockers.push('RESET_EVIDENCE_NOT_VERIFIED')
+    const tables=operator.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name IN ('control_grants','control_gate','control_attempts','control_events')").all()
+    if(tables.length){
+      if(tables.length!==4)throw new Error('MAINTENANCE_CONTROL_SCHEMA_INCOMPLETE')
+      const gates=operator.prepare('SELECT * FROM control_gate').all()
+      if(ownedMaintenanceId!==null&&!gates.some(gate=>gate.kind==='maintenance'&&gate.owner_id===ownedMaintenanceId))blockers.push('MAINTENANCE_OWNER_MISMATCH')
+      if(gates.some(gate=>gate.kind!=='maintenance'||gate.owner_id!==ownedMaintenanceId))blockers.push('CONTROL_GATE_HELD')
+      if(operator.prepare("SELECT 1 FROM control_grants WHERE status NOT IN ('issued','completed')").get())blockers.push('CONTROL_RUN_UNRESOLVED')
+      if(operator.prepare("SELECT 1 FROM control_attempts WHERE status NOT IN ('pass','fail')").get())blockers.push('CONTROL_ACTION_UNRESOLVED')
+    }else if(ownedMaintenanceId!==null)blockers.push('MAINTENANCE_OWNER_MISMATCH')
     return {checkedAt:new Date().toISOString(),inspectionOnly:true,mutationAuthorized:false,
       stateClear:blockers.length===0,blockers,completedRealRuns:runs.filter(run=>run.phase==='completed').length,
       preservedApprovalIds:claims.map(claim=>claim.approval_id)}

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TicketSim · Operator</title>
+<style nonce="__TICKETSIM_NONCE__">
+body{font:16px/1.6 system-ui,sans-serif;color:#152b3b;background:#f3f6fa;margin:0}main{max-width:860px;margin:36px auto;padding:0 20px}section{background:white;border:1px solid #ced9e4;border-radius:12px;padding:24px;margin:20px 0}h1,h2{line-height:1.3}label{display:block;margin:12px 0}input[type=password],select{box-sizing:border-box;width:100%;padding:12px;border:1px solid #869bad;border-radius:6px;font:inherit}button{padding:12px 20px;margin-top:12px;font:inherit;border:1px solid #1d54b5;border-radius:6px;background:#1d54b5;color:white;cursor:pointer}button:disabled{opacity:.5;cursor:default}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#edf2f7;padding:16px}#message{min-height:28px}small{color:#4a6175}[hidden]{display:none}
+</style></head><body><main>
+<h1>TicketSim · Operator</h1>
+<p>Duyệt phạm vi một lượt lab. Phê duyệt tại đây chưa tạo sự cố và chưa reset VM.</p>
+<section id="pair-panel"><h2>Xác thực Operator</h2><p>Dùng mã ghép đôi riêng được cấp qua launcher Operator trên máy này.</p>
+<form id="pair-form"><label for="pair-code">Mã ghép đôi Operator</label><input id="pair-code" type="password" autocomplete="off" required><button type="submit">Kết nối Operator</button></form></section>
+<section id="catalog-panel" hidden><h2>Chuẩn bị phê duyệt</h2><label for="scenario">Bài lab</label><select id="scenario"></select><p id="availability"></p><button id="propose" disabled>Xem phạm vi lượt mới</button></section>
+<section id="proposal-panel" hidden><h2>Kiểm tra target, tác động và recovery</h2><pre id="scope"></pre><ul id="effects"></ul><p id="expiry"></p>
+<label><input id="confirm" type="checkbox"> Tôi đã kiểm tra và đồng ý đúng một lượt với phạm vi ở trên, gồm recovery khi nộp bài, hết giờ hoặc setup thất bại.</label><button id="approve" disabled>Phê duyệt đúng lượt này</button></section>
+<p id="message" role="status" aria-live="polite"></p><small>Không nhập mật khẩu Windows hoặc SSH vào trang này. Không có Windows shell hay chức năng chạy script tùy ý.</small>
+</main><script nonce="__TICKETSIM_NONCE__">
+(()=>{
+  const el=id=>document.getElementById(id);let csrf='',proposal=null,catalog=[],busy=false
+  async function post(path,input={}){
+    const response=await fetch('/api/operator/'+path,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json',...(csrf?{'X-TicketSim-Operator-CSRF':csrf}:{})},body:JSON.stringify(input)})
+    const data=await response.json();if(!response.ok)throw new Error(data.code||'Không thể kết nối Operator');return data
+  }
+  async function run(work){
+    if(busy)return;busy=true;el('message').textContent='Đang xử lý…'
+    try{await work()}catch(error){el('message').textContent=error.message;if(error.message==='UNAUTHORIZED'){csrf='';proposal=null;el('pair-panel').hidden=false;el('catalog-panel').hidden=true;el('proposal-panel').hidden=true}}
+    finally{busy=false}
+  }
+  function selection(){const selected=catalog.find(item=>item.id===el('scenario').value);el('availability').textContent=selected?.availableForApproval?'Đủ điều kiện để xem đề xuất phê duyệt.':'Chưa kiểm định hoặc chưa có bundle thực thi; chưa được mở lượt thật.';el('propose').disabled=!selected?.availableForApproval}
+  async function paired(session){
+    csrf=session.csrf;catalog=(await post('catalog')).scenarios
+    el('scenario').replaceChildren(...catalog.map(item=>{const option=document.createElement('option');option.value=item.id;option.textContent=item.id+' · '+item.title;return option}))
+    el('pair-panel').hidden=true;el('catalog-panel').hidden=false;selection();el('message').textContent='Đã xác thực Operator. Phiên duyệt có hiệu lực tối đa 5 phút.'
+  }
+  el('pair-form').addEventListener('submit',event=>{event.preventDefault();const code=el('pair-code').value;el('pair-code').value='';void run(async()=>paired(await post('pair',{code})))})
+  el('scenario').addEventListener('change',()=>{proposal=null;el('proposal-panel').hidden=true;selection()})
+  el('propose').addEventListener('click',()=>void run(async()=>{
+    proposal=await post('proposal',{scenarioId:el('scenario').value});el('scope').textContent=JSON.stringify(proposal.scope,null,2)
+    el('effects').replaceChildren(...proposal.effects.map(effect=>{const item=document.createElement('li');item.textContent=effect;return item}))
+    el('expiry').textContent='Đề xuất hết hạn: '+new Date(proposal.expiresAt).toLocaleString('vi-VN');el('confirm').checked=false;el('approve').disabled=true;el('proposal-panel').hidden=false;el('message').textContent='Kiểm tra phạm vi trước khi phê duyệt.'
+  }))
+  el('confirm').addEventListener('change',()=>{el('approve').disabled=!el('confirm').checked})
+  el('approve').addEventListener('click',()=>void run(async()=>{
+    if(!proposal||!el('confirm').checked)return
+    el('approve').disabled=true
+    const grant=await post('approve',{proposalId:proposal.proposalId,consent:proposal.consent});proposal=null;el('proposal-panel').hidden=true
+    el('message').textContent='Đã cấp approval '+grant.approvalId+' cho run '+grant.runId+'. Chưa tạo sự cố. Hạn bắt đầu: '+new Date(grant.expiresAt).toLocaleString('vi-VN')
+  }))
+  const hash=location.hash;history.replaceState(null,'',location.pathname)
+  if(hash.startsWith('#pair=')){let code;try{code=decodeURIComponent(hash.slice(6))}catch{el('message').textContent='Mã ghép đôi không hợp lệ';return}void run(async()=>paired(await post('pair',{code})))}
+  else void post('session').then(paired).catch(()=>{})
+})()
+</script></body></html>

@@ -5,6 +5,10 @@ import { join,resolve,sep } from 'node:path'
 import { LabStore } from './store.mjs'
 import { OperatorJournal } from '../operator/server.mjs'
 import { inspectMaintenanceState } from './runtimeMaintenance.mjs'
+import { RunControlJournal } from '../operator/runControl.mjs'
+import { randomUUID } from 'node:crypto'
+import { getPackBlueprint } from './scenarioPacks.mjs'
+import { LIVE_TARGET } from './livePolicy.mjs'
 
 function fixture(work){
   const root=mkdtempSync(join(tmpdir(),'ticketsim-maintenance-'))
@@ -62,4 +66,20 @@ it('does not create missing databases and refuses unrecognized versions',()=>fix
   expect(()=>inspectMaintenanceState({...paths,agentPath:join(paths.agentPath,'absent')})).toThrow('MAINTENANCE_DATABASE_MISSING')
   agent.db.exec('PRAGMA user_version=99')
   expect(()=>inspectMaintenanceState(paths)).toThrow('MAINTENANCE_DATABASE_VERSION_UNSUPPORTED')
+}))
+
+it('also blocks durable M4 gates and ambiguous actions without hiding a foreign maintenance owner',()=>fixture(({paths})=>{
+  const journal=new RunControlJournal(paths.operatorPath)
+  try{
+    const owner=randomUUID();journal.acquireMaintenance(owner)
+    expect(inspectMaintenanceState(paths).blockers).toContain('CONTROL_GATE_HELD')
+    expect(inspectMaintenanceState({...paths,ownedMaintenanceId:owner}).stateClear).toBe(true)
+    expect(inspectMaintenanceState({...paths,ownedMaintenanceId:randomUUID()}).blockers).toContain('MAINTENANCE_OWNER_MISMATCH')
+    journal.releaseMaintenance(owner)
+    const pack=getPackBlueprint('LAB-TLAB-002')
+    const scope={scenarioId:pack.id,revision:pack.revision,runId:randomUUID(),bundleSha256:'a'.repeat(64),vmId:LIVE_TARGET.vmId,checkpointId:pack.checkpointId,actions:{...pack.actions}}
+    const grant=journal.issue(scope,{principal:'SONNGUYEN\\Admin'});journal.claim(grant.approval_id,scope)
+    journal.reserve(grant.approval_id,'prepare')
+    expect(inspectMaintenanceState(paths).blockers).toEqual(expect.arrayContaining(['CONTROL_GATE_HELD','CONTROL_RUN_UNRESOLVED','CONTROL_ACTION_UNRESOLVED']))
+  }finally{journal.close()}
 }))
