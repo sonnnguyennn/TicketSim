@@ -1,5 +1,19 @@
 # M4 approved original boot — guest firewall drift, 2026-11-04
 
+## Current blocker: fresh continuation probe JSON parse
+
+After actual separate verification PASS, the Operator ran Continue Apply. It stopped with `SyntaxError` at `fresh_repaired_baseline`, `continuationExists=false`, `noStart=true`. Evidence bindings had passed; no marker, runtime start or guest mutation was reached. This output does not identify which JSON boundary failed and must not be labeled a new guest failure, timeout or BOM incident without evidence.
+
+Source now tags the qualified report stdout, Operator draft and qualified host-inspect stdout separately. JSON failures expose only source, byte count, empty/BOM/warning flags and a fixed error code; raw output/parse text is never returned. The independent host inspection uses exactly the original hash-verified protected PowerShell/script, fixed inspect/checkpoint arguments and existing 50-second/8192-byte policy, captures its raw JSON boundary and never retries. Valid surrounding whitespace/UTF-8 BOM is accepted; empty or malformed JSON still blocks. Installed immutable code/failed records/expected hashes are not edited.
+
+The current elevated Operator action is inspection only:
+
+```powershell
+& 'E:\Document\TicketSim\scripts\real-lab\Continue-RetiredUpgrade.ps1' -Inspect
+```
+
+Inspect and Apply are mutually exclusive. Inspect performs the full evidence/current baseline/actor/port checks and returns before any marker creation or startup. If JSON still fails, retain its source/shape metadata for diagnosis. Do not repeat Apply or any guest mutation until this read-only path qualifies. Actual inspect output and runtime migration remain pending; the separately recorded baseline PASS and both historical failures remain intact.
+
 ## Actual separate verification recorded — PASS
 
 The Operator ran the corrected `Confirm-RepairedBaseline.ps1 -Record` and supplied `recorded=true`, `readOnlyProbes=true`, `failedRecordsUnchanged=true`, `maintenanceGateRetained=true`. Verification is `verified=true`, historical M3 `livePass=true`, exact run `76213ef3-ef9b-4bd2-9cb6-6c508dc2a92c`, original `2b9c2170-9a23-4d08-b82e-29929afa4c10`, checkpoint `e6d04330-142c-4397-8e0d-ddf5a9e69090`. All required preflight checks passed: host/target/protected/recovery/checkpoint, B5 proof, backup/resources, service-key SSH authentication and pinned host key, configs/service/page/network/firewall hashes, route and HTTP exact content. `nginxStopped=fail` and `httpUnavailable=fail` are correct for the healthy state: they are extra fault-only conditions, not required preflight failures.

@@ -50,6 +50,6 @@ try{
 main().catch(error=>{
   // The old report CLI hides its cause. Never expose child stderr or a raw
   // execFileSync error dump; diagnose separately without starting services.
-  process.stderr.write(`${JSON.stringify({eligible:false,readOnly:true,stage,failure:safeUpgradeFailure(error),continuationExists:existsSync(`${root}/operator/m4-retired-continuation.json`),noStart:true})}\n`)
+  process.stderr.write(`${JSON.stringify({eligible:false,readOnly:true,stage,verificationStage:error.verificationStage,jsonMetadata:error.jsonMetadata,failure:safeUpgradeFailure(error),continuationExists:existsSync(`${root}/operator/m4-retired-continuation.json`),noStart:true})}\n`)
   process.exitCode=1
 })

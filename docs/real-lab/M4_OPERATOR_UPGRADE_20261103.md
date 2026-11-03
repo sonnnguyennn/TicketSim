@@ -1,5 +1,9 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
+## Latest next action is Inspect, not Apply
+
+The actual Continue attempt stopped with a fresh-baseline SyntaxError before creating a continuation marker or starting services. Source now identifies individual JSON boundaries with sanitized metadata and captures the fixed qualified host-inspect output directly, retaining the original inspect-only arguments/timeout. Current command is `Continue-RetiredUpgrade.ps1 -Inspect`; it checks the same evidence/baseline/actor conditions but returns before any write/start. Obtain that output before another Apply. No raw stdout/secret or malformed JSON is accepted, and the previous actual baseline PASS is preserved. See the newest incident entry for exact limits.
+
 ## Current pickup: baseline verified, continue runtime migration
 
 Actual Operator output now confirms separate verification recorded, all required current baseline checks PASS, historical M3 PASS, both failed records unchanged and maintenance gate retained. The extra fault-only `nginxStopped`/`httpUnavailable` checks correctly fail in a healthy baseline. The next already-authorized command in elevated PowerShell is:

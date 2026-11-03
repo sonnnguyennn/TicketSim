@@ -35,6 +35,7 @@ $resumeDry=& (Join-Path $PSScriptRoot 'Resume-LockedUpgrade.ps1')|ConvertFrom-Js
 if($resumeDry.Apply -ne $false -or $resumeDry.ResumeLocked -ne $true){throw 'Resume dry-run failed'}
 $continueDry=& (Join-Path $PSScriptRoot 'Continue-RetiredUpgrade.ps1')|ConvertFrom-Json
 if($continueDry.Apply -ne $false){throw 'Retired continuation dry-run failed'}
+Assert-Rejected {& (Join-Path $PSScriptRoot 'Continue-RetiredUpgrade.ps1') -Apply -Inspect}
 $bootDry=& (Join-Path $PSScriptRoot 'Start-ApprovedRetiredOriginal.ps1')|ConvertFrom-Json
 if($bootDry.Apply -ne $false -or $bootDry.VmId -ne '2b9c2170-9a23-4d08-b82e-29929afa4c10'){throw 'Approved boot dry-run failed'}
 $repairDry=& (Join-Path $PSScriptRoot 'Restore-ApprovedGuestFirewallBaseline.ps1')|ConvertFrom-Json

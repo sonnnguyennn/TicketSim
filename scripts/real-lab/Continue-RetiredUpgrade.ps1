@@ -1,6 +1,7 @@
-param([switch]$Apply)
+param([switch]$Apply,[switch]$Inspect)
 $ErrorActionPreference='Stop'
-if(-not $Apply){
+if($Apply -and $Inspect){throw 'INSPECTION_AND_APPLY_ARE_EXCLUSIVE'}
+if(-not $Apply -and -not $Inspect){
   [pscustomobject]@{Apply=$false;Changes='Continue only the verified retired upgrade: start missing terminal-only learner in protected PowerShell 7, start Operator, verify, complete. No staging, process stop, VM mutation or gate reacquisition.'}|ConvertTo-Json
   return
 }
@@ -25,6 +26,10 @@ $eligible=$evidence|ConvertFrom-Json
 if($eligible.eligible -ne $true -or $eligible.livePass -ne $true -or $eligible.purpose -ne 'runtime-continuation' -or $eligible.ownerId -ne $record.ownerId -or $eligible.releaseRoot -ine $release){throw 'RETIRED_BINDING_MISMATCH'}
 if(@(Get-CimInstance Win32_Process|Where-Object {$_.ExecutablePath -in @("$install\node.exe","$release\node.exe")}).Count){throw 'RUNTIME_ALREADY_PRESENT_DO_NOT_DUPLICATE'}
 foreach($port in @(4174,4175,4176)){if(@(Get-NetTCPConnection -State Listen -LocalPort $port -ErrorAction SilentlyContinue).Count){throw 'RUNTIME_PORT_ALREADY_HELD_NO_START'}}
+if($Inspect){
+  [pscustomobject]@{InspectOnly=$true;Eligibility=$eligible;RuntimeActorsAbsent=$true;ContinuationMarkerCreated=$false;NoServicesStarted=$true}|ConvertTo-Json -Depth 5
+  return
+}
 $progress=[ordered]@{phase='starting_learner';ownerId=$record.ownerId;releaseRoot=$release;startedAt=[datetime]::UtcNow.ToString('o')}
 $marker="$state\operator\m4-retired-continuation.json"
 $stream=[IO.File]::Open($marker,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::Read)

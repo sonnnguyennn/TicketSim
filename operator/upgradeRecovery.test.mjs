@@ -5,7 +5,7 @@ import { join,resolve,sep } from 'node:path'
 import { randomUUID } from 'node:crypto'
 import { assertLockedRecovery,assertRetiredContinuation,readActiveUpgrade,evidenceHash } from './upgradeRecovery.mjs'
 import { RunControlJournal } from './runControl.mjs'
-import { withQualifiedPowerShell,readQualifiedTrialReport,QUALIFIED_PWSH } from './qualifiedRuntime.mjs'
+import { withQualifiedPowerShell,readQualifiedTrialReport,readQualifiedHostInspection,parseQualifiedJson,QUALIFIED_PWSH } from './qualifiedRuntime.mjs'
 import { LIVE_TARGET } from '../agent/livePolicy.mjs'
 
 const original=()=>({phase:'locked',ownerId:randomUUID(),releaseRoot:'failed-release',manifestSha256:'a'.repeat(64)})
@@ -72,4 +72,28 @@ it('continues only a verified retired run before any continuation/start attempt 
   const input={record,gates:[{vm_id:LIVE_TARGET.vmId,kind:'maintenance',owner_id:record.ownerId}],events:[{kind:'legacy_state_rechecked',reference_id:record.ownerId}],stateClear:true,continuationExists:false,grants:0,attempts:0}
   expect(assertRetiredContinuation(input)).toBe(true)
   for(const patch of [{record:{...record,phase:'retiring'}},{record:{...record,phase:'installed'}},{continuationExists:true},{stateClear:false},{grants:1},{attempts:1},{gates:[]},{events:[{kind:'maintenance_failed',reference_id:record.ownerId}]}])expect(()=>assertRetiredContinuation({...input,...patch})).toThrow()
+})
+
+it('classifies empty/BOM/malformed JSON by source without exposing payloads or accepting invalid output',()=>{
+  expect(parseQualifiedJson('\ufeff {"pass":true}\r\n','host')).toEqual({pass:true})
+  for(const [payload,empty] of [['',true],[' \r\n',true],['PRIVATE_SECRET_NOT_JSON',false],['{"secret":"PRIVATE_SECRET"',false]]){
+    let caught
+    try{parseQualifiedJson(payload,'qualified_host_inspect_stdout')}catch(error){caught=error}
+    expect(caught).toBeInstanceOf(SyntaxError)
+    expect(caught.message).toBe('QUALIFIED_JSON_INVALID')
+    expect(caught.jsonMetadata).toMatchObject({source:'qualified_host_inspect_stdout',empty,bytes:Buffer.byteLength(payload)})
+    expect(JSON.stringify(caught)).not.toContain('PRIVATE_SECRET')
+  }
+})
+
+it('dispatches one qualified read-only host inspect with the original timeout and restores environment after invalid JSON',async()=>{
+  const env={PSModulePath:'caller-modules'},calls=[]
+  await expect(readQualifiedHostInspection({verify:()=>calls.push('verify'),env,run:(file,args,options)=>{
+    calls.push('run');expect(file).toBe(QUALIFIED_PWSH)
+    expect(args).toEqual(['-NoProfile','-NonInteractive','-File','C:\\Program Files\\TicketSimPilot\\scripts\\real-lab\\Invoke-LabHost.ps1','-Action','inspect','-CheckpointId','e6d04330-142c-4397-8e0d-ddf5a9e69090'])
+    expect(options.timeout).toBe(50_000);expect(options.maxBuffer).toBe(8192)
+    expect(env.TICKETSIM_PWSH).toBe(QUALIFIED_PWSH)
+    return ''
+  }})).rejects.toMatchObject({message:'QUALIFIED_JSON_INVALID',verificationStage:'qualified_host_inspect_stdout',jsonMetadata:{bytes:0,empty:true}})
+  expect(calls).toEqual(['verify','run']);expect(env).toEqual({PSModulePath:'caller-modules'})
 })
