@@ -1,5 +1,5 @@
 import https from 'node:https'
-import { randomBytes } from 'node:crypto'
+import { randomBytes,timingSafeEqual } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 
 const page=readFileSync(new URL('./operatorPage.html',import.meta.url),'utf8')
@@ -17,8 +17,9 @@ const unauthorized=new Set(['UNAUTHORIZED','PAIRING_DENIED'])
  * protected TLS, journal, independent pairing code and release resolver.
  * There are deliberately no execution, reset, maintenance or script routes.
  */
-export function createOperatorControlServer({control,tls}={}){
+export function createOperatorControlServer({control,tls,reopenToken=null,onPairingReissued=null}={}){
   if(!control||!tls||!(tls.pfx||tls.key&&tls.cert))throw new Error('OPERATOR_HTTPS_CONFIGURATION_REQUIRED')
+  if(reopenToken!==null&&(typeof reopenToken!=='string'||reopenToken.length<32||typeof onPairingReissued!=='function'))throw new Error('OPERATOR_REOPEN_CONFIGURATION_INVALID')
   const server=https.createServer(tls,async(request,response)=>{
     const origin=`https://127.0.0.1:${request.socket.localPort}`
     const send=(status,value)=>{response.writeHead(status,{'Content-Type':'application/json; charset=utf-8'});response.end(JSON.stringify(value))}
@@ -34,6 +35,13 @@ export function createOperatorControlServer({control,tls}={}){
         return response.end(page.replaceAll('__TICKETSIM_NONCE__',nonce))
       }
       if(request.method!=='POST'||request.headers.origin!==origin)return send(403,{code:'FORBIDDEN'})
+      if(request.url==='/api/operator/reissue'&&reopenToken&&onPairingReissued){
+        const supplied=request.headers.authorization??'',expected=`Bearer ${reopenToken}`
+        if(Buffer.byteLength(supplied)!==Buffer.byteLength(expected)||!timingSafeEqual(Buffer.from(supplied),Buffer.from(expected)))return send(403,{code:'FORBIDDEN'})
+        if(!exact(await body(request),[]))throw new Error('INVALID_REQUEST')
+        onPairingReissued(control.auth.reissuePairing())
+        return send(200,{published:true})
+      }
       const paths=['/api/operator/pair','/api/operator/session','/api/operator/catalog','/api/operator/proposal','/api/operator/approve']
       if(!paths.includes(request.url))return send(404,{code:'NOT_FOUND'})
       const input=await body(request)

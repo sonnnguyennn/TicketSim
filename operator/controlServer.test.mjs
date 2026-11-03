@@ -8,11 +8,13 @@ import { createOperatorControlServer } from './controlServer.mjs'
 const tls={cert:readFileSync(new URL('../tests/fixtures/web-pilot-test.crt',import.meta.url)),key:readFileSync(new URL('../tests/fixtures/web-pilot-test.key',import.meta.url))}
 const cleanups=[]
 afterEach(async()=>{for(const cleanup of cleanups.splice(0).reverse())await cleanup()})
-async function setup({qualified=true}={}){
+async function setup({qualified=true,reopen=false,now=()=>Date.now()}={}){
   const journal=new RunControlJournal(':memory:')
   cleanups.push(()=>journal.close())
-  const control=new OperatorApprovalControl({journal,principal:'SONNGUYEN\\Admin',pairingCode:'separate-operator-test-code',resolveRelease:scenarioId=>({qualified,scenarioId,revision:1,bundleSha256:'a'.repeat(64)}),inspectLegacy:()=>({stateClear:true,mutationAuthorized:false})})
-  const server=createOperatorControlServer({control,tls})
+  const control=new OperatorApprovalControl({journal,principal:'SONNGUYEN\\Admin',pairingCode:'separate-operator-test-code',resolveRelease:scenarioId=>({qualified,scenarioId,revision:1,bundleSha256:'a'.repeat(64)}),inspectLegacy:()=>({stateClear:true,mutationAuthorized:false}),now})
+  let published=null
+  const reopenToken='test-only-operator-recovery-capability-123456789'
+  const server=createOperatorControlServer({control,tls,...(reopen?{reopenToken,onPairingReissued:code=>{published=code}}:{})})
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve))
   cleanups.push(()=>new Promise(resolve=>server.close(resolve)))
   const port=server.address().port,origin=`https://127.0.0.1:${port}`
@@ -24,7 +26,7 @@ async function setup({qualified=true}={}){
     })
   }
   async function pair(){const response=await request('/api/operator/pair',{data:{code:'separate-operator-test-code'}});return {cookie:response.headers['set-cookie'][0].split(';')[0],csrf:response.json().csrf,response}}
-  return {request,pair,journal}
+  return {request,pair,journal,reopenToken,published:()=>published}
 }
 
 it('serves a restrictive Operator page and issues only a scoped grant over its own HTTPS session',async()=>{
@@ -63,4 +65,21 @@ it('shows unqualified packs unavailable and refuses plaintext server configurati
   expect((await request('/api/operator/proposal',{...session,data:{scenarioId:'LAB-TLAB-002'}})).json().code).toBe('SCENARIO_RELEASE_NOT_QUALIFIED')
   expect(journal.db.prepare('SELECT COUNT(*) n FROM control_grants').get().n).toBe(0)
   expect(()=>createOperatorControlServer({control:{}})).toThrow('OPERATOR_HTTPS_CONFIGURATION_REQUIRED')
+})
+
+it('allows only the protected launcher capability to reissue expired pairing without publishing secrets in HTTP',async()=>{
+  let now=0
+  const {request,pair,reopenToken,published}=await setup({reopen:true,now:()=>now})
+  const session=await pair()
+  expect((await request('/api/operator/reissue',session)).status).toBe(403)
+  expect((await request('/api/operator/reissue',{headers:{Authorization:`Bearer ${reopenToken}`}})).json().code).toBe('SESSION_STILL_ACTIVE')
+  now=6*60_000
+  const response=await request('/api/operator/reissue',{headers:{Authorization:`Bearer ${reopenToken}`}})
+  expect(response.json()).toEqual({published:true});expect(published()).toMatch(/^[A-Za-z0-9_-]{32}$/)
+  expect(response.raw).not.toContain(published())
+  expect((await request('/api/operator/pair',{data:{code:published()}})).status).toBe(200)
+})
+
+it('rejects weak recovery capabilities rather than starting a weakly protected launcher route',()=>{
+  expect(()=>createOperatorControlServer({control:{},tls,reopenToken:'weak',onPairingReissued:()=>{}})).toThrow('OPERATOR_REOPEN_CONFIGURATION_INVALID')
 })

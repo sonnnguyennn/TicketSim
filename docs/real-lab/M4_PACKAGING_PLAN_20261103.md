@@ -12,7 +12,7 @@ User approved this scheduling and implementation start on 2026-11-03. Source dev
 |---|---|---|
 | M4.1a | Closed Scenario Pack blueprint contract for 02/03/07, neutral catalog, immutable target/action/endpoint/check bindings; new packs cannot execute | Implemented in source; not connected to a live API |
 | M4.1b | Read-only maintenance inspection preserves completed consumed history and blocks unresolved runs, leases, work, claims and reset evidence | Implemented in source; inspection is not authorization or an exclusive maintenance lock |
-| M4.1c | New per-run protected approval journal, authenticated Operator flow, atomic maintenance/admission exclusion and safe upgrade of the consumed-pilot installation | Journal/session-consent/coordination and separate HTTPS Operator page implemented/tested in source; actual OS bootstrap, legacy admission retirement and upgrade driver still pending |
+| M4.1c | New per-run protected approval journal, authenticated Operator flow, atomic maintenance/admission exclusion and safe upgrade of the consumed-pilot installation | Source implemented: journal, HTTPS UI, OS token bootstrap, versioned staging and consumed-pilot retirement/restart driver; actual elevated upgrade/readiness qualification pending |
 | M4.2 | Qualify protected fixed-bundle guest bootstrap after B5 reset; decide credential lifetime and verify partial-deploy recovery | Blocked for live execution until a concrete deployment proposal is approved; source design can proceed |
 | M4.3 | Port 02, then 03, then 07 through prepare/healthy/inject/fault/grade/shared reset; tests and actual evidence per scenario | Not started; blueprints are not executable implementations |
 | M4.4 | Sequential cross-scenario cleanup qualification, preserving original M3 history | Not started; actual runs need new approvals |
@@ -38,7 +38,17 @@ The read-only inspector now recognizes new control tables and blocks held gates,
 
 Verification: 165/165 unit/content tests PASS with two workers, including an actual race between independent SQLite worker connections; build PASS. Targeted Chromium Operator UI test PASS (1/1): separate pairing → exact scope review → explicit confirmation → issued grant, zero action attempts, secure cookie and empty web storage. HTTPS integration rejects foreign Host/Origin, learner cookie/bridge bearer, duplicate Operator cookies, missing CSRF and arbitrary script inputs/routes. Regression also covers durable restart ambiguity, release drift at claim, legacy row preservation, expired admission versus recovery and failed-maintenance gate retention. These use isolated databases/callbacks and explicitly public test TLS, not actual host maintenance or live trials.
 
-Next implementation: provide OS-verified bootstrap for the Operator-only HTTPS interface, implement a verified legacy admission retirement/upgrade driver with durable failure evidence, then qualify the fixed-bundle guest bootstrap. Do not bypass existing Stop/Refresh admission guards to deploy this source slice.
+### Protected bootstrap and upgrade driver — next actual gate
+
+See [Operator upgrade procedure](M4_OPERATOR_UPGRADE_20261103.md). `Upgrade-PilotRuntime.ps1` is dry-run by default. Apply stages an immutable full-inventory-hashed release, acquires the new maintenance gate, checks actual completed M3 plus host/backup invariants, archives old identity/process metadata and validates exact process paths, parsed arguments, owners and creation times before retirement. It stops through captured process handles. It preserves all old installed code and restarts it TerminalOnly via the original qualified launcher, then starts the new separate Operator control page. It does not bypass the existing Stop/Prepare helpers or re-arm the consumed permit.
+
+`operator/bootstrap.mjs` requires a protected release, matching Node path, full manifest integrity and a fresh actual elevated Operator SID/token/Hyper-V-read probe. `Verify-M4Runtime.ps1` independently checks TLS, role/process ownership/arguments and learner actions-disabled readiness after the final read-only host report. `operator/upgrade.mjs` releases the durable gate only after those checks pass. Any failure retains stage evidence; Apply cannot be retried over an existing upgrade record.
+
+`Open-Operator.ps1` can start/reopen only the verified installed release. An Operator-private recovery capability reissues expired pairing into a protected local link, without returning secrets over HTTP or accepting learner/bridge credentials. Default production resolver still qualifies zero new packs. Startup services, shortcuts and general upgrade/uninstall remain later work.
+
+Latest source validation: 174/174 unit/content tests PASS with two workers; build PASS. Inventory mutation/path/link cases, stale or mismatched role/readiness evidence, source-entry refusal, protected re-pair and native PowerShell process-policy/dry-run/parsing tests pass. No actual process was stopped, no protected release/database was installed, and no VM-changing operation was executed by these tests. Actual Operator execution is the next gate; do not mark the upgrade PASS from harness results alone.
+
+After actual runtime migration, continue the fixed-bundle guest bootstrap qualification and LAB-02 adapter. A new guest deployment/fault/reset still requires a concrete separately approved scope; this runtime installer has none of those operations.
 
 ## Ordered implementation
 
