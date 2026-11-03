@@ -1,5 +1,9 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
+## Current action: verify repaired baseline without repeating the mutation
+
+The approved firewalld stop ran once and HTTP exact content recovered. The Operator verifier then failed its service-key probes; independent probes using the original Operator key pass all guest checks. Source corrects the verifier's key context without changing Agent key ACLs. Run only the verification-only `Confirm-RepairedBaseline.ps1 -Record` described in the [incident report's latest pickup](M4_COLD_BOOT_INCIDENT_20261104.md). It creates separate digest-linked verification after full current PASS, retaining both failed boot/repair files and maintenance gate. Do not repeat boot or repair. Unknown mutation outcomes cannot be reconciled through this branch. Runtime continuation waits for actual full verification; cold-boot/reset persistence remains unqualified.
+
 ## Latest pickup: one temporary firewall stop approved, not yet executed
 
 The user approved exactly one guest `systemctl stop firewalld` on original. Use the guarded `Restore-ApprovedGuestFirewallBaseline.ps1` command in the [incident report](M4_COLD_BOOT_INCIDENT_20261104.md), with local learner SSH/sudo authentication. It reserves once, preserves the failed boot bytes, independently verifies all baseline checks and writes separate repair evidence without releasing maintenance. Source continuation accepts that evidence only with correct digest/scope and fresh independent guest/host verification. Do not run the old boot helper or manually change the failed record. No repair or runtime startup has been performed by source tests; permanent reboot/reset stability remains unqualified.

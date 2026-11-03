@@ -1,5 +1,25 @@
 # M4 approved original boot — guest firewall drift, 2026-11-04
 
+## Latest actual pickup: repair consumed, Operator verification transport corrected
+
+The Operator executed the approved one-time firewall repair. SSH returned normally and the verifier reported original M3 `livePass=true`, all host/checkpoint/backup/resource checks PASS and HTTP status/content PASS, but service-key `sshAuthentication=unknown` and all dependent guest probes unknown. The helper therefore retained the repair as failed-quarantined at `ssh_returned`. Do not rerun the mutation. Both original failed records must remain byte-identical.
+
+Independent read-only probes immediately afterward authenticated with the original Operator service key (`E:\TicketSimOperatorState\b5\agent-key`) and pinned original known-hosts file, and all guest configuration/page/network/firewall hashes plus exact HTTP passed. Host/backup checks were not supplied to that isolated guest-only collection, so it is not a full independent preflight. The elevated report above separately shows host/backup checks PASS at that point.
+
+Source inspection found that the independent Operator verifier had selected the Agent-owned shared key copy rather than the original Operator key context. Source now uses the explicit original Operator key and known-hosts paths, without fallback, copying a secret or changing ACLs. The actual non-admin pilot keeps its own shared Agent key configuration. The exact OpenSSH stderr for the old shared-key failure was not captured; an owner/actor key-context problem is the supported diagnosis, not evidence that guest SSH was unavailable.
+
+The current reviewed Operator command is verification only:
+
+```powershell
+& 'E:\Document\TicketSim\scripts\real-lab\Confirm-RepairedBaseline.ps1' -Record
+```
+
+Without Record it is dry-run. Record requires the exact elevated retired Operator and maintenance state, verifies current host/backup/SSH/HTTP/hash checks with the corrected context, and exclusively creates separate `m4-firewall-verification-20261104-001.json` only on full PASS. It hashes both prior failed files before and after the read-only work; neither is rewritten. It neither dispatches another service stop nor boots/resets, changes a key ACL/expected hash, starts runtime services or releases the gate. No password prompt is expected: these are batch service-key probes. On a failed read-only check no new verification file is created; retain diagnostics and do not retry the original mutation.
+
+Continuation can recognize this separate evidence only for the exact known case: prior repair SSH exit 0, failure after SSH returned, prior HTTP already PASS, correct record/target/owner/checkpoint bindings, unchanged raw bytes of both failures and every required current preflight check PASS. Unknown SSH action outcomes and cross-scope/partial evidence remain blocked. Continuation still re-probes the current baseline before startup. Actual protected reconciliation is pending this Operator command's output; temporary runtime restoration does not qualify cold-boot/reset persistence.
+
+Latest source verification: 191/191 unit/content tests and build PASS; native Windows PowerShell 5.1 dry-run/consent/AST checks PASS. Tests preserve both failed byte buffers and reject altered repair digests, wrong bindings, unknown SSH exits and any missing/unknown fresh baseline check. These tests create no protected verification record or actual runtime startup.
+
 ## Current approved repair pickup
 
 The user has separately approved exactly one `sudo systemctl stop firewalld` on original, with no disable/permanent-policy/hash change, no reset/retry and separate verified evidence. This supersedes the pending-approval wording in the historical diagnostic notes below. No repair has been executed by Codex. The reviewed Operator command is:

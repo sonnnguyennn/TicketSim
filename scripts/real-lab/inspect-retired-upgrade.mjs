@@ -5,7 +5,7 @@ import { inspectMaintenanceState } from '../../agent/runtimeMaintenance.mjs'
 import { DatabaseSync } from 'node:sqlite'
 import { existsSync,readFileSync } from 'node:fs'
 import { safeUpgradeFailure } from '../../operator/upgradeDiagnostics.mjs'
-import { assertBootContinuationEvidence,FIREWALL_REPAIR } from '../../operator/bootRecovery.mjs'
+import { assertBootContinuationEvidence,FIREWALL_REPAIR,FIREWALL_VERIFICATION } from '../../operator/bootRecovery.mjs'
 import { verifyApprovedBoot } from './verify-approved-boot.mjs'
 
 const root='C:/ProgramData/TicketSimPilot'
@@ -28,8 +28,10 @@ try{
     const bootFile=`${root}/operator/m4-original-boot-20261103-001.json`
     if(existsSync(bootFile)){
       const repairFile=`${root}/operator/${FIREWALL_REPAIR}.json`
-      const repair=existsSync(repairFile)?JSON.parse(readFileSync(repairFile,'utf8')):null
-      ;({repairUsed}=assertBootContinuationEvidence({bootBytes:readFileSync(bootFile),repair,ownerId:record.ownerId}))
+      const repairBytes=existsSync(repairFile)?readFileSync(repairFile):null
+      const reconciliationFile=`${root}/operator/${FIREWALL_VERIFICATION}.json`
+      const reconciliation=existsSync(reconciliationFile)?JSON.parse(readFileSync(reconciliationFile,'utf8')):null
+      ;({repairUsed}=assertBootContinuationEvidence({bootBytes:readFileSync(bootFile),repairBytes,reconciliation,ownerId:record.ownerId}))
     }
     stage='read_actual_m3_host'
     if(repairUsed){
