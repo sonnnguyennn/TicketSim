@@ -22,7 +22,7 @@ foreach($name in @('NODE_OPTIONS','NODE_PATH')){[Environment]::SetEnvironmentVar
 $evidence=& "$install\node.exe" (Join-Path $PSScriptRoot 'inspect-retired-upgrade.mjs')
 if($LASTEXITCODE -ne 0){throw 'RETIRED_STATE_NOT_VERIFIED_NO_START'}
 $eligible=$evidence|ConvertFrom-Json
-if($eligible.eligible -ne $true -or $eligible.ownerId -ne $record.ownerId -or $eligible.releaseRoot -ine $release){throw 'RETIRED_BINDING_MISMATCH'}
+if($eligible.eligible -ne $true -or $eligible.livePass -ne $true -or $eligible.purpose -ne 'runtime-continuation' -or $eligible.ownerId -ne $record.ownerId -or $eligible.releaseRoot -ine $release){throw 'RETIRED_BINDING_MISMATCH'}
 if(@(Get-CimInstance Win32_Process|Where-Object {$_.ExecutablePath -in @("$install\node.exe","$release\node.exe")}).Count){throw 'RUNTIME_ALREADY_PRESENT_DO_NOT_DUPLICATE'}
 foreach($port in @(4174,4175,4176)){if(@(Get-NetTCPConnection -State Listen -LocalPort $port -ErrorAction SilentlyContinue).Count){throw 'RUNTIME_PORT_ALREADY_HELD_NO_START'}}
 $progress=[ordered]@{phase='starting_learner';ownerId=$record.ownerId;releaseRoot=$release;startedAt=[datetime]::UtcNow.ToString('o')}

@@ -2,6 +2,16 @@
 
 ## Latest actual blocker: original VM is Off
 
+Update: the Operator diagnostic at `2026-11-03T16:42:36.666Z` confirms active resume `retired`, release `4badc683-0432-4776-90d5-9b206d6e4d27`, same gate owner, last event `legacy_state_rechecked`, `stateClear=true`, one preserved completed real run and exact failure `TRIAL_ORIGINAL_MISMATCH`. The user separately approved **one original boot** after backup/gate/lease/resource checks, with no retry or automatic reset. This approval does not permit any fault/reset/checkpoint action or mutation of other VMs.
+
+The reviewed elevated Operator command for that approval is:
+
+```powershell
+& 'E:\Document\TicketSim\scripts\real-lab\Start-ApprovedRetiredOriginal.ps1' -Apply
+```
+
+Default is dry-run. Apply pins this exact retired owner/release, verifies its immutable inventory and clear protected state, refuses existing continuation/boot records or running runtime actors, verifies original planner hashes, checks B5 lease absence, hashes all four backups through the qualified planner and enforces boot resource floors, exact Standard checkpoint/disk binding and both protected VMs Off. It durably creates `operator/m4-original-boot-20261103-001.json` before its sole `Start-VM` call. A partial/failed attempt keeps that reservation and is not retryable. It then waits using read-only HTTP probes and verifies the original M3 report plus actual fixed-target service-key SSH/host-key/config/network/HTTP exact-content preflight checks. It never starts pilot services or releases the maintenance gate. Normal continuation refuses an existing boot record unless independently verified; preboot eligibility is explicitly labeled and cannot be used as runtime-continuation approval. Actual boot and qualification remain pending Operator output. No boot has been performed by source tests.
+
 The Operator ran `Continue-RetiredUpgrade.ps1 -Apply`. It passed retired-state eligibility but the original report worker failed at `read_actual_m3_host`, before the exclusive continuation marker or any runtime start. The old report CLI only returned `TRIAL_REPORT_VERIFICATION_FAILED`; this output does not identify its underlying exception. Independent read-only Hyper-V observation then found original `2b9c2170-9a23-4d08-b82e-29929afa4c10` **Off**, with AutomaticStartAction Nothing; recovery and lab1 were also Off. Exactly one expected Standard checkpoint and the same active AVHDX-to-base chain remained. Resource observation: RAM 6552260608 bytes, C 16685789184 bytes, E 37229187072 bytes, all above the boot floors. These are observations, not reservations; the reason the VM was turned off is unknown.
 
 `assertTrialHost` requires original Running, so this actual state is sufficient to block a report even if all retained M3 history passes. Do not weaken that check or treat the retained M3 grade/recovery as failed. The current protected diagnostic is requested to establish the report's exact failure code and stage. Booting original is a new VM-changing operation requiring separate approval under the handoff discipline; before any boot recheck backup, gate/leases, target/checkpoint/disk and resources (RAM >=3GiB, C >=12GiB, E >=15GiB). No boot, reset or runtime start has been performed by this investigation. Continue must remain blocked until current host qualification is restored and verified.
