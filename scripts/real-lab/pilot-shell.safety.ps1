@@ -32,4 +32,8 @@ $failed=$false
 try{Invoke-PilotPowerShell -Executable $ps7 -Script $PSCommandPath -ScriptArguments @('-FailChild')}catch{if($_.Exception.Message -ne 'PILOT_CHILD_HOST_FAILED_EXIT_17'){throw};$failed=$true}
 if(-not $failed -or $env:PSModulePath -cne $before){throw 'CHILD_FAILURE_ENVIRONMENT_NOT_RESTORED'}
 Write-Output 'PASS caller environment restored after child failure'
+$missingRejected=$false
+try{Invoke-PilotPowerShell -Executable (Join-Path $PSScriptRoot 'nonexistent-pilot-host.exe') -Script $PSCommandPath}catch{$missingRejected=$true}
+if(-not $missingRejected -or $env:PSModulePath -cne $before){throw 'MISSING_CHILD_HOST_NOT_REJECTED'}
+Write-Output 'PASS missing child executable fails closed and restores caller environment'
 Write-Output 'No credential prompt, live-runtime start/stop, journal or VM operation was performed.'

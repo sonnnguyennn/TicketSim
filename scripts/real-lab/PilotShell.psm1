@@ -10,6 +10,9 @@ function Invoke-PilotPowerShell {
     [string]$Executable='C:\Program Files\TicketSimPilot\powershell\pwsh.exe',
     [switch]$Interactive
   )
+  # Native command lookup failures must terminate even in a caller whose
+  # preference is Continue; a stale LASTEXITCODE cannot prove launch success.
+  $ErrorActionPreference='Stop'
   $previous=$env:PSModulePath
   $moduleRoot=Join-Path (Split-Path $Executable) 'Modules'
   try{

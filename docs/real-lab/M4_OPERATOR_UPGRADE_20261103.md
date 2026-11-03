@@ -1,5 +1,13 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
+## Latest actual blocker: original VM is Off
+
+The Operator ran `Continue-RetiredUpgrade.ps1 -Apply`. It passed retired-state eligibility but the original report worker failed at `read_actual_m3_host`, before the exclusive continuation marker or any runtime start. The old report CLI only returned `TRIAL_REPORT_VERIFICATION_FAILED`; this output does not identify its underlying exception. Independent read-only Hyper-V observation then found original `2b9c2170-9a23-4d08-b82e-29929afa4c10` **Off**, with AutomaticStartAction Nothing; recovery and lab1 were also Off. Exactly one expected Standard checkpoint and the same active AVHDX-to-base chain remained. Resource observation: RAM 6552260608 bytes, C 16685789184 bytes, E 37229187072 bytes, all above the boot floors. These are observations, not reservations; the reason the VM was turned off is unknown.
+
+`assertTrialHost` requires original Running, so this actual state is sufficient to block a report even if all retained M3 history passes. Do not weaken that check or treat the retained M3 grade/recovery as failed. The current protected diagnostic is requested to establish the report's exact failure code and stage. Booting original is a new VM-changing operation requiring separate approval under the handoff discipline; before any boot recheck backup, gate/leases, target/checkpoint/disk and resources (RAM >=3GiB, C >=12GiB, E >=15GiB). No boot, reset or runtime start has been performed by this investigation. Continue must remain blocked until current host qualification is restored and verified.
+
+The source eligibility CLI now prints only sanitized stage/failure metadata, never an execFileSync stderr dump. A separate local shell check exposed that unresolved/denied native executable lookup could leave a stale LASTEXITCODE in a nonterminating caller; `Invoke-PilotPowerShell` now makes launch errors terminating and tests missing executable refusal plus environment restoration. Neither change makes the powered-off VM eligible or modifies the immutable deployed release.
+
 ## Current pickup: resume retired, credential module failed
 
 Operator output from the actual `Resume-LockedUpgrade.ps1 -Apply` shows process retirement, a successful fresh elevated Operator probe at `2026-11-03T04:48:02.9323799Z`, then `Get-Credential` / `CouldNotAutoloadMatchingModule` in the original launcher. Source order places the failure after the resume record became `retired`, before Agent credential probing or new services started. Protected state still needs to confirm this precise phase; the continuation refuses anything else. The original failed release/record and same maintenance owner remain preserved.
