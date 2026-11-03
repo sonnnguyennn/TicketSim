@@ -1,5 +1,7 @@
 # B5 and LAB-WEB-001 operator procedure
 
+Current pickup (2026-11-03): B5 is actually PASS; do not recreate the checkpoint or repeat the historical preparation below. See `B5_QUALIFICATION_PASS_20261103.md` and `WEB_FIRST_MVP_20261103.md`. PM now prioritizes secure minimal runtime and in-browser learner SSH before the one trial; installer/services are later. Actual M1/M2 and separate operator consent still gate the first fault. The dated sections below preserve historical operator procedure.
+
 ## Current gate
 
 As of 2026-10-30, B2-R/B3/B4 are PASS in `E:\TicketSimOperatorState\B2R-B3-B4-FINAL-20261030.md`. The original VM `2b9c2170-9a23-4d08-b82e-29929afa4c10` is Off; the recovery copy `463dddf4-6e47-47b7-a39f-5b5d7ef84df0` is Running. `lab1` is protected as `546953dc-48e4-4080-839d-27ad5552ac7d`. The cold export is `C:\TicketSimBackups\baseline-2b9c2170-20261029`; its four expected sizes and SHA256 values are pinned in `FastReset.Operator.psm1`. B5 has no checkpoint or PASS evidence yet. No fault has been authorized.

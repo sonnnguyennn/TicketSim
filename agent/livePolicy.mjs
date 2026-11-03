@@ -30,8 +30,8 @@ export function checkVerdict(checks, names) {
   return values.includes('unknown') ? 'unknown' : 'pass'
 }
 
-export function assertLiveApproval(approval) {
-  if (!approval || approval.scenarioId !== 'LAB-WEB-001' || approval.vmId?.toLowerCase() !== LIVE_TARGET.vmId || !/^[0-9a-f-]{36}$/i.test(approval.checkpointId ?? '') || approval.checkpointId === LIVE_TARGET.protectedVmId || approval.b5Status !== 'PASS' || approval.firstTrialApproved !== true || approval.resetApproved !== true || !/^[A-Za-z0-9-]{8,64}$/.test(approval.approvalId ?? '') || !/^[a-f0-9]{64}$/i.test(approval.baselineHashes?.sshConfig ?? '') || !/^[a-f0-9]{64}$/i.test(approval.baselineHashes?.firewall ?? '')) throw new LabError('LIVE_APPROVAL_MISSING', 403)
+export function assertLiveApproval(approval, { readOnly = false } = {}) {
+  if (!approval || approval.scenarioId !== 'LAB-WEB-001' || approval.vmId?.toLowerCase() !== LIVE_TARGET.vmId || !/^[0-9a-f-]{36}$/i.test(approval.checkpointId ?? '') || approval.checkpointId === LIVE_TARGET.protectedVmId || approval.b5Status !== 'PASS' || !readOnly && (approval.firstTrialApproved !== true || approval.resetApproved !== true) || !/^[A-Za-z0-9-]{8,64}$/.test(approval.approvalId ?? '') || !/^[a-f0-9]{64}$/i.test(approval.baselineHashes?.sshConfig ?? '') || !/^[a-f0-9]{64}$/i.test(approval.baselineHashes?.firewall ?? '')) throw new LabError('LIVE_APPROVAL_MISSING', 403)
   const proof = approval.b5Evidence
   const validProof = proof?.status === 'PASS' && proof.vmId?.toLowerCase() === LIVE_TARGET.vmId && proof.appliedCheckpointId?.toLowerCase() === approval.checkpointId.toLowerCase() && proof.markerAbsent === true && proof.sshAuthenticated === true && proof.http200Exact === true && proof.pageSha256?.toLowerCase() === LIVE_TARGET.pageSha256 && proof.backupVhdSha256?.toUpperCase() === LIVE_TARGET.backupVhdSha256 && proof.noOtherVmChanged === true && proof.finalState === 'Running' && proof.sshConfigSha256?.toLowerCase() === approval.baselineHashes.sshConfig.toLowerCase() && proof.firewallSha256?.toLowerCase() === approval.baselineHashes.firewall.toLowerCase()
   if (!validProof) throw new LabError('B5_PROOF_INVALID', 403)

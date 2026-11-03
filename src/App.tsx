@@ -42,7 +42,7 @@ function App() {
   const [progress, setProgress] = useState<Progress>(() => loadProgress())
   const supportLevel = progress.supportLevel ?? 'normal'
   const [selectedId, setSelectedId] = useState(() => { try { const remembered = localStorage.getItem('ticketsim-last-ticket'); return tickets.some(item => item.id === remembered) ? remembered! : tickets[0].id } catch { return tickets[0].id } })
-  const [view, setView] = useState<'workspace' | 'practice' | 'guided' | 'stateful' | 'exam' | 'objective' | 'library' | 'review' | 'history' | 'advanced-history' | 'settings' | 'real-lab'>('workspace')
+  const [view, setView] = useState<'workspace' | 'practice' | 'guided' | 'stateful' | 'exam' | 'objective' | 'library' | 'review' | 'history' | 'advanced-history' | 'settings' | 'real-lab'>(() => location.hash.startsWith('#pair=') || location.hash === '#real-lab' ? 'real-lab' : 'workspace')
   const [libraryFocus, setLibraryFocus] = useState<string | undefined>()
   const [libraryOrigin, setLibraryOrigin] = useState<'guided' | 'exam' | 'stateful' | 'workspace' | 'practice'>('workspace')
   const [topic, setTopic] = useState('all')
@@ -229,7 +229,7 @@ function App() {
       <nav aria-label="Điều hướng chính" className="main-nav">
         <button title="Kho ticket" className={view === 'workspace' ? 'nav-item active' : 'nav-item'} onClick={() => setView('workspace')}><Server size={18} /> Kho ticket <span>{tickets.length}</span></button>
         <button title="Thư viện lệnh" className={view === 'library' ? 'nav-item active' : 'nav-item'} onClick={() => { if (view !== 'library') setLibraryOrigin(view === 'guided' || view === 'exam' || view === 'stateful' || view === 'practice' ? view : 'workspace'); setLibraryFocus(undefined); setView('library') }}><BookOpen size={18} /> Thư viện lệnh</button>
-        <button title="Real Lab" className={view === 'real-lab' ? 'nav-item active' : 'nav-item'} onClick={() => setView('real-lab')}><Server size={18} /> Real Lab</button>
+        <button title="Real Lab" className={view === 'real-lab' ? 'nav-item active' : 'nav-item'} onClick={() => { history.replaceState(null, '', '#real-lab'); setView('real-lab') }}><Server size={18} /> Real Lab</button>
         <button title="Lịch sử" className={view === 'history' ? 'nav-item active' : 'nav-item'} onClick={() => setView('history')}><History size={18} /> Lịch sử</button>
         <button title="Cài đặt" className={view === 'settings' ? 'nav-item active' : 'nav-item'} onClick={() => setView('settings')}><Settings2 size={18} /> Cài đặt</button>
       </nav>

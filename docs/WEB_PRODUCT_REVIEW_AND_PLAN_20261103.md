@@ -1,5 +1,7 @@
 # TicketSim — phân tích hiện trạng và kế hoạch sản phẩm dùng hoàn toàn trên web
 
+> PM update: kiến trúc dài hạn được chấp nhận; thứ tự W0–W7 bên dưới đã được thay bằng M1 secure runtime → M2 usable browser lab → M3 một actual trial → M4 packaging. Xem [implementation pickup](real-lab/WEB_FIRST_MVP_20261103.md). Không dùng kế hoạch lịch sử này để trì hoãn M2 đến sau installer.
+
 Ngày: 03/11/2026, Asia/Saigon. Baseline source: `acdb15bcaced568e926cc3a8f98e67bf565675c5`, branch `codex/b5-real-lab`.
 
 Trạng thái tài liệu: kết quả phân tích và kế hoạch triển khai; các thành phần được ghi “đề xuất” chưa được xây dựng. Lượt này không bật Agent/Operator live, không inject fault, không reset hoặc thay đổi VM, checkpoint, switch, backup hay account Windows. Không sử dụng approval một lượt thử để thực hiện thay đổi hạ tầng trong lúc phân tích.

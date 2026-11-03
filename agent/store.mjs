@@ -33,7 +33,7 @@ export class LabStore {
   }
   #migrate() {
     const version = this.db.prepare('PRAGMA user_version').get().user_version
-    if (version > 3) throw new LabError('DATABASE_VERSION_UNSUPPORTED', 500)
+    if (version > 4) throw new LabError('DATABASE_VERSION_UNSUPPORTED', 500)
     if (version < 1) this.#tx(() => {
       this.db.exec(`
         CREATE TABLE lab_runs (
@@ -67,9 +67,13 @@ export class LabStore {
     if (this.db.prepare('PRAGMA user_version').get().user_version < 3) this.#tx(() => {
       this.db.exec("ALTER TABLE lab_runs ADD COLUMN mode TEXT NOT NULL DEFAULT 'mock'; ALTER TABLE lab_runs ADD COLUMN evidence_note TEXT; PRAGMA user_version = 3;")
     })
+    if (this.db.prepare('PRAGMA user_version').get().user_version < 4) this.#tx(() => {
+      this.db.exec(`CREATE TABLE web_operations (request_key TEXT PRIMARY KEY, kind TEXT NOT NULL, run_id TEXT, status TEXT NOT NULL, error_code TEXT, created_at TEXT NOT NULL); PRAGMA user_version = 4;`)
+    })
   }
   markInterruptedOnStartup() {
     this.#tx(() => {
+      this.db.prepare("UPDATE web_operations SET status='unknown', error_code='AGENT_RESTART' WHERE status='pending'").run()
       const leases = this.db.prepare("SELECT vm_ref, run_id FROM vm_leases WHERE lease_state = 'active'").all()
       for (const lease of leases) {
         this.db.prepare("UPDATE vm_leases SET lease_state = 'unknown' WHERE vm_ref = ?").run(lease.vm_ref)
@@ -86,6 +90,26 @@ export class LabStore {
   getEvents(runId) { return this.db.prepare('SELECT * FROM lab_events WHERE run_id = ? ORDER BY sequence ASC').all(runId).map(row => ({ ...row, metadata: JSON.parse(row.metadata_json) })) }
   getLease(vmRef) { return this.db.prepare('SELECT * FROM vm_leases WHERE vm_ref = ?').get(vmRef) ?? null }
   getRequest(key) { return this.db.prepare('SELECT * FROM request_dedup WHERE request_key = ?').get(key) ?? null }
+  getOperation(key) { return this.db.prepare('SELECT * FROM web_operations WHERE request_key=?').get(key) ?? null }
+  acceptOperation(key,kind,runId=null) {
+    if(typeof key!=='string'||!/^[A-Za-z0-9_-]{16,128}$/.test(key))throw new LabError('INVALID_IDEMPOTENCY_KEY',400)
+    const existing=this.getOperation(key)
+    if(existing){if(existing.kind!==kind||existing.run_id!==runId&&kind!=='start')throw new LabError('IDEMPOTENCY_KEY_REUSED');return {operation:existing,duplicate:true}}
+    if(this.db.prepare("SELECT 1 FROM web_operations WHERE status IN ('pending','unknown')").get())throw new LabError('OPERATION_REQUIRES_REVIEW',409)
+    this.db.prepare("INSERT INTO web_operations VALUES (?,?,?,'pending',NULL,?)").run(key,kind,runId,new Date().toISOString())
+    return {operation:this.getOperation(key),duplicate:false}
+  }
+  finishOperation(key,runId,errorCode=null) {
+    this.db.prepare("UPDATE web_operations SET status=?,run_id=COALESCE(?,run_id),error_code=? WHERE request_key=? AND status='pending'").run(errorCode?'failed':'done',runId,errorCode,key)
+  }
+  saveNote(runId,note) {
+    if(typeof runId!=='string'||!/^[0-9a-f-]{36}$/i.test(runId))throw new LabError('INVALID_RUN_ID',400)
+    const run=this.getRun(runId)
+    if(!run||run.mode!=='real'||run.phase!=='running')throw new LabError('RUN_NOT_SUBMITTABLE',409)
+    if(typeof note!=='string'||note.length>1000)throw new LabError('INVALID_EVIDENCE_NOTE',400)
+    this.db.prepare('UPDATE lab_runs SET evidence_note=? WHERE run_id=?').run(note,runId)
+    return this.getRun(runId)
+  }
   createRun({ runId, scenarioId, scenarioVersion, target, requestKey, at, mode = 'mock' }) {
     if (!['mock', 'real'].includes(mode)) throw new LabError('INVALID_RUN_MODE', 400)
     return this.#tx(() => {

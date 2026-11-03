@@ -2,6 +2,10 @@
 
 ## Current state and pickup guide — 2026-10-23
 
+### Web-first live pilot pickup — 2026-11-03
+
+PM supersedes sequential full-product packaging with M1 secure runtime → M2 browser SSH lab → M3 one actual trial → M4 packaging later. See `docs/real-lab/WEB_FIRST_MVP_20261103.md` for code, minimal protected runtime commands and actual-evidence gates. The separate Real Lab module now has HTTPS/WSS guest PTY, session renewal, refresh/resume, fixed HTTP check, notes and async operations; source/harness verification is separate from actual M1/M2 PASS. Default launcher is terminal-only with claim/fault/reset disabled. B5 remains qualified; the one first-trial permit is unconsumed and must not be armed without separate consent after actual M1/M2 verification. Guided's terminal remains fixture-only and all 112 tickets/progress are preserved. The historical pickup entries below describe earlier checkpoints.
+
 ### Phase B pickup update — full Guided content review
 
 The case-specific authoring layer in `scripts/content/phase-b-*.mjs` now supplies all 112 reviewed Guided cases. It preserves question/option IDs, correct keys and gates; the original 112 tickets, progress v5, and hidden assessment engines are unchanged. Guided adds customerExplanation and per-probe why, plus separate authored Guided answer files. Run `npm run prepare-data` and the strict `npm run audit:content` after content edits. The audit checks all 112 records and 122 Command Library cards; 101 Guided-only fixture changes are documented separately. Browser tests cover 15 complete representative paths, including all 14 topics and L0–L3. This is agent review, not independent human SME sign-off. See `Phase_B_Content_QA.md` for exact results and limits.

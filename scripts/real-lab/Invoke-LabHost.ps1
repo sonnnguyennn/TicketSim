@@ -19,6 +19,7 @@ function Inspect-Host {
   if ($target.Count -ne 1 -or $recovery.Count -ne 1 -or $protected.Count -ne 1 -or $target[0].Name -ne 'ticketsim-lab' -or $recovery[0].Name -ne 'ticketsim-lab-recovery' -or $protected[0].Name -ne 'lab1') { throw 'VM_IDENTITY_MISMATCH' }
   $snapshots = @(Get-VMSnapshot -VM $target[0] -ErrorAction Stop)
   if ($snapshots.Count -ne 1 -or $snapshots[0].Id -ne $CheckpointId -or $snapshots[0].Name -ne $expectedName) { throw 'CHECKPOINT_ID_MISMATCH' }
+  if ($snapshots[0].SnapshotType.ToString() -ne 'Standard') { throw 'CHECKPOINT_TYPE_MISMATCH' }
   $disks = @(Get-VMHardDiskDrive -VM $target[0] -ErrorAction Stop)
   if ($disks.Count -ne 1 -or $disks[0].Path -notlike 'E:\TicketSimVMs\ticketsim-lab\*') { throw 'TARGET_DISK_MISMATCH' }
   $diskChain = @(); $cursor = $disks[0].Path; $seen = @{}
@@ -42,7 +43,7 @@ function Inspect-Host {
   [pscustomobject]@{
     targetVmId=$targetId.ToString(); targetName=$target[0].Name; targetState=$target[0].State.ToString()
     recoveryVmId=$recoveryId.ToString(); recoveryState=$recovery[0].State.ToString()
-    protectedVmId=$protectedId.ToString(); protectedName=$protected[0].Name
+    protectedVmId=$protectedId.ToString(); protectedName=$protected[0].Name; protectedState=$protected[0].State.ToString()
     checkpointId=$snapshots[0].Id.ToString(); checkpointName=$snapshots[0].Name; checkpointCount=$snapshots.Count
     backupSha256=$actualHash; managementSwitchId=$management[0].SwitchId.ToString()
     diskChain=$diskChain
@@ -69,6 +70,7 @@ if ($Action -eq 'reset') {
   Start-VM -VM $afterReset -ErrorAction Stop
   $after = Inspect-Host
   if ($after.targetState -ne 'Running' -or $after.recoveryState -ne 'Off') { throw 'RESET_POSTCHECK_FAILED' }
+  if ($after.protectedState -ne $before.protectedState) { throw 'PROTECTED_STATE_CHANGED' }
   $after | ConvertTo-Json -Depth 5 -Compress
 } else {
   $before | ConvertTo-Json -Depth 5 -Compress

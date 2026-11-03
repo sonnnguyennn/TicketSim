@@ -37,6 +37,26 @@ function operations({ failAt = null, mutate = null } = {}) {
 }
 
 describe('real LAB-WEB-001 lifecycle with isolated operation fakes', () => {
+  it('revokes terminal input before independent grading and before reset',async()=>{
+    const db=store(),ops=operations()
+    const service=new LiveLabService(db,ops,approval,{closeTerminal:async()=>{ops.calls.push('terminal_closed')}})
+    const run=await service.start('LAB-WEB-001',key(81))
+    const done=await service.submit(run.run_id,key(82),'browser learner note')
+    expect(done.phase).toBe('completed')
+    expect(ops.calls.indexOf('terminal_closed')).toBeLessThan(ops.calls.indexOf('observe:grade'))
+    expect(ops.calls.lastIndexOf('terminal_closed')).toBeLessThan(ops.calls.indexOf('reset'))
+  })
+  it('never records a grade or calls reset if terminal closure remains uncertain',async()=>{
+    const db=store(),ops=operations()
+    const service=new LiveLabService(db,ops,approval,{closeTerminal:async()=>{throw new Error('uncertain close')}})
+    const run=await service.start('LAB-WEB-001',key(83))
+    const result=await service.submit(run.run_id,key(84),'note')
+    expect(result.phase).toBe('restore_failed')
+    expect(result.grade_status).toBe('unknown')
+    expect(ops.calls).not.toContain('observe:grade')
+    expect(ops.calls).not.toContain('reset')
+    expect(db.getLease(run.vm_ref).lease_state).toBe('unknown')
+  })
   it('records live grade then reset verification and releases the lease', async () => {
     const db = store(), ops = operations(), service = new LiveLabService(db,ops,approval)
     const run = await service.start('LAB-WEB-001',key(1))

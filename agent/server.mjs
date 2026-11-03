@@ -1,4 +1,5 @@
 import http from 'node:http'
+import https from 'node:https'
 import { pathToFileURL } from 'node:url'
 import { resolve } from 'node:path'
 import { PairingManager } from './auth.mjs'
@@ -11,6 +12,8 @@ import { OperatorBridge } from './operatorBridge.mjs'
 import { assertLiveApproval } from './livePolicy.mjs'
 import { assertNonAdmin } from './privilege.mjs'
 import { readFileSync } from 'node:fs'
+import { serveStaticWeb } from './staticWeb.mjs'
+import { learnerEvents } from './webPilot.mjs'
 
 const HOST = '127.0.0.1'
 const PORT = 4174
@@ -29,8 +32,22 @@ async function readJson(request) {
   try { return JSON.parse(Buffer.concat(chunks).toString('utf8')) } catch { throw new LabError('INVALID_JSON', 400) }
 }
 
-export function createAgentServer({ service = null, serviceRef = null, liveService = null, liveServiceRef = null, auth = new PairingManager() } = {}) {
-  const server = http.createServer(async (request, response) => {
+export function createAgentServer({ service = null, serviceRef = null, liveService = null, liveServiceRef = null, auth = new PairingManager(), tls = null, webRoot = null, pilot = null, onPairingCode = null } = {}) {
+  const serverFactory = tls ? handler=>https.createServer(tls,handler) : handler=>http.createServer(handler)
+  const cookie = (response, token) => response.setHeader('Set-Cookie',`__Host-ticketsim=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=7200`)
+  const ownOrigin = request => `${request.socket.encrypted?'https':'http'}://${HOST}:${request.socket.localPort}`
+  const permittedOrigin = request => request.headers.origin===ownOrigin(request) || !tls&&allowedOrigins.has(request.headers.origin)
+  function authorize(request) {
+    const bearer=request.headers.authorization
+    if(bearer)return auth.authorize(bearer)
+    if(!request.socket.encrypted)throw new LabError('UNAUTHORIZED',401)
+    const token=/(?:^|;\s*)__Host-ticketsim=([A-Za-z0-9_-]+)(?:;|$)/.exec(request.headers.cookie??'')?.[1]
+    const session=auth.authorize(`Bearer ${token??''}`)
+    if(request.method!=='GET'&&request.headers['x-ticketsim-csrf']!==session.csrf)throw new LabError('CSRF_DENIED',403)
+    request.headers.authorization=`Bearer ${token}`
+    return session
+  }
+  const server = serverFactory(async (request, response) => {
     const activeService = serviceRef ? serviceRef.current : service
     const activeLiveService = liveServiceRef ? liveServiceRef.current : liveService
     response.setHeader('Cache-Control', 'no-store')
@@ -39,23 +56,27 @@ export function createAgentServer({ service = null, serviceRef = null, liveServi
     response.setHeader('Referrer-Policy', 'no-referrer')
     response.setHeader('Content-Security-Policy', "default-src 'none'")
     const origin = request.headers.origin
-    if (request.headers.host !== `${HOST}:${request.socket.localPort}` || origin && !allowedOrigins.has(origin) || request.socket.remoteAddress !== HOST) {
+    if (request.headers.host !== `${HOST}:${request.socket.localPort}` || origin && !permittedOrigin(request) || request.socket.remoteAddress !== HOST) {
       send(response, 403, { error: 'FORBIDDEN' }); return
     }
     if (origin) response.setHeader('Access-Control-Allow-Origin', origin)
     response.setHeader('Vary', 'Origin')
     if (request.method === 'OPTIONS') {
-      if (!origin || !allowedOrigins.has(origin)) { send(response, 403, { error: 'FORBIDDEN' }); return }
+      if (!origin || !permittedOrigin(request)) { send(response, 403, { error: 'FORBIDDEN' }); return }
       response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-      response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Idempotency-Key')
+      response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Idempotency-Key, X-TicketSim-CSRF')
       response.writeHead(204).end(); return
     }
     try {
       if (typeof request.url !== 'string' || !request.url.startsWith('/') || request.url.startsWith('//')) throw new LabError('INVALID_REQUEST_TARGET', 400)
       const url = new URL(request.url, `http://${HOST}:${PORT}`)
       if (url.search || url.hash) throw new LabError('NOT_FOUND', 404)
+      if(webRoot&&request.method==='GET'&&!url.pathname.startsWith('/api/')){
+        if(serveStaticWeb(webRoot,url.pathname,response))return
+        throw new LabError('NOT_FOUND',404)
+      }
       if (request.method === 'GET' && url.pathname === '/api/v1/status') {
-        send(response, 200, { schemaVersion: 1, phase: activeLiveService ? 'live_approval_configured' : 'foundation_only', environmentReady: false, vmVerified: false, actionsEnabled: !!activeLiveService, mockEngineAvailable: !!activeService }); return
+        send(response, 200, { schemaVersion: 1, phase: activeLiveService ? 'live_approval_configured' : pilot ? 'terminal_only' : 'foundation_only', environmentReady: pilot?.lastPreflight?.verdict==='pass', vmVerified: pilot?.lastPreflight?.verdict==='pass', actionsEnabled: !!activeLiveService, terminalEnabled: !!pilot, secureTransport:!!request.socket.encrypted, mockEngineAvailable: !!activeService }); return
       }
       if (request.method === 'GET' && url.pathname === '/api/v1/scenarios') {
         send(response, 200, { scenarios: [...activeService?.registry.list() ?? [], ...activeLiveService?.registry.list() ?? []] }); return
@@ -64,8 +85,51 @@ export function createAgentServer({ service = null, serviceRef = null, liveServi
         if (!origin) throw new LabError('ORIGIN_REQUIRED', 403)
         const body = await readJson(request)
         if (!exactObject(body, ['code']) || typeof body.code !== 'string') throw new LabError('INVALID_BODY', 400)
-        send(response, 200, auth.pair(body.code)); return
+        const paired=auth.pair(body.code)
+        if(request.socket.encrypted){cookie(response,paired.token);send(response,200,{expiresAt:paired.expiresAt,csrf:auth.session.csrf})}
+        else send(response, 200, paired)
+        return
       }
+      if(url.pathname==='/api/v1/session'&&request.method==='GET'){
+        try{const session=authorize(request);send(response,200,{expiresAt:new Date(session.expiresAt).toISOString(),csrf:session.csrf})}
+        catch(error){if(onPairingCode&&(!auth.session||auth.now()>=auth.session.expiresAt)&&(auth.paired||auth.now()>=auth.pairingExpiresAt))onPairingCode(auth.reissuePairing());throw error}return
+      }
+      if(url.pathname==='/api/v1/session/renew'&&request.method==='POST'){
+        if(!origin)throw new LabError('ORIGIN_REQUIRED',403)
+        authorize(request);const body=await readJson(request)
+        if(!exactObject(body,[]))throw new LabError('INVALID_BODY',400)
+        send(response,200,auth.renew(request.headers.authorization));return
+      }
+      // Browser cookie auth is normalized for existing routes without changing their bearer API.
+      if(!request.headers.authorization&&request.socket.encrypted)authorize(request)
+      if(pilot&&url.pathname.startsWith('/api/v1/web/')){
+        const session=authorize(request)
+        if(request.method==='POST'&&!origin)throw new LabError('ORIGIN_REQUIRED',403)
+        if(request.method==='GET'&&url.pathname==='/api/v1/web/state'){send(response,200,pilot.state(session.owner));return}
+        if(request.method!=='POST')throw new LabError('NOT_FOUND',404)
+        const body=await readJson(request)
+        if(url.pathname==='/api/v1/web/preflight'&&exactObject(body,[])){send(response,200,await pilot.preflight());return}
+        if(url.pathname==='/api/v1/web/website'&&exactObject(body,[])){send(response,200,await pilot.operations.website());return}
+        if(url.pathname==='/api/v1/web/terminal'&&exactObject(body,['runId','password'])){
+          if(!request.socket.encrypted)throw new LabError('SECURE_TRANSPORT_REQUIRED',403)
+          try{
+            const terminal=await pilot.terminal.create(session.owner,body.runId,body.password)
+            pilot.authenticated.set(session.owner,Date.now());send(response,200,{terminal})
+          }finally{body.password=undefined}return
+        }
+        if(url.pathname==='/api/v1/web/terminal/close'&&exactObject(body,[])){
+          const terminal=pilot.terminal.current(session.owner)
+          if(terminal)await pilot.terminal.closeRun(terminal.runId)
+          send(response,200,{closed:true});return
+        }
+        if(url.pathname==='/api/v1/web/start'&&exactObject(body,['scenarioId'])&&body.scenarioId==='LAB-WEB-001'){
+          send(response,202,{operation:pilot.start(request.headers['idempotency-key'],session.owner)});return
+        }
+        if(url.pathname==='/api/v1/web/note'&&exactObject(body,['runId','note'])){send(response,200,{run:pilot.store.saveNote(body.runId,body.note)});return}
+        if(url.pathname==='/api/v1/web/submit'&&exactObject(body,['runId','verificationNote'])){send(response,202,{operation:pilot.submit(request.headers['idempotency-key'],body.runId,body.verificationNote)});return}
+        throw new LabError('INVALID_BODY',400)
+      }
+      if(pilot&&request.method==='POST'&&url.pathname.startsWith('/api/v1/live-runs'))throw new LabError('WEB_WORKFLOW_REQUIRED',403)
       if (url.pathname === '/api/v1/mock-runs' && request.method === 'GET') {
         auth.authorize(request.headers.authorization)
         if (!activeService) throw new LabError('MOCK_ENGINE_UNAVAILABLE', 503)
@@ -101,7 +165,7 @@ export function createAgentServer({ service = null, serviceRef = null, liveServi
         if (!activeLiveService) throw new LabError('LIVE_ENGINE_UNAVAILABLE', 503)
         const run = activeLiveService.store.getRun(liveRunMatch[1])
         if (!run || run.mode !== 'real') throw new LabError('UNKNOWN_RUN', 404)
-        send(response, 200, { simulated: false, run, events: activeLiveService.store.getEvents(liveRunMatch[1]) }); return
+        send(response, 200, { simulated: false, run, events: learnerEvents(activeLiveService.store.getEvents(liveRunMatch[1])) }); return
       }
       if (url.pathname === '/api/v1/mock-runs' && request.method === 'POST') {
         if (!origin) throw new LabError('ORIGIN_REQUIRED', 403)
@@ -136,7 +200,16 @@ export function createAgentServer({ service = null, serviceRef = null, liveServi
       send(response, error instanceof LabError ? error.status : 500, { error: error instanceof LabError ? error.code : 'INTERNAL_ERROR' })
     }
   })
-  server.on('upgrade', (_request, socket) => socket.destroy())
+  server.on('upgrade', async(request,socket,head)=>{
+    socket.on('error',()=>socket.destroy())
+    try{
+      if(!pilot||!request.socket.encrypted||request.socket.remoteAddress!==HOST||request.headers.host!==`${HOST}:${request.socket.localPort}`||request.headers.origin!==ownOrigin(request))throw new LabError('FORBIDDEN',403)
+      const match=/^\/api\/v1\/web\/terminal\/([0-9a-f-]{36})$/.exec(request.url??'')
+      if(!match)throw new LabError('NOT_FOUND',404)
+      const session=authorize(request)
+      await pilot.terminal.upgrade(request,socket,head,session.owner,match[1],()=>auth.authorize(request.headers.authorization))
+    }catch{socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n')}
+  })
   return server
 }
 

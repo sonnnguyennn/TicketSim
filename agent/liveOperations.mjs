@@ -21,21 +21,29 @@ function hostStatus(host, fields, test) { return !host || fields.some(field => h
 function commandStatus(result, test) { return result.ok ? status(test, result.text) : Number.isInteger(result.code) && result.code !== 255 ? FAIL : UNKNOWN }
 
 export class LiveOperations {
-  constructor({ hostBridge, sshKeyPath, knownHostsPath, sshUser = 'ticketsim-agent', exec = runFile, fetcher = fetch } = {}) {
+  constructor({ hostBridge, sshKeyPath, knownHostsPath, sshUser = 'ticketsim-agent', exec = runFile, fetcher = fetch, sshBinary = 'ssh', keygenBinary = 'ssh-keygen', sshConfig = null } = {}) {
     if (!hostBridge || !sshKeyPath || !knownHostsPath || sshUser !== 'ticketsim-agent') throw new LabError('LIVE_TRANSPORT_NOT_CONFIGURED')
     this.hostBridge = hostBridge; this.sshKeyPath = sshKeyPath; this.knownHostsPath = knownHostsPath; this.exec = exec; this.fetcher = fetcher
+    this.sshBinary=sshBinary;this.keygenBinary=keygenBinary;this.sshConfig=sshConfig
   }
   async #ssh(commandId) {
     const command = commands[commandId]
     if (!command) throw new LabError('UNKNOWN_GUEST_OPERATION')
     const args = ['-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o',`UserKnownHostsFile=${this.knownHostsPath}`,'-o','ConnectTimeout=5','-o','ConnectionAttempts=1','-i',this.sshKeyPath,`ticketsim-agent@${LIVE_TARGET.managementIp}`,command]
-    try { const result = await this.exec('ssh', args, { timeout: 12_000, windowsHide: true, maxBuffer: 8192 }); return { ok: true, text: result.stdout.trim(), stderr: result.stderr.trim() } }
+    if(this.sshConfig)args.unshift('-F',this.sshConfig)
+    try { const result = await this.exec(this.sshBinary, args, { timeout: 12_000, windowsHide: true, maxBuffer: 8192 }); return { ok: true, text: result.stdout.trim(), stderr: result.stderr.trim() } }
     catch (error) { return { ok: false, text: String(error?.stdout ?? '').trim().slice(0, 200), stderr: String(error?.stderr ?? '').slice(0, 200), code: error?.code } }
   }
   async #http() {
     try {
       const response = await this.fetcher(`http://${LIVE_TARGET.managementIp}/`, { signal: AbortSignal.timeout(5000), cache: 'no-store' })
-      const bytes = Buffer.from(await response.arrayBuffer())
+      // Bound the body while reading, rather than buffering an unbounded guest response.
+      const chunks=[];let size=0
+      if(response.body?.getReader){
+        const reader=response.body.getReader()
+        while(true){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>4096){await reader.cancel();return {status:response.status,bytes:null}}chunks.push(Buffer.from(value))}
+      }else chunks.push(Buffer.from(await response.arrayBuffer()))
+      const bytes=Buffer.concat(chunks)
       if (bytes.length > 4096) return { status: response.status, bytes: null }
       return { status: response.status, bytes }
     } catch (error) {
@@ -45,7 +53,7 @@ export class LiveOperations {
   }
   async #fingerprint() {
     try {
-      const result = await this.exec('ssh-keygen', ['-lf', this.knownHostsPath], { timeout: 5000, windowsHide: true, maxBuffer: 4096 })
+      const result = await this.exec(this.keygenBinary, ['-lf', this.knownHostsPath], { timeout: 5000, windowsHide: true, maxBuffer: 4096 })
       return result.stdout.includes(LIVE_TARGET.sshFingerprint) ? PASS : FAIL
     } catch { return UNKNOWN }
   }
@@ -93,7 +101,12 @@ export class LiveOperations {
     const result = await this.#ssh('stopNginx')
     if (!result.ok) throw new LabError('LIVE_INJECTION_FAILED')
   }
+  async website() {
+    const result=await this.#http()
+    return {checkedAt:new Date().toISOString(),status:result.status,contentMatches:result.bytes?.equals(page)??false,preview:result.bytes?.toString('utf8').slice(0,4096)??'',verdict:result.status===null?'unknown':result.status===200&&result.bytes?.equals(page)?'pass':'fail'}
+  }
   async claim(approval, runId) { await this.hostBridge.claim(approval,runId) }
+  async finalize(approval, runId) { await this.hostBridge.finalize(approval,runId) }
   async reset(approval, runId) {
     await this.hostBridge.reset(approval,runId)
     // Retry read-only readiness probes only; never repeat the host reset.

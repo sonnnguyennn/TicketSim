@@ -20,6 +20,8 @@ Mở URL local do Vite hiển thị. Sau khi cài dependency, app không cần i
 
 ## Real Lab — staged first pilot
 
+**Web-first MVP (2026-11-03):** ưu tiên M1 cách ly runtime, M2 terminal Linux ngay trên web, M3 một actual trial; installer/services để M4. Source đã có HTTPS/WSS SSH PTY, session renewal/resume, autosave note, website check và async polling. Dùng [hướng dẫn runtime và qualification](docs/real-lab/WEB_FIRST_MVP_20261103.md). Default launcher chỉ bật terminal qualification, không claim/fault/reset. Actual M1/M2 phải được kiểm chứng riêng; automated harness không phải LIVE PASS. Các đoạn staging/external SSH bên dưới là baseline lịch sử trước web-first MVP.
+
 **B5 actual qualification PASS (2026-11-03):** the exact offline checkpoint was applied, marker disappeared and independent SSH/HTTP/config/backup checks passed; operator leases are reconciled. First Nginx fault and learner trial are still awaiting separate approval. See [actual B5 report](docs/real-lab/B5_QUALIFICATION_PASS_20261103.md).
 
 Tab **Real Lab** now contains the staged `LAB-WEB-001` live workflow: pairing, status, external SSH instructions, submit/check, result, recovery and run history. It remains disabled until an actual B5 checkpoint/reset proof and separate first-trial approval are supplied. The ordinary local agent stays non-administrator; a separate operator process owns fixed host inspect/reset actions. No real fault has run. See [B5 and first-lab operator procedure](docs/real-lab/B5_LAB_WEB_001_OPERATOR.md), [architecture](docs/real-lab/ARCHITECTURE.md), and [API](docs/real-lab/DATABASE_API.md). Guided's terminal remains authored-fixture only.

@@ -9,8 +9,9 @@ const metadata = extra => ({ simulated: false, ...extra })
 
 /** The operations object is supplied only by the separate operator bridge, never by HTTP input. */
 export class LiveLabService {
-  constructor(store, operations, approval, { registry = createLiveScenarioRegistry() } = {}) {
+  constructor(store, operations, approval, { registry = createLiveScenarioRegistry(), closeTerminal = async () => {} } = {}) {
     this.store = store; this.operations = operations; this.approval = approval; this.registry = registry; this.inflight = new Map()
+    this.closeTerminal = closeTerminal
   }
   #once(key, work) {
     if (this.inflight.has(key)) return this.inflight.get(key)
@@ -73,6 +74,7 @@ export class LiveLabService {
       if (reserved.duplicate) return reserved.run
       this.store.transition(runId, 'running', 'submitting', 'submission_received', metadata())
       try {
+        await this.closeTerminal(runId)
         const grade = await this.#observe('grade')
         for (const checkId of liveChecks.grade) this.store.appendEvent(runId, 'grade_check', metadata({ checkId: `real-${checkId.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)}-v1`, outcome: grade.observation.checks[checkId] }))
         this.store.transition(runId, 'submitting', 'graded', 'grade_recorded', metadata({ outcome: grade.verdict, score: grade.verdict === 'pass' ? 65 : 0 }), { gradeStatus: grade.verdict })
@@ -96,10 +98,12 @@ export class LiveLabService {
     if (!['graded','failed_setup','failed_grading'].includes(phase)) throw new LabError('RECOVERY_PHASE_INVALID')
     this.store.transition(runId, phase, 'restoring', 'reset_started', metadata({ operationId: 'real-web-fast-reset-v1' }), { recoveryStatus: 'in_progress' })
     try {
+      await this.closeTerminal(runId)
       await this.operations.reset(this.approval, runId)
       const baseline = await this.#observe('reset')
       this.store.appendEvent(runId, 'baseline_checked', metadata({ checkId: 'real-web-baseline-v1', outcome: baseline.verdict }))
       if (baseline.verdict !== 'pass') throw new LabError('LIVE_BASELINE_NOT_VERIFIED')
+      await this.operations.finalize?.(this.approval,runId)
       this.store.transition(runId, 'restoring', 'verified_clean', 'baseline_verified', metadata(), { recoveryStatus: 'verified' })
       return this.store.finish(runId)
     } catch (error) {

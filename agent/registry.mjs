@@ -73,6 +73,6 @@ export function createLiveScenarioRegistry(entry = realWebPilot) {
   if (entry.mode !== 'approval-gated' || !validate(entry.manifest) || entry.target.vmRef !== LIVE_TARGET.vmRef || entry.target.controller !== 'hyperv' || entry.target.disposable !== true || entry.manifest.vmProfileId !== 'ticketsim-lab-original-b5-v1' || entry.manifest.setupActionId !== 'real-web-stop-nginx-v1' || entry.manifest.rollbackActionId !== 'real-web-fast-reset-v1' || entry.preflightCheckId !== 'real-web-preflight-v1' || entry.recoveryCheckId !== 'real-web-baseline-v1' || entry.manifest.faultCheckIds.join(',') !== 'real-web-fault-v1' || entry.manifest.gradeCheckIds.join(',') !== realWebPilot.manifest.gradeCheckIds.join(',')) throw new LabError('INVALID_LIVE_MANIFEST', 400)
   return Object.freeze({
     get(id) { if (id !== entry.manifest.id) throw new LabError('UNKNOWN_SCENARIO', 404); return entry },
-    list() { return [{ id: entry.manifest.id, title: entry.manifest.title, revision: entry.manifest.revision, mode: entry.mode, availableForRealVm: true }] },
+    list() { return [{ id: entry.manifest.id, title: 'Website unavailable over HTTP', revision: entry.manifest.revision, mode: entry.mode, availableForRealVm: true }] },
   })
 }

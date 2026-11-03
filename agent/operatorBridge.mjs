@@ -10,7 +10,11 @@ export class OperatorBridge {
       method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${this.token}` },
       body: JSON.stringify({ operationId, approvalId: approval.approvalId, runId }), signal: AbortSignal.timeout(operationId === 'real-host-reset-v1' ? 240_000 : 60_000),
     })
-    if (!response.ok) throw new LabError('OPERATOR_ACTION_FAILED')
+    if (!response.ok) {
+      let failure
+      try{failure=await response.json()}catch{}
+      throw new LabError(typeof failure?.code==='string'&&/^[A-Z0-9_]{1,60}$/.test(failure.code)?`OPERATOR_${failure.code}`:'OPERATOR_ACTION_FAILED')
+    }
     const body = await response.json()
     if (body?.operationId !== operationId || body?.approvalId !== approval.approvalId || body?.outcome !== 'pass') throw new LabError('OPERATOR_RESPONSE_INVALID')
     return body.observation
@@ -18,4 +22,5 @@ export class OperatorBridge {
   inspect(approval) { return this.#call('real-host-inspect-v1', approval) }
   claim(approval, runId) { return this.#call('real-host-claim-v1', approval, runId) }
   reset(approval, runId) { return this.#call('real-host-reset-v1', approval, runId) }
+  finalize(approval, runId) { return this.#call('real-host-finalize-v1', approval, runId) }
 }
