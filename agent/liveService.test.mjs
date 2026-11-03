@@ -37,6 +37,18 @@ function operations({ failAt = null, mutate = null } = {}) {
 }
 
 describe('real LAB-WEB-001 lifecycle with isolated operation fakes', () => {
+  it('expires only permission to start; deduplicated reads and approved recovery remain available',async()=>{
+    const db=store(),ops=operations(),permit={...approval,trialStartBefore:new Date(Date.now()+60_000).toISOString()}
+    const service=new LiveLabService(db,ops,permit)
+    const run=await service.start('LAB-WEB-001',key(91))
+    permit.trialStartBefore='2000-01-01T00:00:00Z'
+    expect((await service.start('LAB-WEB-001',key(91))).run_id).toBe(run.run_id)
+    await expect(service.start('LAB-WEB-001',key(92))).rejects.toThrow('APPROVAL_START_WINDOW_EXPIRED')
+    const done=await service.submit(run.run_id,key(93),'after start window')
+    expect(done.phase).toBe('completed')
+    expect(db.getEvents(run.run_id).filter(event=>event.event_type==='baseline_check')).toHaveLength(liveChecks.reset.length)
+    expect(ops.calls.filter(call=>call==='reset')).toHaveLength(1)
+  })
   it('revokes terminal input before independent grading and before reset',async()=>{
     const db=store(),ops=operations()
     const service=new LiveLabService(db,ops,approval,{closeTerminal:async()=>{ops.calls.push('terminal_closed')}})

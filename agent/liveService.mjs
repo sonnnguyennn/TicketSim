@@ -33,6 +33,7 @@ export class LiveLabService {
         if (prior.operation !== `start:${scenarioId}` || this.store.getRun(prior.run_id)?.mode !== 'real') throw new LabError('IDEMPOTENCY_KEY_REUSED')
         return this.store.getRun(prior.run_id)
       }
+      if(this.approval.trialStartBefore&&(!Number.isFinite(Date.parse(this.approval.trialStartBefore))||Date.now()>=Date.parse(this.approval.trialStartBefore)))throw new LabError('APPROVAL_START_WINDOW_EXPIRED',403)
       if (this.store.getLease(target.vmRef)) throw new LabError('VM_LEASE_HELD')
       const first = await this.#observe('preflight')
       if (first.verdict !== 'pass') throw new LabError(`LIVE_PREFLIGHT_${first.verdict.toUpperCase()}`)
@@ -75,6 +76,7 @@ export class LiveLabService {
       this.store.transition(runId, 'running', 'submitting', 'submission_received', metadata())
       try {
         await this.closeTerminal(runId)
+        this.store.appendEvent(runId,'terminal_revoked',metadata({checkId:'real-terminal-revoked-v1',outcome:'pass'}))
         const grade = await this.#observe('grade')
         for (const checkId of liveChecks.grade) this.store.appendEvent(runId, 'grade_check', metadata({ checkId: `real-${checkId.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)}-v1`, outcome: grade.observation.checks[checkId] }))
         this.store.transition(runId, 'submitting', 'graded', 'grade_recorded', metadata({ outcome: grade.verdict, score: grade.verdict === 'pass' ? 65 : 0 }), { gradeStatus: grade.verdict })
@@ -101,6 +103,7 @@ export class LiveLabService {
       await this.closeTerminal(runId)
       await this.operations.reset(this.approval, runId)
       const baseline = await this.#observe('reset')
+      for(const checkId of liveChecks.reset)this.store.appendEvent(runId,'baseline_check',metadata({checkId:`real-reset-${checkId.replace(/[A-Z]/g,c=>`-${c.toLowerCase()}`)}-v1`,outcome:baseline.observation.checks[checkId]??'unknown'}))
       this.store.appendEvent(runId, 'baseline_checked', metadata({ checkId: 'real-web-baseline-v1', outcome: baseline.verdict }))
       if (baseline.verdict !== 'pass') throw new LabError('LIVE_BASELINE_NOT_VERIFIED')
       await this.operations.finalize?.(this.approval,runId)

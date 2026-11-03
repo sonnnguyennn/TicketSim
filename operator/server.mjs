@@ -13,7 +13,7 @@ const HOST = '127.0.0.1', PORT = 4175
 const script = fileURLToPath(new URL('../scripts/real-lab/Invoke-LabHost.ps1', import.meta.url))
 const equal = (a, b) => typeof a === 'string' && typeof b === 'string' && Buffer.byteLength(a) === Buffer.byteLength(b) && timingSafeEqual(Buffer.from(a), Buffer.from(b))
 function send(res, status, body) { res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }).end(JSON.stringify(body)) }
-const knownFailures=['READ_ONLY_OPERATOR','INVALID_ACTION','APPROVAL_ALREADY_USED','APPROVAL_NOT_CLAIMED_FOR_RUN','OPERATION_ALREADY_ATTEMPTED','RESET_NOT_VERIFIED','HOST_IDENTITY_MISMATCH','B5_OPERATOR_LEASE_UNRESOLVED','VM_IDENTITY_MISMATCH','CHECKPOINT_ID_MISMATCH','CHECKPOINT_TYPE_MISMATCH','TARGET_DISK_MISMATCH','DISK_CHAIN_INVALID','DISK_CHAIN_BASE_MISMATCH','BACKUP_MISSING','BACKUP_HASH_MISMATCH','MANAGEMENT_BINDING_MISMATCH','RESOURCE_UNKNOWN','RESET_STATE_INVALID','RESOURCE_MINIMUM_FAILED','CLEAN_SHUTDOWN_TIMEOUT','CHECKPOINT_CHANGED','RESET_NOT_OFF','INSUFFICIENT_RAM_TO_BOOT','RESET_POSTCHECK_FAILED','PROTECTED_STATE_CHANGED']
+const knownFailures=['READ_ONLY_OPERATOR','INVALID_ACTION','APPROVAL_ALREADY_USED','APPROVAL_NOT_CLAIMED_FOR_RUN','APPROVAL_START_WINDOW_EXPIRED','OPERATION_ALREADY_ATTEMPTED','RESET_NOT_VERIFIED','HOST_IDENTITY_MISMATCH','B5_OPERATOR_LEASE_UNRESOLVED','VM_IDENTITY_MISMATCH','CHECKPOINT_ID_MISMATCH','CHECKPOINT_TYPE_MISMATCH','TARGET_DISK_MISMATCH','DISK_CHAIN_INVALID','DISK_CHAIN_BASE_MISMATCH','BACKUP_MISSING','BACKUP_HASH_MISMATCH','MANAGEMENT_BINDING_MISMATCH','RESOURCE_UNKNOWN','RESET_STATE_INVALID','RESOURCE_MINIMUM_FAILED','CLEAN_SHUTDOWN_TIMEOUT','CHECKPOINT_CHANGED','RESET_NOT_OFF','INSUFFICIENT_RAM_TO_BOOT','RESET_POSTCHECK_FAILED','PROTECTED_STATE_CHANGED']
 function failureCode(error){return knownFailures.find(code=>error?.message===code||String(error?.stderr??'').includes(code))??'HOST_ACTION_FAILED'}
 async function bodyJson(req) {
   if (req.headers['content-type'] !== 'application/json') throw new Error('JSON_REQUIRED')
@@ -79,7 +79,10 @@ export function createOperatorServer({ approval, token, journal, runner = runHos
       if (readOnly && body?.operationId !== 'real-host-inspect-v1') throw new Error('READ_ONLY_OPERATOR')
       if (!body || Object.keys(body).sort().join(',') !== 'approvalId,operationId,runId' || body.approvalId !== approval.approvalId || !['real-host-inspect-v1','real-host-claim-v1','real-host-reset-v1','real-host-finalize-v1'].includes(body.operationId) || body.operationId !== 'real-host-inspect-v1' && !/^[0-9a-f-]{36}$/i.test(body.runId ?? '') || body.operationId === 'real-host-inspect-v1' && body.runId !== null) throw new Error('INVALID_ACTION')
       let actionId = null
-      if (body.operationId === 'real-host-claim-v1') journal.claim(approval.approvalId,body.runId)
+      if (body.operationId === 'real-host-claim-v1') {
+        if(approval.trialStartBefore&&(!Number.isFinite(Date.parse(approval.trialStartBefore))||Date.now()>=Date.parse(approval.trialStartBefore)))throw new Error('APPROVAL_START_WINDOW_EXPIRED')
+        journal.claim(approval.approvalId,body.runId)
+      }
       if (body.operationId === 'real-host-reset-v1') actionId = journal.reserve(approval.approvalId,body.runId,body.operationId)
       try {
         const observation = await runner(body.operationId,approval.checkpointId)

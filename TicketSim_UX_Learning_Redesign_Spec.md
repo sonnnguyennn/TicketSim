@@ -4,6 +4,8 @@
 
 ### Web-first live pilot pickup — 2026-11-03
 
+Actual update: the operator/user supplied real browser preflight/PTY/HTTP screenshots, confirmed the M2 interactions and provided `sudo -l` showing `(ALL : ALL) ALL`. See `docs/real-lab/M2_ACTUAL_BROWSER_20261103.md`. M3 activation/report code is ready behind explicit one-trial consent; no fault was performed during this update. Default runtime remains terminal-only.
+
 PM supersedes sequential full-product packaging with M1 secure runtime → M2 browser SSH lab → M3 one actual trial → M4 packaging later. See `docs/real-lab/WEB_FIRST_MVP_20261103.md` for code, minimal protected runtime commands and actual-evidence gates. The separate Real Lab module now has HTTPS/WSS guest PTY, session renewal, refresh/resume, fixed HTTP check, notes and async operations; source/harness verification is separate from actual M1/M2 PASS. Default launcher is terminal-only with claim/fault/reset disabled. B5 remains qualified; the one first-trial permit is unconsumed and must not be armed without separate consent after actual M1/M2 verification. Guided's terminal remains fixture-only and all 112 tickets/progress are preserved. The historical pickup entries below describe earlier checkpoints.
 
 ### Phase B pickup update — full Guided content review

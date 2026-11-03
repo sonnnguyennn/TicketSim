@@ -4,6 +4,8 @@ PM accepted the long-term web-product architecture but superseded sequential W0�
 
 ## Current status and boundaries
 
+**Actual pickup update:** operator/user completed the actual browser checks and supplied screenshots plus `sudo -l` authorization. See [M2 actual evidence](M2_ACTUAL_BROWSER_20261103.md). M1 is linked to the successful protected launcher; the M3 launcher validates its detailed protected evidence again. M3 code now includes explicit consent, unused-state checks, a one-hour start window and a read-only final report. It has not armed or run a trial in this update. The preparation-only statements below describe the preceding implementation checkpoint.
+
 - User ran `Prepare-PilotRuntime.ps1 -Apply` successfully after the PowerShell discovery fix. `TicketSimAgent` exists, SID ending `1006`. That is preparation evidence, **not M1 PASS**.
 - Source implementation for M1/M2 exists; final deployed-copy identity/access probes and actual browser PTY on original are required before claiming M1/M2 PASS.
 - M3 is NOT RUN. Both flags in the existing first-trial draft remain false; no fault, reset, run claim or checkpoint mutation has been performed by this implementation.
@@ -77,13 +79,35 @@ M2 code/harness tests cannot stand in for this procedure. Terminal preview expir
 
 ## M3 gate remains separate
 
-Only after M1 and actual M2 PASS, fresh invariants/leases and explicit operator consent for the exact one-run fault/recovery permit may the Operator's protected approval be armed. The supplied default Start helper deliberately cannot arm a trial or edit either flag. No existing first-trial permit is consumed during code, harness or terminal-only qualification.
+The default launcher remains terminal-only. `-Mode Trial` is a deliberate separate activation, requiring the exact consent below plus M2 and learner-sudo confirmations. It validates M1 protected evidence, zero prior real runs/claims/actions, no active/unknown lease or operation, exact host/checkpoint/backup and current resource thresholds. The two original draft flags stay false; new protected/shared permit files are created without overwriting an existing admission. Partial admission is retained for operator review. A previously armed unused permit can only resume within its original start window; its window is never extended automatically.
+
+After separate operator consent, close the M2 terminal/tab, then use elevated operator PowerShell:
+
+```powershell
+& 'E:\Document\TicketSim\scripts\real-lab\Stop-PilotRuntime.ps1'
+& 'E:\Document\TicketSim\scripts\real-lab\Prepare-PilotRuntime.ps1' -Apply -Refresh
+& 'C:\Program Files\TicketSimPilot\scripts\real-lab\Start-PilotRuntime.ps1' -Mode Trial -M2Confirmed -LearnerSudoConfirmed -Consent 'APPROVE M3 lab-web-001-first-trial-20261103-001'
+```
+
+This consent authorizes exactly one original-VM Nginx-stop fault, actual grading and the exact B5 checkpoint recovery (clean shutdown → restore → boot → independent verification → lease release), including recovery after submission, timeout or failed setup. It does not authorize a second trial, checkpoint creation/deletion or changes to protected/recovery VMs or backup. Consent and admission do not inject a fault: the learner must run fresh preflight/authentication and click Start in the web UI. The admission file blocks later runtime refresh; do not use the terminal-only stop helper once an approved run is claimed.
+
+Starting a new run expires after 60 minutes. Deduplicated queries and the approved recovery of an already claimed run continue to work after that start window. No automatic reset retry was added.
+
+After learner Submit and completion, the Operator can produce the read-only report:
+
+```powershell
+& 'C:\Program Files\TicketSimPilot\scripts\real-lab\Inspect-WebTrial.ps1'
+```
+
+The report includes immutable grade/note, every grade/baseline check, terminal revocation order, reset-attempt count, operator finalization, current host identities/resources/backup and lease status. It neither edits journals/leases nor retries any VM operation. `livePass` requires actual real-run completion, functional PASS, verified recovery, exactly one reset, finalization and clear lease/work state. A failed learner grade remains failed even when reset succeeds.
+
+Only after M1 and actual M2 PASS, fresh invariants/leases and explicit operator consent for the exact one-run fault/recovery permit may the Operator's protected approval be armed. The default Start mode cannot arm a trial or edit either draft flag. No existing first-trial permit is consumed during code, harness or terminal-only qualification.
 
 Required actual sequence remains: one claim → stop Nginx only → verify HTTP down/SSH up → learner repair in browser → submit once → terminal revoke → independent grade → one exact-checkpoint recovery → independent baseline checks → operator finalization → lease release. Unknown/reset failure is quarantine, never automatic destructive retry. Do not create a second trial to obtain a green report.
 
 ## Verification record and limits
 
-- `npm test -- --run`: PASS, 132/132 after additions (including security/session/SSH PTY/close-before-grade/additive migration and journal finalization tests).
+- `npm test -- --run`: PASS, 141/141 after M3 admission/report/start-expiry coverage (no actual permit is armed by tests).
 - `npm run build`: PASS; terminal assets lazy-loaded; existing main-bundle warning remains.
 - Isolated HTTPS/WSS → SSH PTY browser test: PASS, including refresh/reconnect, website check, note autosave and async submit. A repeated three-run check passed after fixing offscreen terminal presentation. This harness uses generated SSH keys and loopback fake guest state, not original VM evidence.
 - Full browser regression: PASS, 52/52, including the isolated browser pilot with an active run terminal revoked on submit. All 51 previous paths still pass.

@@ -7,6 +7,21 @@ const approval={ scenarioId:'LAB-WEB-001',vmId:LIVE_TARGET.vmId,checkpointId,b5S
 let server, journal
 afterEach(async()=>{if(server) await new Promise(resolve=>server.close(resolve)); if(journal) journal.close();server=null;journal=null})
 
+it('rejects a new expired claim while keeping recovery authorization for an already claimed run',async()=>{
+  journal=new OperatorJournal(':memory:')
+  const runId='00000000-0000-4000-8000-000000000003'
+  server=createOperatorServer({approval:{...approval,trialStartBefore:'2000-01-01T00:00:00Z'},token:'t'.repeat(40),journal,runner:async()=>({targetVmId:LIVE_TARGET.vmId,checkpointId})})
+  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve))
+  const request=operationId=>fetch(`http://127.0.0.1:${server.address().port}/v1/action`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${'t'.repeat(40)}`},body:JSON.stringify({operationId,approvalId:approval.approvalId,runId})})
+  const denied=await request('real-host-claim-v1')
+  expect(denied.status).toBe(409)
+  expect((await denied.json()).code).toBe('APPROVAL_START_WINDOW_EXPIRED')
+  // Fixture represents a claim admitted before its start window expired.
+  journal.claim(approval.approvalId,runId)
+  expect((await request('real-host-reset-v1')).status).toBe(200)
+  expect((await request('real-host-finalize-v1')).status).toBe(200)
+})
+
 it('finalizes only after a successful recorded reset and retains single-use approval/action evidence',()=>{
   journal=new OperatorJournal(':memory:')
   const runId='00000000-0000-4000-8000-000000000003'

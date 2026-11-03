@@ -11,6 +11,7 @@ if (-not $Apply) {
 }
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { throw 'RUN_IN_ELEVATED_OPERATOR_POWERSHELL' }
 if (Test-Path 'E:\TicketSimOperatorState\b5\exclusive-lease') { throw 'B5_LEASE_HELD' }
+if (Test-Path "$state\operator\first-web-trial-admission.json") { throw 'TRIAL_ADMISSION_EXISTS_DO_NOT_REFRESH' }
 $user = Get-LocalUser -Name $account -ErrorAction SilentlyContinue
 if (-not $user) {
   $password = Read-Host 'Set a Windows password for TicketSimAgent (not the learner SSH password)' -AsSecureString
@@ -107,7 +108,7 @@ Copy-Item 'E:\TicketSimOperatorState\b5\first-trial-approval.DRAFT.json' "$state
 $draft = Get-Content "$state\operator\approval.DRAFT.json" -Raw | ConvertFrom-Json
 if ($draft.firstTrialApproved -or $draft.resetApproved) { throw 'M1_M2_MUST_NOT_ARM_TRIAL' }
 $hashes=@{}
-foreach($relative in @('node.exe','powershell\pwsh.exe','agent\pilot.mjs','agent\server.mjs','agent\terminalService.mjs','operator\server.mjs','scripts\real-lab\Invoke-LabHost.ps1','scripts\real-lab\Start-PilotRuntime.ps1','scripts\real-lab\Verify-PilotIdentity.ps1','package-lock.json')){$hashes[$relative]=(Get-FileHash -LiteralPath (Join-Path $install $relative) -Algorithm SHA256).Hash}
+foreach($relative in @('node.exe','powershell\pwsh.exe','agent\pilot.mjs','agent\server.mjs','agent\terminalService.mjs','agent\trialPermit.mjs','operator\server.mjs','scripts\real-lab\Invoke-LabHost.ps1','scripts\real-lab\Start-PilotRuntime.ps1','scripts\real-lab\Verify-PilotIdentity.ps1','package-lock.json')){$hashes[$relative]=(Get-FileHash -LiteralPath (Join-Path $install $relative) -Algorithm SHA256).Hash}
 [pscustomobject]@{AgentName="$env:COMPUTERNAME\$account";AgentSid=$agentSid;Operator=$operatorName;Install=$install;State=$state;PreparedAt=[DateTime]::UtcNow.ToString('o');TrialArmed=$false;CodeHashes=$hashes} | ConvertTo-Json -Depth 4 | Set-Content "$state\operator\preparation.json"
 Write-Output 'Prepared only. No live services, guest commands, fault, reset or checkpoint operations were performed.'
 Write-Output "Next: run Verify-PilotIdentity.ps1 under TicketSimAgent and the Operator. M1 remains NOT PASS until actual evidence is checked."
