@@ -2,6 +2,8 @@
 
 Prerequisite achieved: [actual M3 PASS](M3_ACTUAL_PASS_20261103.md). Product target: install/configure once with Windows authorization, then open a shortcut and complete normal learning and supported operator tasks in the browser. The browser terminal remains the fixed Ubuntu guest PTY; it must not expose a Windows shell.
 
+PM's HyperV_TicketLab proposal is analyzed in [integration review](HYPERV_TICKETLAB_INTEGRATION_REVIEW_20261103.md). Recommended scheduling: shared M4 lifecycle/approval foundations → qualify post-B5 guest bootstrap → port 02/03/07 sequentially → complete packaging. This recommendation is not approval for new live mutations or a replacement of the consumed M3 permit.
+
 ## Ordered implementation
 
 1. **Freeze installation contract.** Inventory the tested Node/PowerShell distributions, protected code hashes, account/certificate/state ownership and existing host manifest. Pin distributable versions, checksums and licenses before bundling. Package the app separately from this host's existing VM/checkpoint/backup; do not clone/import/provision a VM or create a checkpoint implicitly.
