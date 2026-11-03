@@ -1,5 +1,15 @@
 # M4 Operator bootstrap and consumed-pilot upgrade
 
+Actual pickup: the Operator ran Apply and received `UPGRADE_STAGE_FAILED`; a second Apply was rejected by `UPGRADE_RECORD_EXISTS_DO_NOT_RETRY`. Actual migration is **not PASS**. Preserve the staged release, upgrade record and any maintenance gate; do not retry, edit its manifest or clear records. The initial generic error hides its cause. The read-only source diagnostic `Inspect-UpgradeFailure.ps1` reports evidence-file encoding/readability, retained stage/gates/events and an independent M3/host recheck without changing them or returning pairing/bridge secrets. Root cause and a reviewed recovery path require that actual output first.
+
+Run the diagnostic in the existing elevated Operator window:
+
+```powershell
+& 'E:\Document\TicketSim\scripts\real-lab\Inspect-UpgradeFailure.ps1'
+```
+
+This replaces separate manual stage/report queries. It does not alter the immutable failed release, execute upgrade stages or release the gate. Source validation after adding the diagnostic: full unit/content 176/176 PASS, privacy-focused diagnostic tests 2/2 PASS; build PASS.
+
 This source implementation upgrades runtime orchestration only. It never installs guest software, injects a fault, resets a VM, creates a checkpoint or changes a backup. The three new packs remain unavailable. M3's completed run, consumed permit, original approval/actions and first-trial guards remain intact. Actual upgrade qualification is pending Operator execution; unit/browser tests are not evidence that the protected installation has already changed.
 
 ## Concrete workflow
